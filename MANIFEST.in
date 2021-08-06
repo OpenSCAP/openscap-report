@@ -1,0 +1,5 @@
+include README.md
+include tox.ini
+include requirements.txt
+recursive-include oscap_report *
+recursive-include tests *.py
