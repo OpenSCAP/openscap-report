@@ -73,7 +73,7 @@ class CommandLineAPI():
             "-o",
             "--output",
             action="store",
-            type=argparse.FileType("w+"),
+            type=argparse.FileType("wb+", 0),
             default=stdout,
             help="write the report to this file instead of standard output.")
         parser.add_argument(
@@ -119,7 +119,10 @@ class CommandLineAPI():
 
     def store_file(self, data):
         logging.info("Store report")
-        self.output_file.write(data)
+        if self.output_file.name == "<stdout>":
+            logging.info("Output is stdout, converting bytes output to str")
+            data = data.read().decode("utf-8")
+        self.output_file.writelines(data)
 
     def close_files(self):
         logging.info("Close files")
