@@ -1,0 +1,28 @@
+checks:
+    python:
+        code_rating: true
+        duplicate_code: true
+
+build:
+    dependencies:
+        before:
+            - pip3 install -r requirements.txt
+    environment:
+        python: 3.9.6
+    nodes:
+        analysis:
+            project_setup:
+                override:
+                    - 'true'
+            tests:
+                override:
+                    - py-scrutinizer-run
+                    - pylint-run
+        tests: true
+
+filter:
+    excluded_paths:
+        - '*/tests/*'
+    dependency_paths:
+        - 'lib/*'
+
