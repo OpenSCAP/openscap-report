@@ -5,7 +5,7 @@ import oscap_report
 
 
 def get_long_description():
-    with open('README.md') as readme_file:
+    with open("README.md", "r", encoding="utf-8") as readme_file:
         return readme_file.read()
 
 
