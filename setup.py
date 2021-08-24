@@ -19,7 +19,7 @@ setup(name='oscap_report',
       author_email='jrodak@redhat.com',
       license='',
       packages=find_packages(),
-      install_requires=[],
+      install_requires=["lxml>=4.6.3"],
       include_package_data=True,
       zip_safe=False,
       entry_points={

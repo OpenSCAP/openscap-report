@@ -1,6 +1,9 @@
 import argparse
 import logging
+from sys import exit as sys_exit
 from sys import stdin, stdout
+
+from lxml.etree import XMLSyntaxError
 
 from . import __version__
 from .old_html_report_style.report_generator import ReportGenerator
@@ -21,6 +24,9 @@ LOG_LEVES_DESCRIPTION = (
     "to continue running.\n"
 )
 MASSAGE_FORMAT = '%(levelname)s: %(message)s'
+EXPECTED_ERRORS = (XMLSyntaxError, )
+EXIT_FAILURE_CODE = 1
+EXIT_SUCCESS_CODE = 0
 
 
 class CommandLineAPI():
@@ -122,16 +128,22 @@ class CommandLineAPI():
 
 
 def main():
+    exit_code = EXIT_SUCCESS_CODE
     api = CommandLineAPI()
     arf_report = api.load_file()
 
     logging.info("Parse file")
-    parser = SCAPResultsParser(arf_report)
+    try:
+        parser = SCAPResultsParser(arf_report)
 
-    report = api.generate_report(parser)
+        report = api.generate_report(parser)
 
-    api.store_file(report)
+        api.store_file(report)
+    except EXPECTED_ERRORS as error:
+        logging.fatal("%s", error)
+        exit_code = EXIT_FAILURE_CODE
     api.close_files()
+    sys_exit(exit_code)
 
 
 if __name__ == '__main__':
