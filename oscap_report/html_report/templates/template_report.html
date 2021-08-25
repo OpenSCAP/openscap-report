@@ -1,0 +1,63 @@
+{% extends 'base_report.html' %}
+
+{% block title%}OpenSCAP Evaluation Report{% endblock %}
+
+{% block content %}
+<h1>{{ report.title }}</h1>
+<h2>Evaluation Characteristics</h2>
+<table>
+    <tr>
+        <td>Profile ID:</td>
+        <td>{{ report.profile_name }}</td>
+    </tr>
+    <tr>
+        <td>Evaluation target:</td>
+        <td>{{ report.target }}</td>
+    </tr>
+    <tr>
+        <td>Performed by:</td>
+        <td>{{ report.identity }}</td>
+    </tr>  
+    <tr>
+        <td>Scanner:</td>
+        <td>{{ report.scanner }} {{ report.scanner_version }}</td>
+    </tr>
+    <tr>
+        <td>Benchmark id:</td>
+        <td>{{ report.benchmark_id }}</td>
+    </tr>
+    <tr>
+        <td>Benchmark url:</td>
+        <td>{{ report.benchmark_url }}</td>
+    </tr>
+    <tr>
+        <td>Benchmark version:</td>
+        <td>{{ report.benchmark_version }}</td>
+    </tr>
+    <tr>
+        <td>Started at:</td>
+        <td>{{ report.start_time}}</td>
+    </tr>
+    <tr>
+        <td>Finished at:</td>
+        <td>{{ report.end_time}}</td>
+    </tr>
+    <tr>
+        <td>Test system:</td>
+        <td>{{ report.test_system  }}</td>
+    </tr>
+    <tr>
+        <td>Score:</td>
+        <td>{{ "%.2f"|format(report.score) }}/{{ "%.2f"|format(report.score_max) }}</td>
+    </tr>
+</table>
+<h3>CPE Platforms</h3>
+<ul>
+{% for platform in report.cpe_platforms -%}
+    <li>{{ platform }}</li>
+{% endfor %}
+</ul>
+
+<hr>
+<div>{{ report }}</div>
+{% endblock %}
