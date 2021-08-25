@@ -6,7 +6,9 @@ from sys import stdin, stdout
 from lxml.etree import XMLSyntaxError
 
 from . import __version__
-from .old_html_report_style.report_generator import ReportGenerator
+from .html_report.report_generator import ReportGenerator
+from .old_html_report_style.report_generator import \
+    ReportGenerator as OldOSCAPReportGenerator
 from .scap_results_parser.scap_results_parser import SCAPResultsParser
 
 DESCRIPTION = ("Generate a HTML (JSON, PDF?, Printable HTML, etc) document (HTML report)"
@@ -95,7 +97,7 @@ class CommandLineAPI():
             "--format",
             action="store",
             default="HTML",
-            choices=["HTML"],
+            choices=["HTML", "OLD-STYLE-HTML"],
             help="FORMAT: %(choices)s (default: %(default)s)."
         )
 
@@ -107,9 +109,11 @@ class CommandLineAPI():
             level=self.log_level.upper()
         )
 
-    @staticmethod
-    def generate_report(report_parser):
+    def generate_report(self, report_parser):
         logging.info("Generate report")
+        if self.output_format == "OLD-STYLE-HTML":
+            report_generator = OldOSCAPReportGenerator(report_parser)
+            return report_generator.generate_html_report()
         report_generator = ReportGenerator(report_parser)
         return report_generator.generate_html_report()
 
