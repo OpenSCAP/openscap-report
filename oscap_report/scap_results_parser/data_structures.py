@@ -18,6 +18,7 @@ class Report:  # pylint: disable=R0902
     test_system: str = ""
     score: float = 0.0
     score_max: float = 0.0
+    rules: dict = None
 
     def as_dict(self):
         return {
@@ -36,4 +37,76 @@ class Report:  # pylint: disable=R0902
             "test_system": self.test_system,
             "score": self.score,
             "score_max": self.score_max,
+            "rules": self.rules,
         }
+
+
+@dataclass
+class Rule:  # pylint: disable=R0902
+    rule_id: str = ""
+    title: str = ""
+    result: str = ""
+    multi_check: bool = False
+    time: str = ""
+    severity: str = ""
+    identifiers: list = None
+    references: list = None
+    description: str = ""
+    rationale: str = ""
+    warnings: list = None
+    platform: str = ""
+    oval_definition_id: str = ""
+    message: str = ""
+    remediations: list = None
+
+    def as_dict(self):
+        return {
+            "rule_id": self.rule_id,
+            "title": self.title,
+            "result": self.result,
+            "multi_check": self.multi_check,
+            "time": self.time,
+            "severity": self.severity,
+            "identifiers": self.identifiers,
+            "references": self.references,
+            "description": self.description,
+            "rationale": self.rationale,
+            "warnings": self.warnings,
+            "platform": self.platform,
+            "oval_definition_id": self.oval_definition_id,
+            "message": self.message,
+            "remediations": self.remediations,
+        }
+
+
+@dataclass
+class Remediation:
+    remediation_id: str = ""
+    system: str = ""
+    complexity: str = ""
+    disruption: str = ""
+    strategy: str = ""
+    fix: str = ""
+
+    def as_dict(self):
+        return {
+            "remediation_id": self.remediation_id,
+            "system": self.system,
+            "complexity": self.complexity,
+            "disruption": self.disruption,
+            "strategy": self.strategy,
+            "fix": self.fix,
+        }
+
+    def get_type(self):
+        if self.system == "urn:xccdf:fix:script:sh":
+            return "Shell script"
+        if self.system == "urn:xccdf:fix:script:ansible":
+            return "Ansible snippet"
+        if self.system == "urn:xccdf:fix:script:puppet":
+            return "Puppet snippet"
+        if self.system == "urn:redhat:anaconda:pre":
+            return "Anaconda snippet"
+        if self.system == "urn:xccdf:fix:script:kubernetes":
+            return "Kubernetes snippet"
+        return self.system
