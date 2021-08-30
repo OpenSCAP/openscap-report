@@ -50,11 +50,14 @@ def test_store_file(mock_args):  # pylint: disable=W0613
         assert result_file.read() == data.getvalue().decode("utf-8")
 
 
-def test_generate_report():
+@mock.patch('argparse.ArgumentParser.parse_args',
+            return_value=get_fake_args())
+def test_generate_report(mock_args):  # pylint: disable=W0613
     data = None
+    api = CommandLineAPI()
     with open(PATH_TO_ARF, "r", encoding="utf-8") as arf_report:
         parser = SCAPResultsParser(arf_report.read().encode())
-        data = CommandLineAPI.generate_report(parser)
+        data = api.generate_report(parser)
     assert data.read().decode("utf-8").startswith("<!DOCTYPE html>")
 
 

@@ -1,3 +1,4 @@
+from io import BytesIO
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
@@ -11,4 +12,4 @@ class ReportGenerator():
 
     def generate_html_report(self):
         template = self.env.get_template("template_report.html")
-        return template.render(report=self.report)
+        return BytesIO(template.render(report=self.report).encode())
