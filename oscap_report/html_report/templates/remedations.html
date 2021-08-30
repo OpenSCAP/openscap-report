@@ -1,0 +1,40 @@
+{% if rule.remediations %}
+{% for remediation in rule.remediations %}
+<tr role="row">
+    <td colspan="2" role="cell">
+        <details>
+            <summary>Remediation {{ remediation.get_type() }}</summary>
+            <table class="pf-c-table pf-m-grid-md" role="grid">
+                <thead>
+                    <tr role="row">
+                        <th role="columnheader" scope="col"></th>
+                        <th role="columnheader" scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody role="rowgroup">
+                    {% if remediation.complexity != "" %}
+                    <tr role="row">
+                        <td role="cell">Complexity:</td>
+                        <td role="cell">{{ remediation.complexity }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if remediation.disruption != "" %}
+                    <tr role="row">
+                        <td role="cell">Disruption:</td>
+                        <td role="cell">{{ remediation.disruption }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if remediation.strategy != "" %}
+                    <tr role="row">
+                        <td role="cell">Strategy:</td>
+                        <td role="cell">{{ remediation.strategy }}</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+            <pre>{{ remediation.fix }}</pre>
+        </details>
+    </td>
+</tr>
+{% endfor %}
+{% endif %}

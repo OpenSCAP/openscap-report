@@ -1,0 +1,134 @@
+<div class="pf-c-expandable-section__content">
+    <table class="pf-c-table pf-m-grid-md" role="grid">
+        <thead>
+            <tr role="row">
+                <th role="columnheader" scope="col"></th>
+                <th role="columnheader" scope="col"></th>
+            </tr>
+        </thead>
+        <tbody role="rowgroup">
+            <tr role="row">
+                <td role="cell">Rule ID:</td>
+                <td role="cell">{{ rule.rule_id }}</td>
+            </tr>
+            <tr role="row">
+                <td role="cell">Result:</td>
+                <td role="cell">
+                    {% if rule.result == "pass" %}
+                    <span class="pf-c-label pf-m-green">
+                        <span class="pf-c-label__content">{{ rule.result }}</span>
+                    </span>
+                    {% elif rule.result == "fail"%}
+                    <span class="pf-c-label pf-m-red">
+                        <span class="pf-c-label__content">{{ rule.result }}</span>
+                    </span>
+                    {% else %}
+                    <span class="pf-c-label">
+                        <span class="pf-c-label__content">{{ rule.result }}</span>
+                    </span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr role="row">
+                <td role="cell">Multi-check rule:</td>
+                {% if rule.multi_check %}
+                    <td role="cell">yes</td>
+                {% else %}
+                    <td role="cell">no</td>
+                {% endif %}
+            </tr>
+            <tr role="row">
+                <td role="cell">OVAL Definition ID:</td>
+                <td role="cell">{{ rule.oval_definition_id }}</td>
+            </tr>
+            <tr role="row">
+                <td role="cell">Time:</td>
+                <td role="cell">{{ rule.time }}</td>
+            </tr>
+            <tr role="row">
+                <td role="cell">Severity:</td>
+                <td role="cell">
+                    {% if rule.severity == "low" %}
+                    <span class="pf-c-label pf-m-blue">
+                        <span class="pf-c-label__content">{{ rule.severity }}</span>
+                    </span>
+                    {% elif rule.severity == "medium" %}
+                    <span class="pf-c-label pf-m-orange">
+                        <span class="pf-c-label__content">{{ rule.severity }}</span>
+                    </span>
+                    {% elif rule.severity == "high" %}
+                    <span class="pf-c-label pf-m-red">
+                        <span class="pf-c-label__content">{{ rule.severity }}</span>
+                    </span>
+                    {% else %}
+                    <span class="pf-c-label">
+                        <span class="pf-c-label__content">{{ rule.severity }}</span>
+                    </span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% if rule.identifiers %}
+            <tr role="row">
+                <td role="cell">Identifiers:</td>
+                <td role="cell">
+                    <div>
+                        {% for identifier in rule.identifiers %}
+                        <a href="{{ identifier.href }}">{{ identifier.text }}</a>
+                        {{ ", " if not loop.last else "" }}
+                        {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            {% endif %}
+            {% if rule.references %}
+            <tr role="row">
+                <td role="cell">References:</td>
+                <td role="cell">
+                    <div>
+                        {% for reference in rule.references %}
+                        <a href="{{ reference.href }}">{{ reference.text }}</a>
+                        {{ ", " if not loop.last else "" }}
+                        {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            {% endif %}
+            <tr role="row">
+                <td role="cell">Description:</td>
+                <td role="cell">{{ rule.description }}</td>
+            </tr>
+            {% if rule.rationale %}
+            <tr role="row">
+                <td role="cell">Rationale:</td>
+                <td role="cell">{{ rule.rationale }}</td>
+            </tr>
+            {% endif %}
+            {% if rule.warnings %}
+            <tr role="row">
+                <td role="cell">Warnings:</td>
+                <td role="cell">
+                    {% for warning in rule.warnings %}
+                    <div class="pf-c-alert pf-m-warning pf-m-inline">
+                        <div class="pf-c-alert__icon">
+                            <i class="fas fa-fw fa-exclamation-triangle" aria-hidden="true"></i>
+                        </div>
+                        <p class="pf-c-alert__title">
+                            <span class="pf-screen-reader">Warning alert:</span>
+                            {{ warning }}
+                        </p>
+                    </div>
+                    <br>
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endif %}
+            {% if rule.message != "" %}
+            <tr role="row">
+                <td role="cell">Message:</td>
+                <td role="cell">{{ rule.message }}</td>
+            </tr>
+            {% endif %}
+            {% include "remedations.html" %}
+        </tbody>
+    </table>
+</div>
