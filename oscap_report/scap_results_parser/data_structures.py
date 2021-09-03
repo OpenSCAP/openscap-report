@@ -62,6 +62,22 @@ class Report:  # pylint: disable=R0902
         results_stats["other_percent"] = results_stats["other"] * percent_per_rule
         return results_stats
 
+    def get_severity_of_failed_rules_stats(self):
+        failed_rules = list(
+            filter(lambda rule: rule.result.lower() == "fail", self.rules.values()))
+        percent_per_rule = 100 / len(failed_rules)
+        severity_stats = {
+            "low": sum(map(lambda rule: rule.severity.lower() == "low", failed_rules)),
+            "medium": sum(map(lambda rule: rule.severity.lower() == "medium", failed_rules)),
+            "high": sum(map(lambda rule: rule.severity.lower() == "high", failed_rules)),
+            "unknown": sum(map(lambda rule: rule.severity.lower() == "unknown", failed_rules)),
+        }
+        severity_stats["low_percent"] = severity_stats["low"] * percent_per_rule
+        severity_stats["medium_percent"] = severity_stats["medium"] * percent_per_rule
+        severity_stats["high_percent"] = severity_stats["high"] * percent_per_rule
+        severity_stats["unknown_percent"] = severity_stats["unknown"] * percent_per_rule
+        return severity_stats
+
 
 @dataclass
 class Rule:  # pylint: disable=R0902
