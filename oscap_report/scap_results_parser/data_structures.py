@@ -40,6 +40,28 @@ class Report:  # pylint: disable=R0902
             "rules": self.rules,
         }
 
+    def get_rule_results_stats(self):
+        results_stats = {
+            "fail": len(list(
+                filter(lambda rule: rule.result.lower() == "fail", self.rules.values()))),
+            "pass": len(list(
+                filter(lambda rule: rule.result.lower() == "pass", self.rules.values()))),
+            "unknown_error": len(list(
+                filter(lambda rule:
+                       rule.result.lower() in ("error", "unknown"), self.rules.values()))),
+        }
+        not_ignored_rules = len(list(
+            filter(
+                lambda rule: rule.result.lower() not in ("notselected", "notapplicable"),
+                self.rules.values()
+            )))
+        percent_per_rule = 100 / not_ignored_rules
+        results_stats["other"] = not_ignored_rules - results_stats["fail"] - results_stats['pass']
+        results_stats["fail_percent"] = results_stats["fail"] * percent_per_rule
+        results_stats["pass_percent"] = results_stats["pass"] * percent_per_rule
+        results_stats["other_percent"] = results_stats["other"] * percent_per_rule
+        return results_stats
+
 
 @dataclass
 class Rule:  # pylint: disable=R0902
