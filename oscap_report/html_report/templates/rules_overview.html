@@ -34,15 +34,15 @@
                 <span class="pf-c-table__text">{{ rule.title }}</span>
             </td>
             <td role="cell" data-label="Severity">
-                {% if rule.severity == "low" %}
+                {% if rule.result != "pass" and rule.severity == "low" %}
                 <span class="pf-c-label pf-m-blue">
                     <span class="pf-c-label__content">{{ rule.severity }}</span>
                 </span>
-                {% elif rule.severity == "medium" %}
+                {% elif rule.result != "pass" and rule.severity == "medium" %}
                 <span class="pf-c-label pf-m-orange">
                     <span class="pf-c-label__content">{{ rule.severity }}</span>
                 </span>
-                {% elif rule.severity == "high" %}
+                {% elif rule.result != "pass" and rule.severity == "high" %}
                 <span class="pf-c-label pf-m-red">
                     <span class="pf-c-label__content">{{ rule.severity }}</span>
                 </span>
