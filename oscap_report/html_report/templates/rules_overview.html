@@ -55,15 +55,30 @@
             <td role="cell" data-label="Result">
                 {% if rule.result == "pass" %}
                 <span class="pf-c-label pf-m-green">
-                    <span class="pf-c-label__content">{{ rule.result }}</span>
+                    <span class="pf-c-label__content">
+                        <span class="pf-c-label__icon">
+                            <i class="fas fa-fw fa-check" aria-hidden="true"></i>
+                        </span>
+                        {{ rule.result }}
+                    </span>
                 </span>
                 {% elif rule.result == "fail"%}
                 <span class="pf-c-label pf-m-red">
-                    <span class="pf-c-label__content">{{ rule.result }}</span>
+                    <span class="pf-c-label__content">
+                        <span class="pf-c-label__icon">
+                            <i class="fas fa-fw fa-times" aria-hidden="true"></i>
+                        </span>
+                        {{ rule.result }}
+                    </span>
                 </span>
                 {% else %}
                 <span class="pf-c-label">
-                    <span class="pf-c-label__content">{{ rule.result }}</span>
+                    <span class="pf-c-label__content">
+                        <span class="pf-c-label__icon">
+                            <i class="fas fa-fw fa-question-circle" aria-hidden="true"></i>
+                        </span>
+                    {{ rule.result }}
+                    </span>
                 </span>
                 {% endif %}
             </td>
