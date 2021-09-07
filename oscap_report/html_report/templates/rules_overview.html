@@ -1,0 +1,81 @@
+<input class="pf-c-form-control pf-m-search" type="search" placeholder="Search rule" id="input-search-rule" />
+<br>
+<br>
+<table class="pf-c-table pf-m-expandable pf-m-grid-lg" role="grid" id="rule-table">
+    <thead>
+        <tr role="row">
+            <th></th>
+            <th class="pf-c-table__sort" role="columnheader">
+                <span class="pf-c-table__text">Rule</span>
+            </th>
+            <th class="pf-c-table__sort" role="columnheader">
+                <span class="pf-c-table__text">Severity</span>
+            </th>
+            <th class="pf-c-table__sort" role="columnheader">
+                <span class="pf-c-table__text">Result</span>
+            </th>
+        </tr>
+    </thead>
+    {% for rule_id, rule in report.rules.items() %}
+    <tbody class="pf-m-expanded" role="rowgroup" id="rule" title="{{ rule.title }}" rule-id="{{ rule.rule_id }}">
+        <tr role="row">
+            <td class="pf-c-table__toggle" role="cell">
+                <button class="pf-c-button pf-m-plain" onclick="
+                                $(this).toggleClass('pf-m-expanded');
+                                $(this).parent().parent().parent().children('.pf-c-table__expandable-row').toggleClass('pf-m-expanded');
+                                ">
+                    <div class="pf-c-table__toggle-icon">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </div>
+                </button>
+            </td>
+
+            <td role="cell" id="rule-title" data-label="Rule">
+                <span class="pf-c-table__text">{{ rule.title }}</span>
+            </td>
+            <td role="cell" data-label="Severity">
+                {% if rule.severity == "low" %}
+                <span class="pf-c-label pf-m-blue">
+                    <span class="pf-c-label__content">{{ rule.severity }}</span>
+                </span>
+                {% elif rule.severity == "medium" %}
+                <span class="pf-c-label pf-m-orange">
+                    <span class="pf-c-label__content">{{ rule.severity }}</span>
+                </span>
+                {% elif rule.severity == "high" %}
+                <span class="pf-c-label pf-m-red">
+                    <span class="pf-c-label__content">{{ rule.severity }}</span>
+                </span>
+                {% else %}
+                <span class="pf-c-label">
+                    <span class="pf-c-label__content">{{ rule.severity }}</span>
+                </span>
+                {% endif %}
+            </td>
+            <td role="cell" data-label="Result">
+                {% if rule.result == "pass" %}
+                <span class="pf-c-label pf-m-green">
+                    <span class="pf-c-label__content">{{ rule.result }}</span>
+                </span>
+                {% elif rule.result == "fail"%}
+                <span class="pf-c-label pf-m-red">
+                    <span class="pf-c-label__content">{{ rule.result }}</span>
+                </span>
+                {% else %}
+                <span class="pf-c-label">
+                    <span class="pf-c-label__content">{{ rule.result }}</span>
+                </span>
+                {% endif %}
+            </td>
+        </tr>
+
+        <tr class="pf-c-table__expandable-row" role="row">
+            <td role="cell" colspan="4">
+                <div class="pf-c-table__expandable-row-content">
+                    {% include 'rule_detail.html' %}
+                </div>
+            </td>
+        </tr>
+    </tbody>
+    {% endfor %}
+</table>
