@@ -1,3 +1,4 @@
+import logging
 from dataclasses import dataclass
 
 
@@ -80,6 +81,52 @@ class Report:  # pylint: disable=R0902
 
 
 @dataclass
+class OvalNode:  # pylint: disable=R0902
+    node_id: str
+    node_type: str
+    value: str
+    negation: bool = False
+    comment: str = ""
+    tag: str = ""
+    test_result_details: dict = None
+    children: list = None
+
+    def as_dict(self):
+        if not self.children:
+            return {
+                'node_id': self.node_id,
+                'type': self.node_type,
+                'value': self.value,
+                'negation': self.negation,
+                'comment': self.comment,
+                'tag': self.tag,
+                'test_result_details': self.test_result_details,
+                'child': None
+            }
+        return {
+            'node_id': self.node_id,
+            'type': self.node_type,
+            'value': self.value,
+            'negation': self.negation,
+            'comment': self.comment,
+            'tag': self.tag,
+            'test_result_details': self.test_result_details,
+            'child': [child.as_dict() for child in self.children]
+        }
+
+    def log_oval_tree(self, level=0):
+        out = ""
+        if self.node_type != "value":
+            out = "  " * level + self.node_type + " = " + self.value
+        else:
+            out = "  " * level + self.node_id + " = " + self.value
+        logging.info(out)
+        if self.children is not None:
+            for child in self.children:
+                child.log_oval_tree(level + 1)
+
+
+@dataclass
 class Rule:  # pylint: disable=R0902
     rule_id: str = ""
     title: str = ""
@@ -96,6 +143,7 @@ class Rule:  # pylint: disable=R0902
     oval_definition_id: str = ""
     message: str = ""
     remediations: list = None
+    oval_tree: OvalNode = None
 
     def as_dict(self):
         return {
@@ -114,6 +162,7 @@ class Rule:  # pylint: disable=R0902
             "oval_definition_id": self.oval_definition_id,
             "message": self.message,
             "remediations": self.remediations,
+            "oval_tree": self.oval_tree,
         }
 
 
