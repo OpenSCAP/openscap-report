@@ -1,0 +1,148 @@
+<div class="pf-c-accordion pf-m-display-lg">
+    <h3>
+        <button class="pf-c-accordion__toggle" type="button" onclick="
+                    $(this).toggleClass('pf-m-expanded');
+                    $(this).parent().parent().children('.pf-c-accordion__expanded-content').toggleClass('pf-m-expanded').toggle();
+            ">
+            <span class="pf-c-accordion__toggle-text">Evaluation Characteristics</span>
+            <span class="pf-c-accordion__toggle-icon">
+                <i class="fas fa-angle-right"></i>
+            </span>
+        </button>
+    </h3>
+    <div class="pf-c-accordion__expanded-content" style="display: none;">
+        <div class="pf-c-accordion__expanded-content-body">
+            <ul class="pf-c-data-list" role="list">
+                <li class="pf-c-data-list__item">
+                    <div class="pf-c-data-list__item-row">
+                        <div class="pf-c-data-list__item-content">
+                            <div class="pf-c-data-list__cell">
+                                Profile ID:
+                            </div>
+                            <div class="pf-c-data-list__cell">
+                                {{ report.profile_name }}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="pf-c-data-list__item">
+                    <div class="pf-c-data-list__item-row">
+                        <div class="pf-c-data-list__item-content">
+                            <div class="pf-c-data-list__cell">
+                                Evaluation target:
+                            </div>
+                            <div class="pf-c-data-list__cell">
+                                {{ report.target }}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="pf-c-data-list__item">
+                    <div class="pf-c-data-list__item-row">
+                        <div class="pf-c-data-list__item-content">
+                            <div class="pf-c-data-list__cell">
+                                Performed by:
+                            </div>
+                            <div class="pf-c-data-list__cell">
+                                {{ report.identity }}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="pf-c-data-list__item">
+                    <div class="pf-c-data-list__item-row">
+                        <div class="pf-c-data-list__item-content">
+                            <div class="pf-c-data-list__cell">
+                                Scanner:
+                            </div>
+                            <div class="pf-c-data-list__cell">
+                                {{ report.scanner }} {{ report.scanner_version }}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="pf-c-data-list__item">
+                    <div class="pf-c-data-list__item-row">
+                        <div class="pf-c-data-list__item-content">
+                            <div class="pf-c-data-list__cell">
+                                Benchmark ID:
+                            </div>
+                            <div class="pf-c-data-list__cell">
+                                {{ report.benchmark_id }}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="pf-c-data-list__item">
+                    <div class="pf-c-data-list__item-row">
+                        <div class="pf-c-data-list__item-content">
+                            <div class="pf-c-data-list__cell">
+                                Benchmark url:
+                            </div>
+                            <div class="pf-c-data-list__cell">
+                                {{ report.benchmark_url }}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="pf-c-data-list__item">
+                    <div class="pf-c-data-list__item-row">
+                        <div class="pf-c-data-list__item-content">
+                            <div class="pf-c-data-list__cell">
+                                Benchmark version:
+                            </div>
+                            <div class="pf-c-data-list__cell">
+                                {{ report.benchmark_version }}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="pf-c-data-list__item">
+                    <div class="pf-c-data-list__item-row">
+                        <div class="pf-c-data-list__item-content">
+                            <div class="pf-c-data-list__cell">
+                                Started at:
+                            </div>
+                            <div class="pf-c-data-list__cell">
+                                {{ report.start_time }}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="pf-c-data-list__item">
+                    <div class="pf-c-data-list__item-row">
+                        <div class="pf-c-data-list__item-content">
+                            <div class="pf-c-data-list__cell">
+                                Finished at:
+                            </div>
+                            <div class="pf-c-data-list__cell">
+                                {{ report.end_time }}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="pf-c-data-list__item">
+                    <div class="pf-c-data-list__item-row">
+                        <div class="pf-c-data-list__item-content">
+                            <div class="pf-c-data-list__cell">
+                                Test system:
+                            </div>
+                            <div class="pf-c-data-list__cell">
+                                {{ report.test_system }}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

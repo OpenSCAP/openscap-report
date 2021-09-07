@@ -1,0 +1,41 @@
+{% if rule_result_stats.fail > 0 %}
+<div class="pf-c-alert pf-m-danger pf-m-inline">
+    <div class="pf-c-alert__icon">
+        <i class="fas fa-fw fa-exclamation-circle" aria-hidden="true"></i>
+    </div>
+    <p class="pf-c-alert__title">
+        <span class="pf-screen-reader">Danger alert:</span>
+        The target system did not satisfy the conditions of {{ rule_result_stats.fail }} rules!<br>
+        {% if rule_result_stats.unknown_error > 0 %}
+        Furthermore, the results of {{ rule_result_stats.unknown_error }} rules were inconclusive.<br>
+        {% endif %}
+    </p>
+    <div class="pf-c-alert__description">
+        Please review rule results and consider applying remediation.
+    </div>    
+</div>
+{% elif rule_result_stats.unknown_error > 0 %}
+<div class="pf-c-alert pf-m-warning pf-m-inline">
+    <div class="pf-c-alert__icon">
+        <i class="fas fa-fw fa-exclamation-triangle" aria-hidden="true"></i>
+    </div>
+    <p class="pf-c-alert__title">
+        <span class="pf-screen-reader">Warning alert:</span>
+        There were no failed rules, but the results of {{ rule_result_stats.unknown_error }} rules were
+        inconclusive!<br>
+    </p>
+    <div class="pf-c-alert__description">
+        Please review rule results and consider applying remediation.
+    </div>
+</div>
+{% else %}
+<div class="pf-c-alert pf-m-success pf-m-inline">
+    <div class="pf-c-alert__icon">
+        <i class="fas fa-fw fa-check-circle" aria-hidden="true"></i>
+    </div>
+    <p class="pf-c-alert__title">
+        <span class="pf-screen-reader">Success alert:</span>
+        There were no failed or uncertain rules. It seems that no action is necessary.<br>
+    </p>
+</div>
+{% endif %}
