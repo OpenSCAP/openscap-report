@@ -5,4 +5,5 @@ NAMESPACES = {
     'oval-definitions': 'http://oval.mitre.org/XMLSchema/oval-definitions-5',
     'scap': 'http://scap.nist.gov/schema/scap/source/1.2',
     'oval-characteristics': 'http://oval.mitre.org/XMLSchema/oval-system-characteristics-5',
+    'oval-object': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#independent',
 }
