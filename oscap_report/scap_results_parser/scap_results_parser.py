@@ -4,7 +4,9 @@ from pathlib import Path
 from lxml import etree
 
 from .data_structures import Remediation, Report, Rule
+from .exceptions import MissingOVALResult
 from .namespaces import NAMESPACES
+from .oval_definition_parser.oval_definition_parser import OVALDefinitionParser
 
 SCHEMAS_DIR = Path(__file__).parent / "schemas"
 
@@ -163,11 +165,22 @@ class SCAPResultsParser():
             rules[rule_id] = Rule(**rule_dict)
         return rules
 
+    def _insert_oval(self):
+        try:
+            oval_parser = OVALDefinitionParser(self.root)
+            oval_trees = oval_parser.get_oval_trees()
+            for rule in self.rules.values():
+                if rule.oval_definition_id in oval_trees:
+                    rule.oval_tree = oval_trees[rule.oval_definition_id]
+        except MissingOVALResult:
+            logging.warning("Not found OVAL results!")
+
     def parse_report(self):
         self.profile = self.get_profile_info()
         logging.debug(self.profile)
         self.rules = self.get_info_about_rules_in_profile()
         self._insert_rules_results()
+        self._insert_oval()
         self._debug_show_rules()
         self.profile.rules = self.rules
         return self.profile
