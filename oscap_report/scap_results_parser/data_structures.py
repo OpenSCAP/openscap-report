@@ -81,6 +81,38 @@ class Report:  # pylint: disable=R0902
 
 
 @dataclass
+class OvalObject():
+    object_id: str = ""
+    flag: str = ""
+    object_type: str = ""
+    object_data: dict = None
+
+    def as_dict(self):
+        return {
+            "object_id": self.object_id,
+            "flag": self.flag,
+            "object_type": self.object_type,
+            "object_data": self.object_data,
+        }
+
+
+@dataclass
+class OvalTest():
+    test_id: str = ""
+    test_type: str = ""
+    comment: str = ""
+    oval_object: OvalObject = None
+
+    def as_dict(self):
+        return {
+            "test_id": self.test_id,
+            "test_type": self.test_type,
+            "comment": self.comment,
+            "oval_object": self.oval_object,
+        }
+
+
+@dataclass
 class OvalNode:  # pylint: disable=R0902
     node_id: str
     node_type: str
@@ -90,6 +122,7 @@ class OvalNode:  # pylint: disable=R0902
     tag: str = ""
     test_result_details: dict = None
     children: list = None
+    test_info: OvalTest = None
 
     def as_dict(self):
         if not self.children:
