@@ -44,7 +44,8 @@
                             </span>
                         </span>
                     </span>
-                    <button class="pf-c-button pf-m-inline pf-m-link" onClick="alert('TEST INFO not implemented yet!!!');" type="button">Show test details</button>
+                    <button class="pf-c-button pf-m-inline pf-m-link" onClick="$(this).parent().children('#info').toggle()" type="button">Show test details</button>
+                    <samp id="info" style="display: none;">{{node.test_info}}</samp>
                 </div>
             </div>
         </div>
