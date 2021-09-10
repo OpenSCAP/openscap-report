@@ -18,6 +18,12 @@ build:
                 override:
                     - py-scrutinizer-run
                     - pylint-run
+                    -
+                        command: tox
+                        environment: { PYTHONPATH:  }
+                        coverage:
+                            file: '.coverage'
+                            format: 'py-cc'
         tests: true
 
 filter:
