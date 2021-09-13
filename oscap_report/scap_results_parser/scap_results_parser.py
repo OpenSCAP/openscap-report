@@ -3,7 +3,7 @@ from pathlib import Path
 
 from lxml import etree
 
-from .data_structures import Remediation, Report, Rule
+from .data_structures import OvalNode, Remediation, Report, Rule
 from .exceptions import MissingOVALResult
 from .namespaces import NAMESPACES
 from .oval_definition_parser.oval_definition_parser import OVALDefinitionParser
@@ -169,11 +169,40 @@ class SCAPResultsParser():
         try:
             oval_parser = OVALDefinitionParser(self.root)
             oval_trees = oval_parser.get_oval_trees()
+            oval_cpe_trees = oval_parser.get_oval_cpe_trees()
             for rule in self.rules.values():
                 if rule.oval_definition_id in oval_trees:
                     rule.oval_tree = oval_trees[rule.oval_definition_id]
+                if rule.platform in oval_cpe_trees:
+                    if rule.oval_tree is None:
+                        rule.oval_tree = oval_cpe_trees[rule.platform]
+                    else:
+                        self._add_oval_cpe_to_oval_tree(rule, oval_cpe_trees[rule.platform])
         except MissingOVALResult:
             logging.warning("Not found OVAL results!")
+
+    @staticmethod
+    def _add_oval_cpe_to_oval_tree(rule, oval_cpe_tree):
+        logging.info(rule.oval_tree)
+        oval_tree_result = rule.oval_tree.value
+        oval_cpe_tree_result = oval_cpe_tree.value
+
+        result = ""
+        if oval_tree_result == "true" and oval_cpe_tree_result == "true":
+            result = "true"
+        elif oval_tree_result == "false" or oval_cpe_tree_result == "false":
+            result = "false"
+        else:
+            result = "unknown"
+
+        merged_oval_tree = OvalNode(
+            node_id="{} and {}".format(rule.oval_tree.node_id, rule.platform),
+            node_type="AND",
+            value=result,
+            tag="Rule definition and CPE definition",
+            children=[rule.oval_tree, oval_cpe_tree])
+
+        rule.oval_tree = merged_oval_tree
 
     def parse_report(self):
         self.profile = self.get_profile_info()
