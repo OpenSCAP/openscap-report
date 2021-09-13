@@ -44,8 +44,11 @@
                             </span>
                         </span>
                     </span>
-                    <button class="pf-c-button pf-m-inline pf-m-link" onClick="$(this).parent().children('#info').toggle()" type="button">Show test details</button>
-                    <samp id="info" style="display: none;">{{node.test_info}}</samp>
+                    <button class="pf-c-button pf-m-inline pf-m-link" onClick="$(this).parent().children('#info').toggle();
+                    $(this).text(($(this).text() == 'Show test details') ? 'Hide test details' : 'Show test details').fadeIn();" type="button">Show test details</button>
+                    <div id="info" style="display: none;">
+                        {% include "info_oval_test.html" %}
+                    </div>
                 </div>
             </div>
         </div>

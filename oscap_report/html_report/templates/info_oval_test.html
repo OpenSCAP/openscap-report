@@ -1,0 +1,34 @@
+<span class="pf-c-label pf-m-blue">
+    <span class="pf-c-label__content">{{ node.test_info.comment }}</span>
+</span>
+<span class="pf-c-label">
+    <span class="pf-c-label__content">{{ node.test_info.test_id }}</span>
+</span>
+{% if node.test_info.oval_object -%}
+{%- if node.test_info.oval_object.flag == "complete" -%}
+    <p>Following items have been found on the system:</p>
+{%- else %}
+    <p>No items have been found conforming to the following objects:<br>
+    Object <b>{{node.test_info.oval_object.object_id}}</b> of type <b>{{node.test_info.oval_object.object_type}}</b></p>
+{%- endif %}
+<div  style="width: 0; min-width: 100em; overflow-x: auto;">
+<table class="pf-c-table pf-m-compact pf-m-grid-md" style="table-layout:auto;"role="grid">
+    <thead>
+        <tr role="row">
+            {% for item in node.test_info.oval_object.get_header_from_object_data() -%}
+                <th role="columnheader" scope="col">{{ item.split("@")[0] | replace("_", " ") | capitalize }}</th>    
+            {%- endfor %}
+        </tr>
+    </thead>
+    <tbody role="rowgroup">
+        {% for row in node.test_info.oval_object.object_data -%}
+        <tr role="row">
+            {% for key, value in node.test_info.oval_object.filtr_object_data_item(row).items() -%}
+                    <td role="cell" data-label="{{ key }}">{{ value }}</td>
+            {%- endfor %}
+        </tr>
+        {%- endfor %}
+    </tbody>
+</table>
+</div>
+{%- endif %}
