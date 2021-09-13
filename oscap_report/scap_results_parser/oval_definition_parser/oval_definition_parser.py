@@ -11,13 +11,13 @@ STR_NEGATION_BOOL = {'true': 'false', 'false': 'true'}
 
 class OVALDefinitionParser:
     def __init__(self, root):
-        self.dict_of_oval_tree_definitions = {}
         self.root = root
         self.oval_reports = self._get_oval_reports()
         logging.info(self.oval_reports)
         self.oval_results = self._get_oval_results("oval0")
         self.oval_cpe_results = self._get_oval_results("oval1")
         self.parser_info_of_test = InfoOfTest(self.oval_reports["oval0"])
+        self.parser_info_of_cpe_test = InfoOfTest(self.oval_reports["oval1"])
 
     def _get_oval_reports(self):
         oval_reports = {}
@@ -43,15 +43,42 @@ class OVALDefinitionParser:
             'scap:component/oval-definitions:oval_definitions/'
             'oval-definitions:definitions', NAMESPACES)
 
+    def _get_cpe_dict(self):
+        cpe_list = self.root.find(".//ds:component/cpe-dict:cpe-list", NAMESPACES)
+        cpe_dict = {}
+        for cpe_item in cpe_list:
+            name = cpe_item.get("name")
+            oval_id = cpe_item.find(".//cpe-dict:check", NAMESPACES).text
+            cpe_dict[name] = oval_id
+        return cpe_dict
+
     def get_oval_trees(self):
+        dict_of_oval_definitions = {}
         for definition in self.oval_results:
             id_definition = definition.get('definition_id')
-            self.dict_of_oval_tree_definitions[id_definition] = self._build_node(
+            dict_of_oval_definitions[id_definition] = self._build_node(
                 definition[0],
                 "Definition",
                 id_definition
             )
-        return self._fill_extend_definition()
+        return self._fill_extend_definition(dict_of_oval_definitions)
+
+    def get_oval_cpe_trees(self):
+        dict_of_oval_definitions = {}
+        for definition in self.oval_cpe_results:
+            id_definition = definition.get('definition_id')
+            dict_of_oval_definitions[id_definition] = self._build_node(
+                definition[0],
+                "CPE Definition",
+                id_definition
+            )
+        oval_cpe_trees = self._fill_extend_definition(dict_of_oval_definitions)
+        cpe_dict = self._get_cpe_dict()
+        out = {}
+        for value, oval_id in cpe_dict.items():
+            if oval_id in oval_cpe_trees:
+                out[value] = oval_cpe_trees[oval_id]
+        return out
 
     @staticmethod
     def _get_negation(node):
@@ -117,13 +144,14 @@ class OVALDefinitionParser:
                     node.children.append(self._get_test_node(child))
         return node
 
-    def _fill_extend_definition(self):
+    def _fill_extend_definition(self, dict_of_oval_definitions):
         out = {}
-        for id_definition, definition in self.dict_of_oval_tree_definitions.items():
-            out[id_definition] = self._fill_extend_definition_help(definition)
+        for id_definition, definition in dict_of_oval_definitions.items():
+            out[id_definition] = self._fill_extend_definition_help(
+                definition, dict_of_oval_definitions)
         return out
 
-    def _fill_extend_definition_help(self, node):
+    def _fill_extend_definition_help(self, node, dict_of_oval_definitions):
         out = OvalNode(
             node_id=node.node_id,
             node_type=node.node_type,
@@ -134,16 +162,18 @@ class OVALDefinitionParser:
         )
         for child in node.children:
             if child.node_type in ("AND", "OR", "ONE", "XOR"):
-                out.children.append(self._fill_extend_definition_help(child))
+                out.children.append(
+                    self._fill_extend_definition_help(child, dict_of_oval_definitions))
             elif child.node_type == "extend_definition":
-                out.children.append(self._find_definition_by_id(child))
+                out.children.append(
+                    self._find_definition_by_id(child, dict_of_oval_definitions))
             else:
                 out.children.append(child)
         return out
 
-    def _find_definition_by_id(self, node):
+    def _find_definition_by_id(self, node, dict_of_oval_definitions):
         extend_definition_id = node.node_id
-        self.dict_of_oval_tree_definitions[extend_definition_id].negation = node.negation
-        self.dict_of_oval_tree_definitions[extend_definition_id].tag = node.tag
+        dict_of_oval_definitions[extend_definition_id].negation = node.negation
+        dict_of_oval_definitions[extend_definition_id].tag = node.tag
         return self._fill_extend_definition_help(
-            self.dict_of_oval_tree_definitions[extend_definition_id])
+            dict_of_oval_definitions[extend_definition_id], dict_of_oval_definitions)
