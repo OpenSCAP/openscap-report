@@ -3,6 +3,7 @@ import logging
 from ..data_structures import OvalNode
 from ..exceptions import MissingOVALResult
 from ..namespaces import NAMESPACES
+from .info_of_test_parser import InfoOfTest
 
 STR_TO_BOOL = {'true': True, 'false': False}
 STR_NEGATION_BOOL = {'true': 'false', 'false': 'true'}
@@ -14,9 +15,9 @@ class OVALDefinitionParser:
         self.root = root
         self.oval_reports = self._get_oval_reports()
         logging.info(self.oval_reports)
-        self.oval_definitions = self._get_oval_definitions()
         self.oval_results = self._get_oval_results("oval0")
         self.oval_cpe_results = self._get_oval_results("oval1")
+        self.parser_info_of_test = InfoOfTest(self.oval_reports["oval0"])
 
     def _get_oval_reports(self):
         oval_reports = {}
@@ -93,6 +94,7 @@ class OVALDefinitionParser:
             value=result_of_node,
             negation=negation,
             tag="Test",
+            test_info=self.parser_info_of_test.get_test_info(test_id),
         )
 
     def _build_node(self, tree, tag, id_definition=None):
