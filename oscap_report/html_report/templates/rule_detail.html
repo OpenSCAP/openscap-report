@@ -14,7 +14,7 @@
             <tr role="row">
                 <td role="cell">Result:</td>
                 <td role="cell">
-                    {% if rule.result == "pass" %}
+                    {%- if rule.result == "pass" -%}
                     <span class="pf-c-label pf-m-green">
                         <span class="pf-c-label__content">
                             <span class="pf-c-label__icon">
@@ -23,7 +23,7 @@
                             {{ rule.result }}
                         </span>
                     </span>
-                    {% elif rule.result == "fail"%}
+                    {%- elif rule.result == "fail" %}
                     <span class="pf-c-label pf-m-red">
                         <span class="pf-c-label__content">
                             <span class="pf-c-label__icon">
@@ -32,7 +32,7 @@
                             {{ rule.result }}
                         </span>
                     </span>
-                    {% else %}
+                    {%- else %}
                     <span class="pf-c-label">
                         <span class="pf-c-label__content">
                             <span class="pf-c-label__icon">
@@ -41,16 +41,16 @@
                         {{ rule.result }}
                         </span>
                     </span>
-                    {% endif %}
+                    {%- endif %}
                 </td>
             </tr>
             <tr role="row">
                 <td role="cell">Multi-check rule:</td>
-                {% if rule.multi_check %}
+                {%- if rule.multi_check -%}
                     <td role="cell">yes</td>
-                {% else %}
+                {%- else %}
                     <td role="cell">no</td>
-                {% endif %}
+                {%- endif %}
             </tr>
             <tr role="row">
                 <td role="cell">OVAL Definition ID:</td>
@@ -63,66 +63,66 @@
             <tr role="row">
                 <td role="cell">Severity:</td>
                 <td role="cell">
-                    {% if rule.result != "pass" and rule.severity == "low" %}
+                    {%- if rule.result != "pass" and rule.severity == "low" -%}
                     <span class="pf-c-label pf-m-blue">
                         <span class="pf-c-label__content">{{ rule.severity }}</span>
                     </span>
-                    {% elif rule.result != "pass" and rule.severity == "medium" %}
+                    {%- elif rule.result != "pass" and rule.severity == "medium" %}
                     <span class="pf-c-label pf-m-orange">
                         <span class="pf-c-label__content">{{ rule.severity }}</span>
                     </span>
-                    {% elif rule.result != "pass" and rule.severity == "high" %}
+                    {%- elif rule.result != "pass" and rule.severity == "high" %}
                     <span class="pf-c-label pf-m-red">
                         <span class="pf-c-label__content">{{ rule.severity }}</span>
                     </span>
-                    {% else %}
+                    {%- else %}
                     <span class="pf-c-label">
                         <span class="pf-c-label__content">{{ rule.severity }}</span>
                     </span>
-                    {% endif %}
+                    {%- endif %}
                 </td>
             </tr>
-            {% if rule.identifiers %}
+            {%- if rule.identifiers -%}
             <tr role="row">
                 <td role="cell">Identifiers:</td>
                 <td role="cell">
                     <div>
-                        {% for identifier in rule.identifiers %}
+                        {% for identifier in rule.identifiers -%}
                         <a href="{{ identifier.href }}">{{ identifier.text }}</a>
-                        {{ ", " if not loop.last else "" }}
-                        {% endfor %}
+                        {{- ", " if not loop.last else "" -}}
+                        {%- endfor %}
                     </div>
                 </td>
             </tr>
-            {% endif %}
-            {% if rule.references %}
+            {%- endif %}
+            {%- if rule.references -%}
             <tr role="row">
                 <td role="cell">References:</td>
                 <td role="cell">
                     <div>
-                        {% for reference in rule.references %}
+                        {% for reference in rule.references -%}
                         <a href="{{ reference.href }}">{{ reference.text }}</a>
-                        {{ ", " if not loop.last else "" }}
-                        {% endfor %}
+                        {{- ", " if not loop.last else "" -}}
+                        {%- endfor %}
                     </div>
                 </td>
             </tr>
-            {% endif %}
+            {%- endif %}
             <tr role="row">
                 <td role="cell">Description:</td>
                 <td role="cell">{{ rule.description }}</td>
             </tr>
-            {% if rule.rationale %}
+            {% if rule.rationale -%}
             <tr role="row">
                 <td role="cell">Rationale:</td>
                 <td role="cell">{{ rule.rationale }}</td>
             </tr>
-            {% endif %}
-            {% if rule.warnings %}
+            {%- endif %}
+            {%- if rule.warnings -%}
             <tr role="row">
                 <td role="cell">Warnings:</td>
                 <td role="cell">
-                    {% for warning in rule.warnings %}
+                    {%- for warning in rule.warnings -%}
                     <div class="pf-c-alert pf-m-warning pf-m-inline">
                         <div class="pf-c-alert__icon">
                             <i class="fas fa-fw fa-exclamation-triangle" aria-hidden="true"></i>
@@ -133,17 +133,17 @@
                         </p>
                     </div>
                     <br>
-                    {% endfor %}
+                    {%- endfor %}
                 </td>
             </tr>
-            {% endif %}
-            {% if rule.message != "" %}
+            {%- endif %}
+            {%- if rule.message != "" -%}
             <tr role="row">
                 <td role="cell">Message:</td>
                 <td role="cell">{{ rule.message }}</td>
             </tr>
-            {% endif %}
-            {% include "remedations.html" %}
+            {%- endif %}
+            {%- include "remedations.html" %}
             <tr role="row">
                 <td colspan="2" role="cell">
                     {%- include "oval_graph.html" %}

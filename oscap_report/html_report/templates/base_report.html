@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" class="pf-m-redhat-font">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,7 +37,6 @@
         });
     </script>
 </head>
-
 <body>
     <div class="pf-c-page">
         <header class="pf-c-page__header">
@@ -56,14 +54,12 @@
         </header>
         <main class="pf-c-page__main" tabindex="-1">
             <section class="pf-c-page__main-section pf-m-no-fill">
-                {% block content%}
-
-                {% endblock %}
+                {%- block content -%}
+                {%- endblock %}
             </section>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
         crossorigin="anonymous"></script>
 </body>
-
 </html>

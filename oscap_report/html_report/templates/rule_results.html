@@ -1,17 +1,17 @@
 <div class="progress" style="height: 20px;">
-    {% if 0 != rule_result_stats.pass %}
+    {%- if 0 != rule_result_stats.pass -%}
     <div class="progress-bar" role="progressbar"
         style="width:{{ rule_result_stats.pass_percent }}%;background-color: #3E8635;">{{ rule_result_stats.pass }} Pass
     </div>
-    {% endif %}
-    {% if 0 != rule_result_stats.fail %}
+    {%- endif %}
+    {%- if 0 != rule_result_stats.fail -%}
     <div class="progress-bar" role="progressbar"
         style="width:{{ rule_result_stats.fail_percent }}%;background-color: #C9190B;">{{ rule_result_stats.fail }} Fail
     </div>
-    {% endif %}
-    {% if 0 != rule_result_stats.other %}
+    {%- endif %}
+    {%- if 0 != rule_result_stats.other -%}
     <div class="progress-bar" role="progressbar"
         style="width:{{ rule_result_stats.other_percent }}%;background-color: #F0AB00;">{{ rule_result_stats.other }}
         Other</div>
-    {% endif %}
+    {%- endif %}
 </div>

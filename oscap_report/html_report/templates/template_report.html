@@ -1,32 +1,27 @@
-{% extends 'base_report.html' %}
-
-{% block title%}OpenSCAP Evaluation Report{% endblock %}
-
-{% block content %}
+{%- extends 'base_report.html' %}
+{%- block title%}OpenSCAP Evaluation Report{% endblock %}
+{%- block content %}
 <h1 class="pf-c-title pf-m-3xl">Compliance and Scoring</h1>
 <br>
-{% set rule_result_stats = report.get_rule_results_stats() %}
-{% include 'summary_banner.html' %}
+{%- set rule_result_stats = report.get_rule_results_stats() %}
+{%- include 'summary_banner.html' %}
 <br>
 <h1 class="pf-c-title pf-m-2xl">Rule results</h1>
 <br>
-{% include 'rule_results.html' %}
+{%- include 'rule_results.html' %}
 <br>
-
 <h1 class="pf-c-title pf-m-2xl">Severity of failed rules</h1>
 <br>
-{% include 'severity_of_failed_rules.html'%}
+{%- include 'severity_of_failed_rules.html'%}
 <br>
-
 <h1 class="pf-c-title pf-m-2xl">Score</h1>
-{% include 'score_bar.html' %}
+{%- include 'score_bar.html' %}
 <br>
-
 <br>
-{% include 'evaluation_characteristics.html' %}
+{%- include 'evaluation_characteristics.html' %}
 <br>
 <h1 class="pf-c-title pf-m-3xl">Rule Overview</h1>
 <br>
-{% include 'rules_overview.html' %}
+{%- include 'rules_overview.html' %}
 <hr>
-{% endblock %}
+{%- endblock %}

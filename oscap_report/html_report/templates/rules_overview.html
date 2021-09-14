@@ -16,7 +16,7 @@
             </th>
         </tr>
     </thead>
-    {% for rule_id, rule in report.rules.items() %}
+    {%- for rule_id, rule in report.rules.items() -%}
     <tbody class="pf-m-expanded" role="rowgroup" id="rule" title="{{ rule.title }}" rule-id="{{ rule.rule_id }}">
         <tr role="row">
             <td class="pf-c-table__toggle" role="cell">
@@ -29,31 +29,30 @@
                     </div>
                 </button>
             </td>
-
             <td role="cell" id="rule-title" data-label="Rule">
                 <span class="pf-c-table__text">{{ rule.title }}</span>
             </td>
             <td role="cell" data-label="Severity">
-                {% if rule.result != "pass" and rule.severity == "low" %}
+                {%- if rule.result != "pass" and rule.severity == "low" -%}
                 <span class="pf-c-label pf-m-blue">
                     <span class="pf-c-label__content">{{ rule.severity }}</span>
                 </span>
-                {% elif rule.result != "pass" and rule.severity == "medium" %}
+                {%- elif rule.result != "pass" and rule.severity == "medium" %}
                 <span class="pf-c-label pf-m-orange">
                     <span class="pf-c-label__content">{{ rule.severity }}</span>
                 </span>
-                {% elif rule.result != "pass" and rule.severity == "high" %}
+                {%- elif rule.result != "pass" and rule.severity == "high" %}
                 <span class="pf-c-label pf-m-red">
                     <span class="pf-c-label__content">{{ rule.severity }}</span>
                 </span>
-                {% else %}
+                {%- else %}
                 <span class="pf-c-label">
                     <span class="pf-c-label__content">{{ rule.severity }}</span>
                 </span>
-                {% endif %}
+                {%- endif %}
             </td>
             <td role="cell" data-label="Result">
-                {% if rule.result == "pass" %}
+                {%- if rule.result == "pass" -%}
                 <span class="pf-c-label pf-m-green">
                     <span class="pf-c-label__content">
                         <span class="pf-c-label__icon">
@@ -62,7 +61,7 @@
                         {{ rule.result }}
                     </span>
                 </span>
-                {% elif rule.result == "fail"%}
+                {%- elif rule.result == "fail" %}
                 <span class="pf-c-label pf-m-red">
                     <span class="pf-c-label__content">
                         <span class="pf-c-label__icon">
@@ -71,7 +70,7 @@
                         {{ rule.result }}
                     </span>
                 </span>
-                {% else %}
+                {%- else %}
                 <span class="pf-c-label">
                     <span class="pf-c-label__content">
                         <span class="pf-c-label__icon">
@@ -80,17 +79,16 @@
                     {{ rule.result }}
                     </span>
                 </span>
-                {% endif %}
+                {%- endif %}
             </td>
         </tr>
-
         <tr class="pf-c-table__expandable-row" role="row">
             <td role="cell" colspan="4">
                 <div class="pf-c-table__expandable-row-content">
-                    {% include 'rule_detail.html' %}
+                    {%- include 'rule_detail.html' %}
                 </div>
             </td>
         </tr>
     </tbody>
-    {% endfor %}
+    {%- endfor %}
 </table>
