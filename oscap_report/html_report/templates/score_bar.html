@@ -1,29 +1,17 @@
 {%- if 50 >= report.score -%}
-    <div class="pf-c-progress pf-m-danger">
+<div class="pf-c-progress pf-m-danger">
 {%- elif 99 >= report.score %}
-    <div class="pf-c-progress pf-m-warning">
+<div class="pf-c-progress pf-m-warning">
 {%- else %}
-    <div class="pf-c-progress pf-m-success">
+<div class="pf-c-progress pf-m-success">
 {%- endif %}
-        <div class="pf-c-progress__status">
-            <span class="pf-c-progress__measure">
-                {{ "%.2f"|format(report.score) }} of {{"%.2f"|format(report.score_max) }}
-            </span>
-            {%- if 50 >= report.score -%}
-                <span class="pf-c-progress__status-icon">
-                    <i class="fas fa-fw fa-times-circle"></i>
-                </span>
-            {%- elif 99 >= report.score %}
-                <span class="pf-c-progress__status-icon">
-                    <i class="fas fa-fw fa-exclamation-triangle"></i>
-                </span>
-            {%- else %}
-                <span class="pf-c-progress__status-icon">
-                    <i class="fas fa-fw fa-check-circle"></i>
-                </span>
-            {%- endif %}
-        </div>
-        <div class="pf-c-progress__bar" role="progressbar">
-            <div class="pf-c-progress__indicator" style="width:{{ '%.2f'|format(report.score) }}%;"></div>
-        </div>
-    </div>
+<div class="pf-c-progress__status">
+<span class="pf-c-progress__measure">{{ "%.2f"|format(report.score) }} of {{"%.2f"|format(report.score_max) }}</span>
+{%- if 50 >= report.score -%}
+<span class="pf-c-progress__status-icon"><i class="fas fa-fw fa-times-circle"></i></span>
+{%- elif 99 >= report.score %}
+<span class="pf-c-progress__status-icon"><i class="fas fa-fw fa-exclamation-triangle"></i></span>
+{%- else %}
+<span class="pf-c-progress__status-icon"><i class="fas fa-fw fa-check-circle"></i></span>
+{%- endif %}
+</div><div class="pf-c-progress__bar" role="progressbar"><div class="pf-c-progress__indicator" style="width:{{ '%.2f'|format(report.score) }}%;"></div></div></div>

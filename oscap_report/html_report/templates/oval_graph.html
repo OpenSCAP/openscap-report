@@ -3,176 +3,139 @@
 {%- set COLOR_TRANSLATION = {'pf-m-green': '--pf-global--success-color--200', 'pf-m-red':'--pf-global--danger-color--200', '': ''} -%}
 {%- macro render_OVAL_test(node) -%}
 <li class="pf-c-tree-view__list-item" role="treeitem">
-    <div class="pf-c-tree-view__content">
-        <div class="pf-c-tree-view__node" tabindex="0">
-            <div class="pf-c-tree-view__node-container">
-                <div class="pf-c-tree-view__node-content">
-                    <span class="pf-c-tree-view__node-text">
-                        {%- if node.value == 'true' -%}
-                            {%- set color = 'pf-m-green' %}
-                            {%- set icon = 'fa-check' %}
-                        {%- elif node.value == 'false' %}
-                            {%- set color = 'pf-m-red' %}
-                            {%- set icon = 'fa-times' %}
-                        {%- else %}
-                            {%- set color = '' %}
-                            {%- set icon = 'fa-question-circle' %}
-                        {%- endif %}
-                        {%- if node.negation -%}
-                            <span style="color: var({{ COLOR_TRANSLATION[NEGATION_COLOR[color]] }})">
-                                <i class="fas fa-fw {{ NEGATION_ICON[icon] }}" aria-hidden="true"></i>
-                                <b>NOT</b>
-                            </span>
-                        {%- endif %}
-                        <span style="color: var({{ COLOR_TRANSLATION[color] }});">
-                            {%- if not node.negation -%}
-                               <i class="fas fa-fw {{ icon }}" aria-hidden="true"></i>
-                            {%- endif %}
-                            <b>{{ node.node_id | replace("oval:ssg-", "") | replace(":tst:1", "") }}</b>
-                        </span>
-                        <span class="pf-c-label {{color}}">
-                            <span class="pf-c-label__content">
-                                {{ node.tag }}
-                            </span>
-                        </span>
-                        <span class="pf-c-label {{color}}">
-                            <span class="pf-c-label__content">
-                                <span class="pf-c-label__icon">
-                                    <i class="fas fa-fw {{ icon }}" aria-hidden="true"></i>
-                                </span>
-                                {{ node.value }}
-                            </span>
-                        </span>
-                    </span>
-                    <button class="pf-c-button pf-m-inline pf-m-link" onClick="$(this).parent().children('#info').toggle();
-                    $(this).text(($(this).text() == 'Show test details') ? 'Hide test details' : 'Show test details').fadeIn();" type="button">Show test details</button>
-                    <div id="info" style="display: none;">
-                        {%- include "info_oval_test.html" %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="pf-c-tree-view__content"><div class="pf-c-tree-view__node" tabindex="0"><div class="pf-c-tree-view__node-container">
+<div class="pf-c-tree-view__node-content">
+<span class="pf-c-tree-view__node-text">
+{%- if node.value == 'true' -%}
+{%- set color = 'pf-m-green' %}
+{%- set icon = 'fa-check' %}
+{%- elif node.value == 'false' %}
+{%- set color = 'pf-m-red' %}
+{%- set icon = 'fa-times' %}
+{%- else %}
+{%- set color = '' %}
+{%- set icon = 'fa-question-circle' %}
+{%- endif %}
+{%- if node.negation -%}
+<span style="color: var({{ COLOR_TRANSLATION[NEGATION_COLOR[color]] }})">
+<i class="fas fa-fw {{ NEGATION_ICON[icon] }}" aria-hidden="true"></i>
+<b>NOT</b>
+</span>
+{%- endif %}
+<span style="color: var({{ COLOR_TRANSLATION[color] }});">
+{%- if not node.negation -%}
+<i class="fas fa-fw {{ icon }}" aria-hidden="true"></i>
+{%- endif %}
+<b>{{ node.node_id | replace("oval:ssg-", "") | replace(":tst:1", "") }}</b>
+</span>
+<span class="pf-c-label {{color}}">
+<span class="pf-c-label__content">{{ node.tag }}</span>
+</span>
+<span class="pf-c-label {{color}}"><span class="pf-c-label__content">
+<span class="pf-c-label__icon"><i class="fas fa-fw {{ icon }}" aria-hidden="true"></i></span>
+{{ node.value }}
+</span>
+</span></span>
+<button class="pf-c-button pf-m-inline pf-m-link" onClick="
+$(this).parent().children('#info').toggle();
+$(this).text(($(this).text() == 'Show test details') ? 'Hide test details' : 'Show test details').fadeIn();
+" type="button">Show test details</button>
+<div id="info" style="display: none;">{%- include "info_oval_test.html" %}</div>
+</div></div></div></div>
 </li>
 {%- endmacro %}
 {%- macro render_OVAL_operator(node) -%}
-    <div class="pf-c-tree-view__content">
-        <button 
-            class="pf-c-tree-view__node"
-            onClick="
-                $(this).parent().parent().toggleClass('pf-m-expanded');
-                $(this).parent().parent().children('ul').children().toggle();
-            ">
-            <div class="pf-c-tree-view__node-container">
-                <div class="pf-c-tree-view__node-toggle">
-                    <span class="pf-c-tree-view__node-toggle-icon">
-                        <i class="fas fa-angle-right"></i>
-                    </span>
-                </div>
-                <div class="pf-c-tree-view__node-content">
-                    <span class="pf-c-tree-view__node-text">
-                        {%- if node.value == 'true' -%}
-                            {%- set color = 'pf-m-green' %}
-                            {%- set icon = 'fa-check' %}
-                        {%- elif node.value == 'false' %}
-                            {%- set color = 'pf-m-red' %}
-                            {%- set icon = 'fa-times' %}
-                        {%- else %}
-                            {%- set color = '' %}
-                            {%- set icon = 'fa-question-circle' %}
-                        {%- endif %}
-                        {%- if node.negation -%}
-                            <span style="color: var({{ COLOR_TRANSLATION[NEGATION_COLOR[color]] }})">
-                                <i class="fas fa-fw {{ NEGATION_ICON[icon] }}" aria-hidden="true"></i>
-                                <b>NOT</b>
-                            </span>
-                        {%- endif %}
-                        <span style="color: var({{ COLOR_TRANSLATION[color] }});">
-                            {%- if not node.negation -%}
-                                <span class="pf-c-label__icon">
-                                    <i class="fas fa-fw {{ icon }}" aria-hidden="true"></i>
-                                </span>
-                            {%- endif %}
-                            <b>{{ node.node_type }}</b>
-                        </span>
-                        <span class="pf-c-label {{color}}">
-                            <span class="pf-c-label__content">
-                                {{ node.tag }}
-                            </span>
-                        </span>
-                        <span class="pf-c-label {{color}}">
-                            <span class="pf-c-label__content">
-                                <span class="pf-c-label__icon">
-                                    <i class="fas fa-fw {{ icon }}" aria-hidden="true"></i>
-                                </span>
-                                {{ node.value }}
-                            </span>
-                        </span>
-                    </span>
-                </div>
-            </div>
-        </button>
-    </div>
+<div class="pf-c-tree-view__content">
+<button class="pf-c-tree-view__node" onClick="
+$(this).parent().parent().toggleClass('pf-m-expanded');
+$(this).parent().parent().children('ul').children().toggle();
+">
+<div class="pf-c-tree-view__node-container">
+<div class="pf-c-tree-view__node-toggle">
+<span class="pf-c-tree-view__node-toggle-icon"><i class="fas fa-angle-right"></i></span>
+</div>
+<div class="pf-c-tree-view__node-content"><span class="pf-c-tree-view__node-text">
+{%- if node.value == 'true' -%}
+{%- set color = 'pf-m-green' %}
+{%- set icon = 'fa-check' %}
+{%- elif node.value == 'false' %}
+{%- set color = 'pf-m-red' %}
+{%- set icon = 'fa-times' %}
+{%- else %}
+{%- set color = '' %}
+{%- set icon = 'fa-question-circle' %}
+{%- endif %}
+{%- if node.negation -%}
+<span style="color: var({{ COLOR_TRANSLATION[NEGATION_COLOR[color]] }})">
+<i class="fas fa-fw {{ NEGATION_ICON[icon] }}" aria-hidden="true"></i>
+<b>NOT</b>
+</span>
+{%- endif %}
+<span style="color: var({{ COLOR_TRANSLATION[color] }});">
+{%- if not node.negation -%}
+<span class="pf-c-label__icon"><i class="fas fa-fw {{ icon }}" aria-hidden="true"></i></span>
+{%- endif %}
+<b>{{ node.node_type }}</b>
+</span>
+<span class="pf-c-label {{color}}">
+<span class="pf-c-label__content">{{ node.tag }}</span>
+</span>
+<span class="pf-c-label {{color}}"><span class="pf-c-label__content">
+<span class="pf-c-label__icon"><i class="fas fa-fw {{ icon }}" aria-hidden="true"></i></span>
+{{ node.value }}
+</span></span>
+</span></div>
+</div>
+</button>
+</div>
 {%- endmacro %}
 {%- macro render_OVAL_tree(root) -%}
-    {%- if root.node_type != 'value' -%}
-        <li class="pf-c-tree-view__list-item pf-m-expanded" role="treeitem">
-            {{ render_OVAL_operator(root) }}
-    {%- endif %}
-    {%- if root.children -%}
-        <ul class="pf-c-tree-view__list" role="group">
-            {%- for child in root.children -%}
-                {%- if child.node_type == "value" -%}
-                    {{ render_OVAL_test(child) }}
-                {%- else %}
-                    {{ render_OVAL_tree(child) }}    
-                {%- endif %}
-            {%- endfor %}
-        </ul>
-    {%- endif %}
-    {%- if root.node_type != 'value' -%}
-        </li>
-    {%- endif %}
+{%- if root.node_type != 'value' -%}
+<li class="pf-c-tree-view__list-item pf-m-expanded" role="treeitem">
+{{ render_OVAL_operator(root) }}
+{%- endif %}
+{%- if root.children -%}
+<ul class="pf-c-tree-view__list" role="group">
+{%- for child in root.children -%}
+{%- if child.node_type == "value" -%}
+{{ render_OVAL_test(child) }}
+{%- else %}
+{{ render_OVAL_tree(child) }}
+{%- endif %}
+{%- endfor %}
+</ul>
+{%- endif %}
+{%- if root.node_type != 'value' -%}
+</li>
+{%- endif %}
 {%- endmacro %}
 {%- if rule.oval_tree -%}
-    <div class="pf-c-helper-text">    
-        {%- if rule.oval_tree.value == 'true' -%}
-            <div class="pf-c-helper-text__item pf-m-success">
-                <span class="pf-c-helper-text__item-icon">
-                    <i class="fas fa-fw fa-check-circle" aria-hidden="true"></i>
-                </span>
-                <span class="pf-c-helper-text__item-text"><b>OVAL graph of OVAL definition: {{ rule.oval_tree.node_id }}</b></span>
-            </div>
-        {%- elif rule.oval_tree.value == 'false' %}
-            <div class="pf-c-helper-text__item pf-m-error">
-                <span class="pf-c-helper-text__item-icon">
-                    <i class="fas fa-fw fa-exclamation-circle" aria-hidden="true"></i>
-                </span>
-                <span class="pf-c-helper-text__item-text"><b>OVAL graph of OVAL definition: {{ rule.oval_tree.node_id }}</b></span>
-            </div>
-        {%- else %}
-            <div class="pf-c-helper-text__item pf-m-warning">
-                <span class="pf-c-helper-text__item-icon">
-                    <i class="fas fa-fw fa-exclamation-triangle" aria-hidden="true"></i>
-                </span>
-                <span class="pf-c-helper-text__item-text"><b>OVAL graph of OVAL definition: {{ rule.oval_tree.node_id }}</b></span>
-            </div>    
-        {%- endif %}
-    </div>
-    <div class="pf-c-tree-view pf-m-guides">
-        <ul class="pf-c-tree-view__list" role="tree">
-                {{ render_OVAL_tree(rule.oval_tree) }}
-        </ul>
-    </div>
+<div class="pf-c-helper-text">
+{%- if rule.oval_tree.value == 'true' -%}
+<div class="pf-c-helper-text__item pf-m-success">
+<span class="pf-c-helper-text__item-icon"><i class="fas fa-fw fa-check-circle" aria-hidden="true"></i></span>
+<span class="pf-c-helper-text__item-text"><b>OVAL graph of OVAL definition: {{ rule.oval_tree.node_id }}</b></span>
+</div>
+{%- elif rule.oval_tree.value == 'false' %}
+<div class="pf-c-helper-text__item pf-m-error">
+<span class="pf-c-helper-text__item-icon"><i class="fas fa-fw fa-exclamation-circle" aria-hidden="true"></i></span>
+<span class="pf-c-helper-text__item-text"><b>OVAL graph of OVAL definition: {{ rule.oval_tree.node_id }}</b></span>
+</div>
+{%- else %}
+<div class="pf-c-helper-text__item pf-m-warning">
+<span class="pf-c-helper-text__item-icon"><i class="fas fa-fw fa-exclamation-triangle" aria-hidden="true"></i></span>
+<span class="pf-c-helper-text__item-text"><b>OVAL graph of OVAL definition: {{ rule.oval_tree.node_id }}</b></span>
+</div>
+{%- endif %}
+</div>
+<div class="pf-c-tree-view pf-m-guides">
+<ul class="pf-c-tree-view__list" role="tree">{{ render_OVAL_tree(rule.oval_tree) }}</ul>
+</div>
 {%- else %}
 <div class="pf-c-alert pf-m-warning pf-m-inline">
-    <div class="pf-c-alert__icon">
-        <i class="fas fa-fw fa-exclamation-triangle" aria-hidden="true"></i>
-    </div>
-    <p class="pf-c-alert__title">
-        <span class="pf-screen-reader">Warning alert:</span>
-        There is no OVAL graph.<br>
-        {{- rule.message -}}
-    </p>
+<div class="pf-c-alert__icon"><i class="fas fa-fw fa-exclamation-triangle" aria-hidden="true"></i></div>
+<p class="pf-c-alert__title">
+<span class="pf-screen-reader">Warning alert:</span>
+There is no OVAL graph.<br>{{- rule.message -}}</p>
 </div>
 {%- endif %}
