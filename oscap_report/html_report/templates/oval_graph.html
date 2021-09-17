@@ -157,6 +157,7 @@
             </div>    
         {%- endif %}
     </div>
+    <div id="ovalTree" is_rendered="false" data='{{ rule.oval_tree.as_json() }}'></div>
     <div class="pf-c-tree-view pf-m-guides">
         <ul class="pf-c-tree-view__list" role="tree">
                 {{- render_OVAL_tree(rule.oval_tree) -}}
