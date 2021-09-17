@@ -27,13 +27,15 @@
     <script>
         // Search engine of rules
         $(document).ready(function () {
-            $("#input-search-rule").on("keyup", function () {
-                var value = $(this).val().toLowerCase();
-                $("#rule-table tbody#rule").hide().filter(function () {
-                    var is_matched_title = $(this).attr("title").toLowerCase().includes(value);
-                    var is_matched_rule_id = $(this).attr("rule-id").toLowerCase().includes(value);
-                    return is_matched_title || is_matched_rule_id;
-                }).show();
+            $("#input-search-rule").on('keypress',function(e) {
+                if(e.which == 13) {
+                    var value = $(this).val().toLowerCase();
+                    $("#rule-table tbody#rule").hide().filter(function () {
+                        var is_matched_title = $(this).attr("title").toLowerCase().includes(value);
+                        var is_matched_rule_id = $(this).attr("rule-id").toLowerCase().includes(value);
+                        return is_matched_title || is_matched_rule_id;
+                    }).show();
+                }
             });
         });
         function toggle_OVAL_operator(self) {
