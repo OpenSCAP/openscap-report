@@ -21,10 +21,7 @@
     <tbody class="pf-m-expanded" role="rowgroup" id="rule" title="{{ rule.title }}" rule-id="{{ rule.rule_id }}">
         <tr role="row">
             <td class="pf-c-table__toggle" role="cell">
-                <button class="pf-c-button pf-m-plain" onclick="
-                                $(this).toggleClass('pf-m-expanded');
-                                $(this).parent().parent().parent().children('.pf-c-table__expandable-row').toggleClass('pf-m-expanded');
-                                ">
+                <button class="pf-c-button pf-m-plain" onclick="show_rule_detail($(this));">
                     <div class="pf-c-table__toggle-icon">
                         <i class="fas fa-angle-down" aria-hidden="true"></i>
                     </div>
