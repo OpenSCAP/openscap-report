@@ -136,8 +136,18 @@
             {% endif %}
             {% if rule.message != "" %}
             <tr role="row">
-                <td role="cell">Message:</td>
-                <td role="cell">{{ rule.message }}</td>
+                <td role="cell"><b>Message:</b></td>
+                <td role="cell">
+                    <div class="pf-c-alert pf-m-info pf-m-inline">
+                        <div class="pf-c-alert__icon">
+                            <i class="fas fa-fw fa-info-circle" aria-hidden="true"></i>
+                        </div>
+                        <p class="pf-c-alert__title">
+                            <span class="pf-screen-reader">Message:</span>
+                            {{ rule.message }}
+                        </p>
+                    </div>
+                </td>
             </tr>
             {% endif %}
             {% include "remedations.html" %}
