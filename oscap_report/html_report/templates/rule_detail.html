@@ -5,11 +5,11 @@
         </thead>
         <tbody role="rowgroup">
             <tr role="row">
-                <td role="cell">Rule ID:</td>
+                <td role="cell"><b>Rule ID:</b></td>
                 <td role="cell">{{ rule.rule_id }}</td>
             </tr>
             <tr role="row">
-                <td role="cell">Result:</td>
+                <td role="cell"><b>Result:</b></td>
                 <td role="cell">
                     {% if rule.result == "pass" %}
                     <span class="pf-c-label pf-m-green">
@@ -42,7 +42,7 @@
                 </td>
             </tr>
             <tr role="row">
-                <td role="cell">Multi-check rule:</td>
+                <td role="cell"><b>Multi-check rule:</b></td>
                 {% if rule.multi_check %}
                     <td role="cell">yes</td>
                 {% else %}
@@ -50,15 +50,15 @@
                 {% endif %}
             </tr>
             <tr role="row">
-                <td role="cell">OVAL Definition ID:</td>
+                <td role="cell"><b>OVAL Definition ID:</b></td>
                 <td role="cell">{{ rule.oval_definition_id }}</td>
             </tr>
             <tr role="row">
-                <td role="cell">Time:</td>
+                <td role="cell"><b>Time:</b></td>
                 <td role="cell">{{ rule.time }}</td>
             </tr>
             <tr role="row">
-                <td role="cell">Severity:</td>
+                <td role="cell"><b>Severity:</b></td>
                 <td role="cell">
                     {% if rule.result != "pass" and rule.severity == "low" %}
                     <span class="pf-c-label pf-m-blue">
@@ -81,7 +81,7 @@
             </tr>
             {% if rule.identifiers %}
             <tr role="row">
-                <td role="cell">Identifiers:</td>
+                <td role="cell"><b>Identifiers:</b></td>
                 <td role="cell">
                     <div>
                         {% for identifier in rule.identifiers -%}
@@ -94,7 +94,7 @@
             {% endif %}
             {% if rule.references %}
             <tr role="row">
-                <td role="cell">References:</td>
+                <td role="cell"><b>References:</b></td>
                 <td role="cell">
                     <div>
                         {% for reference in rule.references -%}
@@ -106,18 +106,18 @@
             </tr>
             {% endif %}
             <tr role="row">
-                <td role="cell">Description:</td>
+                <td role="cell"><b>Description:</b></td>
                 <td role="cell">{{ rule.description }}</td>
             </tr>
             {% if rule.rationale %}
             <tr role="row">
-                <td role="cell">Rationale:</td>
+                <td role="cell"><b>Rationale:</b></td>
                 <td role="cell">{{ rule.rationale }}</td>
             </tr>
             {% endif %}
             {% if rule.warnings %}
             <tr role="row">
-                <td role="cell">Warnings:</td>
+                <td role="cell"><b>Warnings:</b></td>
                 <td role="cell">
                     {% for warning in rule.warnings %}
                     <div class="pf-c-alert pf-m-warning pf-m-inline">
