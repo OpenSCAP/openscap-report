@@ -62,6 +62,7 @@ class Report:  # pylint: disable=R0902
         results_stats["fail_percent"] = results_stats["fail"] * percent_per_rule
         results_stats["pass_percent"] = results_stats["pass"] * percent_per_rule
         results_stats["other_percent"] = results_stats["other"] * percent_per_rule
+        results_stats["sum_of_rules"] = not_ignored_rules
         return results_stats
 
     def get_severity_of_failed_rules_stats(self):
@@ -78,6 +79,7 @@ class Report:  # pylint: disable=R0902
         severity_stats["medium_percent"] = severity_stats["medium"] * percent_per_rule
         severity_stats["high_percent"] = severity_stats["high"] * percent_per_rule
         severity_stats["unknown_percent"] = severity_stats["unknown"] * percent_per_rule
+        severity_stats["sum_of_filed_rules"] = len(failed_rules)
         return severity_stats
 
 

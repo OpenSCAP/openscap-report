@@ -21,7 +21,11 @@
     <tbody class="pf-m-expanded" role="rowgroup" title="{{ rule.title }}" rule-id="{{ rule.rule_id }}">
         <tr role="row">
             <td class="pf-c-table__toggle" role="cell">
-                <button class="pf-c-button pf-m-plain" onclick="show_rule_detail($(this), '{{ rule.rule_id | replace('.', '') }}');"  aria-label="Show details of rule (rule_id:{{ rule.rule_id }})">
+                <button
+                    class="pf-c-button pf-m-plain" onclick="show_rule_detail($(this), '{{ rule.rule_id | replace('.', '') }}');"
+                    aria-label="Show details of rule (rule_id:{{ rule.rule_id }})"
+                    title="Show details of rule (rule_id:{{ rule.rule_id }})"
+                >
                     <div class="pf-c-table__toggle-icon">
                         <i class="fas fa-angle-down" aria-hidden="true"></i>
                     </div>
