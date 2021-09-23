@@ -39,7 +39,7 @@
             $("#input-search-rule").on('keypress',function(e) {
                 if(e.which == 13) {
                     var value = $(this).val().toLowerCase();
-                    $("#rule-table tbody#rule").hide().filter(function () {
+                    $("#rule-table tbody[rule-id]").hide().filter(function () {
                         var is_matched_title = $(this).attr("title").toLowerCase().includes(value);
                         var is_matched_rule_id = $(this).attr("rule-id").toLowerCase().includes(value);
                         return is_matched_title || is_matched_rule_id;
@@ -51,18 +51,18 @@
             self.parent().parent().toggleClass('pf-m-expanded');
             self.parent().parent().children('ul').children().toggle();
         }
-        function show_OVAL_details(self) {
-            self.parent().children('#info').toggle();
+        function show_OVAL_details(self, info_id) {
+            self.parent().children(info_id).toggle();
             self.text((self.text() == 'Show test details') ? 'Hide test details' : 'Show test details').fadeIn();
         }
         function show_evaluation_characteristics(self) {
             self.toggleClass('pf-m-expanded');
             self.parent().parent().children('.pf-c-accordion__expanded-content').toggleClass('pf-m-expanded').toggle();
         }
-        function show_rule_detail(self) {
+        function show_rule_detail(self, rule_id) {
             self.toggleClass('pf-m-expanded');
             self.parent().parent().parent().children('.pf-c-table__expandable-row').toggleClass('pf-m-expanded');
-            generate_oval_tree(self);
+            generate_oval_tree(self, rule_id);
         }
 
         const NEGATION_COLOR = { 'pf-m-green': 'pf-m-red', 'pf-m-red': 'pf-m-green', '': '' };
@@ -70,8 +70,9 @@
         const COLOR_TRANSLATION = { 'pf-m-green': '--pf-global--success-color--200', 'pf-m-red': '--pf-global--danger-color--200', '': '' };
 
         let tree_content = ''
-        function generate_oval_tree(self) {
-            var div_with_tree = self.parent().parent().parent().find("div #ovalTree");
+        function generate_oval_tree(self, rule_id) {
+            var searched_div = "div #oval_tree_of_rule_" + rule_id;
+            var div_with_tree = self.parent().parent().parent().find(searched_div);
             var tree_data = JSON.parse(div_with_tree.attr("data"));
             tree_content = '<div class="pf-c-tree-view pf-m-guides"><ul class="pf-c-tree-view__list" role="tree">';
             if (div_with_tree.attr("is_rendered") == 'false' && tree_data != undefined) {
@@ -134,8 +135,9 @@
             if (!node.negation) {
                 tree_content += '<i class="fas fa-fw ' + icon + '" aria-hidden="true"><\/i>';
             }
+            var test_id = node.node_id.replace("oval:ssg-", "").replace(":tst:1", "");
             tree_content +=
-                '<b> ' + node.node_id.replace("oval:ssg-", "").replace(":tst:1", "") + '<\/b>' +
+                '<b> ' + test_id + '<\/b>' +
                 '<\/span>' +
                 '<span class="pf-c-label ' + color + '">' +
                     '<span class="pf-c-label__content"> ' + node.tag + '<\/span>' +
@@ -149,9 +151,13 @@
                     '<\/span>' +
                 '<\/span>' +
             '<\/span>'; // End span
+            var info_id = 'info_of_test_' + test_id;
             tree_content +=
-                '<button class="pf-c-button pf-m-inline pf-m-link" onClick="show_OVAL_details($(this));" type="button">Show test details<\/button>'+
-                    '<div id="info" style="display: none;">'
+                '<button '+
+                    'class="pf-c-button pf-m-inline pf-m-link" onClick="show_OVAL_details($(this), \'div #' + info_id + '\');" ' +
+                    'type="button" '+
+                    'aria-label="Show details of test ' + info_id + '">Show test details<\/button>'+
+                    '<div id="' + info_id + '" style="display: none;">'
             insert_OVAL_test_info(node);
             tree_content += '<\/div><\/div><\/div><\/div><\/div><\/li>';
         }
