@@ -5,7 +5,7 @@
         aria-valuenow="{{ rule_result_stats.pass }}"
         aria-valuemin="0"
         aria-valuemax="{{ rule_result_stats.sum_of_rules }}"
-        style="width:{{ rule_result_stats.pass_percent }}%;background-color: #3E8635;">{{ rule_result_stats.pass }} Pass
+        style="width:{{ rule_result_stats.pass_percent }}%;background-color: #4FA843;">{{ rule_result_stats.pass }} Pass
     </div>
     {% endif %}
     {% if 0 != rule_result_stats.fail %}
@@ -14,7 +14,7 @@
         aria-valuenow="{{ rule_result_stats.fail }}"
         aria-valuemin="0"
         aria-valuemax="{{ rule_result_stats.sum_of_rules }}"
-        style="width:{{ rule_result_stats.fail_percent }}%;background-color: #C9190B;">{{ rule_result_stats.fail }} Fail</div>
+        style="width:{{ rule_result_stats.fail_percent }}%;background-color: #F32112;">{{ rule_result_stats.fail }} Fail</div>
     {% endif %}
     {% if 0 != rule_result_stats.other %}
     <div class="progress-bar" role="progressbar"
