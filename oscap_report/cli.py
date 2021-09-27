@@ -25,6 +25,11 @@ LOG_LEVES_DESCRIPTION = (
     "\tCRITICAL - A serious error, indicating that the program itself may be unable "
     "to continue running.\n"
 )
+DEBUG_FLAGS_DESCRIPTION = (
+    "DEBUG FLAGS:\n"
+    "\tNO-MINIFY - The HTML report is not minified."
+)
+
 MASSAGE_FORMAT = '%(levelname)s: %(message)s'
 EXPECTED_ERRORS = (XMLSyntaxError, )
 EXIT_FAILURE_CODE = 1
@@ -36,6 +41,7 @@ class CommandLineAPI():
         self.arguments = self._parse_arguments()
         self.log_file = self.arguments.log_file
         self.log_level = self.arguments.log_level
+        self.debug_flags = self.arguments.debug
         self._setup_logging()
         logging.debug("Args: %s", self.arguments)
         self.report_file = self.arguments.FILE
@@ -100,6 +106,15 @@ class CommandLineAPI():
             choices=["HTML", "OLD-STYLE-HTML"],
             help="FORMAT: %(choices)s (default: %(default)s)."
         )
+        parser.add_argument(
+            "-d",
+            "--debug",
+            action="store",
+            nargs='+',
+            default=[""],
+            choices=["NO-MINIFY"],
+            help=f"{DEBUG_FLAGS_DESCRIPTION}"
+        )
 
     def _setup_logging(self):
         logging.basicConfig(
@@ -115,7 +130,10 @@ class CommandLineAPI():
             report_generator = OldOSCAPReportGenerator(report_parser)
             return report_generator.generate_html_report()
         report_generator = ReportGenerator(report_parser)
-        return report_generator.generate_html_report()
+
+        minify = "NO-MINIFY" not in self.debug_flags
+
+        return report_generator.generate_html_report(minify)
 
     def load_file(self):
         logging.info("Loading file: %s", self.report_file)
