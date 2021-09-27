@@ -1,3 +1,4 @@
+import json
 import logging
 from dataclasses import dataclass
 
@@ -161,7 +162,7 @@ class OvalTest():
             "test_id": self.test_id,
             "test_type": self.test_type,
             "comment": self.comment,
-            "oval_object": self.oval_object,
+            "oval_object": self.oval_object.as_dict(),
         }
 
 
@@ -173,7 +174,6 @@ class OvalNode:  # pylint: disable=R0902
     negation: bool = False
     comment: str = ""
     tag: str = ""
-    test_result_details: dict = None
     children: list = None
     test_info: OvalTest = None
 
@@ -181,24 +181,27 @@ class OvalNode:  # pylint: disable=R0902
         if not self.children:
             return {
                 'node_id': self.node_id,
-                'type': self.node_type,
+                'node_type': self.node_type,
                 'value': self.value,
                 'negation': self.negation,
                 'comment': self.comment,
                 'tag': self.tag,
-                'test_result_details': self.test_result_details,
-                'child': None
+                'test_info': self.test_info.as_dict(),
+                'children': None
             }
         return {
             'node_id': self.node_id,
-            'type': self.node_type,
+            'node_type': self.node_type,
             'value': self.value,
             'negation': self.negation,
             'comment': self.comment,
             'tag': self.tag,
-            'test_result_details': self.test_result_details,
-            'child': [child.as_dict() for child in self.children]
+            'test_info': None,
+            'children': [child.as_dict() for child in self.children]
         }
+
+    def as_json(self):
+        return json.dumps(self.as_dict())
 
     def log_oval_tree(self, level=0):
         out = ""
