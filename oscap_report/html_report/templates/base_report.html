@@ -36,6 +36,22 @@
                 }).show();
             });
         });
+        function toggle_OVAL_operator(self) {
+            self.parent().parent().toggleClass('pf-m-expanded');
+            self.parent().parent().children('ul').children().toggle();
+        }
+        function show_OVAL_details(self) {
+            self.parent().children('#info').toggle();
+            self.text((self.text() == 'Show test details') ? 'Hide test details' : 'Show test details').fadeIn();
+        }
+        function show_evaluation_characteristics(self) {
+            self.toggleClass('pf-m-expanded');
+            self.parent().parent().children('.pf-c-accordion__expanded-content').toggleClass('pf-m-expanded').toggle();
+        }
+        function show_rule_detail(self) {
+            self.toggleClass('pf-m-expanded');
+            self.parent().parent().parent().children('.pf-c-table__expandable-row').toggleClass('pf-m-expanded');
+        }
     </script>
 </head>
 

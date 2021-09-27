@@ -44,8 +44,7 @@
                             </span>
                         </span>
                     </span>
-                    <button class="pf-c-button pf-m-inline pf-m-link" onClick="$(this).parent().children('#info').toggle();
-                    $(this).text(($(this).text() == 'Show test details') ? 'Hide test details' : 'Show test details').fadeIn();" type="button">Show test details</button>
+                    <button class="pf-c-button pf-m-inline pf-m-link" onclick="show_OVAL_details($(this));" type="button">Show test details</button>
                     <div id="info" style="display: none;">
                         {% include "info_oval_test.html" %}
                     </div>
@@ -59,10 +58,7 @@
     <div class="pf-c-tree-view__content">
         <button 
             class="pf-c-tree-view__node"
-            onClick="
-                $(this).parent().parent().toggleClass('pf-m-expanded');
-                $(this).parent().parent().children('ul').children().toggle();
-            ">
+            onclick="toggle_OVAL_operator($(this));">
             <div class="pf-c-tree-view__node-container">
                 <div class="pf-c-tree-view__node-toggle">
                     <span class="pf-c-tree-view__node-toggle-icon">
