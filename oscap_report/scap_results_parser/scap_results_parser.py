@@ -196,7 +196,7 @@ class SCAPResultsParser():
             result = "unknown"
 
         merged_oval_tree = OvalNode(
-            node_id="{} and {}".format(rule.oval_tree.node_id, rule.platform),
+            node_id=f"{rule.oval_tree.node_id} and {rule.platform}",
             node_type="AND",
             value=result,
             tag="Rule definition and CPE definition",

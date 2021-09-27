@@ -1,10 +1,7 @@
 <div class="pf-c-expandable-section__content">
     <table class="pf-c-table pf-m-grid-md" role="grid">
         <thead>
-            <tr role="row">
-                <th role="columnheader" scope="col"></th>
-                <th role="columnheader" scope="col"></th>
-            </tr>
+            <tr role="row"></tr>
         </thead>
         <tbody role="rowgroup">
             <tr role="row">
@@ -20,7 +17,7 @@
                             <span class="pf-c-label__icon">
                                 <i class="fas fa-fw fa-check" aria-hidden="true"></i>
                             </span>
-                            {{ rule.result }}
+                            {{ rule.result -}}
                         </span>
                     </span>
                     {% elif rule.result == "fail"%}
@@ -29,7 +26,7 @@
                             <span class="pf-c-label__icon">
                                 <i class="fas fa-fw fa-times" aria-hidden="true"></i>
                             </span>
-                            {{ rule.result }}
+                            {{- rule.result -}}
                         </span>
                     </span>
                     {% else %}
@@ -38,7 +35,7 @@
                             <span class="pf-c-label__icon">
                                 <i class="fas fa-fw fa-question-circle" aria-hidden="true"></i>
                             </span>
-                        {{ rule.result }}
+                        {{- rule.result -}}
                         </span>
                     </span>
                     {% endif %}
@@ -87,10 +84,10 @@
                 <td role="cell">Identifiers:</td>
                 <td role="cell">
                     <div>
-                        {% for identifier in rule.identifiers %}
+                        {% for identifier in rule.identifiers -%}
                         <a href="{{ identifier.href }}">{{ identifier.text }}</a>
-                        {{ ", " if not loop.last else "" }}
-                        {% endfor %}
+                        {{- ", " if not loop.last else "" -}}
+                        {%- endfor %}
                     </div>
                 </td>
             </tr>
@@ -100,10 +97,10 @@
                 <td role="cell">References:</td>
                 <td role="cell">
                     <div>
-                        {% for reference in rule.references %}
+                        {% for reference in rule.references -%}
                         <a href="{{ reference.href }}">{{ reference.text }}</a>
-                        {{ ", " if not loop.last else "" }}
-                        {% endfor %}
+                        {{- ", " if not loop.last else "" -}}
+                        {%- endfor %}
                     </div>
                 </td>
             </tr>
@@ -129,7 +126,7 @@
                         </div>
                         <p class="pf-c-alert__title">
                             <span class="pf-screen-reader">Warning alert:</span>
-                            {{ warning }}
+                            {{- warning -}}
                         </p>
                     </div>
                     <br>

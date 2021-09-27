@@ -127,7 +127,7 @@ class InfoOfTest:
     @staticmethod
     def _complete_message(item, var_id):
         if len(item.text) == MAX_MESSAGE_LEN and var_id[:item.text.find('(')] in var_id:
-            return "{}{})".format(item.text[:item.text.find('(') + 1], var_id)
+            return f"{item.text[:item.text.find('(') + 1]}{var_id})"
         return item.text
 
     @staticmethod

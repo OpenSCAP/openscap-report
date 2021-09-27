@@ -90,7 +90,7 @@ class CommandLineAPI():
             choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
             help=(
                 "creates LOG_FILE file with log information depending on LOG_LEVEL."
-                "\n{}").format(LOG_LEVES_DESCRIPTION)
+                f"\n{LOG_LEVES_DESCRIPTION}")
         )
         parser.add_argument(
             "-f",
