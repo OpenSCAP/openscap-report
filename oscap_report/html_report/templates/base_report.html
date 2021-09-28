@@ -5,8 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <link rel="stylesheet" href="https://unpkg.com/@patternfly/patternfly/patternfly.css" crossorigin="anonymous">
     <title>{% block title %}{% endblock %}</title>
     <style>
@@ -18,22 +16,35 @@
             box-shadow: 0 0 8px 0 rgba(0, 0, 0, .1);
         }
 
-        .custom-col {
-            column-count: 2;
-            column-gap: 40px;
-            column-rule: 1px solid rgb(0, 0, 0);
+        .progress-bar {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: #fff;
+            text-align: center;
+            min-width: 10em;
+            height: 20px;
+        }
+
+        .progress {
+            display: flex;
+            height: 1rem;
+            font-size: .75rem;
+            background-color: #e9ecef;
         }
     </style>
     <script>
         // Search engine of rules
         $(document).ready(function () {
-            $("#input-search-rule").on("keyup", function () {
-                var value = $(this).val().toLowerCase();
-                $("#rule-table tbody#rule").hide().filter(function () {
-                    var is_matched_title = $(this).attr("title").toLowerCase().includes(value);
-                    var is_matched_rule_id = $(this).attr("rule-id").toLowerCase().includes(value);
-                    return is_matched_title || is_matched_rule_id;
-                }).show();
+            $("#input-search-rule").on('keypress',function(e) {
+                if(e.which == 13) {
+                    var value = $(this).val().toLowerCase();
+                    $("#rule-table tbody#rule").hide().filter(function () {
+                        var is_matched_title = $(this).attr("title").toLowerCase().includes(value);
+                        var is_matched_rule_id = $(this).attr("rule-id").toLowerCase().includes(value);
+                        return is_matched_title || is_matched_rule_id;
+                    }).show();
+                }
             });
         });
         function toggle_OVAL_operator(self) {
@@ -356,9 +367,5 @@
                 {% endblock %}
             </section>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
-        crossorigin="anonymous"></script>
 </body>
-
 </html>
