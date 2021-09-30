@@ -6,6 +6,12 @@
 </script>
 {% endblock %}
 
+{% block interactive_script %}
+<script>
+    {%- include 'interactive_script.js' -%}
+</script>
+{% endblock %}
+
 {% block title%}OpenSCAP Evaluation Report{% endblock %}
 
 {% block content %}
