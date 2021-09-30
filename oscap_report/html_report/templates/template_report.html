@@ -1,5 +1,11 @@
 {% extends 'base_report.html' %}
 
+{% block jquery %}
+<script>
+    {%- include 'jquery-3.6.0.slim.min.js' -%}
+</script>
+{% endblock %}
+
 {% block title%}OpenSCAP Evaluation Report{% endblock %}
 
 {% block content %}
