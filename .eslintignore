@@ -1,0 +1,10 @@
+*.min.js
+*.html
+*.treetable.js
+*.json
+*.css
+*.sh
+*.xsl
+*.xsd
+*.py
+*.pyc
