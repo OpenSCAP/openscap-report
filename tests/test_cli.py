@@ -24,7 +24,8 @@ def get_fake_args():
     output_file = open(PATH_TO_RESULT_FILE, "wb")
     return argparse.Namespace(
         FILE=input_file, output=output_file,
-        log_file=None, log_level="WARNING", format="HTML"
+        log_file=None, log_level="WARNING", format="HTML",
+        debug=[""],
     )
 
 
