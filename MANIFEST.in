@@ -1,5 +1,10 @@
 include README.md
+include LICENSE
 include tox.ini
 include requirements.txt
+include .eslintignore
+include .eslintrc.yml
+include .pylintrc
+include .flake8
 recursive-include oscap_report *
 recursive-include tests *.py
