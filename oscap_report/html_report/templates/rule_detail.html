@@ -1,7 +1,7 @@
 <div class="pf-c-expandable-section__content">
     <table class="pf-c-table pf-m-grid-md" role="grid">
         <thead>
-            <tr role="row"></tr>
+            <tr role="row"><td role="cell" colspan="2"></td></tr>
         </thead>
         <tbody role="rowgroup">
             <tr role="row">
@@ -85,7 +85,11 @@
                 <td role="cell">
                     <div>
                         {% for identifier in rule.identifiers -%}
-                        <a href="{{ identifier.href }}">{{ identifier.text }}</a>
+                        {% if identifier.href %}
+                            <a href="{{ identifier.href | replace('&', ';') }}">{{ identifier.text }}</a>
+                        {% else %}
+                            <a href="identifier_href_not_found">{{ identifier.text }}</a>
+                        {% endif %}
                         {{- ", " if not loop.last else "" -}}
                         {%- endfor %}
                     </div>
@@ -98,7 +102,11 @@
                 <td role="cell">
                     <div>
                         {% for reference in rule.references -%}
-                        <a href="{{ reference.href }}">{{ reference.text }}</a>
+                        {% if reference.href %}
+                            <a href="{{ reference.href | replace('&', ';') }}">{{ reference.text }}</a>
+                        {% else %}
+                            <a href="reference_href_not_found">{{ reference.text }}</a>
+                        {% endif %}
                         {{- ", " if not loop.last else "" -}}
                         {%- endfor %}
                     </div>

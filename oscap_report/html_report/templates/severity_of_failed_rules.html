@@ -1,15 +1,35 @@
 {% set severity_of_failed_rules = report.get_severity_of_failed_rules_stats() %}
 <div class="progress">
     {% if 0 !=  severity_of_failed_rules.unknown %}
-        <div class="progress-bar" role="progressbar" style="width:{{ severity_of_failed_rules.unknown_percent }}%;background-color: #6A6E73;">{{ severity_of_failed_rules.unknown }} Unknown</div>
+        <div class="progress-bar" role="progressbar"
+            aria-valuenow="{{ severity_of_failed_rules.unknown }}"
+            aria-valuemin="0"
+            aria-valuemax="{{ severity_of_failed_rules.sum_of_filed_rules }}"
+            aria-label="{{ severity_of_failed_rules.unknown }} rules have unknown severity from failed rules"
+            style="width:{{ severity_of_failed_rules.unknown_percent }}%;background-color: #7A7C85;">{{ severity_of_failed_rules.unknown }} Unknown</div>
     {% endif %}
     {% if 0 !=  severity_of_failed_rules.low %}
-        <div class="progress-bar" role="progressbar" style="width:{{ severity_of_failed_rules.low_percent }}%;background-color: #73C5C5;">{{ severity_of_failed_rules.low }} Low</div>
+        <div class="progress-bar" role="progressbar"
+            aria-valuenow="{{ severity_of_failed_rules.low }}"
+            aria-valuemin="0"
+            aria-valuemax="{{ severity_of_failed_rules.sum_of_filed_rules }}"
+            aria-label="{{ severity_of_failed_rules.low }} rules have low severity from failed rules"
+            style="width:{{ severity_of_failed_rules.low_percent }}%;background-color: #73C5C5;">{{ severity_of_failed_rules.low }} Low</div>
     {% endif %}
     {% if 0 !=  severity_of_failed_rules.medium %}
-        <div class="progress-bar" role="progressbar" style="width:{{ severity_of_failed_rules.medium_percent }}%;background-color: #F0AB00;">{{ severity_of_failed_rules.medium }} Medium</div>
+        <div class="progress-bar" role="progressbar"
+            aria-valuenow="{{ severity_of_failed_rules.medium }}"
+            aria-valuemin="0"
+            aria-valuemax="{{ severity_of_failed_rules.sum_of_filed_rules }}"
+            aria-label="{{ severity_of_failed_rules.medium }} rules have medium severity from failed rules"
+            style="width:{{ severity_of_failed_rules.medium_percent }}%;background-color: #F0AB00;">{{ severity_of_failed_rules.medium }} Medium</div>
     {% endif %}
     {% if 0 !=  severity_of_failed_rules.high %}
-        <div class="progress-bar" role="progressbar" style="width:{{ severity_of_failed_rules.high_percent }}%;background-color: #C9190B;">{{ severity_of_failed_rules.high }} High</div>
+        <div class="progress-bar" role="progressbar"
+            aria-valuenow="{{ severity_of_failed_rules.high }}"
+            aria-valuemin="0"
+            aria-valuemax="{{ severity_of_failed_rules.sum_of_filed_rules }}"
+            aria-label="{{ severity_of_failed_rules.high }} rules have high severity from failed rules"
+            style="width:{{ severity_of_failed_rules.high_percent }}%;background-color: #F32112;">{{ severity_of_failed_rules.high }} High</div>
     {% endif %}
 </div>

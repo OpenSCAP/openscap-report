@@ -20,7 +20,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            color: #fff;
+            color: black;
             text-align: center;
             min-width: 10em;
             height: 20px;
@@ -39,7 +39,7 @@
             $("#input-search-rule").on('keypress',function(e) {
                 if(e.which == 13) {
                     var value = $(this).val().toLowerCase();
-                    $("#rule-table tbody#rule").hide().filter(function () {
+                    $("#rule-table tbody[rule-id]").hide().filter(function () {
                         var is_matched_title = $(this).attr("title").toLowerCase().includes(value);
                         var is_matched_rule_id = $(this).attr("rule-id").toLowerCase().includes(value);
                         return is_matched_title || is_matched_rule_id;
@@ -51,18 +51,19 @@
             self.parent().parent().toggleClass('pf-m-expanded');
             self.parent().parent().children('ul').children().toggle();
         }
-        function show_OVAL_details(self) {
-            self.parent().children('#info').toggle();
-            self.text((self.text() == 'Show test details') ? 'Hide test details' : 'Show test details').fadeIn();
+        function show_OVAL_details(self, info_id) {
+            self.parent().children(info_id).toggleClass('pf-m-expanded').toggle();
+            self.text((self.text() == 'Show test details') ? 'Hide test details' : 'Show test details');
+            self.attr('aria-label', (self.attr('aria-label') == 'Show test details') ? 'Hide test details' : 'Show test details');
         }
         function show_evaluation_characteristics(self) {
             self.toggleClass('pf-m-expanded');
             self.parent().parent().children('.pf-c-accordion__expanded-content').toggleClass('pf-m-expanded').toggle();
         }
-        function show_rule_detail(self) {
+        function show_rule_detail(self, rule_id) {
             self.toggleClass('pf-m-expanded');
             self.parent().parent().parent().children('.pf-c-table__expandable-row').toggleClass('pf-m-expanded');
-            generate_oval_tree(self);
+            generate_oval_tree(self, rule_id);
         }
 
         const NEGATION_COLOR = { 'pf-m-green': 'pf-m-red', 'pf-m-red': 'pf-m-green', '': '' };
@@ -70,10 +71,11 @@
         const COLOR_TRANSLATION = { 'pf-m-green': '--pf-global--success-color--200', 'pf-m-red': '--pf-global--danger-color--200', '': '' };
 
         let tree_content = ''
-        function generate_oval_tree(self) {
-            var div_with_tree = self.parent().parent().parent().find("div #ovalTree");
+        function generate_oval_tree(self, rule_id) {
+            var searched_div = "div #oval_tree_of_rule_" + rule_id;
+            var div_with_tree = self.parent().parent().parent().find(searched_div);
             var tree_data = JSON.parse(div_with_tree.attr("data"));
-            tree_content = '<div class="pf-c-tree-view pf-m-guides"><ul class="pf-c-tree-view__list" role="tree">';
+            tree_content = '<div class="pf-c-tree-view pf-m-guides pf-m-no-background"><ul class="pf-c-tree-view__list" role="tree">';
             if (div_with_tree.attr("is_rendered") == 'false' && tree_data != undefined) {
                 render_OVAL_tree(tree_data);
                 tree_content += '<\/ul><\/div>';
@@ -84,7 +86,7 @@
 
         function render_OVAL_tree(root) {
             if (root.node_type != 'value') {
-                tree_content += '<li class="pf-c-tree-view__list-item pf-m-expanded" role="treeitem">';
+                tree_content += '<li class="pf-c-tree-view__list-item pf-m-expanded" role="treeitem" aria-expanded="true" tabindex="0">';
                 render_OVAL_operator(root);
             }
             if (root.children) {
@@ -106,7 +108,7 @@
 
         function render_OVAL_test(node) {
             tree_content +=
-                '<li class="pf-c-tree-view__list-item" role="treeitem">' +
+                '<li class="pf-c-tree-view__list-item" role="treeitem" tabindex="-1">' +
                     '<div class="pf-c-tree-view__content">' +
                         '<div class="pf-c-tree-view__node" tabindex="0">' +
                             '<div class="pf-c-tree-view__node-container">' +
@@ -125,17 +127,23 @@
             if (node.negation) {
                 tree_content +=
                     '<span style="color: var(' + COLOR_TRANSLATION[NEGATION_COLOR[color]] + ')">'+
-                        '<i class="fas fa-fw ' + NEGATION_ICON[icon] + '" aria-hidden="true"><\/i>'+
-                            '<b> NOT <\/b>' +
+                        '<span class="pf-c-label__icon">' +
+                            '<i class="fas fa-fw ' + NEGATION_ICON[icon] + '" aria-hidden="true"><\/i>'+
+                        '<\/span>' +
+                        '<b> NOT <\/b>' +
                     '<\/span>';
             }
 
             tree_content += '<span style="color: var(' + COLOR_TRANSLATION[color] + ');">';
             if (!node.negation) {
-                tree_content += '<i class="fas fa-fw ' + icon + '" aria-hidden="true"><\/i>';
+                tree_content +=
+                    '<span class="pf-c-label__icon">' +
+                        '<i class="fas fa-fw ' + icon + '" aria-hidden="true"><\/i>' +
+                    '<\/span>';
             }
+            var test_id = node.node_id.replace("oval:ssg-", "").replace(":tst:1", "");
             tree_content +=
-                '<b> ' + node.node_id.replace("oval:ssg-", "").replace(":tst:1", "") + '<\/b>' +
+                '<b> ' + test_id + '<\/b>' +
                 '<\/span>' +
                 '<span class="pf-c-label ' + color + '">' +
                     '<span class="pf-c-label__content"> ' + node.tag + '<\/span>' +
@@ -149,22 +157,30 @@
                     '<\/span>' +
                 '<\/span>' +
             '<\/span>'; // End span
+            var info_id = 'info_of_test_' + test_id;
             tree_content +=
-                '<button class="pf-c-button pf-m-inline pf-m-link" onClick="show_OVAL_details($(this));" type="button">Show test details<\/button>'+
-                    '<div id="info" style="display: none;">'
+                '<button '+
+                    'class="pf-c-button pf-m-inline pf-m-link" onClick="show_OVAL_details($(this), \'div #' + info_id + '\');" ' +
+                    'type="button" '+
+                    'aria-label="Show test details">Show test details<\/button>'+
+                    '<div id="' + info_id + '" class="pf-c-accordion__expanded-content" style="display: none;" aria-label="OVAL test info">' +
+                        '<div class="pf-c-accordion__expanded-content-body">';
             insert_OVAL_test_info(node);
-            tree_content += '<\/div><\/div><\/div><\/div><\/div><\/li>';
+            tree_content += '<\/div><\/div><\/div><\/div><\/div><\/div><\/li>';
         }
 
 
         function render_OVAL_operator(node) {
             tree_content +=
                 '<div class="pf-c-tree-view__content">' +
-                    '<button class="pf-c-tree-view__node" onClick="toggle_OVAL_operator($(this));">' +
+                    '<button '+
+                        'class="pf-c-tree-view__node" '+
+                        'onClick="toggle_OVAL_operator($(this));" ' +
+                        'title="Onclick shows or hides child nodes of the OVAL tree.">' +
                         '<div class="pf-c-tree-view__node-container">' +
                             '<div class="pf-c-tree-view__node-toggle">' +
                                 '<span class="pf-c-tree-view__node-toggle-icon">'+
-                                    '<i class="fas fa-angle-right"><\/i>' +
+                                    '<i class="fas fa-angle-right" aria-hidden="true"><\/i>' +
                                 '<\/span>' +
                             '<\/div>' +
                         '<div class="pf-c-tree-view__node-content">' +
@@ -182,7 +198,9 @@
             if (node.negation) {
                 tree_content +=
                     '<span style="color: var(' + COLOR_TRANSLATION[NEGATION_COLOR[color]] + ')">' +
-                        '<i class="fas fa-fw ' + NEGATION_ICON[icon] + '" aria-hidden="true"><\/i>' +
+                        '<span class="pf-c-label__icon">' +
+                            '<i class="fas fa-fw ' + NEGATION_ICON[icon] + '" aria-hidden="true"><\/i>' +
+                        '<\/span>' +
                         '<b> NOT <\/b>' +
                     '<\/span>';
             }
@@ -349,7 +367,7 @@
     <div class="pf-c-page">
         <header class="pf-c-page__header">
             <div class="pf-c-page__header-brand">
-                <svg version="1.1" width="52" height="52">
+                <svg version="1.1" width="52" height="52" alt="Open SCAP logo" role="img">
                     <g transform="matrix(0.75266991,0,0,0.75266991,-17.752968,-104.57468)">
                         <path
                             d="m 24.7,173.5 c 0,-9 3.5,-17.5 9.9,-23.9 6.8,-6.8 15.7,-10.4 25,-10 8.6,0.3 16.9,3.9 22.9,9.8 6.4,6.4 9.9,14.9 10,23.8 0.1,9.1 -3.5,17.8 -10,24.3 -13.2,13.2 -34.7,13.1 -48,-0.1 -1.5,-1.5 -1.9,-4.2 0.2,-6.2 l 9,-9 c -2,-3.6 -4.9,-13.1 2.6,-20.7 7.6,-7.6 18.6,-6 24.4,-0.2 3.3,3.3 5.1,7.6 5.1,12.1 0.1,4.6 -1.8,9.1 -5.3,12.5 -4.2,4.2 -10.2,5.8 -16.1,4.4 -1.5,-0.4 -2.4,-1.9 -2.1,-3.4 0.4,-1.5 1.9,-2.4 3.4,-2.1 4.1,1 8,-0.1 10.9,-2.9 2.3,-2.3 3.6,-5.3 3.6,-8.4 0,0 0,-0.1 0,-0.1 0,-3 -1.3,-5.9 -3.5,-8.2 -3.9,-3.9 -11.3,-4.9 -16.5,0.2 -6.3,6.3 -1.6,14.1 -1.6,14.2 1.5,2.4 0.7,5 -0.9,6.3 l -8.4,8.4 c 9.9,8.9 27.2,11.2 39.1,-0.8 5.4,-5.4 8.4,-12.5 8.4,-20 0,-0.1 0,-0.2 0,-0.3 -0.1,-7.5 -3,-14.6 -8.4,-19.9 -5,-5 -11.9,-8 -19.1,-8.2 -7.8,-0.3 -15.2,2.7 -20.9,8.4 -8.7,8.7 -8.7,19 -7.9,24.3 0.3,2.4 1.1,4.9 2.2,7.3 0.6,1.4 0,3.1 -1.4,3.7 -1.4,0.6 -3.1,0 -3.7,-1.4 -1.3,-2.9 -2.2,-5.8 -2.6,-8.7 -0.3,-1.7 -0.4,-3.5 -0.4,-5.2 z"
