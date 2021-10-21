@@ -3,7 +3,7 @@ import pytest
 from oscap_report.scap_results_parser.scap_results_parser import \
     SCAPResultsParser
 
-from .constants import PATH_TO_ARF, PATH_TO_EMPTY_XML_FILE, PATH_TO_XCCDF
+from ..constants import PATH_TO_ARF, PATH_TO_EMPTY_XML_FILE, PATH_TO_XCCDF
 
 
 @pytest.mark.parametrize("file_path, result", [

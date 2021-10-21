@@ -11,7 +11,7 @@ from oscap_report.cli import CommandLineAPI
 from oscap_report.scap_results_parser.scap_results_parser import \
     SCAPResultsParser
 
-from .constants import PATH_TO_ARF, PATH_TO_EMPTY_FILE
+from ..constants import PATH_TO_ARF, PATH_TO_EMPTY_FILE
 
 PATH_TO_RESULT_FILE = Path(tempfile.gettempdir()) / "oscap-report-tests_result.html"
 OSCAP_REPORT_COMMAND = "oscap-report"
