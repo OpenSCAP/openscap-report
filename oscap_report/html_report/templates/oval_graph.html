@@ -23,7 +23,7 @@
             </div>    
         {%- endif %}
     </div>
-    <div id="oval_tree_of_rule_{{ rule.rule_id | replace('.', '') }}" is_rendered="false" data='{{ rule.oval_tree.as_json() }}'></div>
+    <div id="oval_tree_of_rule_{{ rule.rule_id | replace('.', '') }}" is_rendered="false" data='{{ rule.oval_tree.as_dict() | tojson }}'></div>
 {% else %}
 <div class="pf-c-alert pf-m-warning pf-m-inline">
     <div class="pf-c-alert__icon">
