@@ -2,6 +2,8 @@ import json
 import logging
 from dataclasses import dataclass
 
+from .exceptions import MissingProcessableRules
+
 
 @dataclass
 class Report:  # pylint: disable=R0902
@@ -57,6 +59,8 @@ class Report:  # pylint: disable=R0902
                 lambda rule: rule.result.lower() not in ("notselected", "notapplicable"),
                 self.rules.values()
             )))
+        if not_ignored_rules == 0:
+            raise MissingProcessableRules("There are no applicable or selected rules.")
         percent_per_rule = 100 / not_ignored_rules
         results_stats["other"] = not_ignored_rules - results_stats["fail"] - results_stats['pass']
         results_stats["fail_percent"] = results_stats["fail"] * percent_per_rule
@@ -66,9 +70,11 @@ class Report:  # pylint: disable=R0902
         return results_stats
 
     def get_severity_of_failed_rules_stats(self):
-        failed_rules = list(
-            filter(lambda rule: rule.result.lower() == "fail", self.rules.values()))
-        percent_per_rule = 100 / len(failed_rules)
+        failed_rules = self.get_failed_rules()
+        count_of_failed_rules = len(failed_rules)
+        if count_of_failed_rules == 0:
+            raise MissingProcessableRules("There are no failed rules!")
+        percent_per_rule = 100 / count_of_failed_rules
         severity_stats = {
             "low": sum(map(lambda rule: rule.severity.lower() == "low", failed_rules)),
             "medium": sum(map(lambda rule: rule.severity.lower() == "medium", failed_rules)),
@@ -81,6 +87,9 @@ class Report:  # pylint: disable=R0902
         severity_stats["unknown_percent"] = severity_stats["unknown"] * percent_per_rule
         severity_stats["sum_of_filed_rules"] = len(failed_rules)
         return severity_stats
+
+    def get_failed_rules(self):
+        return list(filter(lambda rule: rule.result.lower() == "fail", self.rules.values()))
 
 
 @dataclass
