@@ -12,6 +12,12 @@
 </script>
 {% endblock %}
 
+{% block patternfly_css %}
+<style>
+    {%- include './css/patternfly.css' -%}
+</style>
+{% endblock %}
+
 {% block title%}OpenSCAP Evaluation Report{% endblock %}
 
 {% block content %}

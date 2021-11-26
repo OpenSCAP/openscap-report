@@ -8,3 +8,6 @@
 *.xsd
 *.py
 *.pyc
+*.woff
+*.woff2
+*.jpg

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% block jquery %}{% endblock %}
     {% block interactive_script %}{% endblock %}
-    <link rel="stylesheet" href="https://unpkg.com/@patternfly/patternfly/patternfly.css" crossorigin="anonymous">
+    {% block patternfly_css %}{% endblock %}
     <title>{% block title %}{% endblock %}</title>
     <style>
         pre {
