@@ -250,8 +250,6 @@
   --pf-global--BoxShadow--xl-bottom: 0 1rem 1rem -0.5rem rgba(3, 3, 3, 0.2);
   --pf-global--BoxShadow--xl-left: -1rem 0 1rem -0.5rem rgba(3, 3, 3, 0.2);
   --pf-global--BoxShadow--inset: inset 0 0 0.625rem 0 rgba(3, 3, 3, 0.25);
-  --pf-global--font-path: "./assets/fonts";
-  --pf-global--fonticon-path: "./assets/pficon";
   --pf-global--spacer--xs: 0.25rem;
   --pf-global--spacer--sm: 0.5rem;
   --pf-global--spacer--md: 1rem;
@@ -374,126 +372,6 @@
   font-style: normal;
   font-weight: 700;
   text-rendering: optimizeLegibility;
-}
-@font-face {
-  font-family: "overpass";
-  font-style: normal;
-  font-weight: 200;
-  src: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-thin.woff2') }}") format("woff2"), url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-thin.woff') }}") format("woff");
-}
-@font-face {
-  font-family: "overpass";
-  font-style: italic;
-  font-weight: 200;
-  src: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-thin-italic.woff2') }}") format("woff2"), url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-thin-italic.woff') }}") format("woff");
-}
-@font-face {
-  font-family: "overpass";
-  font-style: normal;
-  font-weight: 300;
-  src: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-extralight.woff2') }}") format("woff2"), url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-extralight.woff') }}") format("woff");
-}
-@font-face {
-  font-family: "overpass";
-  font-style: italic;
-  font-weight: 300;
-  src: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-extralight-italic.woff2') }}") format("woff2"), url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-extralight-italic.woff') }}") format("woff");
-}
-@font-face {
-  font-family: "overpass";
-  font-style: normal;
-  font-weight: 400;
-  src: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-light.woff2') }}") format("woff2"), url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-light.woff') }}") format("woff");
-}
-@font-face {
-  font-family: "overpass";
-  font-style: italic;
-  font-weight: 400;
-  src: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-light-italic.woff2') }}") format("woff2"), url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-light-italic.woff') }}") format("woff");
-}
-@font-face {
-  font-family: "overpass";
-  font-style: normal;
-  font-weight: 500;
-  src: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-regular.woff2') }}") format("woff2"), url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-regular.woff') }}") format("woff");
-}
-@font-face {
-  font-family: "overpass";
-  font-style: italic;
-  font-weight: 500;
-  src: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-italic.woff2') }}") format("woff2"), url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-italic.woff') }}") format("woff");
-}
-@font-face {
-  font-family: "overpass";
-  font-style: normal;
-  font-weight: 600;
-  src: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-semibold.woff2') }}") format("woff2"), url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-semibold.woff') }}") format("woff");
-}
-@font-face {
-  font-family: "overpass";
-  font-style: italic;
-  font-weight: 600;
-  src: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-semibold-italic.woff2') }}") format("woff2"), url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-semibold-italic.woff') }}") format("woff");
-}
-@font-face {
-  font-family: "overpass";
-  font-style: normal;
-  font-weight: 700;
-  src: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-bold.woff2') }}") format("woff2"), url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-bold.woff') }}") format("woff");
-}
-@font-face {
-  font-family: "overpass";
-  font-style: italic;
-  font-weight: 700;
-  src: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-bold-italic.woff2') }}") format("woff2"), url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-bold-italic.woff') }}") format("woff");
-}
-@font-face {
-  font-family: "overpass";
-  font-style: normal;
-  font-weight: 800;
-  src: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-extrabold.woff2') }}") format("woff2"), url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-extrabold.woff') }}") format("woff");
-}
-@font-face {
-  font-family: "overpass";
-  font-style: italic;
-  font-weight: 800;
-  src: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-extrabold-italic.woff2') }}") format("woff2"), url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-extrabold-italic.woff') }}") format("woff");
-}
-@font-face {
-  font-family: "overpass";
-  font-style: normal;
-  font-weight: 900;
-  src: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-heavy.woff2') }}") format("woff2"), url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-heavy.woff') }}") format("woff");
-}
-@font-face {
-  font-family: "overpass";
-  font-style: italic;
-  font-weight: 900;
-  src: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-heavy-italic.woff2') }}") format("woff2"), url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-webfont/overpass-heavy-italic.woff') }}") format("woff");
-}
-@font-face {
-  font-family: "overpass-mono";
-  font-style: normal;
-  font-weight: 300;
-  src: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-mono-webfont/overpass-mono-light.woff2') }}") format("woff2"), url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-mono-webfont/overpass-mono-light.woff') }}") format("woff");
-}
-@font-face {
-  font-family: "overpass-mono";
-  font-style: normal;
-  font-weight: 400;
-  src: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-mono-webfont/overpass-mono-regular.woff2') }}") format("woff2"), url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-mono-webfont/overpass-mono-regular.woff') }}") format("woff");
-}
-@font-face {
-  font-family: "overpass-mono";
-  font-style: normal;
-  font-weight: 500;
-  src: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-mono-webfont/overpass-mono-semibold.woff2') }}") format("woff2"), url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-mono-webfont/overpass-mono-semibold.woff') }}") format("woff");
-}
-@font-face {
-  font-family: "overpass-mono";
-  font-style: normal;
-  font-weight: 600;
-  src: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-mono-webfont/overpass-mono-bold.woff2') }}") format("woff2"), url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/overpass-mono-webfont/overpass-mono-bold.woff') }}") format("woff");
 }
 [class*=pf-c-], [class*=pf-c-]::before, [class*=pf-c-]::after {
   padding: 0;
@@ -5416,9 +5294,6 @@ button:-moz-focusring,
   --pf-c-about-modal-box__close--c-button--Height: calc(var(--pf-c-about-modal-box__close--c-button--FontSize) * 2);
   --pf-c-about-modal-box__close--c-button--BackgroundColor: var(--pf-global--palette--black-1000);
   --pf-c-about-modal-box__close--c-button--hover--BackgroundColor: rgba(3, 3, 3, 0.4);
-  --pf-c-about-modal-box__hero--sm--BackgroundImage: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/images/pfbg_992@2x.jpg') }}");
-  --pf-c-about-modal-box__hero--sm--BackgroundPosition: top left;
-  --pf-c-about-modal-box__hero--sm--BackgroundSize: cover;
   --pf-c-about-modal-box__brand-image--Height: 2.5rem;
   --pf-c-about-modal-box__header--PaddingRight: var(--pf-global--spacer--xl);
   --pf-c-about-modal-box__header--PaddingBottom: var(--pf-global--spacer--sm);
@@ -5594,18 +5469,6 @@ button:-moz-focusring,
 .pf-c-about-modal-box__hero {
   display: none;
   visibility: hidden;
-}
-@media only screen and (min-width: 576px) {
-  .pf-c-about-modal-box__hero {
-    display: block;
-    visibility: visible;
-    background-image: var(--pf-c-about-modal-box__hero--sm--BackgroundImage);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: var(--pf-c-about-modal-box__hero--sm--BackgroundPosition);
-    background-size: var(--pf-c-about-modal-box__hero--sm--BackgroundSize);
-    grid-area: hero;
-  }
 }
 
 .pf-c-accordion {
@@ -6310,54 +6173,6 @@ button:-moz-focusring,
 
 .pf-c-backdrop__open {
   overflow: hidden;
-}
-
-.pf-c-background-image {
-  --pf-c-background-image--BackgroundColor: var(--pf-global--BackgroundColor--dark-100);
-  --pf-c-background-image--BackgroundImage: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/images/pfbg_576.jpg') }}");
-  --pf-c-background-image--BackgroundImage-2x: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/images/pfbg_576@2x.jpg') }}");
-  --pf-c-background-image--BackgroundImage--sm: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/images/pfbg_768.jpg') }}");
-  --pf-c-background-image--BackgroundImage--sm-2x: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/images/pfbg_768@2x.jpg') }}");
-  --pf-c-background-image--BackgroundImage--lg: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/images/pfbg_2000.jpg') }}");
-  --pf-c-background-image--Filter: url("#image_overlay");
-}
-.pf-c-background-image::before {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  content: "";
-  background-color: var(--pf-c-background-image--BackgroundColor);
-  background-image: var(--pf-c-background-image--BackgroundImage);
-  filter: var(--pf-c-background-image--Filter);
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .pf-c-background-image::before {
-    --pf-c-background-image--BackgroundImage: var(--pf-c-background-image--BackgroundImage-2x);
-  }
-}
-@media (min-width: 576px) {
-  .pf-c-background-image::before {
-    --pf-c-background-image--BackgroundImage: var(--pf-c-background-image--BackgroundImage--sm);
-  }
-}
-@media (min-width: 576px) and (-webkit-min-device-pixel-ratio: 2), (min-width: 576px) and (min-resolution: 192dpi) {
-  .pf-c-background-image::before {
-    --pf-c-background-image--BackgroundImage: var(--pf-c-background-image--BackgroundImage--sm-2x);
-  }
-}
-@media (min-width: 992px) {
-  .pf-c-background-image::before {
-    --pf-c-background-image--BackgroundImage: var(--pf-c-background-image--BackgroundImage--lg);
-  }
-}
-
-.pf-c-background-image__filter {
-  display: block;
 }
 
 .pf-c-back-to-top {
