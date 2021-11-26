@@ -1,5 +1,6 @@
 import pytest
 
+from oscap_report.scap_results_parser.data_structures import Remediation
 from oscap_report.scap_results_parser.exceptions import MissingProcessableRules
 from tests.unit_tests.test_scap_result_parser import get_parser
 
@@ -155,3 +156,18 @@ def test_report_severity_of_failed_rules_stats_without_failed_rules():
     report = remove_all_rules_by_result(get_report(), ("fail"))
     with pytest.raises(MissingProcessableRules):
         assert report.get_severity_of_failed_rules_stats()
+
+
+@pytest.mark.parametrize("system, type_of_remediation", [
+    ("Unknown_system", "script"),
+    ("urn:xccdf:fix:script:sh", "Shell script"),
+    ("urn:xccdf:fix:script:ansible", "Ansible snippet"),
+    ("urn:xccdf:fix:script:puppet", "Puppet snippet"),
+    ("urn:redhat:anaconda:pre", "Anaconda snippet"),
+    ("urn:xccdf:fix:script:kubernetes", "Kubernetes snippet"),
+    ("urn:redhat:osbuild:blueprint", "OSBuild Blueprint snippet"),
+    ("urn:xccdf:fix:script:pejskoskript", "script"),
+])
+def test_remediation_type(system, type_of_remediation):
+    remediation = Remediation(system=system)
+    assert remediation.get_type() == type_of_remediation
