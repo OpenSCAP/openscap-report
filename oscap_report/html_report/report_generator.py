@@ -3,7 +3,13 @@ import re
 from io import BytesIO
 from pathlib import Path
 
-from jinja2 import Environment, FileSystemLoader, pass_context
+from jinja2 import Environment, FileSystemLoader
+
+try:
+    from jinja2 import pass_context
+except ImportError:
+    from jinja2 import contextfunction as pass_context
+
 from markupsafe import Markup
 
 
