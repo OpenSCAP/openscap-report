@@ -107,59 +107,6 @@ class OvalObject():
             "object_data": self.object_data,
         }
 
-    def get_header_from_object_data(self):
-        out = []
-        for item in self.object_data:
-            for key in self.filtr_object_data_item(item):
-                if key not in out:
-                    out.append(key)
-        return out
-
-    def filtr_object_data_item(self, item):
-        if self.object_type == "textfilecontent54_object":
-            if "filepath" in item and "text" in item:
-                return {
-                    "filepath": item["filepath"],
-                    "content": item["text"]
-                }
-        return self.filter_permissions(item)
-
-    @staticmethod
-    def filter_permissions(item):
-        permission = {
-            "uread": None,
-            "uwrite": None,
-            "uexec": None,
-            "gread": None,
-            "gwrite": None,
-            "gexec": None,
-            "oread": None,
-            "owrite": None,
-            "oexec": None,
-        }
-        out = {}
-        for key, value in item.items():
-            if key in permission:
-                permission[key] = value
-            else:
-                out[key] = value
-        if None in permission.values():
-            return out
-        permission_str = "<code>"
-        for key, value in permission.items():
-            if value:
-                if "read" in key:
-                    permission_str += "r"
-                elif "write" in key:
-                    permission_str += "w"
-                elif "exec" in key:
-                    permission_str += "x"
-                else:
-                    permission_str += "-"
-        permission_str += "</code>"
-        out["permission"] = permission_str
-        return out
-
 
 @dataclass
 class OvalTest():
