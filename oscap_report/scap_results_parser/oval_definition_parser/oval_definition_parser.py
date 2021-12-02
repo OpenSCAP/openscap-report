@@ -15,9 +15,11 @@ class OVALDefinitionParser:
         self.oval_reports = self._get_oval_reports()
         logging.info(self.oval_reports)
         self.oval_results = self._get_oval_results("oval0")
-        self.oval_cpe_results = self._get_oval_results("oval1")
+        self.oval_cpe_results = {}  # self._get_oval_results("oval1")
         self.parser_info_of_test = InfoOfTest(self.oval_reports["oval0"])
-        self.parser_info_of_cpe_test = InfoOfTest(self.oval_reports["oval1"])
+        self.parser_info_of_cpe_test = None
+        if "oval1" in self.oval_reports:
+            self.parser_info_of_cpe_test = InfoOfTest(self.oval_reports["oval1"])
 
     def _get_oval_reports(self):
         oval_reports = {}
@@ -32,7 +34,10 @@ class OVALDefinitionParser:
         return oval_reports
 
     def _get_oval_results(self, oval_id):
-        return self.oval_reports[oval_id].find(
+        oval_report = self.oval_reports.get(oval_id, None)
+        if oval_report is None:
+            return None
+        return oval_report.find(
             ('.//XMLSchema:oval_results/XMLSchema:results/'
              'XMLSchema:system/XMLSchema:definitions'), NAMESPACES)
 

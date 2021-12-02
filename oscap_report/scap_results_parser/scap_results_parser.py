@@ -183,10 +183,12 @@ class SCAPResultsParser():
         try:
             oval_parser = OVALDefinitionParser(self.root)
             oval_trees = oval_parser.get_oval_trees()
-            oval_cpe_trees = oval_parser.get_oval_cpe_trees()
+            oval_cpe_trees = {}  # oval_parser.get_oval_cpe_trees()
             for rule in self.rules.values():
                 if rule.oval_definition_id in oval_trees:
                     rule.oval_tree = oval_trees[rule.oval_definition_id]
+                if not oval_cpe_trees:
+                    continue
                 if rule.platform in oval_cpe_trees:
                     if rule.oval_tree is None:
                         rule.oval_tree = oval_cpe_trees[rule.platform]
