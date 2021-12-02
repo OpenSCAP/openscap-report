@@ -40,14 +40,19 @@ class SCAPResultsParser():
 
         report_dict["title"] = self.test_results.find('.//xccdf:title', NAMESPACES).text
         report_dict["identity"] = self.test_results.find('.//xccdf:identity', NAMESPACES).text
-        report_dict["profile_name"] = self.test_results.find(
-            './/xccdf:profile', NAMESPACES).get("idref")
+
+        profile_name = self.test_results.find('.//xccdf:profile', NAMESPACES)
+        if profile_name is not None:
+            report_dict["profile_name"] = profile_name.get("idref")
+
         report_dict["target"] = self.test_results.find('.//xccdf:target', NAMESPACES).text
+
         report_dict["cpe_platforms"] = self._get_cpe_platforms()
 
         target_facts = self.test_results.find('.//xccdf:target-facts', NAMESPACES)
         report_dict["scanner"] = target_facts.find(
             ".//xccdf:fact[@name='urn:xccdf:fact:scanner:name']", NAMESPACES).text
+
         report_dict["scanner_version"] = target_facts.find(
             ".//xccdf:fact[@name='urn:xccdf:fact:scanner:version']", NAMESPACES).text
 
@@ -137,6 +142,8 @@ class SCAPResultsParser():
     @staticmethod
     def _get_full_description(rule):
         description = rule.find(".//xccdf:description", NAMESPACES)
+        if description is None:
+            return None
         str_description = etree.tostring(description).decode()
         start_tag_description = str_description.find(">") + 1
         end_tag_description = str_description.rfind("</")
@@ -148,11 +155,18 @@ class SCAPResultsParser():
             rule_dict = {}
             rule_id = rule.get("id")
             rule_dict["rule_id"] = rule_id
-            rule_dict["severity"] = rule.get("severity")
-            rule_dict["title"] = rule.find(".//xccdf:title", NAMESPACES).text
+            rule_dict["severity"] = rule.get("severity", "Unknown")
+
+            title = rule.find(".//xccdf:title", NAMESPACES)
+            if title is not None:
+                rule_dict["title"] = title.text
+
             rule_dict["description"] = self._get_full_description(rule)
             rule_dict["references"] = self._get_references(rule)
-            rule_dict["rationale"] = rule.find(".//xccdf:rationale", NAMESPACES).text
+
+            rationale = rule.find(".//xccdf:rationale", NAMESPACES)
+            if rationale is not None:
+                rule_dict["rationale"] = rationale.text
 
             platform = rule.find(".//xccdf:platform", NAMESPACES)
             if platform is not None:
