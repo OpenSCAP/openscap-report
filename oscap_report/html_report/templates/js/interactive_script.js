@@ -127,7 +127,7 @@ function render_OVAL_test(node) {
             '<\/span>' +
         '<\/span>' +
     '<\/span>'; // End span
-    var info_id = 'info_of_test_' + test_id;
+    var info_id = 'info_of_test_' + test_id.replace(/[\.:_\-]/ug, "");
     tree_content +=
         '<button ' +
             'class="pf-c-button pf-m-inline pf-m-link" onClick="show_OVAL_details($(this), \'div #' + info_id + '\');" ' +
