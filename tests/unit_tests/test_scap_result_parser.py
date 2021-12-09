@@ -4,7 +4,8 @@ from oscap_report.scap_results_parser.data_structures import Report, Rule
 from oscap_report.scap_results_parser.scap_results_parser import \
     SCAPResultsParser
 
-from ..constants import (PATH_TO_ARF, PATH_TO_ARF_WITHOUT_INFO,
+from ..constants import (PATH_TO_ARF, PATH_TO_ARF_WITH_MULTI_CHECK,
+                         PATH_TO_ARF_WITHOUT_INFO,
                          PATH_TO_ARF_WITHOUT_SYSTEM_DATA,
                          PATH_TO_EMPTY_XML_FILE,
                          PATH_TO_RULE_AND_CPE_CHECK_ARF,
@@ -13,6 +14,7 @@ from ..constants import (PATH_TO_ARF, PATH_TO_ARF_WITHOUT_INFO,
                          PATH_TO_SIMPLE_RULE_FAIL_XCCDF,
                          PATH_TO_SIMPLE_RULE_PASS_ARF,
                          PATH_TO_SIMPLE_RULE_PASS_XCCDF, PATH_TO_XCCDF,
+                         PATH_TO_XCCDF_WITH_MULTI_CHECK,
                          PATH_TO_XCCDF_WITHOUT_INFO,
                          PATH_TO_XCCDF_WITHOUT_SYSTEM_DATA)
 
@@ -99,3 +101,19 @@ def test_parse_report(file_path, contains_oval_tree):
     rule_id = "xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_deny"
     assert isinstance(report.rules[rule_id], Rule)
     assert (report.rules[rule_id].oval_tree is not None) == contains_oval_tree
+
+
+@pytest.mark.parametrize("file_path, contains_rules_some_multi_check_rule", [
+    (PATH_TO_ARF, False),
+    (PATH_TO_XCCDF, False),
+    (PATH_TO_XCCDF_WITH_MULTI_CHECK, True),
+    (PATH_TO_ARF_WITH_MULTI_CHECK, True),
+])
+def test_multi_check(file_path, contains_rules_some_multi_check_rule):
+    parser = get_parser(file_path)
+    rules = parser.get_info_about_rules_in_profile()
+    result = False
+    for rule in rules.values():
+        if rule.multi_check:
+            result = True
+    assert result == contains_rules_some_multi_check_rule
