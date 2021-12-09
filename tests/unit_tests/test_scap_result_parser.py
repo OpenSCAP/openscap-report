@@ -117,3 +117,29 @@ def test_multi_check(file_path, contains_rules_some_multi_check_rule):
         if rule.multi_check:
             result = True
     assert result == contains_rules_some_multi_check_rule
+
+
+@pytest.mark.parametrize("rule, result", [
+    (
+        "xccdf_org.ssgproject.content_rule_prefer_64bit_os",
+        "Prefer installation of 64-bit operating systems when the CPU supports it."
+    ),
+    (
+        "xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_lock_enabled",
+        (
+            "\nTo activate locking of the screensaver in the GNOME3 desktop"
+            " when it is activated,\nadd or set <code>lock-enabled</code>"
+            " to <code>true</code> in\n<code>/etc/dconf/db/local.d/00-security-settings</code>."
+            " For example:\n<pre>[org/gnome/desktop/screensaver]\nlock-enabled=true\n</pre>\n"
+            "Once the settings have been added, add a lock to\n"
+            "<code>/etc/dconf/db/local.d/locks/00-security-settings-lock</code> "
+            "to prevent user modification.\nFor example:\n"
+            "<pre>/org/gnome/desktop/screensaver/lock-enabled</pre>\n"
+            "After the settings have been set, run <code>dconf update</code>."
+        )
+    )
+])
+def test_description(rule, result):
+    parser = get_parser(PATH_TO_ARF)
+    rules = parser.get_info_about_rules_in_profile()
+    assert rules[rule].description == result
