@@ -19,8 +19,10 @@ jobs:
         run: python3 setup.py bdist_rpm --requires=python3-lxml,python3-jinja2 --build-requires=python3-devel,python3-setuptools
       - name: RPM install
         run: dnf install -y ./dist/oscap_report-*.noarch.rpm
-      - name: Test
+      - name: Test parameter -h
         run: oscap-report -h
+      - name: Test of the basic function
+        run: ./test_of_the_basic_function.sh
 
   test-fedora-latest:
     name: Test on Fedora latest (Container)
@@ -36,8 +38,10 @@ jobs:
         run: python3 setup.py bdist_rpm --requires=python3-lxml,python3-jinja2 --build-requires=python3-devel,python3-setuptools
       - name: RPM install
         run: dnf install -y ./dist/oscap_report-*.noarch.rpm
-      - name: Test
+      - name: Test parameter -h
         run: oscap-report -h
+      - name: Test of the basic function
+        run: ./test_of_the_basic_function.sh
 
   test-fedora-rawhide:
     name: Test on Fedora Rawhide (Container)
@@ -53,5 +57,7 @@ jobs:
         run: python3 setup.py bdist_rpm --requires=python3-lxml,python3-jinja2 --build-requires=python3-devel,python3-setuptools
       - name: RPM install
         run: dnf install -y ./dist/oscap_report-*.noarch.rpm
-      - name: Test
+      - name: Test parameter -h
         run: oscap-report -h
+      - name: Test of the basic function
+        run: ./test_of_the_basic_function.sh
