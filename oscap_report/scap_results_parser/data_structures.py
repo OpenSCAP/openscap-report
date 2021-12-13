@@ -85,7 +85,7 @@ class Report:  # pylint: disable=R0902
         severity_stats["medium_percent"] = severity_stats["medium"] * percent_per_rule
         severity_stats["high_percent"] = severity_stats["high"] * percent_per_rule
         severity_stats["unknown_percent"] = severity_stats["unknown"] * percent_per_rule
-        severity_stats["sum_of_filed_rules"] = len(failed_rules)
+        severity_stats["sum_of_failed_rules"] = len(failed_rules)
         return severity_stats
 
     def get_failed_rules(self):
@@ -233,14 +233,12 @@ class Remediation:
         }
 
     def get_type(self):
-        if self.system == "urn:xccdf:fix:script:sh":
-            return "Shell script"
-        if self.system == "urn:xccdf:fix:script:ansible":
-            return "Ansible snippet"
-        if self.system == "urn:xccdf:fix:script:puppet":
-            return "Puppet snippet"
-        if self.system == "urn:redhat:anaconda:pre":
-            return "Anaconda snippet"
-        if self.system == "urn:xccdf:fix:script:kubernetes":
-            return "Kubernetes snippet"
-        return self.system
+        script_types = {
+            "urn:xccdf:fix:script:sh": "Shell script",
+            "urn:xccdf:fix:script:ansible": "Ansible snippet",
+            "urn:xccdf:fix:script:puppet": "Puppet snippet",
+            "urn:redhat:anaconda:pre": "Anaconda snippet",
+            "urn:xccdf:fix:script:kubernetes": "Kubernetes snippet",
+            "urn:redhat:osbuild:blueprint": "OSBuild Blueprint snippet",
+        }
+        return script_types.get(self.system, "script")
