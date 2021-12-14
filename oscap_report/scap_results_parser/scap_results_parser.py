@@ -3,7 +3,7 @@ from pathlib import Path
 
 from lxml import etree
 
-from .data_structures import OvalNode, Remediation, Report, Rule
+from .data_structures import Remediation, Report, Rule
 from .exceptions import MissingOVALResult
 from .namespaces import NAMESPACES
 from .oval_definition_parser.oval_definition_parser import OVALDefinitionParser
@@ -47,6 +47,10 @@ class SCAPResultsParser():
 
         report_dict["target"] = self.test_results.find('.//xccdf:target', NAMESPACES).text
 
+        platform = self.root.find('.//xccdf:platform', NAMESPACES)
+        if platform is not None:
+            report_dict["platform"] = platform.get('idref')
+
         report_dict["cpe_platforms"] = self._get_cpe_platforms()
 
         target_facts = self.test_results.find('.//xccdf:target-facts', NAMESPACES)
@@ -82,10 +86,6 @@ class SCAPResultsParser():
             rule_id = rule_result.get('idref')
             self.rules[rule_id].time = rule_result.get('time')
             self.rules[rule_id].result = rule_result.find('.//xccdf:result', NAMESPACES).text
-
-            check_content_ref = rule_result.find(".//xccdf:check-content-ref", NAMESPACES)
-            if check_content_ref is not None:
-                self.rules[rule_id].oval_definition_id = check_content_ref.get("name", "")
 
             message = rule_result.find('.//xccdf:message', NAMESPACES)
             if message is not None:
@@ -176,56 +176,39 @@ class SCAPResultsParser():
             rule_dict["warnings"] = self._get_warnings(rule)
             rule_dict["remediations"] = self._get_remediations(rule)
             rule_dict["multi_check"] = self._get_multi_check(rule)
+
+            check_content_refs = rule.findall(".//xccdf:check-content-ref", NAMESPACES)
+            check_content_refs_dict = {}
+            if check_content_refs is not None:
+                for check_ref in check_content_refs:
+                    name = check_ref.get("name", "")
+                    id_check = name[:name.find(":")]
+                    check_content_refs_dict[id_check] = name
+            rule_dict["oval_definition_id"] = check_content_refs_dict.get("oval", "")
             rules[rule_id] = Rule(**rule_dict)
         return rules
 
-    def _insert_oval(self):
+    def _insert_oval_and_cpe_trees(self):
         try:
             oval_parser = OVALDefinitionParser(self.root)
             oval_trees = oval_parser.get_oval_trees()
-            oval_cpe_trees = {}  # oval_parser.get_oval_cpe_trees()
+            oval_cpe_trees = oval_parser.get_oval_cpe_trees()
             for rule in self.rules.values():
                 if rule.oval_definition_id in oval_trees:
                     rule.oval_tree = oval_trees[rule.oval_definition_id]
-                if not oval_cpe_trees:
-                    continue
                 if rule.platform in oval_cpe_trees:
-                    if rule.oval_tree is None:
-                        rule.oval_tree = oval_cpe_trees[rule.platform]
-                    else:
-                        self._add_oval_cpe_to_oval_tree(rule, oval_cpe_trees[rule.platform])
+                    rule.cpe_tree = oval_cpe_trees[rule.platform]
+                if rule.result == "notapplicable" and rule.cpe_tree is None:
+                    rule.cpe_tree = oval_cpe_trees[self.profile.platform]
         except MissingOVALResult:
             logging.warning("Not found OVAL results!")
-
-    @staticmethod
-    def _add_oval_cpe_to_oval_tree(rule, oval_cpe_tree):
-        logging.info(rule.oval_tree)
-        oval_tree_result = rule.oval_tree.value
-        oval_cpe_tree_result = oval_cpe_tree.value
-
-        result = ""
-        if oval_tree_result == "true" and oval_cpe_tree_result == "true":
-            result = "true"
-        elif oval_tree_result == "false" or oval_cpe_tree_result == "false":
-            result = "false"
-        else:
-            result = "unknown"
-
-        merged_oval_tree = OvalNode(
-            node_id=f"{rule.oval_tree.node_id} and {rule.platform}",
-            node_type="AND",
-            value=result,
-            tag="Rule definition and CPE definition",
-            children=[rule.oval_tree, oval_cpe_tree])
-
-        rule.oval_tree = merged_oval_tree
 
     def parse_report(self):
         self.profile = self.get_profile_info()
         logging.debug(self.profile)
         self.rules = self.get_info_about_rules_in_profile()
         self._insert_rules_results()
-        self._insert_oval()
+        self._insert_oval_and_cpe_trees()
         self._debug_show_rules()
         self.profile.rules = self.rules
         return self.profile

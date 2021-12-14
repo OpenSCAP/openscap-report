@@ -10,6 +10,7 @@ class Report:  # pylint: disable=R0902
     title: str = ""
     identity: str = ""
     profile_name: str = ""
+    platform: str = ""
     target: str = ""
     cpe_platforms: str = ""
     scanner: str = ""
@@ -28,6 +29,7 @@ class Report:  # pylint: disable=R0902
         return {
             "title": self.title,
             "profile_name": self.profile_name,
+            "platform": self.platform,
             "target": self.target,
             "identit": self.identity,
             "cpe_platforms": self.cpe_platforms,
@@ -60,7 +62,8 @@ class Report:  # pylint: disable=R0902
                 self.rules.values()
             )))
         if not_ignored_rules == 0:
-            raise MissingProcessableRules("There are no applicable or selected rules.")
+            not_ignored_rules = 1
+            logging.warning("There are no applicable or selected rules.")
         percent_per_rule = 100 / not_ignored_rules
         results_stats["other"] = not_ignored_rules - results_stats["fail"] - results_stats['pass']
         results_stats["fail_percent"] = results_stats["fail"] * percent_per_rule
@@ -191,6 +194,7 @@ class Rule:  # pylint: disable=R0902
     message: str = ""
     remediations: list = None
     oval_tree: OvalNode = None
+    cpe_tree: OvalNode = None
 
     def as_dict(self):
         return {
@@ -209,7 +213,8 @@ class Rule:  # pylint: disable=R0902
             "oval_definition_id": self.oval_definition_id,
             "message": self.message,
             "remediations": self.remediations,
-            "oval_tree": self.oval_tree,
+            "oval_tree": self.oval_tree.as_dict(),
+            "cpe_tree": self.cpe_tree.as_dict(),
         }
 
 

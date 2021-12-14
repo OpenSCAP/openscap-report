@@ -15,8 +15,8 @@ class OVALDefinitionParser:
         self.oval_reports = self._get_oval_reports()
         logging.info(self.oval_reports)
         self.oval_results = self._get_oval_results("oval0")
-        self.oval_cpe_results = {}  # self._get_oval_results("oval1")
-        self.parser_info_of_test = InfoOfTest(self.oval_reports["oval0"])
+        self.parser_info_of_test = InfoOfTest(self.oval_reports.get("oval0", None))
+        self.oval_cpe_results = self._get_oval_results("oval1")
         self.parser_info_of_cpe_test = None
         if "oval1" in self.oval_reports:
             self.parser_info_of_cpe_test = InfoOfTest(self.oval_reports["oval1"])
@@ -53,7 +53,10 @@ class OVALDefinitionParser:
         cpe_dict = {}
         for cpe_item in cpe_list:
             name = cpe_item.get("name")
-            oval_id = cpe_item.find(".//cpe-dict:check", NAMESPACES).text
+            check = cpe_item.find(".//cpe-dict:check", NAMESPACES)
+            oval_id = name
+            if check is not None:
+                oval_id = check.text
             cpe_dict[name] = oval_id
         return cpe_dict
 
@@ -64,17 +67,21 @@ class OVALDefinitionParser:
             dict_of_oval_definitions[id_definition] = self._build_node(
                 definition[0],
                 "Definition",
-                id_definition
+                id_definition=id_definition
             )
         return self._fill_extend_definition(dict_of_oval_definitions)
 
     def get_oval_cpe_trees(self):
         dict_of_oval_definitions = {}
+        if self.oval_cpe_results is None:
+            return dict_of_oval_definitions
+
         for definition in self.oval_cpe_results:
             id_definition = definition.get('definition_id')
             dict_of_oval_definitions[id_definition] = self._build_node(
                 definition[0],
                 "CPE Definition",
+                True,
                 id_definition
             )
         oval_cpe_trees = self._fill_extend_definition(dict_of_oval_definitions)
@@ -116,20 +123,23 @@ class OVALDefinitionParser:
             tag="Extend definition",
         )
 
-    def _get_test_node(self, child):
+    def _get_test_node(self, child, is_cpe=False):
         negation = self._get_negation(child)
         result_of_node = self._get_result(negation, child)
         test_id = child.get('test_ref')
+        parser_of_test_info = self.parser_info_of_test
+        if is_cpe:
+            parser_of_test_info = self.parser_info_of_cpe_test
         return OvalNode(
             node_id=test_id,
             node_type="value",
             value=result_of_node,
             negation=negation,
             tag="Test",
-            test_info=self.parser_info_of_test.get_test_info(test_id),
+            test_info=parser_of_test_info.get_test_info(test_id),
         )
 
-    def _build_node(self, tree, tag, id_definition=None):
+    def _build_node(self, tree, tag, is_cpe=False, id_definition=None):
         negation = self._get_negation(tree)
         node = OvalNode(
             node_id=id_definition,
@@ -141,12 +151,12 @@ class OVALDefinitionParser:
         )
         for child in tree:
             if child.get('operator') is not None:
-                node.children.append(self._build_node(child, "Criteria"))
+                node.children.append(self._build_node(child, "Criteria", is_cpe))
             else:
                 if child.get('definition_ref') is not None:
                     node.children.append(self._get_extend_definition_node(child))
                 else:
-                    node.children.append(self._get_test_node(child))
+                    node.children.append(self._get_test_node(child, is_cpe))
         return node
 
     def _fill_extend_definition(self, dict_of_oval_definitions):
