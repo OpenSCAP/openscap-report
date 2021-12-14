@@ -62,7 +62,8 @@ function show_evaluation_characteristics(self) { // eslint-disable-line no-unuse
 function show_rule_detail(self, rule_id) { // eslint-disable-line no-unused-vars
     self.toggleClass('pf-m-expanded');
     self.parent().parent().parent().children('.pf-c-table__expandable-row').toggleClass('pf-m-expanded');
-    generate_oval_tree(self, rule_id);
+    generate_oval_tree(self, "div #oval_tree_of_rule_" + rule_id);
+    generate_oval_tree(self, "div #cpe_tree_of_rule_" + rule_id);
 }
 
 const NEGATION_COLOR = { 'pf-m-green': 'pf-m-red', 'pf-m-red': 'pf-m-green', '': '' };
@@ -70,10 +71,13 @@ const NEGATION_ICON = { 'fa-check': 'fa-times', 'pf-m-red': 'fa-check', 'fa-ques
 const COLOR_TRANSLATION = { 'pf-m-green': '--pf-global--success-color--200', 'pf-m-red': '--pf-global--danger-color--200', '': '' };
 
 var tree_content = '';
-function generate_oval_tree(self, rule_id) {
-    var searched_div = "div #oval_tree_of_rule_" + rule_id;
+function generate_oval_tree(self, searched_div) {
     var div_with_tree = self.parent().parent().parent().find(searched_div);
-    var tree_data = JSON.parse(div_with_tree.attr("data"));
+    var data = div_with_tree.attr("data");
+    if (data === undefined) {
+        return;
+    }
+    var tree_data = JSON.parse(data);
     tree_content = '<div class="pf-c-tree-view pf-m-guides pf-m-no-background"><ul class="pf-c-tree-view__list" role="tree">';
     if (div_with_tree.attr("is_rendered") == 'false' && tree_data != undefined) {
         render_OVAL_tree(tree_data);
