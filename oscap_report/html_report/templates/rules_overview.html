@@ -1,6 +1,3 @@
-<input class="pf-c-form-control pf-m-search" title="Submit with enter!" type="search" placeholder="Search rule" id="input-search-rule" />
-<br>
-<br>
 <table class="pf-c-table pf-m-expandable pf-m-grid-lg" role="grid" id="rule-table">
     <thead>
         <tr role="row">
@@ -18,7 +15,7 @@
     </thead>
     {% for rule_id, rule in report.rules.items() %}
     {%- if rule.result != "notselected" -%}
-    <tbody class="pf-m-expanded" role="rowgroup" title="{{ rule.title }}" rule-id="{{ rule.rule_id }}">
+    <tbody class="pf-m-expanded" role="rowgroup" title="{{ rule.title }}" rule-id="{{ rule.rule_id }}" result="{{ rule.result }}" severity="{{ rule.severity }}">
         <tr role="row">
             <td class="pf-c-table__toggle" role="cell">
                 <button
