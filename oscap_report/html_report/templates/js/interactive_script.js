@@ -1,18 +1,47 @@
 /* eslint-env jquery */
 
+var FILTER_TABLE = {
+    "result-pass": true,
+    "result-fail": true,
+    "result-notchecked": true,
+    "result-notapplicable": true,
+    "result-fixed": true,
+    "result-error": true,
+    "result-informational": true,
+    "result-unknown": true,
+    "severity-high": true,
+    "severity-medium": true,
+    "severity-low": true,
+    "severity-unknown": true
+ };
+
 // Search engine of rules
-$(document).ready(function () {
-    $("#input-search-rule").on('keypress', function (e) {
-        if (e.which == 13) {
-            var value = $(this).val().toLowerCase();
-            $("#rule-table tbody[rule-id]").hide().filter(function () {
-                var is_matched_title = $(this).attr("title").toLowerCase().includes(value);
-                var is_matched_rule_id = $(this).attr("rule-id").toLowerCase().includes(value);
-                return is_matched_title || is_matched_rule_id;
-            }).show();
-        }
+function search_rule(self) { // eslint-disable-line no-unused-vars
+    var value = self.val().toLowerCase();
+    $("#rule-table tbody[rule-id]").filter(function () { // eslint-disable-line array-callback-return
+        var is_matched_title = $(this).attr("title").toLowerCase().includes(value);
+        var is_matched_rule_id = $(this).attr("rule-id").toLowerCase().includes(value);
+
+        var result_of_rule = $(this).attr('result').toLowerCase();
+        var severity_of_rule = $(this).attr('severity').toLowerCase();
+        var advance_option = (FILTER_TABLE['result-' + result_of_rule]) && (FILTER_TABLE['severity-' + severity_of_rule]);
+
+        $(this).toggle((is_matched_title || is_matched_rule_id) && advance_option);
     });
-});
+}
+
+// Filter by result, Severity
+function toggle_rules(filter_by, result) { // eslint-disable-line no-unused-vars
+    FILTER_TABLE[filter_by + '-' + result] = !(FILTER_TABLE[filter_by + '-' + result]);
+    search_rule($("input#input-search-rule"));
+}
+
+function show_advanced_options(self) { // eslint-disable-line no-unused-vars
+    self.toggleClass('pf-m-expanded');
+    self.children().attr('class', (self.children().attr('class') == 'fas fa-caret-right') ? 'fas fa-caret-down' : 'fas fa-caret-right');
+    self.parent().parent().children('.pf-c-accordion__expanded-content').toggleClass('pf-m-expanded').toggle();
+}
+
 
 function toggle_OVAL_operator(self) { // eslint-disable-line no-unused-vars
     self.parent().parent().toggleClass('pf-m-expanded');
