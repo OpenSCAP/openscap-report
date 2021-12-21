@@ -78,10 +78,13 @@ class OvalNode:  # pylint: disable=R0902
 
     def log_oval_tree(self, level=0):
         out = ""
+        negation_str = ""
+        if self.negation:
+            negation_str = "not "
         if self.node_type != "value":
-            out = "  " * level + self.node_type + " = " + self.value
+            out = "  " * level + self.node_type + " = " + negation_str + self.value
         else:
-            out = "  " * level + self.node_id + " = " + self.value
+            out = "  " * level + self.node_id + " = " + negation_str + self.value
         logging.info(out)
         if self.children is not None:
             for child in self.children:
