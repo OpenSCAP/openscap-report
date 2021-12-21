@@ -19,6 +19,7 @@ CAT_ARF_FILE = ["cat", str(PATH_TO_ARF)]
 
 
 def get_fake_args():
+    # pylint: disable=bad-option-value,R1732
     input_file = open(PATH_TO_ARF, "r", encoding="utf-8")
     output_file = open(PATH_TO_RESULT_FILE, "wb")
     return argparse.Namespace(

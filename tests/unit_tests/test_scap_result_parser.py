@@ -83,9 +83,9 @@ def test_get_profile_info(file_path, number_of_cpe_platforms):
 ])
 def test_get_info_about_rules_in_profile(file_path, number_of_rules):
     parser = get_parser(file_path)
-    rules = parser.get_info_about_rules_in_profile()
-    assert len(rules.keys()) == number_of_rules
-    for rule in rules.values():
+    parser.process_groups_or_rules()
+    assert len(parser.rules.keys()) == number_of_rules
+    for rule in parser.rules.values():
         assert isinstance(rule, Rule)
 
 
@@ -112,9 +112,9 @@ def test_parse_report(file_path, contains_oval_tree):
 ])
 def test_multi_check(file_path, contains_rules_some_multi_check_rule):
     parser = get_parser(file_path)
-    rules = parser.get_info_about_rules_in_profile()
+    parser.process_groups_or_rules()
     result = False
-    for rule in rules.values():
+    for rule in parser.rules.values():
         if rule.multi_check:
             result = True
     assert result == contains_rules_some_multi_check_rule
@@ -142,5 +142,5 @@ def test_multi_check(file_path, contains_rules_some_multi_check_rule):
 ])
 def test_description(rule, result):
     parser = get_parser(PATH_TO_ARF)
-    rules = parser.get_info_about_rules_in_profile()
-    assert rules[rule].description == result
+    parser.process_groups_or_rules()
+    assert parser.rules[rule].description == result
