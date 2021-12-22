@@ -11,6 +11,7 @@ PATH_TO_ARF_WITHOUT_INFO = Path(__file__).parent / "test_data/arf-with-removed-i
 PATH_TO_ARF_WITHOUT_SYSTEM_DATA = Path(__file__).parent / "test_data/arf_no_system_data.xml"
 PATH_TO_ARF_WITH_MULTI_CHECK = Path(__file__).parent / "test_data/arf_multi_check.xml"
 PATH_TO_ARF_WITH_OS_CPE_CHECK = Path(__file__).parent / "test_data/arf_cpe_check_os_platform.xml"
+PATH_TO_ARF_SCANNED_ON_CONTAINER = Path(__file__).parent / "test_data/arf-container.xml"
 
 
 PATH_TO_XCCDF = Path(__file__).parent / "test_data/xccdf-report.xml"
