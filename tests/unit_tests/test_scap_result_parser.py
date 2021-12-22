@@ -6,6 +6,7 @@ from oscap_report.scap_results_parser.scap_results_parser import \
     SCAPResultsParser
 
 from ..constants import (PATH_TO_ARF, PATH_TO_ARF_WITH_MULTI_CHECK,
+                         PATH_TO_ARF_WITH_OS_CPE_CHECK,
                          PATH_TO_ARF_WITHOUT_INFO,
                          PATH_TO_ARF_WITHOUT_SYSTEM_DATA,
                          PATH_TO_EMPTY_XML_FILE,
@@ -34,6 +35,7 @@ def get_parser(file_path):
     (PATH_TO_RULE_AND_CPE_CHECK_ARF, True),
     (PATH_TO_ARF_WITHOUT_INFO, True),
     (PATH_TO_ARF_WITHOUT_SYSTEM_DATA, True),
+    (PATH_TO_ARF_WITH_OS_CPE_CHECK, True),
     (PATH_TO_XCCDF, False),
     (PATH_TO_SIMPLE_RULE_PASS_XCCDF, False),
     (PATH_TO_SIMPLE_RULE_FAIL_XCCDF, False),
@@ -47,24 +49,26 @@ def test_validation(file_path, result):
     assert parser.validate(parser.arf_schemas_path) == result
 
 
-@pytest.mark.parametrize("file_path, number_of_cpe_platforms", [
-    (PATH_TO_ARF, 13),
-    (PATH_TO_XCCDF, 13),
-    (PATH_TO_SIMPLE_RULE_PASS_ARF, 0),
-    (PATH_TO_SIMPLE_RULE_FAIL_ARF, 0),
-    (PATH_TO_ARF_WITHOUT_INFO, 0),
-    (PATH_TO_ARF_WITHOUT_SYSTEM_DATA, 0),
-    (PATH_TO_RULE_AND_CPE_CHECK_ARF, 1),
-    (PATH_TO_SIMPLE_RULE_PASS_XCCDF, 0),
-    (PATH_TO_SIMPLE_RULE_FAIL_XCCDF, 0),
-    (PATH_TO_XCCDF_WITHOUT_INFO, 0),
-    (PATH_TO_XCCDF_WITHOUT_SYSTEM_DATA, 0),
-    (PATH_TO_RULE_AND_CPE_CHECK_XCCDF, 1),
+@pytest.mark.parametrize("file_path, number_of_cpe_platforms, os_cpe_platform", [
+    (PATH_TO_ARF, 13, "cpe:/o:fedoraproject:fedora:32"),
+    (PATH_TO_XCCDF, 13, "cpe:/o:fedoraproject:fedora:32"),
+    (PATH_TO_SIMPLE_RULE_PASS_ARF, 0, ""),
+    (PATH_TO_SIMPLE_RULE_FAIL_ARF, 0, ""),
+    (PATH_TO_ARF_WITHOUT_INFO, 0, ""),
+    (PATH_TO_ARF_WITHOUT_SYSTEM_DATA, 0, ""),
+    (PATH_TO_RULE_AND_CPE_CHECK_ARF, 1, "cpe:/o:example:applicable:5"),
+    (PATH_TO_ARF_WITH_OS_CPE_CHECK, 0, "cpe:/o:fedoraproject:fedora:1"),
+    (PATH_TO_SIMPLE_RULE_PASS_XCCDF, 0, ""),
+    (PATH_TO_SIMPLE_RULE_FAIL_XCCDF, 0, ""),
+    (PATH_TO_XCCDF_WITHOUT_INFO, 0, ""),
+    (PATH_TO_XCCDF_WITHOUT_SYSTEM_DATA, 0, ""),
+    (PATH_TO_RULE_AND_CPE_CHECK_XCCDF, 1, "cpe:/o:example:applicable:5"),
 ])
-def test_get_profile_info(file_path, number_of_cpe_platforms):
+def test_get_profile_info(file_path, number_of_cpe_platforms, os_cpe_platform):
     parser = get_parser(file_path)
     report = parser.get_profile_info()
     assert len(report.cpe_platforms) == number_of_cpe_platforms
+    assert report.platform == os_cpe_platform
 
 
 @pytest.mark.parametrize("file_path, number_of_rules", [
@@ -74,6 +78,7 @@ def test_get_profile_info(file_path, number_of_cpe_platforms):
     (PATH_TO_SIMPLE_RULE_FAIL_ARF, 1),
     (PATH_TO_ARF_WITHOUT_INFO, 1),
     (PATH_TO_ARF_WITHOUT_SYSTEM_DATA, 1),
+    (PATH_TO_ARF_WITH_OS_CPE_CHECK, 1),
     (PATH_TO_RULE_AND_CPE_CHECK_ARF, 3),
     (PATH_TO_SIMPLE_RULE_PASS_XCCDF, 1),
     (PATH_TO_SIMPLE_RULE_FAIL_XCCDF, 1),
