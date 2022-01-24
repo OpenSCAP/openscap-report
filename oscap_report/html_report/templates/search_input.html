@@ -1,0 +1,70 @@
+<div class="pf-c-accordion pf-m-display-lg">
+    <div class="pf-c-input-group">
+        <input class="pf-c-form-control pf-m-search" oninput="search_rule($(this))" type="search"
+            placeholder="Search rule" id="input-search-rule" />
+        <button class="pf-c-button pf-m-control" type="button" aria-expanded="true" aria-label="Advanced options"
+            onclick="show_advanced_options($(this));">
+            <i class="fas fa-caret-right" aria-hidden="true"></i>
+        </button>
+    </div>
+    <div class="pf-c-accordion__expanded-content" style="display: none;">
+        <div class="pf-c-accordion__expanded-content-body">
+            <br>
+            <h3 class="pf-c-title pf-m-md">Advanced search options</h3>
+            Search by result:
+            <div class="pf-c-action-list">
+                <label class="pf-c-check" for="checkbox-result-pass">
+                    <input class="pf-c-check__input" type="checkbox" id="checkbox-result-pass" onchange="toggle_rules('result', 'pass');" checked/>
+                    <span class="pf-c-check__label">Pass</span>
+                </label>
+                <label class="pf-c-check" for="checkbox-result-fail">
+                    <input class="pf-c-check__input" type="checkbox" id="checkbox-result-fail" onchange="toggle_rules('result', 'fail');" checked/>
+                    <span class="pf-c-check__label">Fail</span>
+                </label>
+                <label class="pf-c-check" for="checkbox-result-not-checked">
+                    <input class="pf-c-check__input" type="checkbox" id="checkbox-result-not-checked" onchange="toggle_rules('result', 'notchecked');" checked/>
+                    <span class="pf-c-check__label">Not checked</span>
+                </label>
+                <label class="pf-c-check" for="checkbox-result-not-applicable">
+                    <input class="pf-c-check__input" type="checkbox" id="checkbox-result-not-applicable" onchange="toggle_rules('result', 'notapplicable');" checked/>
+                    <span class="pf-c-check__label">Not applicable</span>
+                </label>
+                <label class="pf-c-check" for="checkbox-result-fixed">
+                    <input class="pf-c-check__input" type="checkbox" id="checkbox-result-fixed" onchange="toggle_rules('result', 'fixed');" checked/>
+                    <span class="pf-c-check__label">Fixed</span>
+                </label>
+                <label class="pf-c-check" for="checkbox-result-error">
+                    <input class="pf-c-check__input" type="checkbox" id="checkbox-result-error" onchange="toggle_rules('result', 'error');" checked/>
+                    <span class="pf-c-check__label">Error</span>
+                </label>
+                <label class="pf-c-check" for="checkbox-result-informational">
+                    <input class="pf-c-check__input" type="checkbox" id="checkbox-result-informational" onchange="toggle_rules('result', 'informational');" checked/>
+                    <span class="pf-c-check__label">Informational</span>
+                </label>
+                <label class="pf-c-check" for="checkbox-result-unknown">
+                    <input class="pf-c-check__input" type="checkbox" id="checkbox-result-unknown" onchange="toggle_rules('result', 'unknown');" checked/>
+                    <span class="pf-c-check__label">Unknown</span>
+                </label>
+            </div>
+            Search by severity:
+            <div class="pf-c-action-list">
+                <label class="pf-c-check" for="checkbox-severity-high">
+                    <input class="pf-c-check__input" type="checkbox" id="checkbox-severity-high" onchange="toggle_rules('severity', 'high');" checked/>
+                    <span class="pf-c-check__label">high</span>
+                </label>
+                <label class="pf-c-check" for="checkbox-severity-medium">
+                    <input class="pf-c-check__input" type="checkbox" id="checkbox-severity-medium" onchange="toggle_rules('severity', 'medium');" checked/>
+                    <span class="pf-c-check__label">Medium</span>
+                </label>
+                <label class="pf-c-check" for="checkbox-severity-low">
+                    <input class="pf-c-check__input" type="checkbox" id="checkbox-severity-low" onchange="toggle_rules('severity', 'low');" checked/>
+                    <span class="pf-c-check__label">Low</span>
+                </label>
+                <label class="pf-c-check" for="checkbox-severity-unknown">
+                    <input class="pf-c-check__input" type="checkbox" id="checkbox-severity-unknown" onchange="toggle_rules('severity', 'unknown');" checked/>
+                    <span class="pf-c-check__label">Unknown</span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
