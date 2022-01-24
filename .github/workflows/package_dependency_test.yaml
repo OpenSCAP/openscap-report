@@ -1,0 +1,63 @@
+name: package_dependency_test
+on:
+  push:
+    branches: ["master", "*"]
+  pull_request:
+    branches: ["master"]
+jobs:
+  test-centos-stream-9:
+    name: Test on CentOS Stream 9 (Container)
+    runs-on: ubuntu-latest
+    container:
+      image: quay.io/centos/centos:stream9
+    steps:
+      - name: Install Deps
+        run: dnf install -y python3-devel python3-setuptools rpm-build python3
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build
+        run: python3 setup.py bdist_rpm --requires=python3-lxml,python3-jinja2 --build-requires=python3-devel,python3-setuptools
+      - name: RPM install
+        run: dnf install -y ./dist/oscap_report-*.noarch.rpm
+      - name: Test parameter -h
+        run: oscap-report -h
+      - name: Test of the basic function
+        run: ./test_of_the_basic_function.sh
+
+  test-fedora-latest:
+    name: Test on Fedora latest (Container)
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
+    steps:
+      - name: Install Deps
+        run: dnf install -y python3-devel python3-setuptools rpm-build
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build
+        run: python3 setup.py bdist_rpm --requires=python3-lxml,python3-jinja2 --build-requires=python3-devel,python3-setuptools
+      - name: RPM install
+        run: dnf install -y ./dist/oscap_report-*.noarch.rpm
+      - name: Test parameter -h
+        run: oscap-report -h
+      - name: Test of the basic function
+        run: ./test_of_the_basic_function.sh
+
+  test-fedora-rawhide:
+    name: Test on Fedora Rawhide (Container)
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:rawhide
+    steps:
+      - name: Install Deps
+        run: dnf install -y python3-devel python3-setuptools rpm-build
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build
+        run: python3 setup.py bdist_rpm --requires=python3-lxml,python3-jinja2 --build-requires=python3-devel,python3-setuptools
+      - name: RPM install
+        run: dnf install -y ./dist/oscap_report-*.noarch.rpm
+      - name: Test parameter -h
+        run: oscap-report -h
+      - name: Test of the basic function
+        run: ./test_of_the_basic_function.sh

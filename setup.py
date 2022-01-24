@@ -20,8 +20,8 @@ setup(name='oscap_report',
       license='',
       packages=find_packages(),
       install_requires=[
-          "lxml>=4.6.3",
-          "jinja2>=3.0.1"
+          "lxml",
+          "jinja2"
       ],
       include_package_data=True,
       zip_safe=False,
