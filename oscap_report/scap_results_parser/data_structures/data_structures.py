@@ -24,6 +24,7 @@ class Report:  # pylint: disable=R0902
     score: float = 0.0
     score_max: float = 0.0
     rules: dict = None
+    groups: dict = None
 
     def as_dict(self):
         return {
@@ -44,6 +45,7 @@ class Report:  # pylint: disable=R0902
             "score": self.score,
             "score_max": self.score_max,
             "rules": self.rules,
+            "groups": self.groups,
         }
 
     def get_rule_results_stats(self):
@@ -108,7 +110,7 @@ class Rule:  # pylint: disable=R0902
     description: str = ""
     rationale: str = ""
     warnings: list = None
-    platform: str = ""
+    platforms: list = None
     oval_definition_id: str = ""
     message: str = ""
     remediations: list = None
@@ -128,7 +130,7 @@ class Rule:  # pylint: disable=R0902
             "description": self.description,
             "rationale": self.rationale,
             "warnings": self.warnings,
-            "platform": self.platform,
+            "platforms": self.platforms,
             "oval_definition_id": self.oval_definition_id,
             "message": self.message,
             "remediations": self.remediations,
@@ -166,3 +168,32 @@ class Remediation:
             "urn:redhat:osbuild:blueprint": "OSBuild Blueprint snippet",
         }
         return script_types.get(self.system, "script")
+
+
+@dataclass
+class Group:
+    group_id: str = ""
+    title: str = ""
+    description: str = ""
+    platforms: list = None
+    rules_ids: list = None
+    sub_groups: list = None
+
+    def as_dict(self):
+        if not self.sub_groups:
+            return {
+                "group_id": self.group_id,
+                "title": self.title,
+                "description": self.description,
+                "platforms": self.platforms,
+                "rules_ids": self.rules_ids,
+                "sub_groups": None,
+            }
+        return {
+            "group_id": self.group_id,
+            "title": self.title,
+            "description": self.description,
+            "platforms": self.platforms,
+            "rules_ids": self.rules_ids,
+            "sub_groups": [sub_group.as_dict() for sub_group in self.sub_groups],
+        }
