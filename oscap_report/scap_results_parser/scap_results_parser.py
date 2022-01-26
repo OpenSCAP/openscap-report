@@ -3,11 +3,13 @@ from pathlib import Path
 
 from lxml import etree
 
-from .data_structures.data_structures import Group, Remediation, Report, Rule
 from .cpe_tree_builder import CpeTreeBulder
+from .data_structures.data_structures import Group, Report
+from .description_parser import DescriptionParser
 from .exceptions import MissingOVALResult
 from .namespaces import NAMESPACES
 from .oval_definition_parser.oval_definition_parser import OVALDefinitionParser
+from .rule_parser import RuleParser
 
 SCHEMAS_DIR = Path(__file__).parent / "schemas"
 
@@ -15,6 +17,8 @@ SCHEMAS_DIR = Path(__file__).parent / "schemas"
 class SCAPResultsParser():  # pylint: disable=R0902
     def __init__(self, data):
         self.root = etree.XML(data)
+        self.rule_parser = RuleParser()
+        self.description_parser = DescriptionParser()
         self.arf_schemas_path = 'arf/1.1/asset-reporting-format_1.1.0.xsd'
         if not self.validate(self.arf_schemas_path):
             logging.warning("This file is not valid ARF report!")
@@ -95,108 +99,6 @@ class SCAPResultsParser():  # pylint: disable=R0902
             if message is not None:
                 self.rules[rule_id].message = message.text
 
-    @staticmethod
-    def _get_references(rule):
-        references = []
-        for referenc in rule.findall(".//xccdf:reference", NAMESPACES):
-            ref = {}
-            ref["href"] = referenc.get("href")
-            ref["text"] = referenc.text
-            references.append(ref)
-        return references
-
-    @staticmethod
-    def _get_identifiers(rule):
-        identifiers = []
-        for identifier in rule.findall(".//xccdf:ident", NAMESPACES):
-            ident = {}
-            ident["system"] = identifier.get("system")
-            ident["text"] = identifier.text
-            identifiers.append(ident)
-        return identifiers
-
-    @staticmethod
-    def _get_warnings(rule):
-        warnings = []
-        for warning in rule.findall(".//xccdf:warning", NAMESPACES):
-            warnings.append(warning.text)
-        return warnings
-
-    @staticmethod
-    def _get_remediations(rule):
-        output = []
-        for fix in rule.findall(".//xccdf:fix", NAMESPACES):
-            fix_dict = {}
-            fix_dict["remediation_id"] = fix.get("id")
-            fix_dict["system"] = fix.get("system")
-            fix_dict["complexity"] = fix.get("complexity", "")
-            fix_dict["disruption"] = fix.get("disruption", "")
-            fix_dict["strategy"] = fix.get("strategy", "")
-            fix_dict["fix"] = fix.text
-            output.append(Remediation(**fix_dict))
-        return output
-
-    @staticmethod
-    def _get_multi_check(rule):
-        for check in rule.findall(".//xccdf:check", NAMESPACES):
-            if check.get("multi-check") == "true":
-                return True
-        return False
-
-    @staticmethod
-    def _get_full_description(rule):
-        description = rule.find(".//xccdf:description", NAMESPACES)
-        if description is None:
-            return None
-        str_description = etree.tostring(description).decode()
-        start_tag_description = str_description.find(">") + 1
-        end_tag_description = str_description.rfind("</")
-        return str_description[start_tag_description:end_tag_description].replace("html:", "")
-
-    @staticmethod
-    def _get_check_content_refs_dict(rule):
-        check_content_refs = rule.findall(".//xccdf:check-content-ref", NAMESPACES)
-        check_content_refs_dict = {}
-        if check_content_refs is not None:
-            for check_ref in check_content_refs:
-                name = check_ref.get("name", "")
-                id_check = name[:name.find(":")]
-                check_content_refs_dict[id_check] = name
-        return check_content_refs_dict
-
-    def process_rule(self, rule):
-        rule_id = rule.get("id")
-
-        rule_dict = {
-            "rule_id": rule_id,
-            "severity": rule.get("severity", "Unknown"),
-            "description": self._get_full_description(rule),
-            "references": self._get_references(rule),
-            "identifiers": self._get_identifiers(rule),
-            "warnings": self._get_warnings(rule),
-            "remediations": self._get_remediations(rule),
-            "multi_check": self._get_multi_check(rule),
-        }
-
-        title = rule.find(".//xccdf:title", NAMESPACES)
-        if title is not None:
-            rule_dict["title"] = title.text
-
-        rationale = rule.find(".//xccdf:rationale", NAMESPACES)
-        if rationale is not None:
-            rule_dict["rationale"] = rationale.text
-
-        platforms = rule.findall(".//xccdf:platform", NAMESPACES)
-        rule_dict["platforms"] = []
-        if platforms is not None:
-            for platform in platforms:
-                rule_dict["platforms"].append(platform.get("idref"))
-
-        check_content_refs_dict = self._get_check_content_refs_dict(rule)
-        rule_dict["oval_definition_id"] = check_content_refs_dict.get("oval", "")
-
-        self.rules[rule_id] = Rule(**rule_dict)
-
     def _insert_oval_and_cpe_trees(self):
         try:
             oval_parser = OVALDefinitionParser(self.root)
@@ -223,19 +125,21 @@ class SCAPResultsParser():  # pylint: disable=R0902
             "sub_groups": [],
             "group_id": group.get("id"),
         }
+
         for item in group.iterchildren():
             if "title" in item.tag:
                 group_dict["title"] = item.text
 
             if "description" in item.tag:
-                group_dict["description"] = self._get_full_description(item)
+                group_dict["description"] = self.description_parser.get_full_description(item)
 
             if "platform" in item.tag:
                 group_dict["platforms"].append(item.get("idref"))
 
             if "Rule" in item.tag:
                 group_dict["rules_ids"].append(item.get("id"))
-                self.process_rule(item)
+                rule = self.rule_parser.process_rule(item)
+                self.rules[rule.rule_id] = rule
                 self.rule_to_grup_id[item.get("id")] = group_dict.get("group_id")
 
             if "Group" in item.tag:
@@ -254,7 +158,8 @@ class SCAPResultsParser():  # pylint: disable=R0902
                     self.groups[item.get("id")] = self.get_group(item)
         else:
             for rule in self.root.findall(".//xccdf:Rule", NAMESPACES):
-                self.process_rule(rule)
+                rule = self.rule_parser.process_rule(rule)
+                self.rules[rule.rule_id] = rule
 
     def parse_report(self):
         self.profile = self.get_profile_info()
