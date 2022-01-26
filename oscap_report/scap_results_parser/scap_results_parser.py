@@ -4,6 +4,7 @@ from pathlib import Path
 from lxml import etree
 
 from .data_structures.data_structures import Group, Remediation, Report, Rule
+from .cpe_tree_builder import CpeTreeBulder
 from .exceptions import MissingOVALResult
 from .namespaces import NAMESPACES
 from .oval_definition_parser.oval_definition_parser import OVALDefinitionParser
@@ -201,13 +202,15 @@ class SCAPResultsParser():  # pylint: disable=R0902
             oval_parser = OVALDefinitionParser(self.root)
             oval_trees = oval_parser.get_oval_trees()
             oval_cpe_trees = oval_parser.get_oval_cpe_trees()
+            cpe_tree_builder = CpeTreeBulder(
+                self.rule_to_grup_id,
+                self.group_to_platforms,
+                self.profile.platform
+            )
             for rule in self.rules.values():
                 if rule.oval_definition_id in oval_trees:
                     rule.oval_tree = oval_trees[rule.oval_definition_id]
-                if rule.platform in oval_cpe_trees:
-                    rule.cpe_tree = oval_cpe_trees[rule.platform]
-                if rule.result == "notapplicable" and rule.cpe_tree is None:
-                    rule.cpe_tree = oval_cpe_trees[self.profile.platform]
+                rule.cpe_tree = cpe_tree_builder.build_cpe_tree(rule, oval_cpe_trees)
         except MissingOVALResult:
             logging.warning("Not found OVAL results!")
 
