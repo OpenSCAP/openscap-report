@@ -15,6 +15,11 @@ SHORT_RESULT_TO_FULL_RESULT = {
     "notappl": "not applicable",
 }
 
+FULL_RESULT_TO_SHORT_RESULT = {
+    "not evaluated": "noteval",
+    "not applicable": "notappl",
+}
+
 
 class OvalResult(NamedTuple):
     number_of_true: int = 0

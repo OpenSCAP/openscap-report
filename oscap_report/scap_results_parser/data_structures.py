@@ -1,7 +1,7 @@
-import json
 import logging
 from dataclasses import dataclass
 
+from .data_structure_oval_node import OvalNode
 from .exceptions import MissingProcessableRules
 
 
@@ -93,87 +93,6 @@ class Report:  # pylint: disable=R0902
 
     def get_failed_rules(self):
         return list(filter(lambda rule: rule.result.lower() == "fail", self.rules.values()))
-
-
-@dataclass
-class OvalObject():
-    object_id: str = ""
-    flag: str = ""
-    object_type: str = ""
-    object_data: dict = None
-
-    def as_dict(self):
-        return {
-            "object_id": self.object_id,
-            "flag": self.flag,
-            "object_type": self.object_type,
-            "object_data": self.object_data,
-        }
-
-
-@dataclass
-class OvalTest():
-    test_id: str = ""
-    test_type: str = ""
-    comment: str = ""
-    oval_object: OvalObject = None
-
-    def as_dict(self):
-        return {
-            "test_id": self.test_id,
-            "test_type": self.test_type,
-            "comment": self.comment,
-            "oval_object": self.oval_object.as_dict(),
-        }
-
-
-@dataclass
-class OvalNode:  # pylint: disable=R0902
-    node_id: str
-    node_type: str
-    value: str
-    negation: bool = False
-    comment: str = ""
-    tag: str = ""
-    children: list = None
-    test_info: OvalTest = None
-
-    def as_dict(self):
-        if not self.children:
-            return {
-                'node_id': self.node_id,
-                'node_type': self.node_type,
-                'value': self.value,
-                'negation': self.negation,
-                'comment': self.comment,
-                'tag': self.tag,
-                'test_info': self.test_info.as_dict(),
-                'children': None
-            }
-        return {
-            'node_id': self.node_id,
-            'node_type': self.node_type,
-            'value': self.value,
-            'negation': self.negation,
-            'comment': self.comment,
-            'tag': self.tag,
-            'test_info': None,
-            'children': [child.as_dict() for child in self.children]
-        }
-
-    def as_json(self):
-        return json.dumps(self.as_dict())
-
-    def log_oval_tree(self, level=0):
-        out = ""
-        if self.node_type != "value":
-            out = "  " * level + self.node_type + " = " + self.value
-        else:
-            out = "  " * level + self.node_id + " = " + self.value
-        logging.info(out)
-        if self.children is not None:
-            for child in self.children:
-                child.log_oval_tree(level + 1)
 
 
 @dataclass
