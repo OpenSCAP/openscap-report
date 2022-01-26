@@ -3,7 +3,7 @@ from pathlib import Path
 
 from lxml import etree
 
-from .data_structures import Remediation, Report, Rule
+from .data_structures.data_structures import Remediation, Report, Rule
 from .exceptions import MissingOVALResult
 from .namespaces import NAMESPACES
 from .oval_definition_parser.oval_definition_parser import OVALDefinitionParser

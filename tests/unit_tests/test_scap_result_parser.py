@@ -1,6 +1,7 @@
 import pytest
 
-from oscap_report.scap_results_parser.data_structures import Report, Rule
+from oscap_report.scap_results_parser.data_structures.data_structures import (
+    Report, Rule)
 from oscap_report.scap_results_parser.scap_results_parser import \
     SCAPResultsParser
 

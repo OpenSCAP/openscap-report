@@ -1,8 +1,8 @@
 import logging
 from dataclasses import dataclass
 
-from .data_structure_oval_node import OvalNode
-from .exceptions import MissingProcessableRules
+from ..exceptions import MissingProcessableRules
+from .oval_data_structures import OvalNode
 
 
 @dataclass
