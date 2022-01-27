@@ -1,5 +1,7 @@
 from pathlib import Path
 
+PATH_TO_REMEDIATIONS_SCRIPTS = Path(__file__).parent / "test_data/remediations_scripts"
+
 PATH_TO_EMPTY_XML_FILE = Path(__file__).parent / "test_data/empty.xml"
 PATH_TO_EMPTY_FILE = Path(__file__).parent / "test_data/empty.txt"
 

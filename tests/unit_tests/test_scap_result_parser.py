@@ -10,7 +10,7 @@ from ..constants import (PATH_TO_ARF, PATH_TO_ARF_SCANNED_ON_CONTAINER,
                          PATH_TO_ARF_WITH_OS_CPE_CHECK,
                          PATH_TO_ARF_WITHOUT_INFO,
                          PATH_TO_ARF_WITHOUT_SYSTEM_DATA,
-                         PATH_TO_EMPTY_XML_FILE,
+                         PATH_TO_EMPTY_XML_FILE, PATH_TO_REMEDIATIONS_SCRIPTS,
                          PATH_TO_RULE_AND_CPE_CHECK_ARF,
                          PATH_TO_RULE_AND_CPE_CHECK_XCCDF,
                          PATH_TO_SIMPLE_RULE_FAIL_ARF,
@@ -162,3 +162,38 @@ def test_description(rule, result):
     parser = get_parser(PATH_TO_ARF)
     parser.process_groups_or_rules()
     assert parser.rules[rule].description == result
+
+
+@pytest.mark.parametrize("rule, remediation_id, scripts", [
+    (
+        "xccdf_org.ssgproject.content_rule_prefer_64bit_os",
+        None,
+        {}
+    ),
+    (
+        "xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_lock_enabled",
+        "dconf_gnome_screensaver_lock_enabled",
+        {
+            "urn:xccdf:fix:script:ansible": "dconf_gnome_screensaver_lock_enabled_ansible.txt",
+            "urn:xccdf:fix:script:sh": "dconf_gnome_screensaver_lock_enabled_sh.txt"
+        }
+    ),
+    (
+        "xccdf_org.ssgproject.content_rule_auditd_data_retention_action_mail_acct",
+        "auditd_data_retention_action_mail_acct",
+        {
+            "urn:xccdf:fix:script:sh": "auditd_data_retention_action_mail_acct_sh.txt",
+            "urn:xccdf:fix:script:ansible": "auditd_data_retention_action_mail_acct_ansible.txt"
+        }
+    )
+])
+def test_remediations(rule, remediation_id, scripts):
+    parser = get_parser(PATH_TO_ARF)
+    parser.process_groups_or_rules()
+    for remediation in parser.rules[rule].remediations:
+        assert remediation.remediation_id == remediation_id
+        assert remediation.system in scripts
+        path = PATH_TO_REMEDIATIONS_SCRIPTS / str(scripts[remediation.system])
+        with open(path, "r", encoding="utf-8") as script:
+            data = script.read()
+            assert data == remediation.fix

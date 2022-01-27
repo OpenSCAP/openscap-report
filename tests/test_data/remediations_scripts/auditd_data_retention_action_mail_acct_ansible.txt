@@ -1,0 +1,27 @@
+- name: XCCDF Value var_auditd_action_mail_acct # promote to variable
+  set_fact:
+    var_auditd_action_mail_acct: !!str root
+  tags:
+    - always
+
+- name: Configure auditd mail_acct Action on Low Disk Space
+  lineinfile:
+    dest: /etc/audit/auditd.conf
+    line: action_mail_acct = {{ var_auditd_action_mail_acct }}
+    state: present
+    create: true
+  when: ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+    - CJIS-5.4.1.1
+    - NIST-800-171-3.3.1
+    - NIST-800-53-AU-5(2)
+    - NIST-800-53-AU-5(a)
+    - NIST-800-53-CM-6(a)
+    - NIST-800-53-IA-5(1)
+    - PCI-DSS-Req-10.7.a
+    - auditd_data_retention_action_mail_acct
+    - low_complexity
+    - low_disruption
+    - medium_severity
+    - no_reboot_needed
+    - restrict_strategy
