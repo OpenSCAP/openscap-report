@@ -147,6 +147,15 @@ def test_multi_check(file_path, contains_rules_some_multi_check_rule):
             "<pre>/org/gnome/desktop/screensaver/lock-enabled</pre>\n"
             "After the settings have been set, run <code>dconf update</code>."
         )
+    ),
+    (
+        "xccdf_org.ssgproject.content_rule_auditd_data_retention_action_mail_acct",
+        (
+            "The <code>auditd</code> service can be configured to send email to\n"
+            "a designated account in certain situations. Add or correct the following line\n"
+            "in <code>/etc/audit/auditd.conf</code> to ensure that administrators are notified\n"
+            "via email for those situations:\n<pre>action_mail_acct = root</pre>"
+        )
     )
 ])
 def test_description(rule, result):
