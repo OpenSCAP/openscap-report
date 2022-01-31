@@ -8,11 +8,8 @@ build:
         before:
             - pip3 install -r requirements.txt
             - npm i -g eslint
-            - pip3 install isort
+            - pip3 install isort pylint flake8 coverage
     environment:
-        apt_packages:
-            - pylint
-            - python3-flake8
         python: 3.9.6
     nodes:
         analysis:
