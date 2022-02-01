@@ -1,8 +1,8 @@
 import pytest
 
-from oscap_report.scap_results_parser.data_structures.data_structures import (
+from openscap_report.scap_results_parser.data_structures.data_structures import (
     Report, Rule)
-from oscap_report.scap_results_parser.scap_results_parser import \
+from openscap_report.scap_results_parser.scap_results_parser import \
     SCAPResultsParser
 
 from ..constants import (PATH_TO_ARF, PATH_TO_ARF_WITH_MULTI_CHECK,

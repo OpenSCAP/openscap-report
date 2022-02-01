@@ -6,5 +6,5 @@ include .eslintignore
 include .eslintrc.yml
 include .pylintrc
 include .flake8
-recursive-include oscap_report *
+recursive-include openscap_report *
 recursive-include tests *

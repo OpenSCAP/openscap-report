@@ -1,7 +1,7 @@
 
 from setuptools import find_packages, setup
 
-import oscap_report
+import openscap_report
 
 
 def get_long_description():
@@ -9,8 +9,8 @@ def get_long_description():
         return readme_file.read()
 
 
-setup(name='oscap_report',
-      version=oscap_report.__version__,
+setup(name='openscap_report',
+      version=openscap_report.__version__,
       description='Tool for generating report from results of oscap scan.',
       long_description=get_long_description(),
       long_description_content_type="text/markdown",
@@ -27,7 +27,7 @@ setup(name='oscap_report',
       zip_safe=False,
       entry_points={
           'console_scripts': [
-              'oscap-report=oscap_report.cli:main',
+              'oscap-report=openscap_report.cli:main',
           ],
       },
       python_requires='>=3.9',
