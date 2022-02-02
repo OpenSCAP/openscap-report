@@ -112,7 +112,7 @@ class Rule:  # pylint: disable=R0902
     warnings: list = None
     platforms: list = None
     oval_definition_id: str = ""
-    message: str = ""
+    messages: list = None
     remediations: list = None
     oval_tree: OvalNode = None
     cpe_tree: OvalNode = None
@@ -132,7 +132,7 @@ class Rule:  # pylint: disable=R0902
             "warnings": self.warnings,
             "platforms": self.platforms,
             "oval_definition_id": self.oval_definition_id,
-            "message": self.message,
+            "messages": self.messages,
             "remediations": self.remediations,
             "oval_tree": self.oval_tree.as_dict(),
             "cpe_tree": self.cpe_tree.as_dict(),

@@ -95,9 +95,11 @@ class SCAPResultsParser():  # pylint: disable=R0902
             self.rules[rule_id].time = rule_result.get('time')
             self.rules[rule_id].result = rule_result.find('.//xccdf:result', NAMESPACES).text
 
-            message = rule_result.find('.//xccdf:message', NAMESPACES)
-            if message is not None:
-                self.rules[rule_id].message = message.text
+            messages = rule_result.findall('.//xccdf:message', NAMESPACES)
+            if messages is not None:
+                self.rules[rule_id].messages = []
+                for message in messages:
+                    self.rules[rule_id].messages.append(message.text)
 
     def _insert_oval_and_cpe_trees(self):
         try:

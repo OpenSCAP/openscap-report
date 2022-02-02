@@ -142,19 +142,25 @@
                 </td>
             </tr>
             {% endif %}
-            {% if rule.message != "" %}
+            {% if rule.messages %}
             <tr role="row">
-                <td role="cell"><b>Message:</b></td>
+                <td role="cell"><b>Messages:</b></td>
                 <td role="cell">
+                    {% for message in rule.messages %}
                     <div class="pf-c-alert pf-m-info pf-m-inline">
                         <div class="pf-c-alert__icon">
                             <i class="fas fa-fw fa-info-circle" aria-hidden="true"></i>
                         </div>
                         <p class="pf-c-alert__title">
                             <span class="pf-screen-reader">Message:</span>
-                            {{ rule.message }}
+                            Message:
                         </p>
+                        <div class="pf-c-alert__description">
+                            <pre>{{- message -}}</pre>
+                        </div>
                     </div>
+                    <br>
+                    {% endfor %}
                 </td>
             </tr>
             {% endif %}
