@@ -8,6 +8,7 @@ build:
         before:
             - pip3 install -r requirements.txt
             - npm i -g eslint
+            - pip3 install isort pylint flake8 coverage
     environment:
         python: 3.9.6
     nodes:
@@ -19,12 +20,11 @@ build:
                 override:
                     - py-scrutinizer-run
                     - pylint-run
-                    -
-                        command: tox
-                        environment: { PYTHONPATH:  }
-                        coverage:
-                            file: '.coverage'
-                            format: 'py-cc'
+                    - command: tox
+                      environment: { PYTHONPATH:  }
+                      coverage:
+                          file: '.coverage'
+                          format: 'py-cc'
         tests: true
 
 filter:
@@ -32,4 +32,3 @@ filter:
         - '*/tests/*'
     dependency_paths:
         - 'lib/*'
-

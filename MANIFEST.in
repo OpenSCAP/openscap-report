@@ -7,4 +7,4 @@ include .eslintrc.yml
 include .pylintrc
 include .flake8
 recursive-include oscap_report *
-recursive-include tests *.py
+recursive-include tests *
