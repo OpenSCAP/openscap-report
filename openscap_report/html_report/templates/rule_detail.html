@@ -11,7 +11,7 @@
             <tr role="row">
                 <td role="cell"><b>Result:</b></td>
                 <td role="cell">
-                    {% if rule.result == "pass" %}
+                    {% if rule.result in ("pass", "fixed") %}
                     <span class="pf-c-label pf-m-green">
                         <span class="pf-c-label__content">
                             <span class="pf-c-label__icon">
@@ -20,7 +20,7 @@
                             {{ rule.result -}}
                         </span>
                     </span>
-                    {% elif rule.result == "fail"%}
+                    {% elif rule.result in ("fail", "error", "fix unsuccessful", "fix failed") %}
                     <span class="pf-c-label pf-m-red">
                         <span class="pf-c-label__content">
                             <span class="pf-c-label__icon">

@@ -53,10 +53,13 @@ class Report:  # pylint: disable=R0902
             "fail": len(list(
                 filter(lambda rule: rule.result.lower() == "fail", self.rules.values()))),
             "pass": len(list(
-                filter(lambda rule: rule.result.lower() == "pass", self.rules.values()))),
+                filter(
+                    lambda rule: rule.result.lower() in ("pass", "fixed"), self.rules.values()))),
             "unknown_error": len(list(
-                filter(lambda rule:
-                       rule.result.lower() in ("error", "unknown"), self.rules.values()))),
+                filter(
+                    lambda rule: rule.result.lower() in (
+                        "error", "unknown", "fix unsuccessful", "fix failed"
+                    ), self.rules.values()))),
         }
         not_ignored_rules = len(list(
             filter(

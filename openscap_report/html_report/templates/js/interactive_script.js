@@ -8,6 +8,8 @@ var FILTER_TABLE = {
     "result-fixed": true,
     "result-error": true,
     "result-informational": true,
+    "result-fix-failed": true,
+    "result-fix-unsuccessful": true,
     "result-unknown": true,
     "severity-high": true,
     "severity-medium": true,
@@ -15,16 +17,21 @@ var FILTER_TABLE = {
     "severity-unknown": true
  };
 
+// eslint-disable-next-line no-extend-native
+String.prototype.asId = function(prefix) {
+    var id = this.replace(/ /ug, "-").toLowerCase();
+    return prefix + id;
+};
+
 // Search engine of rules
 function search_rule(self) { // eslint-disable-line no-unused-vars
     var value = self.val().toLowerCase();
     $("#rule-table tbody[rule-id]").filter(function () { // eslint-disable-line array-callback-return
         var is_matched_title = $(this).attr("title").toLowerCase().includes(value);
         var is_matched_rule_id = $(this).attr("rule-id").toLowerCase().includes(value);
-
-        var result_of_rule = $(this).attr('result').toLowerCase();
-        var severity_of_rule = $(this).attr('severity').toLowerCase();
-        var advance_option = (FILTER_TABLE['result-' + result_of_rule]) && (FILTER_TABLE['severity-' + severity_of_rule]);
+        var result_of_rule = $(this).attr("result").asId('result-');
+        var severity_of_rule = $(this).attr("severity").asId('severity-');
+        var advance_option = (FILTER_TABLE[result_of_rule]) && (FILTER_TABLE[severity_of_rule]);
 
         $(this).toggle((is_matched_title || is_matched_rule_id) && advance_option);
     });
