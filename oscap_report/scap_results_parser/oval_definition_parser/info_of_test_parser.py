@@ -1,6 +1,6 @@
 import uuid
 
-from ..data_structures import OvalObject, OvalTest
+from ..data_structures.oval_data_structures import OvalObject, OvalTest
 from ..namespaces import NAMESPACES
 
 MAX_MESSAGE_LEN = 99

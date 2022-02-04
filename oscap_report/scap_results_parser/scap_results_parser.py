@@ -3,17 +3,22 @@ from pathlib import Path
 
 from lxml import etree
 
-from .data_structures import OvalNode, Remediation, Report, Rule
+from .cpe_tree_builder import CpeTreeBulder
+from .data_structures.data_structures import Group, Report
+from .description_parser import DescriptionParser
 from .exceptions import MissingOVALResult
 from .namespaces import NAMESPACES
 from .oval_definition_parser.oval_definition_parser import OVALDefinitionParser
+from .rule_parser import RuleParser
 
 SCHEMAS_DIR = Path(__file__).parent / "schemas"
 
 
-class SCAPResultsParser():
+class SCAPResultsParser():  # pylint: disable=R0902
     def __init__(self, data):
         self.root = etree.XML(data)
+        self.rule_parser = RuleParser()
+        self.description_parser = DescriptionParser()
         self.arf_schemas_path = 'arf/1.1/asset-reporting-format_1.1.0.xsd'
         if not self.validate(self.arf_schemas_path):
             logging.warning("This file is not valid ARF report!")
@@ -21,7 +26,10 @@ class SCAPResultsParser():
             logging.info("The file is valid ARF report")
         self.test_results = self.root.find('.//xccdf:TestResult', NAMESPACES)
         self.profile = None
-        self.rules = None
+        self.rules = {}
+        self.groups = {}
+        self.rule_to_grup_id = {}
+        self.group_to_platforms = {}
 
     def validate(self, xsd_path):
         xsd_path = str(SCHEMAS_DIR / xsd_path)
@@ -46,6 +54,10 @@ class SCAPResultsParser():
             report_dict["profile_name"] = profile_name.get("idref")
 
         report_dict["target"] = self.test_results.find('.//xccdf:target', NAMESPACES).text
+
+        platform = self.root.find('.//xccdf:platform', NAMESPACES)
+        if platform is not None:
+            report_dict["platform"] = platform.get('idref')
 
         report_dict["cpe_platforms"] = self._get_cpe_platforms()
 
@@ -83,149 +95,78 @@ class SCAPResultsParser():
             self.rules[rule_id].time = rule_result.get('time')
             self.rules[rule_id].result = rule_result.find('.//xccdf:result', NAMESPACES).text
 
-            check_content_ref = rule_result.find(".//xccdf:check-content-ref", NAMESPACES)
-            if check_content_ref is not None:
-                self.rules[rule_id].oval_definition_id = check_content_ref.get("name", "")
-
             message = rule_result.find('.//xccdf:message', NAMESPACES)
             if message is not None:
                 self.rules[rule_id].message = message.text
 
-    @staticmethod
-    def _get_references(rule):
-        references = []
-        for referenc in rule.findall(".//xccdf:reference", NAMESPACES):
-            ref = {}
-            ref["href"] = referenc.get("href")
-            ref["text"] = referenc.text
-            references.append(ref)
-        return references
-
-    @staticmethod
-    def _get_identifiers(rule):
-        identifiers = []
-        for identifier in rule.findall(".//xccdf:ident", NAMESPACES):
-            ident = {}
-            ident["system"] = identifier.get("system")
-            ident["text"] = identifier.text
-            identifiers.append(ident)
-        return identifiers
-
-    @staticmethod
-    def _get_warnings(rule):
-        warnings = []
-        for warning in rule.findall(".//xccdf:warning", NAMESPACES):
-            warnings.append(warning.text)
-        return warnings
-
-    @staticmethod
-    def _get_remediations(rule):
-        output = []
-        for fix in rule.findall(".//xccdf:fix", NAMESPACES):
-            fix_dict = {}
-            fix_dict["remediation_id"] = fix.get("id")
-            fix_dict["system"] = fix.get("system")
-            fix_dict["complexity"] = fix.get("complexity", "")
-            fix_dict["disruption"] = fix.get("disruption", "")
-            fix_dict["strategy"] = fix.get("strategy", "")
-            fix_dict["fix"] = fix.text
-            output.append(Remediation(**fix_dict))
-        return output
-
-    @staticmethod
-    def _get_multi_check(rule):
-        for check in rule.findall(".//xccdf:check", NAMESPACES):
-            if check.get("multi-check") == "true":
-                return True
-        return False
-
-    @staticmethod
-    def _get_full_description(rule):
-        description = rule.find(".//xccdf:description", NAMESPACES)
-        if description is None:
-            return None
-        str_description = etree.tostring(description).decode()
-        start_tag_description = str_description.find(">") + 1
-        end_tag_description = str_description.rfind("</")
-        return str_description[start_tag_description:end_tag_description].replace("html:", "")
-
-    def get_info_about_rules_in_profile(self):
-        rules = {}
-        for rule in self.root.findall(".//xccdf:Rule", NAMESPACES):
-            rule_dict = {}
-            rule_id = rule.get("id")
-            rule_dict["rule_id"] = rule_id
-            rule_dict["severity"] = rule.get("severity", "Unknown")
-
-            title = rule.find(".//xccdf:title", NAMESPACES)
-            if title is not None:
-                rule_dict["title"] = title.text
-
-            rule_dict["description"] = self._get_full_description(rule)
-            rule_dict["references"] = self._get_references(rule)
-
-            rationale = rule.find(".//xccdf:rationale", NAMESPACES)
-            if rationale is not None:
-                rule_dict["rationale"] = rationale.text
-
-            platform = rule.find(".//xccdf:platform", NAMESPACES)
-            if platform is not None:
-                rule_dict["platform"] = platform.get("idref")
-
-            rule_dict["identifiers"] = self._get_identifiers(rule)
-            rule_dict["warnings"] = self._get_warnings(rule)
-            rule_dict["remediations"] = self._get_remediations(rule)
-            rule_dict["multi_check"] = self._get_multi_check(rule)
-            rules[rule_id] = Rule(**rule_dict)
-        return rules
-
-    def _insert_oval(self):
+    def _insert_oval_and_cpe_trees(self):
         try:
             oval_parser = OVALDefinitionParser(self.root)
             oval_trees = oval_parser.get_oval_trees()
-            oval_cpe_trees = {}  # oval_parser.get_oval_cpe_trees()
+            oval_cpe_trees = oval_parser.get_oval_cpe_trees()
+            cpe_tree_builder = CpeTreeBulder(
+                self.rule_to_grup_id,
+                self.group_to_platforms,
+                self.profile.platform
+            )
             for rule in self.rules.values():
                 if rule.oval_definition_id in oval_trees:
                     rule.oval_tree = oval_trees[rule.oval_definition_id]
-                if not oval_cpe_trees:
-                    continue
-                if rule.platform in oval_cpe_trees:
-                    if rule.oval_tree is None:
-                        rule.oval_tree = oval_cpe_trees[rule.platform]
-                    else:
-                        self._add_oval_cpe_to_oval_tree(rule, oval_cpe_trees[rule.platform])
+                rule.cpe_tree = cpe_tree_builder.build_cpe_tree(rule, oval_cpe_trees)
         except MissingOVALResult:
             logging.warning("Not found OVAL results!")
 
-    @staticmethod
-    def _add_oval_cpe_to_oval_tree(rule, oval_cpe_tree):
-        logging.info(rule.oval_tree)
-        oval_tree_result = rule.oval_tree.value
-        oval_cpe_tree_result = oval_cpe_tree.value
+    def get_group(self, group, platforms=None):
+        if platforms is None:
+            platforms = []
+        group_dict = {
+            "platforms": [],
+            "rules_ids": [],
+            "sub_groups": [],
+            "group_id": group.get("id"),
+        }
 
-        result = ""
-        if oval_tree_result == "true" and oval_cpe_tree_result == "true":
-            result = "true"
-        elif oval_tree_result == "false" or oval_cpe_tree_result == "false":
-            result = "false"
+        for item in group.iterchildren():
+            if "title" in item.tag:
+                group_dict["title"] = item.text
+
+            if "description" in item.tag:
+                group_dict["description"] = self.description_parser.get_full_description(item)
+
+            if "platform" in item.tag:
+                group_dict["platforms"].append(item.get("idref"))
+
+            if "Rule" in item.tag:
+                group_dict["rules_ids"].append(item.get("id"))
+                rule = self.rule_parser.process_rule(item)
+                self.rules[rule.rule_id] = rule
+                self.rule_to_grup_id[item.get("id")] = group_dict.get("group_id")
+
+            if "Group" in item.tag:
+                group_dict["sub_groups"].append(self.get_group(item, group_dict.get("platforms")))
+
+        platforms_of_group = list(set(group_dict.get("platforms")) | set(platforms))
+        self.group_to_platforms[group_dict.get("group_id")] = platforms_of_group
+        return Group(**group_dict)
+
+    def process_groups_or_rules(self):
+        group = self.root.find(".//xccdf:Group", NAMESPACES)
+        benchmark = self.root.find(".//xccdf:Benchmark", NAMESPACES)
+        if group is not None and benchmark is not None:
+            for item in benchmark:
+                if "Group" in item.tag:
+                    self.groups[item.get("id")] = self.get_group(item)
         else:
-            result = "unknown"
-
-        merged_oval_tree = OvalNode(
-            node_id=f"{rule.oval_tree.node_id} and {rule.platform}",
-            node_type="AND",
-            value=result,
-            tag="Rule definition and CPE definition",
-            children=[rule.oval_tree, oval_cpe_tree])
-
-        rule.oval_tree = merged_oval_tree
+            for rule in self.root.findall(".//xccdf:Rule", NAMESPACES):
+                rule = self.rule_parser.process_rule(rule)
+                self.rules[rule.rule_id] = rule
 
     def parse_report(self):
         self.profile = self.get_profile_info()
         logging.debug(self.profile)
-        self.rules = self.get_info_about_rules_in_profile()
+        self.process_groups_or_rules()
         self._insert_rules_results()
-        self._insert_oval()
+        self._insert_oval_and_cpe_trees()
         self._debug_show_rules()
         self.profile.rules = self.rules
         return self.profile

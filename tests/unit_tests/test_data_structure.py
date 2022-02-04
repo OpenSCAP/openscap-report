@@ -1,6 +1,9 @@
+import logging
+
 import pytest
 
-from oscap_report.scap_results_parser.data_structures import Remediation
+from oscap_report.scap_results_parser.data_structures.data_structures import \
+    Remediation
 from oscap_report.scap_results_parser.exceptions import MissingProcessableRules
 from tests.unit_tests.test_scap_result_parser import get_parser
 
@@ -79,10 +82,11 @@ def test_report_rule_results_stats(to_remove, result):
     ("fail", "pass", "notchecked", "error", "unknown", "error"),
     ("fail", "pass", "notchecked"),
 ])
-def test_report_rule_results_stats_without_processable_rules(to_remove):
+def test_report_rule_results_stats_without_processable_rules(to_remove, caplog):
     report = remove_all_rules_by_result(get_report(), to_remove)
-    with pytest.raises(MissingProcessableRules):
-        assert report.get_rule_results_stats()
+    caplog.set_level(logging.WARNING)
+    report.get_rule_results_stats()
+    assert 'There are no applicable or selected rules.' in caplog.text
 
 
 @pytest.mark.parametrize("to_remove, result", [
