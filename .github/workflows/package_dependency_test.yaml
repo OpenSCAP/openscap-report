@@ -50,7 +50,7 @@ jobs:
       image: fedora:rawhide
     steps:
       - name: Install Deps
-        run: dnf install -y python3-devel python3-setuptools rpm-build
+        run: dnf install -y python3-devel python3-setuptools rpm-build --releasever rawhide
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
