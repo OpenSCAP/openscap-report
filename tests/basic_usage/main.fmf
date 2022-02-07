@@ -1,0 +1,13 @@
+summary: Runs basic usage test
+contact: Jan Rodak <jrodak@redhat.com>
+component:
+- openscap-report
+test: ./test.sh
+framework: beakerlib
+recommend:
+  - openscap-scanner
+  - scap-security-guide 
+  - openscap-report
+  - findutils
+  - dnf-plugins-core
+  - yum-plugin-copr
