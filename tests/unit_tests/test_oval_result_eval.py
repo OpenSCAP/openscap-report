@@ -1,7 +1,7 @@
 import pytest
 
-from openscap_report.scap_results_parser.data_structures.oval_result_eval import (
-    EMPTY_RESULT, OvalResult)
+from openscap_report.scap_results_parser.data_structures import (EMPTY_RESULT,
+                                                                 OvalResult)
 
 BAD_RESULT_COUNTS = {
     "number_of_true": -1,
