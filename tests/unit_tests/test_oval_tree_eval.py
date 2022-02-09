@@ -1,6 +1,6 @@
 import pytest
 
-from oscap_report.scap_results_parser.data_structures.oval_data_structures import \
+from openscap_report.scap_results_parser.data_structures.oval_data_structures import \
     OvalNode
 
 SAMPLE_OVAL_TREE = OvalNode(
