@@ -51,6 +51,8 @@ jobs:
     steps:
       - name: Install Deps
         run: dnf install -y python3-devel python3-setuptools rpm-build
+      - name: Fix missing Deps
+        run: dnf install -y python3-devel python3-setuptools rpm-build
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
