@@ -1,0 +1,744 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<arf:asset-report-collection xmlns:arf="http://scap.nist.gov/schema/asset-reporting-format/1.1" xmlns:core="http://scap.nist.gov/schema/reporting-core/1.1" xmlns:ai="http://scap.nist.gov/schema/asset-identification/1.1">
+  <core:relationships xmlns:arfvocab="http://scap.nist.gov/specifications/arf/vocabulary/relationships/1.0#">
+    <core:relationship type="arfvocab:createdFor" subject="xccdf1">
+      <core:ref>collection1</core:ref>
+    </core:relationship>
+    <core:relationship type="arfvocab:isAbout" subject="xccdf1">
+      <core:ref>asset0</core:ref>
+    </core:relationship>
+  </core:relationships>
+  <arf:report-requests>
+    <arf:report-request id="collection1">
+      <arf:content>
+        <ds:data-stream-collection xmlns:ds="http://scap.nist.gov/schema/scap/source/1.2" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:cat="urn:oasis:names:tc:entity:xmlns:xml:catalog" id="scap_org.open-scap_collection_from_xccdf_ssg-fedora-xccdf-1.2.xml" schematron-version="1.2">
+
+	<ds:data-stream id="scap_org.open-scap_datastream_from_xccdf_ssg-fedora-xccdf-1.2.xml" scap-version="1.2" use-case="OTHER">
+		<ds:dictionaries>
+			<ds:component-ref id="scap_org.open-scap_cref_output--ssg-fedora-cpe-dictionary.xml" xlink:href="#scap_org.open-scap_comp_output--ssg-fedora-cpe-dictionary.xml">
+				<cat:catalog>
+					<cat:uri name="ssg-fedora-cpe-oval.xml" uri="#scap_org.open-scap_cref_output--ssg-fedora-cpe-oval.xml"/>
+				</cat:catalog>
+			</ds:component-ref>
+		</ds:dictionaries>
+		<ds:checklists>
+			<ds:component-ref id="scap_org.open-scap_cref_ssg-fedora-xccdf-1.2.xml" xlink:href="#scap_org.open-scap_comp_ssg-fedora-xccdf-1.2.xml">
+				<cat:catalog>
+					<cat:uri name="ssg-fedora-oval.xml" uri="#scap_org.open-scap_cref_output--ssg-fedora-oval.xml"/>
+				</cat:catalog>
+			</ds:component-ref>
+		</ds:checklists>
+		<ds:checks>
+			<ds:component-ref id="scap_org.open-scap_cref_output--ssg-fedora-cpe-oval.xml" xlink:href="#scap_org.open-scap_comp_output--ssg-fedora-cpe-oval.xml"/>
+			<ds:component-ref id="scap_org.open-scap_cref_output--ssg-fedora-oval.xml" xlink:href="#scap_org.open-scap_comp_output--ssg-fedora-oval.xml"/>
+		</ds:checks>
+	</ds:data-stream>
+
+
+<ds:component id="scap_org.open-scap_comp_ssg-fedora-xccdf-1.2.xml" timestamp="2014-10-02T11:27:40"><Benchmark xmlns="http://checklists.nist.gov/xccdf/1.2" id="xccdf_org.ssgproject.content_benchmark_FEDORA" resolved="1" xml:lang="en-US">
+  <status date="2014-10-02">draft</status>
+  <title xml:lang="en-US">Guide to the Secure Configuration of Fedora</title>
+  <description xml:lang="en-US">This guide presents a catalog of security-relevant configuration</description>
+  <notice xml:lang="en-US" id="terms_of_use">Do not attempt to implement any of the settings in
+this guide without first testing them in a non-operational environment. The
+creators of this guidance assume no responsibility whatsoever for its use by
+other parties, and makes no guarantees, expressed or implied, about its
+quality, reliability, or any other characteristic.</notice>
+  <front-matter xml:lang="en-US">x</front-matter>
+  <rear-matter xml:lang="en-US">Red Hat and Fedora are either registered
+trademarks or trademarks of Red Hat, Inc. in the United States and other
+countries. All other names are registered trademarks or trademarks of their
+respective companies.</rear-matter>
+  <platform idref="cpe:/o:fedoraproject:fedora:1"/>
+  <version>0.0.4</version>
+  <model system="urn:xccdf:scoring:default"/>
+
+      <Rule id="xccdf_org.ssgproject.content_rule_disable_prelink" selected="true" severity="low">
+        <title xml:lang="en-US">Prelinking Disabled</title>
+        <description xml:lang="en-US">
+The prelinking feature changes binaries in an attempt to decrease their startup
+time. In order to disable it, change or add the following line inside the file
+<xhtml:code xmlns:xhtml="http://www.w3.org/1999/xhtml">/etc/sysconfig/prelink</xhtml:code>:
+<pre xmlns="http://www.w3.org/1999/xhtml">PRELINKING=no</pre>
+Next, run the following command to return binaries to a normal, non-prelinked
+state:
+<pre xmlns="http://www.w3.org/1999/xhtml"># /sbin/prelink -ua</pre>
+</description>
+        <check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+          <check-content-ref name="oval:ssg:def:198" href="ssg-fedora-oval.xml"/>
+        </check>
+      </Rule>
+</Benchmark></ds:component><ds:component id="scap_org.open-scap_comp_output--ssg-fedora-cpe-oval.xml" timestamp="2014-10-02T11:27:40"><oval_definitions xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5" xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:ind="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix" xmlns:linux="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd">
+  <generator>
+    <oval:product_name>python</oval:product_name>
+    <oval:product_version>2.6.6</oval:product_version>
+    <oval:schema_version>5.10</oval:schema_version>
+    <oval:timestamp>2011-09-21T13:44:00</oval:timestamp>
+  </generator>
+  <definitions><definition class="inventory" id="oval:ssg:def:100" version="1">
+      <metadata>
+        <title>Fedora release 1</title>
+        <affected family="unix">
+          <platform>Fedora 1</platform>
+        </affected>
+        <description>The operating system installed on the system is Fedora release 1</description>
+      </metadata>
+      <criteria>
+        <criterion comment="Installed operating system is part of the unix family" test_ref="oval:ssg:tst:101"/>
+        <criterion comment="Fedora release 1 is installed" test_ref="oval:ssg:tst:102"/>
+      </criteria>
+    </definition>
+    <definition class="inventory" id="oval:ssg:def:103" version="1">
+      <metadata>
+        <title>Red Hat Enterprise Linux 6</title>
+        <affected family="unix">
+          <platform>Red Hat Enterprise Linux 6</platform>
+        </affected>
+        <reference ref_id="cpe:/o:redhat:enterprise_linux:6" source="CPE"/>
+        <description>The operating system installed on the system is
+      Red Hat Enterprise Linux 6</description>
+      </metadata>
+      <criteria>
+        <criterion comment="Installed operating system is part of the unix family" test_ref="oval:ssg:tst:101"/>
+        <criteria operator="OR">
+          <criterion comment="Red Hat Enterprise Linux 6 Workstation is installed" test_ref="oval:ssg:tst:104"/>
+          <criterion comment="Red Hat Enterprise Linux 6 Server is installed" test_ref="oval:ssg:tst:105"/>
+        </criteria>
+      </criteria>
+    </definition>
+    <definition class="inventory" id="oval:ssg:def:106" version="1">
+      <metadata>
+        <title>Red Hat Enterprise Linux 7</title>
+        <affected family="unix">
+          <platform>Red Hat Enterprise Linux 7</platform>
+        </affected>
+        <reference ref_id="cpe:/o:redhat:enterprise_linux:7" source="CPE"/>
+        <description>The operating system installed on the system is
+      Red Hat Enterprise Linux 7</description>
+      </metadata>
+      <criteria>
+        <criterion comment="Installed operating system is part of the unix family" test_ref="oval:ssg:tst:107"/>
+        <criteria operator="OR">
+          <criterion comment="Red Hat Enterprise Linux 7 Workstation is installed" test_ref="oval:ssg:tst:108"/>
+          <criterion comment="Red Hat Enterprise Linux 7 Server is installed" test_ref="oval:ssg:tst:109"/>
+        </criteria>
+      </criteria>
+    </definition>
+    </definitions><tests><ind:family_test check="all" check_existence="at_least_one_exists" comment="installed OS part of unix family" id="oval:ssg:tst:101" version="1">
+      <ind:object object_ref="oval:ssg:obj:110"/>
+      <ind:state state_ref="oval:ssg:ste:111"/>
+    </ind:family_test>
+    <linux:rpminfo_test check="all" check_existence="only_one_exists" comment="fedora-release is version 1" id="oval:ssg:tst:102" version="1">
+      <linux:object object_ref="oval:ssg:obj:112"/>
+      <linux:state state_ref="oval:ssg:ste:113"/>
+    </linux:rpminfo_test>
+    <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="redhat-release-workstation is version 6" id="oval:ssg:tst:104" version="1">
+      <linux:object object_ref="oval:ssg:obj:114"/>
+      <linux:state state_ref="oval:ssg:ste:115"/>
+    </linux:rpminfo_test>
+    <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="redhat-release-server is version 6" id="oval:ssg:tst:105" version="1">
+      <linux:object object_ref="oval:ssg:obj:116"/>
+      <linux:state state_ref="oval:ssg:ste:117"/>
+    </linux:rpminfo_test>
+    <ind:family_test check="all" check_existence="at_least_one_exists" comment="installed OS part of unix family" id="oval:ssg:tst:107" version="1">
+      <ind:object object_ref="oval:ssg:obj:118"/>
+      <ind:state state_ref="oval:ssg:ste:119"/>
+    </ind:family_test>
+    <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="redhat-release-workstation is version 7" id="oval:ssg:tst:108" version="1">
+      <linux:object object_ref="oval:ssg:obj:120"/>
+      <linux:state state_ref="oval:ssg:ste:121"/>
+    </linux:rpminfo_test>
+    <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="redhat-release-server is version 7" id="oval:ssg:tst:109" version="1">
+      <linux:object object_ref="oval:ssg:obj:122"/>
+      <linux:state state_ref="oval:ssg:ste:123"/>
+    </linux:rpminfo_test>
+    </tests><objects><ind:family_object id="oval:ssg:obj:110" version="1"/>
+    <linux:rpminfo_object id="oval:ssg:obj:112" version="1">
+      <linux:name>fedora-release</linux:name>
+    </linux:rpminfo_object>
+    <linux:rpminfo_object id="oval:ssg:obj:114" version="1">
+      <linux:name>redhat-release-workstation</linux:name>
+    </linux:rpminfo_object>
+    <linux:rpminfo_object id="oval:ssg:obj:116" version="1">
+      <linux:name>redhat-release-server</linux:name>
+    </linux:rpminfo_object>
+    <ind:family_object id="oval:ssg:obj:118" version="1"/>
+    <linux:rpminfo_object id="oval:ssg:obj:120" version="1">
+      <linux:name>redhat-release-workstation</linux:name>
+    </linux:rpminfo_object>
+    <linux:rpminfo_object id="oval:ssg:obj:122" version="1">
+      <linux:name>redhat-release-server</linux:name>
+    </linux:rpminfo_object>
+    </objects><states><ind:family_state id="oval:ssg:ste:111" version="1">
+      <ind:family>unix</ind:family>
+    </ind:family_state>
+    <linux:rpminfo_state id="oval:ssg:ste:113" version="1">
+      <linux:version operation="pattern match">^1$</linux:version>
+    </linux:rpminfo_state>
+    <linux:rpminfo_state id="oval:ssg:ste:115" version="1">
+      <linux:version operation="pattern match">^6.*$</linux:version>
+    </linux:rpminfo_state>
+    <linux:rpminfo_state id="oval:ssg:ste:117" version="1">
+      <linux:version operation="pattern match">^6.*$</linux:version>
+    </linux:rpminfo_state>
+    <ind:family_state id="oval:ssg:ste:119" version="1">
+      <ind:family>unix</ind:family>
+    </ind:family_state>
+    <linux:rpminfo_state id="oval:ssg:ste:121" version="1">
+      <linux:version operation="pattern match">^7.*$</linux:version>
+    </linux:rpminfo_state>
+    <linux:rpminfo_state id="oval:ssg:ste:123" version="1">
+      <linux:version operation="pattern match">^7.*$</linux:version>
+    </linux:rpminfo_state>
+    </states></oval_definitions></ds:component><ds:component id="scap_org.open-scap_comp_output--ssg-fedora-cpe-dictionary.xml" timestamp="2014-10-02T11:27:40"><cpe-list xmlns="http://cpe.mitre.org/dictionary/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cpe.mitre.org/dictionary/2.0 http://cpe.mitre.org/files/cpe-dictionary_2.1.xsd">
+      <cpe-item name="cpe:/o:fedoraproject:fedora:1">
+            <title xml:lang="en-us">Fedora release 1 (Schrödinger's Cat)</title>
+            <!-- the check references an OVAL file that contains an inventory definition -->
+            <check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="ssg-fedora-cpe-oval.xml">oval:ssg:def:100</check>
+      </cpe-item>
+</cpe-list></ds:component><ds:component id="scap_org.open-scap_comp_output--ssg-fedora-oval.xml" timestamp="2014-10-02T11:27:40"><oval_definitions xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5" xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:ind="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix" xmlns:linux="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd         http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd">
+  <generator>
+    <oval:product_name>python</oval:product_name>
+    <oval:product_version>2.6.6</oval:product_version>
+    <oval:schema_version>5.10</oval:schema_version>
+    <oval:timestamp>2011-09-21T13:44:00</oval:timestamp>
+  </generator>
+  <definitions>
+    <definition class="compliance" id="oval:ssg:def:198" version="2">
+      <metadata>
+        <title>Disable Prelinking</title>
+        <affected family="unix">
+          <platform>Red Hat Enterprise Linux 6</platform>
+          <platform>Fedora 20</platform>
+        </affected>
+        <description>The prelinking feature can interfere with the operation of
+      checksum integrity tools (e.g. AIDE), mitigates the protection provided
+      by ASLR, and requires additional CPU cycles by software upgrades.
+      </description>
+        <reference source="JL" ref_id="20140313" ref_url="test_attestation"/>
+      <reference ref_id="disable_prelink" source="ssg"/></metadata>
+      <criteria>
+        <criterion comment="Ensure prelinking is disabled" test_ref="oval:ssg:tst:199"/>
+      </criteria>
+    </definition>
+  </definitions>
+  <tests>
+    <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Tests whether prelinking is disabled" id="oval:ssg:tst:199" version="1">
+      <ind:object object_ref="oval:ssg:obj:264"/>
+    </ind:textfilecontent54_test>
+  </tests>
+  <objects>
+    <ind:textfilecontent54_object id="oval:ssg:obj:264" version="2">
+      <ind:filepath>/etc/sysconfig/prelink</ind:filepath>
+      <ind:pattern operation="pattern match">^[\s]*PRELINKING=no[\s]*</ind:pattern>
+      <ind:instance datatype="int">1</ind:instance>
+    </ind:textfilecontent54_object>
+  </objects>
+</oval_definitions></ds:component></ds:data-stream-collection>
+      </arf:content>
+    </arf:report-request>
+  </arf:report-requests>
+  <arf:assets>
+    <arf:asset id="asset0">
+      <ai:computing-device>
+        <ai:connections>
+          <ai:connection>
+            <ai:ip-address>
+              <ai:ip-v4>127.0.0.1</ai:ip-v4>
+            </ai:ip-address>
+          </ai:connection>
+          <ai:connection>
+            <ai:ip-address>
+              <ai:ip-v4>10.200.153.45</ai:ip-v4>
+            </ai:ip-address>
+          </ai:connection>
+          <ai:connection>
+            <ai:ip-address>
+              <ai:ip-v4>192.168.122.1</ai:ip-v4>
+            </ai:ip-address>
+          </ai:connection>
+          <ai:connection>
+            <ai:ip-address>
+              <ai:ip-v4>10.43.12.70</ai:ip-v4>
+            </ai:ip-address>
+          </ai:connection>
+          <ai:connection>
+            <ai:ip-address>
+              <ai:ip-v6>0:0:0:0:0:0:0:1</ai:ip-v6>
+            </ai:ip-address>
+          </ai:connection>
+          <ai:connection>
+            <ai:ip-address>
+              <ai:ip-v6>fe80:0:0:0:3bc2:6468:e470:d804</ai:ip-v6>
+            </ai:ip-address>
+          </ai:connection>
+          <ai:connection>
+            <ai:ip-address>
+              <ai:ip-v6>2620:52:0:2b0c:ff5:c817:e2fc:1914</ai:ip-v6>
+            </ai:ip-address>
+          </ai:connection>
+          <ai:connection>
+            <ai:ip-address>
+              <ai:ip-v6>fe80:0:0:0:648:e757:55c:e02e</ai:ip-v6>
+            </ai:ip-address>
+          </ai:connection>
+          <ai:connection>
+            <ai:mac-address>00:00:00:00:00:00</ai:mac-address>
+          </ai:connection>
+          <ai:connection>
+            <ai:mac-address>00:2B:67:04:65:C0</ai:mac-address>
+          </ai:connection>
+          <ai:connection>
+            <ai:mac-address>74:D8:3E:1A:0C:3E</ai:mac-address>
+          </ai:connection>
+          <ai:connection>
+            <ai:mac-address>52:54:00:E8:16:C5</ai:mac-address>
+          </ai:connection>
+          <ai:connection>
+            <ai:mac-address>00:50:B6:8E:49:DA</ai:mac-address>
+          </ai:connection>
+        </ai:connections>
+        <ai:fqdn>rh-hony</ai:fqdn>
+        <ai:hostname>rh-hony</ai:hostname>
+      </ai:computing-device>
+    </arf:asset>
+  </arf:assets>
+  <arf:reports>
+    <arf:report id="xccdf1">
+      <arf:content>
+        <TestResult xmlns="http://checklists.nist.gov/xccdf/1.2" id="xccdf_org.open-scap_testresult_default-profile" start-time="2021-11-30T15:39:18+01:00" end-time="2021-11-30T15:39:18+01:00" version="0.0.4" test-system="cpe:/a:redhat:openscap:1.3.5">
+          <benchmark href="#scap_org.open-scap_comp_ssg-fedora-xccdf-1.2.xml" id="xccdf_org.ssgproject.content_benchmark_FEDORA"/>
+          <title>OSCAP Scan Result</title>
+          <identity authenticated="false" privileged="false">jrodak</identity>
+          <target>rh-hony</target>
+          <target-address>127.0.0.1</target-address>
+          <target-address>10.200.153.45</target-address>
+          <target-address>192.168.122.1</target-address>
+          <target-address>10.43.12.70</target-address>
+          <target-address>0:0:0:0:0:0:0:1</target-address>
+          <target-address>fe80:0:0:0:3bc2:6468:e470:d804</target-address>
+          <target-address>2620:52:0:2b0c:ff5:c817:e2fc:1914</target-address>
+          <target-address>fe80:0:0:0:648:e757:55c:e02e</target-address>
+          <target-facts>
+            <fact name="urn:xccdf:fact:scanner:name" type="string">OpenSCAP</fact>
+            <fact name="urn:xccdf:fact:scanner:version" type="string">1.3.5</fact>
+            <fact name="urn:xccdf:fact:asset:identifier:fqdn" type="string">rh-hony</fact>
+            <fact name="urn:xccdf:fact:asset:identifier:host_name" type="string">rh-hony</fact>
+            <fact name="urn:xccdf:fact:ethernet:MAC" type="string">00:00:00:00:00:00</fact>
+            <fact name="urn:xccdf:fact:asset:identifier:mac" type="string">00:00:00:00:00:00</fact>
+            <fact name="urn:xccdf:fact:ethernet:MAC" type="string">00:2B:67:04:65:C0</fact>
+            <fact name="urn:xccdf:fact:asset:identifier:mac" type="string">00:2B:67:04:65:C0</fact>
+            <fact name="urn:xccdf:fact:ethernet:MAC" type="string">74:D8:3E:1A:0C:3E</fact>
+            <fact name="urn:xccdf:fact:asset:identifier:mac" type="string">74:D8:3E:1A:0C:3E</fact>
+            <fact name="urn:xccdf:fact:ethernet:MAC" type="string">52:54:00:E8:16:C5</fact>
+            <fact name="urn:xccdf:fact:asset:identifier:mac" type="string">52:54:00:E8:16:C5</fact>
+            <fact name="urn:xccdf:fact:ethernet:MAC" type="string">00:50:B6:8E:49:DA</fact>
+            <fact name="urn:xccdf:fact:asset:identifier:mac" type="string">00:50:B6:8E:49:DA</fact>
+            <fact name="urn:xccdf:fact:asset:identifier:ipv4" type="string">127.0.0.1</fact>
+            <fact name="urn:xccdf:fact:asset:identifier:ipv4" type="string">10.200.153.45</fact>
+            <fact name="urn:xccdf:fact:asset:identifier:ipv4" type="string">192.168.122.1</fact>
+            <fact name="urn:xccdf:fact:asset:identifier:ipv4" type="string">10.43.12.70</fact>
+            <fact name="urn:xccdf:fact:asset:identifier:ipv6" type="string">::1</fact>
+            <fact name="urn:xccdf:fact:asset:identifier:ipv6" type="string">fe80::3bc2:6468:e470:d804</fact>
+            <fact name="urn:xccdf:fact:asset:identifier:ipv6" type="string">2620:52:0:2b0c:ff5:c817:e2fc:1914</fact>
+            <fact name="urn:xccdf:fact:asset:identifier:ipv6" type="string">fe80::648:e757:55c:e02e</fact>
+          </target-facts>
+          <target-id-ref system="http://scap.nist.gov/schema/asset-identification/1.1" name="asset0" href=""/>
+          <rule-result idref="xccdf_org.ssgproject.content_rule_disable_prelink" role="full" time="2021-11-30T15:39:18+01:00" severity="low" weight="1.000000">
+            <result>notapplicable</result>
+          </rule-result>
+          <score system="urn:xccdf:scoring:default" maximum="100.000000">0.000000</score>
+        </TestResult>
+      </arf:content>
+    </arf:report>
+    <arf:report id="oval0">
+      <arf:content>
+        <oval_results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns="http://oval.mitre.org/XMLSchema/oval-results-5" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-results-5 oval-results-schema.xsd http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
+          <generator>
+            <oval:product_name>cpe:/a:open-scap:oscap</oval:product_name>
+            <oval:product_version>1.3.5</oval:product_version>
+            <oval:schema_version>5.10</oval:schema_version>
+            <oval:timestamp>2021-11-30T15:39:18</oval:timestamp>
+          </generator>
+          <directives>
+            <definition_true reported="true" content="full"/>
+            <definition_false reported="true" content="full"/>
+            <definition_unknown reported="true" content="full"/>
+            <definition_error reported="true" content="full"/>
+            <definition_not_evaluated reported="true" content="full"/>
+            <definition_not_applicable reported="true" content="full"/>
+          </directives>
+          <oval_definitions xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:unix-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix" xmlns:ind-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" xmlns:lin-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux" xmlns:win-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#windows" xmlns:mac-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#macos" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#windows windows-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#macos macos-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
+            <generator>
+              <oval:product_name>python</oval:product_name>
+              <oval:product_version>2.6.6</oval:product_version>
+              <oval:schema_version>5.10</oval:schema_version>
+              <oval:timestamp>2011-09-21T13:44:00</oval:timestamp>
+            </generator>
+            <definitions>
+              <definition id="oval:ssg:def:198" version="2" class="compliance">
+                <metadata>
+                  <title>Disable Prelinking</title>
+                  <affected family="unix">
+                    <platform>Red Hat Enterprise Linux 6</platform>
+                    <platform>Fedora 20</platform>
+                  </affected>
+                  <reference source="JL" ref_id="20140313" ref_url="test_attestation"/>
+                  <reference source="ssg" ref_id="disable_prelink"/>
+                  <description>The prelinking feature can interfere with the operation of
+      checksum integrity tools (e.g. AIDE), mitigates the protection provided
+      by ASLR, and requires additional CPU cycles by software upgrades.
+      </description>
+                </metadata>
+                <criteria>
+                  <criterion test_ref="oval:ssg:tst:199" comment="Ensure prelinking is disabled"/>
+                </criteria>
+              </definition>
+            </definitions>
+            <tests>
+              <ind-def:textfilecontent54_test id="oval:ssg:tst:199" version="1" check_existence="all_exist" check="all" comment="Tests whether prelinking is disabled">
+                <ind-def:object object_ref="oval:ssg:obj:264"/>
+              </ind-def:textfilecontent54_test>
+            </tests>
+            <objects>
+              <ind-def:textfilecontent54_object id="oval:ssg:obj:264" version="2">
+                <ind-def:filepath>/etc/sysconfig/prelink</ind-def:filepath>
+                <ind-def:pattern operation="pattern match">^[\s]*PRELINKING=no[\s]*</ind-def:pattern>
+                <ind-def:instance datatype="int">1</ind-def:instance>
+              </ind-def:textfilecontent54_object>
+            </objects>
+          </oval_definitions>
+          <results>
+            <system>
+              <definitions>
+                <definition definition_id="oval:ssg:def:198" result="not evaluated" version="2">
+                  <criteria operator="AND" result="not evaluated">
+                    <criterion test_ref="oval:ssg:tst:199" version="1" result="not evaluated"/>
+                  </criteria>
+                </definition>
+              </definitions>
+              <tests>
+                <test test_id="oval:ssg:tst:199" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+              </tests>
+              <oval_system_characteristics xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:unix-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#unix" xmlns:ind-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#independent" xmlns:lin-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#linux" xmlns:win-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#windows" xmlns="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5 oval-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#independent independent-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#unix unix-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#linux linux-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#windows windows-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#macos macos-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
+                <generator>
+                  <oval:product_name>cpe:/a:open-scap:oscap</oval:product_name>
+                  <oval:product_version>2.6.6</oval:product_version>
+                  <oval:schema_version>5.10</oval:schema_version>
+                  <oval:timestamp>2021-11-30T15:39:18</oval:timestamp>
+                </generator>
+                <system_info>
+                  <os_name>Fedora</os_name>
+                  <os_version>34 (Workstation Edition)</os_version>
+                  <architecture>x86_64</architecture>
+                  <primary_host_name>rh-hony</primary_host_name>
+                  <interfaces>
+                    <interface>
+                      <interface_name>lo</interface_name>
+                      <ip_address>127.0.0.1</ip_address>
+                      <mac_address>00:00:00:00:00:00</mac_address>
+                    </interface>
+                    <interface>
+                      <interface_name>wlp0s20f3</interface_name>
+                      <ip_address>10.200.153.45</ip_address>
+                      <mac_address>74:D8:3E:1A:0C:3E</mac_address>
+                    </interface>
+                    <interface>
+                      <interface_name>virbr0</interface_name>
+                      <ip_address>192.168.122.1</ip_address>
+                      <mac_address>52:54:00:E8:16:C5</mac_address>
+                    </interface>
+                    <interface>
+                      <interface_name>enp9s0u1</interface_name>
+                      <ip_address>10.43.12.70</ip_address>
+                      <mac_address>00:50:B6:8E:49:DA</mac_address>
+                    </interface>
+                    <interface>
+                      <interface_name>lo</interface_name>
+                      <ip_address>::1</ip_address>
+                      <mac_address>00:00:00:00:00:00</mac_address>
+                    </interface>
+                    <interface>
+                      <interface_name>wlp0s20f3</interface_name>
+                      <ip_address>fe80::3bc2:6468:e470:d804</ip_address>
+                      <mac_address>74:D8:3E:1A:0C:3E</mac_address>
+                    </interface>
+                    <interface>
+                      <interface_name>enp9s0u1</interface_name>
+                      <ip_address>2620:52:0:2b0c:ff5:c817:e2fc:1914</ip_address>
+                      <mac_address>00:50:B6:8E:49:DA</mac_address>
+                    </interface>
+                    <interface>
+                      <interface_name>enp9s0u1</interface_name>
+                      <ip_address>fe80::648:e757:55c:e02e</ip_address>
+                      <mac_address>00:50:B6:8E:49:DA</mac_address>
+                    </interface>
+                  </interfaces>
+                </system_info>
+              </oval_system_characteristics>
+            </system>
+          </results>
+        </oval_results>
+      </arf:content>
+    </arf:report>
+    <arf:report id="oval1">
+      <arf:content>
+        <oval_results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns="http://oval.mitre.org/XMLSchema/oval-results-5" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-results-5 oval-results-schema.xsd http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
+          <generator>
+            <oval:product_name>python</oval:product_name>
+            <oval:product_version>1.3.5</oval:product_version>
+            <oval:schema_version>5.10</oval:schema_version>
+            <oval:timestamp>2021-11-30T15:39:18</oval:timestamp>
+          </generator>
+          <directives>
+            <definition_true reported="true" content="full"/>
+            <definition_false reported="true" content="full"/>
+            <definition_unknown reported="true" content="full"/>
+            <definition_error reported="true" content="full"/>
+            <definition_not_evaluated reported="true" content="full"/>
+            <definition_not_applicable reported="true" content="full"/>
+          </directives>
+          <oval_definitions xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:unix-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix" xmlns:ind-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" xmlns:lin-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux" xmlns:win-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#windows" xmlns:mac-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#macos" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#windows windows-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#macos macos-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
+            <generator>
+              <oval:product_name>python</oval:product_name>
+              <oval:product_version>2.6.6</oval:product_version>
+              <oval:schema_version>5.10</oval:schema_version>
+              <oval:timestamp>2011-09-21T13:44:00</oval:timestamp>
+            </generator>
+            <definitions>
+              <definition id="oval:ssg:def:106" version="1" class="inventory">
+                <metadata>
+                  <title>Red Hat Enterprise Linux 7</title>
+                  <affected family="unix">
+                    <platform>Red Hat Enterprise Linux 7</platform>
+                  </affected>
+                  <reference source="CPE" ref_id="cpe:/o:redhat:enterprise_linux:7"/>
+                  <description>The operating system installed on the system is
+      Red Hat Enterprise Linux 7</description>
+                </metadata>
+                <criteria>
+                  <criterion test_ref="oval:ssg:tst:107" comment="Installed operating system is part of the unix family"/>
+                  <criteria operator="OR">
+                    <criterion test_ref="oval:ssg:tst:108" comment="Red Hat Enterprise Linux 7 Workstation is installed"/>
+                    <criterion test_ref="oval:ssg:tst:109" comment="Red Hat Enterprise Linux 7 Server is installed"/>
+                  </criteria>
+                </criteria>
+              </definition>
+              <definition id="oval:ssg:def:103" version="1" class="inventory">
+                <metadata>
+                  <title>Red Hat Enterprise Linux 6</title>
+                  <affected family="unix">
+                    <platform>Red Hat Enterprise Linux 6</platform>
+                  </affected>
+                  <reference source="CPE" ref_id="cpe:/o:redhat:enterprise_linux:6"/>
+                  <description>The operating system installed on the system is
+      Red Hat Enterprise Linux 6</description>
+                </metadata>
+                <criteria>
+                  <criterion test_ref="oval:ssg:tst:101" comment="Installed operating system is part of the unix family"/>
+                  <criteria operator="OR">
+                    <criterion test_ref="oval:ssg:tst:104" comment="Red Hat Enterprise Linux 6 Workstation is installed"/>
+                    <criterion test_ref="oval:ssg:tst:105" comment="Red Hat Enterprise Linux 6 Server is installed"/>
+                  </criteria>
+                </criteria>
+              </definition>
+              <definition id="oval:ssg:def:100" version="1" class="inventory">
+                <metadata>
+                  <title>Fedora release 1</title>
+                  <affected family="unix">
+                    <platform>Fedora 1</platform>
+                  </affected>
+                  <description>The operating system installed on the system is Fedora release 1</description>
+                </metadata>
+                <criteria>
+                  <criterion test_ref="oval:ssg:tst:101" comment="Installed operating system is part of the unix family"/>
+                  <criterion test_ref="oval:ssg:tst:102" comment="Fedora release 1 is installed"/>
+                </criteria>
+              </definition>
+            </definitions>
+            <tests>
+              <lin-def:rpminfo_test id="oval:ssg:tst:109" version="1" check="all" comment="redhat-release-server is version 7">
+                <lin-def:object object_ref="oval:ssg:obj:122"/>
+                <lin-def:state state_ref="oval:ssg:ste:123"/>
+              </lin-def:rpminfo_test>
+              <lin-def:rpminfo_test id="oval:ssg:tst:108" version="1" check="all" comment="redhat-release-workstation is version 7">
+                <lin-def:object object_ref="oval:ssg:obj:120"/>
+                <lin-def:state state_ref="oval:ssg:ste:121"/>
+              </lin-def:rpminfo_test>
+              <ind-def:family_test id="oval:ssg:tst:107" version="1" check="all" comment="installed OS part of unix family">
+                <ind-def:object object_ref="oval:ssg:obj:118"/>
+                <ind-def:state state_ref="oval:ssg:ste:119"/>
+              </ind-def:family_test>
+              <lin-def:rpminfo_test id="oval:ssg:tst:105" version="1" check="all" comment="redhat-release-server is version 6">
+                <lin-def:object object_ref="oval:ssg:obj:116"/>
+                <lin-def:state state_ref="oval:ssg:ste:117"/>
+              </lin-def:rpminfo_test>
+              <lin-def:rpminfo_test id="oval:ssg:tst:104" version="1" check="all" comment="redhat-release-workstation is version 6">
+                <lin-def:object object_ref="oval:ssg:obj:114"/>
+                <lin-def:state state_ref="oval:ssg:ste:115"/>
+              </lin-def:rpminfo_test>
+              <lin-def:rpminfo_test id="oval:ssg:tst:102" version="1" check_existence="only_one_exists" check="all" comment="fedora-release is version 1">
+                <lin-def:object object_ref="oval:ssg:obj:112"/>
+                <lin-def:state state_ref="oval:ssg:ste:113"/>
+              </lin-def:rpminfo_test>
+              <ind-def:family_test id="oval:ssg:tst:101" version="1" check="all" comment="installed OS part of unix family">
+                <ind-def:object object_ref="oval:ssg:obj:110"/>
+                <ind-def:state state_ref="oval:ssg:ste:111"/>
+              </ind-def:family_test>
+            </tests>
+            <objects>
+              <lin-def:rpminfo_object id="oval:ssg:obj:122" version="1">
+                <lin-def:name>redhat-release-server</lin-def:name>
+              </lin-def:rpminfo_object>
+              <lin-def:rpminfo_object id="oval:ssg:obj:120" version="1">
+                <lin-def:name>redhat-release-workstation</lin-def:name>
+              </lin-def:rpminfo_object>
+              <ind-def:family_object id="oval:ssg:obj:118" version="1"/>
+              <lin-def:rpminfo_object id="oval:ssg:obj:116" version="1">
+                <lin-def:name>redhat-release-server</lin-def:name>
+              </lin-def:rpminfo_object>
+              <lin-def:rpminfo_object id="oval:ssg:obj:114" version="1">
+                <lin-def:name>redhat-release-workstation</lin-def:name>
+              </lin-def:rpminfo_object>
+              <lin-def:rpminfo_object id="oval:ssg:obj:112" version="1">
+                <lin-def:name>fedora-release</lin-def:name>
+              </lin-def:rpminfo_object>
+              <ind-def:family_object id="oval:ssg:obj:110" version="1"/>
+            </objects>
+            <states>
+              <lin-def:rpminfo_state id="oval:ssg:ste:123" version="1">
+                <lin-def:version operation="pattern match">^7.*$</lin-def:version>
+              </lin-def:rpminfo_state>
+              <lin-def:rpminfo_state id="oval:ssg:ste:121" version="1">
+                <lin-def:version operation="pattern match">^7.*$</lin-def:version>
+              </lin-def:rpminfo_state>
+              <ind-def:family_state id="oval:ssg:ste:119" version="1">
+                <ind-def:family>unix</ind-def:family>
+              </ind-def:family_state>
+              <lin-def:rpminfo_state id="oval:ssg:ste:117" version="1">
+                <lin-def:version operation="pattern match">^6.*$</lin-def:version>
+              </lin-def:rpminfo_state>
+              <lin-def:rpminfo_state id="oval:ssg:ste:115" version="1">
+                <lin-def:version operation="pattern match">^6.*$</lin-def:version>
+              </lin-def:rpminfo_state>
+              <lin-def:rpminfo_state id="oval:ssg:ste:113" version="1">
+                <lin-def:version operation="pattern match">^1$</lin-def:version>
+              </lin-def:rpminfo_state>
+              <ind-def:family_state id="oval:ssg:ste:111" version="1">
+                <ind-def:family>unix</ind-def:family>
+              </ind-def:family_state>
+            </states>
+          </oval_definitions>
+          <results>
+            <system>
+              <definitions>
+                <definition definition_id="oval:ssg:def:106" result="not evaluated" version="1">
+                  <criteria operator="AND" result="not evaluated">
+                    <criterion test_ref="oval:ssg:tst:107" version="1" result="not evaluated"/>
+                    <criteria operator="OR" result="not evaluated">
+                      <criterion test_ref="oval:ssg:tst:108" version="1" result="not evaluated"/>
+                      <criterion test_ref="oval:ssg:tst:109" version="1" result="not evaluated"/>
+                    </criteria>
+                  </criteria>
+                </definition>
+                <definition definition_id="oval:ssg:def:103" result="not evaluated" version="1">
+                  <criteria operator="AND" result="not evaluated">
+                    <criterion test_ref="oval:ssg:tst:101" version="1" result="not evaluated"/>
+                    <criteria operator="OR" result="not evaluated">
+                      <criterion test_ref="oval:ssg:tst:104" version="1" result="not evaluated"/>
+                      <criterion test_ref="oval:ssg:tst:105" version="1" result="not evaluated"/>
+                    </criteria>
+                  </criteria>
+                </definition>
+                <definition definition_id="oval:ssg:def:100" result="false" version="1">
+                  <criteria operator="AND" result="false">
+                    <criterion test_ref="oval:ssg:tst:101" version="1" result="true"/>
+                    <criterion test_ref="oval:ssg:tst:102" version="1" result="false"/>
+                  </criteria>
+                </definition>
+              </definitions>
+              <tests>
+                <test test_id="oval:ssg:tst:101" version="1" check="all" result="true">
+                  <tested_item item_id="1329443" result="true"/>
+                </test>
+                <test test_id="oval:ssg:tst:102" version="1" check_existence="only_one_exists" check="all" result="false"/>
+                <test test_id="oval:ssg:tst:104" version="1" check="all" result="not evaluated"/>
+                <test test_id="oval:ssg:tst:105" version="1" check="all" result="not evaluated"/>
+                <test test_id="oval:ssg:tst:107" version="1" check="all" result="not evaluated"/>
+                <test test_id="oval:ssg:tst:108" version="1" check="all" result="not evaluated"/>
+                <test test_id="oval:ssg:tst:109" version="1" check="all" result="not evaluated"/>
+              </tests>
+              <oval_system_characteristics xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:unix-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#unix" xmlns:ind-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#independent" xmlns:lin-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#linux" xmlns:win-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#windows" xmlns="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5 oval-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#independent independent-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#unix unix-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#linux linux-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#windows windows-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#macos macos-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
+                <generator>
+                  <oval:product_name>python</oval:product_name>
+                  <oval:product_version>2.6.6</oval:product_version>
+                  <oval:schema_version>5.10</oval:schema_version>
+                  <oval:timestamp>2021-11-30T15:39:18</oval:timestamp>
+                </generator>
+                <system_info>
+                  <os_name>Fedora</os_name>
+                  <os_version>34 (Workstation Edition)</os_version>
+                  <architecture>x86_64</architecture>
+                  <primary_host_name>rh-hony</primary_host_name>
+                  <interfaces>
+                    <interface>
+                      <interface_name>lo</interface_name>
+                      <ip_address>127.0.0.1</ip_address>
+                      <mac_address>00:00:00:00:00:00</mac_address>
+                    </interface>
+                    <interface>
+                      <interface_name>wlp0s20f3</interface_name>
+                      <ip_address>10.200.153.45</ip_address>
+                      <mac_address>74:D8:3E:1A:0C:3E</mac_address>
+                    </interface>
+                    <interface>
+                      <interface_name>virbr0</interface_name>
+                      <ip_address>192.168.122.1</ip_address>
+                      <mac_address>52:54:00:E8:16:C5</mac_address>
+                    </interface>
+                    <interface>
+                      <interface_name>enp9s0u1</interface_name>
+                      <ip_address>10.43.12.70</ip_address>
+                      <mac_address>00:50:B6:8E:49:DA</mac_address>
+                    </interface>
+                    <interface>
+                      <interface_name>lo</interface_name>
+                      <ip_address>::1</ip_address>
+                      <mac_address>00:00:00:00:00:00</mac_address>
+                    </interface>
+                    <interface>
+                      <interface_name>wlp0s20f3</interface_name>
+                      <ip_address>fe80::3bc2:6468:e470:d804</ip_address>
+                      <mac_address>74:D8:3E:1A:0C:3E</mac_address>
+                    </interface>
+                    <interface>
+                      <interface_name>enp9s0u1</interface_name>
+                      <ip_address>2620:52:0:2b0c:ff5:c817:e2fc:1914</ip_address>
+                      <mac_address>00:50:B6:8E:49:DA</mac_address>
+                    </interface>
+                    <interface>
+                      <interface_name>enp9s0u1</interface_name>
+                      <ip_address>fe80::648:e757:55c:e02e</ip_address>
+                      <mac_address>00:50:B6:8E:49:DA</mac_address>
+                    </interface>
+                  </interfaces>
+                </system_info>
+                <collected_objects>
+                  <object id="oval:ssg:obj:110" version="1" flag="complete">
+                    <reference item_ref="1329443"/>
+                  </object>
+                  <object id="oval:ssg:obj:112" version="1" flag="does not exist"/>
+                </collected_objects>
+                <system_data>
+                  <ind-sys:family_item id="1329443" status="exists">
+                    <ind-sys:family>unix</ind-sys:family>
+                  </ind-sys:family_item>
+                </system_data>
+              </oval_system_characteristics>
+            </system>
+          </results>
+        </oval_results>
+      </arf:content>
+    </arf:report>
+  </arf:reports>
+</arf:asset-report-collection>
