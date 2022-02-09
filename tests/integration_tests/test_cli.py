@@ -7,8 +7,8 @@ from unittest import mock
 
 import pytest
 
-from oscap_report.cli import CommandLineAPI
-from oscap_report.scap_results_parser.scap_results_parser import \
+from openscap_report.cli import CommandLineAPI
+from openscap_report.scap_results_parser.scap_results_parser import \
     SCAPResultsParser
 
 from ..constants import PATH_TO_ARF, PATH_TO_EMPTY_FILE
