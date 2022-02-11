@@ -5,11 +5,9 @@ from lxml import etree
 
 from .cpe_tree_builder import CpeTreeBulder
 from .data_structures.data_structures import Group, Report
-from .description_parser import DescriptionParser
 from .exceptions import MissingOVALResult
 from .namespaces import NAMESPACES
-from .oval_definition_parser.oval_definition_parser import OVALDefinitionParser
-from .rule_parser import RuleParser
+from .parsers import DescriptionParser, OVALDefinitionParser, RuleParser
 
 SCHEMAS_DIR = Path(__file__).parent / "schemas"
 

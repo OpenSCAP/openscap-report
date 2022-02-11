@@ -1,6 +1,6 @@
 from lxml import etree
 
-from .data_structures.data_structures import Remediation
+from ..data_structures.data_structures import Remediation
 
 
 class RemediationParser():

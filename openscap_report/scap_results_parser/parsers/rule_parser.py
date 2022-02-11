@@ -1,6 +1,6 @@
-from .data_structures.data_structures import Rule
+from ..data_structures.data_structures import Rule
+from ..namespaces import NAMESPACES
 from .description_parser import DescriptionParser
-from .namespaces import NAMESPACES
 from .remediation_parser import RemediationParser
 
 
