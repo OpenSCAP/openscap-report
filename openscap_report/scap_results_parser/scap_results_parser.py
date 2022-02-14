@@ -88,6 +88,27 @@ class SCAPResultsParser():  # pylint: disable=R0902
             logging.debug(rule_id)
             logging.debug(rule)
 
+    def _improve_result_of_remedied_rule(self, rule_id):
+        remediation_error_code = None
+        check_engine_result = None
+        remediation_error_code_prefix = "Fix execution completed and returned:"
+        check_engine_result_prefix = "Checking engine returns:"
+
+        for message in self.rules[rule_id].messages:
+            if message.startswith(remediation_error_code_prefix):
+                error_code = message.replace(remediation_error_code_prefix, "")
+                remediation_error_code = int(error_code)
+
+            index = message.find(check_engine_result_prefix)
+            if index:
+                check_engine_result = message[index:]
+
+        if check_engine_result is not None and "fail" in check_engine_result:
+            self.rules[rule_id].result = "fix unsuccessful"
+
+        if remediation_error_code is not None and remediation_error_code > 0:
+            self.rules[rule_id].result = "fix failed"
+
     def _insert_rules_results(self):
         rules_results = self.test_results.findall('.//xccdf:rule-result', NAMESPACES)
         for rule_result in rules_results:
@@ -95,9 +116,18 @@ class SCAPResultsParser():  # pylint: disable=R0902
             self.rules[rule_id].time = rule_result.get('time')
             self.rules[rule_id].result = rule_result.find('.//xccdf:result', NAMESPACES).text
 
-            message = rule_result.find('.//xccdf:message', NAMESPACES)
-            if message is not None:
-                self.rules[rule_id].message = message.text
+            messages = rule_result.findall('.//xccdf:message', NAMESPACES)
+            if messages is not None:
+                self.rules[rule_id].messages = []
+                for message in messages:
+                    self.rules[rule_id].messages.append(message.text)
+                self._improve_result_of_remedied_rule(rule_id)
+
+            if "fix" in self.rules[rule_id].result:
+                message = (
+                    "The OVAL graph of the rule as it was displayed before the fix was performed."
+                )
+                self.rules[rule_id].messages.append(message)
 
     def _insert_oval_and_cpe_trees(self):
         try:

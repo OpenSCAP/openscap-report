@@ -53,10 +53,13 @@ class Report:  # pylint: disable=R0902
             "fail": len(list(
                 filter(lambda rule: rule.result.lower() == "fail", self.rules.values()))),
             "pass": len(list(
-                filter(lambda rule: rule.result.lower() == "pass", self.rules.values()))),
+                filter(
+                    lambda rule: rule.result.lower() in ("pass", "fixed"), self.rules.values()))),
             "unknown_error": len(list(
-                filter(lambda rule:
-                       rule.result.lower() in ("error", "unknown"), self.rules.values()))),
+                filter(
+                    lambda rule: rule.result.lower() in (
+                        "error", "unknown", "fix unsuccessful", "fix failed"
+                    ), self.rules.values()))),
         }
         not_ignored_rules = len(list(
             filter(
@@ -112,7 +115,7 @@ class Rule:  # pylint: disable=R0902
     warnings: list = None
     platforms: list = None
     oval_definition_id: str = ""
-    message: str = ""
+    messages: list = None
     remediations: list = None
     oval_tree: OvalNode = None
     cpe_tree: OvalNode = None
@@ -132,7 +135,7 @@ class Rule:  # pylint: disable=R0902
             "warnings": self.warnings,
             "platforms": self.platforms,
             "oval_definition_id": self.oval_definition_id,
-            "message": self.message,
+            "messages": self.messages,
             "remediations": self.remediations,
             "oval_tree": self.oval_tree.as_dict(),
             "cpe_tree": self.cpe_tree.as_dict(),
