@@ -3,7 +3,7 @@ from lxml import etree
 from ..namespaces import NAMESPACES
 
 
-class DescriptionParser():
+class FullTextParser():
     def __init__(self, ref_values):
         self.ref_values = ref_values
 

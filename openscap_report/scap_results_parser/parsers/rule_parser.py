@@ -1,12 +1,12 @@
 from ..data_structures import Rule
 from ..namespaces import NAMESPACES
-from .description_parser import DescriptionParser
+from .full_text_parser import FullTextParser
 from .remediation_parser import RemediationParser
 
 
 class RuleParser():
     def __init__(self, ref_values):
-        self.description_parser = DescriptionParser(ref_values)
+        self.description_parser = FullTextParser(ref_values)
         self.remediation_parser = RemediationParser(ref_values)
 
     @staticmethod
