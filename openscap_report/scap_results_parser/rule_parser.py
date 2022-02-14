@@ -1,11 +1,13 @@
-from .data_structures.data_structures import Remediation, Rule
+from .data_structures.data_structures import Rule
 from .description_parser import DescriptionParser
 from .namespaces import NAMESPACES
+from .remediation_parser import RemediationParser
 
 
 class RuleParser():
-    def __init__(self):
-        self.description_parser = DescriptionParser()
+    def __init__(self, ref_values):
+        self.description_parser = DescriptionParser(ref_values)
+        self.remediation_parser = RemediationParser(ref_values)
 
     @staticmethod
     def _get_references(rule):
@@ -36,19 +38,11 @@ class RuleParser():
             warnings.append(warning.text)
         return warnings
 
-    @staticmethod
-    def _get_remediations(rule):
+    def _get_remediations(self, rule):
         output = []
         for fix in rule.findall(".//xccdf:fix", NAMESPACES):
-            fix_dict = {
-                "remediation_id": fix.get("id"),
-                "system": fix.get("system"),
-                "complexity": fix.get("complexity", ""),
-                "disruption": fix.get("disruption", ""),
-                "strategy": fix.get("strategy", ""),
-                "fix": fix.text,
-            }
-            output.append(Remediation(**fix_dict))
+            remediation = self.remediation_parser.get_remediation(fix)
+            output.append(remediation)
         return output
 
     @staticmethod

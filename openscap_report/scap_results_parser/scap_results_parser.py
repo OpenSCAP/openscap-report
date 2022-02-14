@@ -17,14 +17,15 @@ SCHEMAS_DIR = Path(__file__).parent / "schemas"
 class SCAPResultsParser():  # pylint: disable=R0902
     def __init__(self, data):
         self.root = etree.XML(data)
-        self.rule_parser = RuleParser()
-        self.description_parser = DescriptionParser()
         self.arf_schemas_path = 'arf/1.1/asset-reporting-format_1.1.0.xsd'
         if not self.validate(self.arf_schemas_path):
             logging.warning("This file is not valid ARF report!")
         else:
             logging.info("The file is valid ARF report")
         self.test_results = self.root.find('.//xccdf:TestResult', NAMESPACES)
+        self.ref_values = self._get_ref_values()
+        self.rule_parser = RuleParser(self.ref_values)
+        self.description_parser = DescriptionParser(self.ref_values)
         self.profile = None
         self.rules = {}
         self.groups = {}
@@ -36,6 +37,12 @@ class SCAPResultsParser():  # pylint: disable=R0902
         xmlschema_doc = etree.parse(xsd_path)
         xmlschema = etree.XMLSchema(xmlschema_doc)
         return xmlschema.validate(self.root)
+
+    def _get_ref_values(self):
+        ref_values = {}
+        for ref_value in self.root.findall('.//xccdf:set-value', NAMESPACES):
+            ref_values[ref_value.get("idref")] = ref_value.text
+        return ref_values
 
     def _get_cpe_platforms(self):
         cpe_platforms = []
