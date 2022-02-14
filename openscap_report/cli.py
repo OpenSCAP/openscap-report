@@ -6,9 +6,8 @@ from sys import stdin, stdout
 from lxml.etree import XMLSyntaxError
 
 from . import __version__
-from .html_report.report_generator import ReportGenerator
-from .old_html_report_style.report_generator import \
-    ReportGenerator as OldOSCAPReportGenerator
+from .html_report import ReportGenerator
+from .old_html_report_style import OldOSCAPReportGenerator
 from .scap_results_parser.scap_results_parser import SCAPResultsParser
 
 DESCRIPTION = ("Generate a HTML (JSON, PDF?, Printable HTML, etc) document (HTML report)"
