@@ -6,7 +6,7 @@ from .remediation_parser import RemediationParser
 
 class RuleParser():
     def __init__(self, ref_values):
-        self.description_parser = FullTextParser(ref_values)
+        self.full_text_parser = FullTextParser(ref_values)
         self.remediation_parser = RemediationParser(ref_values)
 
     @staticmethod
@@ -31,11 +31,10 @@ class RuleParser():
             identifiers.append(ident)
         return identifiers
 
-    @staticmethod
-    def _get_warnings(rule):
+    def _get_warnings(self, rule):
         warnings = []
         for warning in rule.findall(".//xccdf:warning", NAMESPACES):
-            warnings.append(warning.text)
+            warnings.append(self.full_text_parser.get_full_warning(warning))
         return warnings
 
     def _get_remediations(self, rule):
@@ -69,21 +68,18 @@ class RuleParser():
         rule_dict = {
             "rule_id": rule_id,
             "severity": rule.get("severity", "Unknown"),
-            "description": self.description_parser.get_full_description(rule),
+            "description": self.full_text_parser.get_full_description(rule),
             "references": self._get_references(rule),
             "identifiers": self._get_identifiers(rule),
             "warnings": self._get_warnings(rule),
             "remediations": self._get_remediations(rule),
             "multi_check": self._get_multi_check(rule),
+            "rationale": self.full_text_parser.get_full_rationale(rule),
         }
 
         title = rule.find(".//xccdf:title", NAMESPACES)
         if title is not None:
             rule_dict["title"] = title.text
-
-        rationale = rule.find(".//xccdf:rationale", NAMESPACES)
-        if rationale is not None:
-            rule_dict["rationale"] = rationale.text
 
         platforms = rule.findall(".//xccdf:platform", NAMESPACES)
         rule_dict["platforms"] = []

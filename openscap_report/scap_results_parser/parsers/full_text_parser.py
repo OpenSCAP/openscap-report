@@ -11,39 +11,48 @@ class FullTextParser():
         return self.ref_values.get(tag.get("idref"))
 
     @staticmethod
-    def get_html_attributes_as_string(attributes):
+    def _get_html_attributes_as_string(attributes):
         out = ""
         for key, value in attributes.items():
             out += f" {key}=\"{value}\""
         return out
 
-    def get_html_tag_as_string(self, tag):
+    def _get_tag_text(self, tag):
+        if tag.prefix == "html":
+            return self._get_html_tag_as_string(tag)
+        if etree.QName(tag).localname == "sub":
+            return self.replace_sub_tag(tag)
+        return ""
+
+    def _get_html_tag_as_string(self, tag):
         tag_name = etree.QName(tag).localname
-        tag_text = tag.text
-        tag_attributes = self.get_html_attributes_as_string(tag.attrib)
+        tag_text = "" if tag.text is None else tag.text
+        tag_attributes = self._get_html_attributes_as_string(tag.attrib)
         for child in tag:
-            if tag_text is None:
-                tag_text = ""
-            if child.prefix == "html":
-                tag_text += self.get_html_tag_as_string(child)
-            if etree.QName(child).localname == "sub":
-                tag_text += self.replace_sub_tag(child)
+            tag_text += self._get_tag_text(child)
             tag_text += child.tail if child.tail is not None else ""
-        if tag_text is not None:
+        if tag_text:
             return f"<{tag_name}{tag_attributes}>{tag_text}</{tag_name}>"
         return f"<{tag_name}{tag_attributes}>"
+
+    def _get_element_as_string(self, element):
+        text = "" if element.text is None else element.text
+        for child in element:
+            text += self._get_tag_text(child)
+            text += child.tail if child.tail is not None else ""
+        return text
 
     def get_full_description(self, rule):
         description = rule.find(".//xccdf:description", NAMESPACES)
         if description is None:
-            return None
-        str_description = description.text
-        for child in description:
-            if str_description is None:
-                str_description = ""
-            if child.prefix == "html":
-                str_description += self.get_html_tag_as_string(child)
-            if etree.QName(child).localname == "sub":
-                str_description += self.replace_sub_tag(child)
-            str_description += child.tail if child.tail is not None else ""
-        return str_description
+            return ""
+        return self._get_element_as_string(description)
+
+    def get_full_warning(self, warning):
+        return self._get_element_as_string(warning)
+
+    def get_full_rationale(self, rule):
+        rationale = rule.find(".//xccdf:rationale", NAMESPACES)
+        if rationale is None:
+            return ""
+        return self._get_element_as_string(rationale)
