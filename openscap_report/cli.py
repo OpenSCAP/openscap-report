@@ -8,7 +8,7 @@ from lxml.etree import XMLSyntaxError
 from . import __version__
 from .html_report import ReportGenerator
 from .old_html_report_style import OldOSCAPReportGenerator
-from .scap_results_parser.scap_results_parser import SCAPResultsParser
+from .scap_results_parser import SCAPResultsParser
 
 DESCRIPTION = ("Generate a HTML (JSON, PDF?, Printable HTML, etc) document (HTML report)"
                " from an ARF (or XCCDF file) containing results of oscap scan. Unless"
