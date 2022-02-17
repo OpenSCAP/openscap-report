@@ -115,12 +115,12 @@
             {% endif %}
             <tr role="row">
                 <td role="cell"><b>Description:</b></td>
-                <td role="cell">{{ rule.description }}</td>
+                <td role="cell">{{- rule.description | set_css_for_list -}}</td>
             </tr>
             {% if rule.rationale %}
             <tr role="row">
                 <td role="cell"><b>Rationale:</b></td>
-                <td role="cell">{{ rule.rationale }}</td>
+                <td role="cell">{{- rule.rationale | set_css_for_list -}}</td>
             </tr>
             {% endif %}
             {% if rule.warnings %}
@@ -134,7 +134,7 @@
                         </div>
                         <p class="pf-c-alert__title">
                             <span class="pf-screen-reader">Warning alert:</span>
-                            {{- warning -}}
+                            {{- warning | set_css_for_list -}}
                         </p>
                     </div>
                     <br>
