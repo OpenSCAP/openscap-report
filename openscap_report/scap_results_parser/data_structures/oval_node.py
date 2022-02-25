@@ -5,38 +5,7 @@ from dataclasses import dataclass
 
 from .oval_result_eval import (EMPTY_RESULT, FULL_RESULT_TO_SHORT_RESULT,
                                SHORT_RESULT_TO_FULL_RESULT, OvalResult)
-
-
-@dataclass
-class OvalObject():
-    object_id: str = ""
-    flag: str = ""
-    object_type: str = ""
-    object_data: dict = None
-
-    def as_dict(self):
-        return {
-            "object_id": self.object_id,
-            "flag": self.flag,
-            "object_type": self.object_type,
-            "object_data": self.object_data,
-        }
-
-
-@dataclass
-class OvalTest():
-    test_id: str = ""
-    test_type: str = ""
-    comment: str = ""
-    oval_object: OvalObject = None
-
-    def as_dict(self):
-        return {
-            "test_id": self.test_id,
-            "test_type": self.test_type,
-            "comment": self.comment,
-            "oval_object": self.oval_object.as_dict(),
-        }
+from .oval_test import OvalTest
 
 
 @dataclass

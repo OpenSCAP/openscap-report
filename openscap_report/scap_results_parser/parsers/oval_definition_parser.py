@@ -1,6 +1,6 @@
 import logging
 
-from ..data_structures.oval_data_structures import OvalNode
+from ..data_structures import OvalNode
 from ..exceptions import MissingOVALResult
 from ..namespaces import NAMESPACES
 from .info_of_test_parser import InfoOfTest

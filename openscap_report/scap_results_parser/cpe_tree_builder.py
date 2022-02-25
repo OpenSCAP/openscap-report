@@ -1,4 +1,4 @@
-from .data_structures.oval_data_structures import OvalNode
+from .data_structures import OvalNode
 
 
 class CpeTreeBulder:

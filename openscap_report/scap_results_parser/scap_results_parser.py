@@ -4,7 +4,7 @@ from pathlib import Path
 from lxml import etree
 
 from .cpe_tree_builder import CpeTreeBulder
-from .data_structures.data_structures import Group, Report
+from .data_structures import Group, Report
 from .exceptions import MissingOVALResult
 from .namespaces import NAMESPACES
 from .parsers import DescriptionParser, OVALDefinitionParser, RuleParser
