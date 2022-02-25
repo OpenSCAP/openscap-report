@@ -2,10 +2,9 @@ import logging
 
 import pytest
 
+from openscap_report.scap_results_parser import MissingProcessableRules
 from openscap_report.scap_results_parser.data_structures.data_structures import \
     Remediation
-from openscap_report.scap_results_parser.exceptions import \
-    MissingProcessableRules
 from tests.unit_tests.test_scap_result_parser import get_parser
 
 from ..constants import PATH_TO_ARF

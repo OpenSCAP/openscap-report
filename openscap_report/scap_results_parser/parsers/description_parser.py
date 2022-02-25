@@ -1,6 +1,6 @@
 from lxml import etree
 
-from .namespaces import NAMESPACES
+from ..namespaces import NAMESPACES
 
 
 class DescriptionParser():
