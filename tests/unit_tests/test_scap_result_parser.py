@@ -198,7 +198,7 @@ def test_description(rule, result):
             "accessible by root.\nIf a user nevertheless must have the privileges to read them,"
             " the argument of the dmesg command has to be restricted\nin order to prevent "
             "the user from flushing the buffer through the -c option:\n"
-            "<pre>\nuser ALL = dmesg \"\"\n</pre>"
+            "<pre>\nuser ALL = dmesg &quot;&quot;\n</pre>"
         )
     )
 ])
@@ -225,14 +225,14 @@ def test_rationale(rule, result):
         "xccdf_org.ssgproject.content_rule_sudoers_explicit_command_args",
         [
             (
-                "This rule doesn't come with a remediation, as absence of arguments in"
-                " the user spec doesn't mean that the command is intended to be executed "
+                "This rule doesn&#x27;t come with a remediation, as absence of arguments in"
+                " the user spec doesn&#x27;t mean that the command is intended to be executed "
                 "with no arguments."
             ),
             (
                 "The rule can produce false findings when an argument contains a"
                 " comma - sudoers syntax allows comma escaping using backslash, but"
-                " the check doesn't support that. For example,"
+                " the check doesn&#x27;t support that. For example,"
                 " <code>root ALL=(ALL) echo 1\\,2</code> allows root to execute"
                 " <code>echo 1,2</code>, but the check would interpret it as two commands "
                 "<code>echo 1\\</code> and <code>2</code>."
