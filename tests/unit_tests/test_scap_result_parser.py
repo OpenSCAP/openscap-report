@@ -154,7 +154,21 @@ def test_multi_check(file_path, contains_rules_some_multi_check_rule):
             "in <code>/etc/audit/auditd.conf</code> to ensure that administrators are notified\n"
             "via email for those situations:\n<pre>action_mail_acct = root</pre>"
         )
-    )
+    ),
+    (
+        "xccdf_org.ssgproject.content_rule_chronyd_specify_remote_server",
+        (
+            "<code>Chrony</code> is a daemon which implements"
+            " the Network Time Protocol (NTP). It is designed to\n"
+            "synchronize system clocks across a variety of systems and"
+            " use a source that is highly\naccurate. More information on"
+            " <code>chrony</code> can be found at\n\n    "
+            "<a href=\"http://chrony.tuxfamily.org/\">http://chrony.tuxfamily.org/</a>.\n"
+            "<code>Chrony</code> can be configured to be a client and/or a server.\n"
+            "Add or edit server or pool lines to <code>/etc/chrony.conf</code> as appropriate:\n"
+            "<pre>server &lt;remote-server&gt;</pre>\nMultiple servers may be configured."
+        )
+    ),
 ])
 def test_description(rule, result):
     parser = get_parser(PATH_TO_ARF)
