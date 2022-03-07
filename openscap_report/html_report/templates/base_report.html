@@ -63,10 +63,12 @@
             </div>
         </header>
         <main class="pf-c-page__main" tabindex="-1">
-            <section class="pf-c-page__main-section pf-m-no-fill">
-                {% block content%}
+            <section class="pf-c-page__main-section pf-m-limit-width pf-m-align-center pf-m-no-fill">
+                <div class="pf-c-page__main-body">
+                    {% block content%}
 
-                {% endblock %}
+                    {% endblock %}
+                </div>
             </section>
     </div>
 </body>
