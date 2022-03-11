@@ -19,9 +19,13 @@
 {% endblock %}
 
 {% block patternfly_css %}
+{% if  debug_setting.use_online_css %}
+ <link rel="stylesheet" href="https://unpkg.com/@patternfly/patternfly/patternfly.css" crossorigin="anonymous">
+{% else %}
 <style>
     {%- include './css/patternfly.css' -%}
 </style>
+{% endif %}
 {% endblock %}
 
 {% block title%}OpenSCAP Evaluation Report{% endblock %}
