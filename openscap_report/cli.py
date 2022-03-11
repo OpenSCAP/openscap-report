@@ -28,7 +28,8 @@ LOG_LEVES_DESCRIPTION = (
 DEBUG_FLAGS_DESCRIPTION = (
     "DEBUG FLAGS:\n"
     "\tNO-MINIFY - The HTML report is not minified.\n"
-    "\tBUTTON-SHOW-ALL-RULES - Adds the button that shows all rules."
+    "\tBUTTON-SHOW-ALL-RULES - Adds the button that shows all rules.\n"
+    "\tONLINE-CSS - Use the latest online version of Patternfly"
 )
 
 MASSAGE_FORMAT = '%(levelname)s: %(message)s'
@@ -114,7 +115,7 @@ class CommandLineAPI():  # pylint: disable=R0902
             action="store",
             nargs='+',
             default=[""],
-            choices=["NO-MINIFY", "BUTTON-SHOW-ALL-RULES"],
+            choices=["NO-MINIFY", "BUTTON-SHOW-ALL-RULES", "ONLINE-CSS"],
             help=f"{DEBUG_FLAGS_DESCRIPTION}"
         )
 
@@ -160,6 +161,7 @@ class DebugSetting():
     options_require_debug_script: tuple = ("BUTTON-SHOW-ALL-RULES", )
     include_debug_script: bool = False
     button_show_all_rules: bool = False
+    use_online_css: bool = False
 
     def update_settings_with_debug_flags(self, debug_flags):
         for flag in debug_flags:
@@ -169,6 +171,8 @@ class DebugSetting():
                 self.no_minify = True
             if flag == "BUTTON-SHOW-ALL-RULES":
                 self.button_show_all_rules = True
+            if flag == "ONLINE-CSS":
+                self.use_online_css = True
 
 
 def main():
