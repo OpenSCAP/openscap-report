@@ -1,5 +1,6 @@
 import argparse
 import logging
+from dataclasses import dataclass
 from sys import exit as sys_exit
 from sys import stdin, stdout
 
@@ -26,7 +27,8 @@ LOG_LEVES_DESCRIPTION = (
 )
 DEBUG_FLAGS_DESCRIPTION = (
     "DEBUG FLAGS:\n"
-    "\tNO-MINIFY - The HTML report is not minified."
+    "\tNO-MINIFY - The HTML report is not minified.\n"
+    "\tBUTTON-SHOW-ALL-RULES - Adds the button that shows all rules."
 )
 
 MASSAGE_FORMAT = '%(levelname)s: %(message)s'
@@ -35,7 +37,7 @@ EXIT_FAILURE_CODE = 1
 EXIT_SUCCESS_CODE = 0
 
 
-class CommandLineAPI():
+class CommandLineAPI():  # pylint: disable=R0902
     def __init__(self):
         self.arguments = self._parse_arguments()
         self.log_file = self.arguments.log_file
@@ -46,6 +48,7 @@ class CommandLineAPI():
         self.report_file = self.arguments.FILE
         self.output_file = self.arguments.output
         self.output_format = self.arguments.format.upper()
+        self.debug_setting = DebugSetting()
 
     def _parse_arguments(self):
         parser = argparse.ArgumentParser(
@@ -111,7 +114,7 @@ class CommandLineAPI():
             action="store",
             nargs='+',
             default=[""],
-            choices=["NO-MINIFY"],
+            choices=["NO-MINIFY", "BUTTON-SHOW-ALL-RULES"],
             help=f"{DEBUG_FLAGS_DESCRIPTION}"
         )
 
@@ -130,9 +133,9 @@ class CommandLineAPI():
             return report_generator.generate_html_report()
         report_generator = ReportGenerator(report_parser)
 
-        minify = "NO-MINIFY" not in self.debug_flags
+        self.debug_setting.update_settings_with_debug_flags(self.debug_flags)
 
-        return report_generator.generate_html_report(minify)
+        return report_generator.generate_html_report(self.debug_setting)
 
     def load_file(self):
         logging.info("Loading file: %s", self.report_file)
@@ -149,6 +152,23 @@ class CommandLineAPI():
         logging.info("Close files")
         self.report_file.close()
         self.output_file.close()
+
+
+@dataclass
+class DebugSetting():
+    no_minify: bool = False
+    options_require_debug_script: tuple = ("BUTTON-SHOW-ALL-RULES", )
+    include_debug_script: bool = False
+    button_show_all_rules: bool = False
+
+    def update_settings_with_debug_flags(self, debug_flags):
+        for flag in debug_flags:
+            if flag in self.options_require_debug_script:
+                self.include_debug_script = True
+            if flag == "NO-MINIFY":
+                self.no_minify = True
+            if flag == "BUTTON-SHOW-ALL-RULES":
+                self.button_show_all_rules = True
 
 
 def main():
