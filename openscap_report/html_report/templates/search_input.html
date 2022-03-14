@@ -73,10 +73,12 @@
                     <span class="pf-c-check__label">Unknown</span>
                 </label>
             </div>
-            <br>
-            <div>
-                <button class="pf-c-button pf-m-primary" type="button" onclick="show_all_rules_details($(this))">Show all result details</button>
-            </div>
+            {%- if debug_setting.button_show_all_rules -%}
+                <br>
+                <div>
+                    <button class="pf-c-button pf-m-primary" type="button" onclick="show_all_rules_details($(this))">Show all result details</button>
+                </div>
+            {%- endif -%}
         </div>
     </div>
 </div>

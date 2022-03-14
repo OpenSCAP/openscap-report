@@ -66,16 +66,6 @@ function show_evaluation_characteristics(self) { // eslint-disable-line no-unuse
     self.parent().parent().children('.pf-c-accordion__expanded-content').toggleClass('pf-m-expanded').toggle();
 }
 
-function show_all_rules_details(self) { // eslint-disable-line no-unused-vars
-    $("#rule-table tbody[rule-id] button").queue(function (next) { // eslint-disable-line array-callback-return
-        setTimeout(() => {
-            $(this).click();
-        }, 1);
-        next();
-    });
-    self.text((self.text() == 'Show all result details') ? 'Hide all result details' : 'Show all result details');
-}
-
 function show_rule_detail(self, rule_id) { // eslint-disable-line no-unused-vars
     self.toggleClass('pf-m-expanded');
     self.parent().parent().parent().children('.pf-c-table__expandable-row').toggleClass('pf-m-expanded');
