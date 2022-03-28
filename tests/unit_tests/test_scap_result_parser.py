@@ -162,6 +162,90 @@ def test_description(rule, result):
     assert parser.rules[rule].description == result
 
 
+@pytest.mark.parametrize("rule, result", [
+    (
+        "xccdf_org.ssgproject.content_rule_prefer_64bit_os",
+        (
+            "Use of a 64-bit operating system offers a few advantages, "
+            "like a larger address space range for\nAddress Space Layout"
+            " Randomization (ASLR) and systematic presence of No eXecute"
+            " and Execute Disable (NX/XD) protection bits."
+        )
+    ),
+    (
+        "xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_lock_enabled",
+        (
+            "A session lock is a temporary action taken when a user stops work and"
+            " moves away from the immediate physical vicinity\nof the information "
+            "system but does not want to logout because of the temporary nature of the absense."
+        )
+    ),
+    (
+        "xccdf_org.ssgproject.content_rule_auditd_data_retention_action_mail_acct",
+        (
+            "Email sent to the root account is typically aliased to the\n"
+            "administrators of the system, who can take appropriate action."
+        )
+    ),
+    (
+        "xccdf_org.ssgproject.content_rule_sudoers_explicit_command_args",
+        (
+            "Any argument can modify quite significantly the behavior of a"
+            " program, whether regarding the\nrealized operation (read, write, delete, etc.)"
+            " or accessed resources (path in a file system tree). To\navoid any possibility of"
+            " misuse of a command by a user, the ambiguities must be removed at the\nlevel of its"
+            " specification.\n\nFor example, on some systems, the kernel messages are only "
+            "accessible by root.\nIf a user nevertheless must have the privileges to read them,"
+            " the argument of the dmesg command has to be restricted\nin order to prevent "
+            "the user from flushing the buffer through the -c option:\n"
+            "<pre>\nuser ALL = dmesg \"\"\n</pre>"
+        )
+    )
+])
+def test_rationale(rule, result):
+    parser = get_parser(PATH_TO_ARF)
+    parser.process_groups_or_rules()
+    assert parser.rules[rule].rationale == result
+
+
+@pytest.mark.parametrize("rule, result", [
+    (
+        "xccdf_org.ssgproject.content_rule_prefer_64bit_os",
+        ["There is no remediation besides installing a 64-bit operating system."]
+    ),
+    (
+        "xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_lock_enabled",
+        []
+    ),
+    (
+        "xccdf_org.ssgproject.content_rule_auditd_data_retention_action_mail_acct",
+        []
+    ),
+    (
+        "xccdf_org.ssgproject.content_rule_sudoers_explicit_command_args",
+        [
+            (
+                "This rule doesn't come with a remediation, as absence of arguments in"
+                " the user spec doesn't mean that the command is intended to be executed "
+                "with no arguments."
+            ),
+            (
+                "The rule can produce false findings when an argument contains a"
+                " comma - sudoers syntax allows comma escaping using backslash, but"
+                " the check doesn't support that. For example,"
+                " <code>root ALL=(ALL) echo 1\\,2</code> allows root to execute"
+                " <code>echo 1,2</code>, but the check would interpret it as two commands "
+                "<code>echo 1\\</code> and <code>2</code>."
+            )
+        ]
+    )
+])
+def test_warnings(rule, result):
+    parser = get_parser(PATH_TO_ARF)
+    parser.process_groups_or_rules()
+    assert parser.rules[rule].warnings == result
+
+
 @pytest.mark.parametrize("rule, remediation_id, scripts", [
     (
         "xccdf_org.ssgproject.content_rule_prefer_64bit_os",

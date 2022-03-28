@@ -7,7 +7,7 @@ from .cpe_tree_builder import CpeTreeBulder
 from .data_structures import Group, Report
 from .exceptions import MissingOVALResult
 from .namespaces import NAMESPACES
-from .parsers import DescriptionParser, OVALDefinitionParser, RuleParser
+from .parsers import FullTextParser, OVALDefinitionParser, RuleParser
 
 SCHEMAS_DIR = Path(__file__).parent / "schemas"
 
@@ -23,7 +23,7 @@ class SCAPResultsParser():  # pylint: disable=R0902
         self.test_results = self.root.find('.//xccdf:TestResult', NAMESPACES)
         self.ref_values = self._get_ref_values()
         self.rule_parser = RuleParser(self.ref_values)
-        self.description_parser = DescriptionParser(self.ref_values)
+        self.description_parser = FullTextParser(self.ref_values)
         self.profile = None
         self.rules = {}
         self.groups = {}
