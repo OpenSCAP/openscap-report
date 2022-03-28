@@ -12,6 +12,12 @@
 </script>
 {% endblock %}
 
+{% block debug_script %}
+<script>
+    {%- include './js/debug_script.js' -%}
+</script>
+{% endblock %}
+
 {% block patternfly_css %}
 <style>
     {%- include './css/patternfly.css' -%}
