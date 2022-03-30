@@ -154,7 +154,21 @@ def test_multi_check(file_path, contains_rules_some_multi_check_rule):
             "in <code>/etc/audit/auditd.conf</code> to ensure that administrators are notified\n"
             "via email for those situations:\n<pre>action_mail_acct = root</pre>"
         )
-    )
+    ),
+    (
+        "xccdf_org.ssgproject.content_rule_chronyd_specify_remote_server",
+        (
+            "<code>Chrony</code> is a daemon which implements"
+            " the Network Time Protocol (NTP). It is designed to\n"
+            "synchronize system clocks across a variety of systems and"
+            " use a source that is highly\naccurate. More information on"
+            " <code>chrony</code> can be found at\n\n    "
+            "<a href=\"http://chrony.tuxfamily.org/\">http://chrony.tuxfamily.org/</a>.\n"
+            "<code>Chrony</code> can be configured to be a client and/or a server.\n"
+            "Add or edit server or pool lines to <code>/etc/chrony.conf</code> as appropriate:\n"
+            "<pre>server &lt;remote-server&gt;</pre>\nMultiple servers may be configured."
+        )
+    ),
 ])
 def test_description(rule, result):
     parser = get_parser(PATH_TO_ARF)
@@ -198,7 +212,7 @@ def test_description(rule, result):
             "accessible by root.\nIf a user nevertheless must have the privileges to read them,"
             " the argument of the dmesg command has to be restricted\nin order to prevent "
             "the user from flushing the buffer through the -c option:\n"
-            "<pre>\nuser ALL = dmesg \"\"\n</pre>"
+            "<pre>\nuser ALL = dmesg &quot;&quot;\n</pre>"
         )
     )
 ])
@@ -225,14 +239,14 @@ def test_rationale(rule, result):
         "xccdf_org.ssgproject.content_rule_sudoers_explicit_command_args",
         [
             (
-                "This rule doesn't come with a remediation, as absence of arguments in"
-                " the user spec doesn't mean that the command is intended to be executed "
+                "This rule doesn&#x27;t come with a remediation, as absence of arguments in"
+                " the user spec doesn&#x27;t mean that the command is intended to be executed "
                 "with no arguments."
             ),
             (
                 "The rule can produce false findings when an argument contains a"
                 " comma - sudoers syntax allows comma escaping using backslash, but"
-                " the check doesn't support that. For example,"
+                " the check doesn&#x27;t support that. For example,"
                 " <code>root ALL=(ALL) echo 1\\,2</code> allows root to execute"
                 " <code>echo 1,2</code>, but the check would interpret it as two commands "
                 "<code>echo 1\\</code> and <code>2</code>."

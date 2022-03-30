@@ -1,3 +1,5 @@
+import html
+
 from lxml import etree
 
 from ..namespaces import NAMESPACES
@@ -26,20 +28,20 @@ class FullTextParser():
 
     def _get_html_tag_as_string(self, tag):
         tag_name = etree.QName(tag).localname
-        tag_text = "" if tag.text is None else tag.text
+        tag_text = "" if tag.text is None else html.escape(tag.text)
         tag_attributes = self._get_html_attributes_as_string(tag.attrib)
         for child in tag:
             tag_text += self._get_tag_text(child)
-            tag_text += child.tail if child.tail is not None else ""
+            tag_text += html.escape(child.tail) if child.tail is not None else ""
         if tag_text:
             return f"<{tag_name}{tag_attributes}>{tag_text}</{tag_name}>"
         return f"<{tag_name}{tag_attributes}>"
 
     def _get_element_as_string(self, element):
-        text = "" if element.text is None else element.text
+        text = "" if element.text is None else html.escape(element.text)
         for child in element:
             text += self._get_tag_text(child)
-            text += child.tail if child.tail is not None else ""
+            text += html.escape(child.tail) if child.tail is not None else ""
         return text
 
     def get_full_description(self, rule):
