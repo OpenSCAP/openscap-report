@@ -14,10 +14,27 @@
     <style>
         pre {
             background: #cccccc;
-            padding: 5px;
             -webkit-box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.75);
             -moz-box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.75);
             box-shadow: 0 0 8px 0 rgba(0, 0, 0, .1);
+            padding: 2px 4px;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            margin: 5px;
+        }
+
+        details pre {
+            padding: 4px;
+            width: 100%;
+            margin-top: 4px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 0px;
         }
 
         .progress-bar {
@@ -35,6 +52,18 @@
             height: 1rem;
             font-size: .75rem;
             background-color: #e9ecef;
+        }
+
+        code {
+            padding: 2px 4px;
+            font-size: 90%;
+            color: #c7254e;
+            background-color: #f9f2f4;
+            border-radius: 4px;
+        }
+
+        .text_block {
+            text-align: justify;
         }
     </style>
 </head>
@@ -55,10 +84,12 @@
             </div>
         </header>
         <main class="pf-c-page__main" tabindex="-1">
-            <section class="pf-c-page__main-section pf-m-no-fill">
-                {% block content%}
+            <section class="pf-c-page__main-section pf-m-limit-width pf-m-align-center pf-m-no-fill">
+                <div class="pf-c-page__main-body">
+                    {% block content%}
 
-                {% endblock %}
+                    {% endblock %}
+                </div>
             </section>
     </div>
 </body>

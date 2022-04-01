@@ -19,6 +19,7 @@ class ReportGenerator():
         self.file_loader = FileSystemLoader(str(Path(__file__).parent / "templates"))
         self.env = Environment(loader=self.file_loader)
         self.env.globals['include_file_in_base64'] = self.include_file_in_base64
+        self.env.filters['set_css_for_list'] = self.set_css_for_list
         self.env.trim_blocks = True
         self.env.lstrip_blocks = True
 
@@ -38,3 +39,9 @@ class ReportGenerator():
         with open(real_path, "rb") as file_data:
             base64_data = (base64.b64encode(file_data.read())).decode('utf-8')
         return Markup(base64_data)
+
+    @staticmethod
+    def set_css_for_list(data):
+        out = data.replace("<ul>", "<ul class=\"pf-c-list\">")
+        out = out.replace("<ol>", "<ol class=\"pf-c-list\">")
+        return out
