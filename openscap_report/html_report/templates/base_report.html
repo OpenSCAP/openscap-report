@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% block interactive_script %}{% endblock %}
+    {% block oval_graph_generation_script %}{% endblock %}
     {%- if debug_setting.include_debug_script -%}
         {% block debug_script %}{% endblock %}
     {%- endif -%}
