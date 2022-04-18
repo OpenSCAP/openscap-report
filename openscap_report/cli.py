@@ -11,25 +11,25 @@ from .html_report import ReportGenerator
 from .old_html_report_style import OldOSCAPReportGenerator
 from .scap_results_parser import SCAPResultsParser
 
-DESCRIPTION = ("Generate a HTML (JSON, PDF?, Printable HTML, etc) document (HTML report)"
-               " from an ARF (or XCCDF file) containing results of oscap scan. Unless"
-               " the --output option is specified it will be written to standard output.")
+DESCRIPTION = ("Generates an HTML report from an ARF (or XCCDF Result) file with results of "
+               "a SCAP-compatible utility scan. Unless the --output option is specified "
+               "the report will be written to the standard output.")
 LOG_LEVES_DESCRIPTION = (
     "LOG LEVELS:\n"
-    "\tDEBUG - Detailed information, typically of interest only when diagnosing problems.\n"
-    "\tINFO - Confirmation that things are working as expected.\n"
-    "\tWARING -  An indication that something unexpected happened, or indicative of"
-    " some problem in the near future. The software is still working as expected.\n"
-    "\tERROR - Due to a more serious problem, the software has not been able to perform "
-    "some function.\n"
+    "\tDEBUG - Detailed information, typically of interest only for diagnosing problems.\n"
+    "\tINFO - A confirmation that things are working as expected.\n"
+    "\tWARING -  An indication that something unexpected happened, or a signal of"
+    " a possible problem in the future. The software is still working as expected.\n"
+    "\tERROR - Due to a more serious problems, the software has not been able to perform "
+    "its function to the full extent.\n"
     "\tCRITICAL - A serious error, indicating that the program itself may be unable "
-    "to continue running.\n"
+    "to continue operating.\n"
 )
 DEBUG_FLAGS_DESCRIPTION = (
     "DEBUG FLAGS:\n"
-    "\tNO-MINIFY - The HTML report is not minified.\n"
-    "\tBUTTON-SHOW-ALL-RULES - Adds the button that shows all rules.\n"
-    "\tONLINE-CSS - Use the latest online version of Patternfly"
+    "\tNO-MINIFY - The HTML report will not be minified.\n"
+    "\tBUTTON-SHOW-ALL-RULES - Adds a button to the HTML report for expanding all rules.\n"
+    "\tONLINE-CSS - Use the latest online version of Patternfly CSS/JS in the HTML report"
 )
 
 MASSAGE_FORMAT = '%(levelname)s: %(message)s'
@@ -38,9 +38,76 @@ EXIT_FAILURE_CODE = 1
 EXIT_SUCCESS_CODE = 0
 
 
+def prepare_parser():
+    parser = argparse.ArgumentParser(
+        prog="oscap-report",
+        formatter_class=argparse.RawTextHelpFormatter,
+        description=DESCRIPTION,
+        add_help=False,
+    )
+    parser.add_argument(
+        "--version",
+        action="version",
+        version="%(prog)s " + __version__,
+        help="Show program's version number and exit.")
+    parser.add_argument(
+        '-h',
+        '--help',
+        action='help',
+        default=argparse.SUPPRESS,
+        help='Show this help message and exit.')
+    parser.add_argument(
+        'FILE',
+        type=argparse.FileType("r"),
+        nargs='?',
+        default=stdin,
+        help="ARF (XCCDF) file or stdin if not provided.")
+    parser.add_argument(
+        "-o",
+        "--output",
+        action="store",
+        type=argparse.FileType("wb+", 0),
+        default=stdout,
+        help="write the report to a file instead of the standard output.")
+    parser.add_argument(
+        "--log-file",
+        action="store",
+        default=None,
+        help="write the log to a file instead of stderr.")
+    parser.add_argument(
+        "--log-level",
+        action="store",
+        default="WARNING",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+        help=(
+            "write debug information to the log up to the LOG_LEVEL."
+            f"\n{LOG_LEVES_DESCRIPTION}")
+    )
+    parser.add_argument(
+        "-f",
+        "--format",
+        action="store",
+        default="HTML",
+        choices=["HTML", "OLD-STYLE-HTML"],
+        help="FORMAT: %(choices)s (default: %(default)s)."
+    )
+    parser.add_argument(
+        "-d",
+        "--debug",
+        action="store",
+        nargs='+',
+        default=[""],
+        choices=["NO-MINIFY", "BUTTON-SHOW-ALL-RULES", "ONLINE-CSS"],
+        help=(
+            "extra HTML generation options for debugging"
+            f"{DEBUG_FLAGS_DESCRIPTION}")
+    )
+    return parser
+
+
 class CommandLineAPI():  # pylint: disable=R0902
     def __init__(self):
-        self.arguments = self._parse_arguments()
+        self.arguments = prepare_parser().parse_args()
         self.log_file = self.arguments.log_file
         self.log_level = self.arguments.log_level
         self.debug_flags = self.arguments.debug
@@ -50,74 +117,6 @@ class CommandLineAPI():  # pylint: disable=R0902
         self.output_file = self.arguments.output
         self.output_format = self.arguments.format.upper()
         self.debug_setting = DebugSetting()
-
-    def _parse_arguments(self):
-        parser = argparse.ArgumentParser(
-            prog="oscap-report",
-            formatter_class=argparse.RawTextHelpFormatter,
-            description=DESCRIPTION,
-            add_help=False,
-        )
-        self._prepare_arguments(parser)
-        return parser.parse_args()
-
-    @staticmethod
-    def _prepare_arguments(parser):
-        parser.add_argument(
-            "--version",
-            action="version",
-            version="%(prog)s " + __version__,
-            help="Show program's version number and exit.")
-        parser.add_argument(
-            '-h',
-            '--help',
-            action='help',
-            default=argparse.SUPPRESS,
-            help='Show this help message and exit.')
-        parser.add_argument(
-            'FILE',
-            type=argparse.FileType("r"),
-            nargs='?',
-            default=stdin,
-            help="ARF file, stdin if not provided.")
-        parser.add_argument(
-            "-o",
-            "--output",
-            action="store",
-            type=argparse.FileType("wb+", 0),
-            default=stdout,
-            help="write the report to this file instead of standard output.")
-        parser.add_argument(
-            "--log-file",
-            action="store",
-            default=None,
-            help="if not provided - stderr.")
-        parser.add_argument(
-            "--log-level",
-            action="store",
-            default="WARNING",
-            choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
-            help=(
-                "creates LOG_FILE file with log information depending on LOG_LEVEL."
-                f"\n{LOG_LEVES_DESCRIPTION}")
-        )
-        parser.add_argument(
-            "-f",
-            "--format",
-            action="store",
-            default="HTML",
-            choices=["HTML", "OLD-STYLE-HTML"],
-            help="FORMAT: %(choices)s (default: %(default)s)."
-        )
-        parser.add_argument(
-            "-d",
-            "--debug",
-            action="store",
-            nargs='+',
-            default=[""],
-            choices=["NO-MINIFY", "BUTTON-SHOW-ALL-RULES", "ONLINE-CSS"],
-            help=f"{DEBUG_FLAGS_DESCRIPTION}"
-        )
 
     def _setup_logging(self):
         logging.basicConfig(
