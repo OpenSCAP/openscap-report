@@ -12,9 +12,11 @@ Source0:        https://github.com/OpenSCAP/%{name}/releases/download/%{version}
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
+BuildRequires:  python3-sphinx
+BuildRequires:  python3-sphinx_rtd_theme
 
 %global _description %{expand:
-A tool for generating human-readable reports from (SCAP) XCCDF and ARF results.}
+A tool for generating human-readable reports from SCAP XCCDF and ARF results.}
 
 %description %_description
 
@@ -31,11 +33,14 @@ Summary:        %{summary}
 
 %build
 %pyproject_wheel
+sphinx-build -b man docs _build_docs
+
 
 
 %install
 %pyproject_install
 %pyproject_save_files %{module}
+install -Dt %{buildroot}%{_mandir}/man8 _build_docs/oscap-report.8
 
 
 %check
@@ -43,10 +48,9 @@ Summary:        %{summary}
 
 
 %files -f %{pyproject_files}
-%doc README.md
+%{_mandir}/man8/oscap-report.*
 %{_bindir}/oscap-report
 %exclude %{python3_sitelib}/tests/
 
 
 %changelog
-

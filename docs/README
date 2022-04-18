@@ -1,0 +1,5 @@
+Build the HTML docs with "sphinx-build . TARGET_DIR".
+Build the MAN page with "sphinx-build -b man . TARGET_DIR".
+
+Files in the "modules" directory were generated using
+"sphinx-apidoc openscap_report docs/modules" command.
