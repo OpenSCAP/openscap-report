@@ -30,5 +30,6 @@ build:
 filter:
     excluded_paths:
         - '*/tests/*'
+        - '*/docs/*'
     dependency_paths:
         - 'lib/*'
