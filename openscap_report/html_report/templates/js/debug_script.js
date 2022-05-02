@@ -1,9 +1,4 @@
 
-// eslint-disable-next-line no-extend-native
-String.prototype.asJqueryComplaintId = function() {
-    return this.replace(/\./ug, "");
-};
-
 function show_all_rules_details(self) { // eslint-disable-line no-unused-vars
     self.setAttribute('disabled', 'disabled');
     const promises = []

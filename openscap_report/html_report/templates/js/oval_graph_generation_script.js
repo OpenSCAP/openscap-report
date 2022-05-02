@@ -1,4 +1,9 @@
 
+// eslint-disable-next-line no-extend-native
+String.prototype.asJqueryComplaintId = function() {
+    return this.replace(/\./ug, "");
+};
+
 const NEGATION_COLOR = {
     'pf-m-green': 'pf-m-red',
     'pf-m-red': 'pf-m-green',
@@ -14,6 +19,16 @@ const COLOR_TRANSLATION = {
     'pf-m-red': '--pf-global--danger-color--200',
     '': ''
 };
+
+window.addEventListener('load', () => {
+    var selector = "table[id=rule-table] tbody[rule-id] button[id=show_hide_rule_detail_button]";
+    var rule_buttons = document.querySelectorAll(selector);
+    rule_buttons.forEach(item => {
+        var rule_id = item.parentNode.parentNode.parentNode.getAttribute("rule-id").asJqueryComplaintId();
+        generate_oval_tree(item, "oval_tree_of_rule_" + rule_id); // eslint-disable-line no-undef
+        generate_oval_tree(item, "cpe_tree_of_rule_" + rule_id); // eslint-disable-line no-undef
+    });
+});
 
 
 function toggle_OVAL_operator() { // eslint-disable-line no-unused-vars

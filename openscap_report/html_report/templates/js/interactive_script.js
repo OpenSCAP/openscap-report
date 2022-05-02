@@ -106,14 +106,11 @@ function show_evaluation_characteristics(self) { // eslint-disable-line no-unuse
     hide_or_show(div_to_show);
 }
 
-function show_rule_detail(self, rule_id) { // eslint-disable-line no-unused-vars
+function show_rule_detail(self) { // eslint-disable-line no-unused-vars
     self.classList.toggle('pf-m-expanded');
     var element_to_show = get_child_of_element_with_selector(
         self.parentNode.parentNode.parentNode,
         ".pf-c-table__expandable-row"
     );
     element_to_show.classList.toggle('pf-m-expanded');
-
-    generate_oval_tree(self, "oval_tree_of_rule_" + rule_id); // eslint-disable-line no-undef
-    generate_oval_tree(self, "cpe_tree_of_rule_" + rule_id); // eslint-disable-line no-undef
 }
