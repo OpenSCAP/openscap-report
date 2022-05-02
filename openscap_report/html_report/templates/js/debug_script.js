@@ -5,20 +5,19 @@ String.prototype.asJqueryComplaintId = function() {
 };
 
 function show_all_rules_details(self) { // eslint-disable-line no-unused-vars
-    self.disabled = true;
-    var promises = [];
-    var selector = "table[id=rule-table] tbody[rule-id] button[id=show_hide_rule_detail_button]";
-    document.querySelectorAll(selector).forEach(function (item) {
-        var rule_id = item.parentNode.parentNode.parentNode.getAttribute("rule-id").asJqueryComplaintId();
+    self.setAttribute('disabled', 'disabled');
+    const promises = []
+    const selector = "table[id=rule-table] tbody[rule-id] button[id=show_hide_rule_detail_button]";
+    const rule_buttons = document.querySelectorAll(selector);
+    rule_buttons.forEach(function (item) {
         promises.push(new Promise(resolve => {
             setTimeout(() => {
-                resolve(show_rule_detail(item, rule_id)) // eslint-disable-line no-undef
-            }, 0.1);
-        }));
+            resolve(show_rule_detail(item)); // eslint-disable-line no-undef
+            }, 0.001);
+        }))
     });
-
     Promise.all(promises).then(() => {
-        self.disabled = false;
         self.textContent = self.textContent == 'Show all result details' ? 'Hide all result details' : 'Show all result details';
+        self.removeAttribute('disabled');
     });
 }

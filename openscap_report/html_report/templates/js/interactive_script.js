@@ -22,6 +22,31 @@ String.prototype.asId = function (prefix) {
     return prefix + id;
 };
 
+document.querySelector('main').addEventListener('scroll', () => {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        show_next_rules();
+    }
+}, false);
+
+function show_next_rules() {
+    const first_hidden_element = document.querySelector("table[id=rule-table] tbody[rule-id].hidden");
+    const next_ten_rules = get_next_five_rules(first_hidden_element);
+    next_ten_rules.forEach(function(rule) {
+        rule.classList.remove("hidden");
+    });
+}
+
+function get_next_five_rules(first_hidden_element) {
+    let element = first_hidden_element;
+    const next_five_rules = [];
+    var count_five = 5;
+    for(let i = 0; i <= count_five && element !== null; i += 1) {
+        next_five_rules.push(element);
+        element = element.nextSibling;
+    }
+   return next_five_rules;
+}
+
 function get_child_of_element_with_selector(element, selector) {
     return element.querySelector(":scope > ".concat(selector));
 }
@@ -46,6 +71,7 @@ function search_rule(self) { // eslint-disable-line no-unused-vars
         var advance_option = (FILTER_TABLE[result_of_rule]) && (FILTER_TABLE[severity_of_rule]);
         if ((is_matched_title || is_matched_rule_id) && advance_option) {
             rule.style.display = "";
+            rule.classList.remove("hidden")
         } else {
             rule.style.display = "none";
         }
