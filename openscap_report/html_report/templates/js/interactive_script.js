@@ -1,5 +1,5 @@
 
-var FILTER_TABLE = {
+const FILTER_TABLE = {
     "result-pass": true,
     "result-fail": true,
     "result-notchecked": true,
@@ -18,8 +18,7 @@ var FILTER_TABLE = {
 
 // eslint-disable-next-line no-extend-native
 String.prototype.asId = function (prefix) {
-    var id = this.replace(/ /ug, "-").toLowerCase();
-    return prefix + id;
+    return prefix + this.replace(/ /ug, "-").toLowerCase();
 };
 
 document.querySelector('main').addEventListener('scroll', () => {
@@ -63,14 +62,14 @@ function hide_or_show(element) {
 
 // Search engine of rules
 function search_rule(self) { // eslint-disable-line no-unused-vars
-    var value = self.value.toLowerCase();
-    var rules = document.querySelectorAll("table[id=rule-table] tbody[rule-id]");
+    const value = self.value.toLowerCase();
+    const rules = document.querySelectorAll("table[id=rule-table] tbody[rule-id]");
     rules.forEach(function (rule) {
-        var is_matched_title = rule.getAttribute("title").toLowerCase().includes(value);
-        var is_matched_rule_id = rule.getAttribute("rule-id").toLowerCase().includes(value);
-        var result_of_rule = rule.getAttribute("result").asId('result-');
-        var severity_of_rule = rule.getAttribute("severity").asId('severity-');
-        var advance_option = (FILTER_TABLE[result_of_rule]) && (FILTER_TABLE[severity_of_rule]);
+        const is_matched_title = rule.getAttribute("title").toLowerCase().includes(value);
+        const is_matched_rule_id = rule.getAttribute("rule-id").toLowerCase().includes(value);
+        const result_of_rule = rule.getAttribute("result").asId('result-');
+        const severity_of_rule = rule.getAttribute("severity").asId('severity-');
+        const advance_option = (FILTER_TABLE[result_of_rule]) && (FILTER_TABLE[severity_of_rule]);
         if ((is_matched_title || is_matched_rule_id) && advance_option) {
             rule.style.display = "";
             rule.classList.remove("hidden")
@@ -90,7 +89,7 @@ function show_advanced_options(self) { // eslint-disable-line no-unused-vars
     self.classList.toggle('pf-m-expanded');
     self.firstChild.className = self.firstChild.className == 'fas fa-caret-right' ? 'fas fa-caret-down' : 'fas fa-caret-right';
 
-    var element_to_show = get_child_of_element_with_selector(
+    const element_to_show = get_child_of_element_with_selector(
         self.parentNode.parentNode,
         ".pf-c-accordion__expanded-content"
     );
@@ -100,7 +99,7 @@ function show_advanced_options(self) { // eslint-disable-line no-unused-vars
 
 function show_evaluation_characteristics(self) { // eslint-disable-line no-unused-vars
     self.classList.toggle('pf-m-expanded');
-    var div_to_show = get_child_of_element_with_selector(
+    const div_to_show = get_child_of_element_with_selector(
         self.parentNode.parentNode,
         ".pf-c-accordion__expanded-content"
     );
@@ -110,7 +109,7 @@ function show_evaluation_characteristics(self) { // eslint-disable-line no-unuse
 
 function show_rule_detail(self) { // eslint-disable-line no-unused-vars
     self.classList.toggle('pf-m-expanded');
-    var element_to_show = get_child_of_element_with_selector(
+    const element_to_show = get_child_of_element_with_selector(
         self.parentNode.parentNode.parentNode,
         ".pf-c-table__expandable-row"
     );
