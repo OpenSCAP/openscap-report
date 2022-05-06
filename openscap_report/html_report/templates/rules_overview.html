@@ -15,7 +15,7 @@
     </thead>
     {% for rule_id, rule in report.rules.items() %}
     {%- if rule.result != "notselected" -%}
-        {% if loop.index > 10 %}
+        {% if loop.index > 50 %}
             <tbody class="pf-m-expanded hidden" role="rowgroup" title="{{ rule.title }}" rule-id="{{ rule.rule_id }}" result="{{ rule.result }}" severity="{{ rule.severity }}">
         {% else %}
             <tbody class="pf-m-expanded" role="rowgroup" title="{{ rule.title }}" rule-id="{{ rule.rule_id }}" result="{{ rule.result }}" severity="{{ rule.severity }}">
@@ -87,7 +87,6 @@
                 {% endif %}
             </td>
         </tr>
-
         <tr class="pf-c-table__expandable-row" role="row">
             <td role="cell" colspan="4">
                 <div class="pf-c-table__expandable-row-content">

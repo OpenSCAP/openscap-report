@@ -29,20 +29,22 @@ document.querySelector('main').addEventListener('scroll', () => {
 }, false);
 
 function show_next_rules() {
-    const first_hidden_element = document.querySelector("table[id=rule-table] tbody[rule-id].hidden");
-    const next_ten_rules = get_next_five_rules(first_hidden_element);
-    next_ten_rules.forEach(function(rule) {
+    const next_five_rules = get_next_five_rules();
+    next_five_rules.forEach(rule => {
         rule.classList.remove("hidden");
     });
 }
 
-function get_next_five_rules(first_hidden_element) {
-    let element = first_hidden_element;
+let FIRST_HIDDEN_ELEMENT = document.querySelector("table[id=rule-table] tbody[rule-id].hidden");
+function get_next_five_rules() {
     const next_five_rules = [];
     var count_five = 5;
-    for(let i = 0; i <= count_five && element !== null; i += 1) {
-        next_five_rules.push(element);
-        element = element.nextSibling;
+    for(let i = 0; i <= count_five && FIRST_HIDDEN_ELEMENT !== null; i += 1) {
+        next_five_rules.push(FIRST_HIDDEN_ELEMENT);
+        FIRST_HIDDEN_ELEMENT = FIRST_HIDDEN_ELEMENT.nextSibling;
+        if (!(FIRST_HIDDEN_ELEMENT instanceof HTMLElement)) {
+            FIRST_HIDDEN_ELEMENT = FIRST_HIDDEN_ELEMENT.nextSibling;
+        }
     }
    return next_five_rules;
 }
