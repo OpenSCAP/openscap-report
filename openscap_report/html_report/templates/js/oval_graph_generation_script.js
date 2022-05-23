@@ -330,9 +330,6 @@ function get_OVAL_tree_operator_node(node_data) {
 
 function get_table_header(objects) {
     const table_thead = THEAD.cloneNode();
-    table_thead.className = "pf-c-table pf-m-compact pf-m-grid-md";
-    table_thead.cssText = "table-layout:auto;"
-    table_thead.setAttribute("role", "grid");
     const row = ROW.cloneNode();
     row.setAttribute("role", "row");
     table_thead.appendChild(row);
@@ -341,6 +338,7 @@ function get_table_header(objects) {
     const header_col = HEADER_COL.cloneNode();
     header_col.setAttribute("role", "columnheader");
     header_col.setAttribute("scope", "col");
+    header_col.className = "pf-m-truncate pf-m-fit-content";
 
     for (const item of get_header_items(objects)) {
         const clone_header_col = header_col.cloneNode();
@@ -355,19 +353,25 @@ function get_table_body(objects) {
     const tbody = TBODY.cloneNode();
     tbody.setAttribute("role", "rowgroup");
     const rows_fragment = document.createDocumentFragment();
+
+    const row = ROW.cloneNode();
+    row.setAttribute("role", "row");
+
+    const col = COL.cloneNode();
+    col.setAttribute("role", "cell");
+    col.className = "pf-m-truncate pf-m-fit-content";
+
     for (const object of objects) {
-        const row = ROW.cloneNode();
-        row.setAttribute("role", "row");
-        rows_fragment.appendChild(row);
+        const clone_of_row = row.cloneNode();
+        rows_fragment.appendChild(clone_of_row);
         const cols_fragment = document.createDocumentFragment();
         for (const key in object) {
-            const col = COL.cloneNode();
-            col.setAttribute("role", "cell");
-            col.setAttribute("data-label", key);
-            col.textContent = object[key];
-            cols_fragment.appendChild(col);
+            const clone_of_col = col.cloneNode();
+            clone_of_col.setAttribute("data-label", key);
+            clone_of_col.textContent = object[key];
+            cols_fragment.appendChild(clone_of_col);
         }
-        row.appendChild(cols_fragment);
+        clone_of_row.appendChild(cols_fragment);
     }
     tbody.appendChild(rows_fragment);
     return tbody;
@@ -405,9 +409,11 @@ function get_OVAL_test_info(test_info) {
     }
     div.appendChild(get_info_paragraf(test_info));
     const table_div = DIV.cloneNode();
+    table_div.className = "pf-c-scroll-inner-wrapper oval-test-detail-table";
     div.appendChild(table_div);
-    table_div.cssText = "width: 0; min-width: 100em; overflow-x: auto;";
     const table = TABLE.cloneNode();
+    table.className = "pf-c-table pf-m-compact pf-m-grid-md";
+    table.setAttribute("role", "grid");
     table_div.appendChild(table);
 
     const objects = [];
