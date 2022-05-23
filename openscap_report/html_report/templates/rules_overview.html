@@ -34,10 +34,10 @@
                 </button>
             </td>
 
-            <td role="cell" id="{{ rule.title }}" data-label="Rule">
+            <td role="cell" id="{{ rule.title }}" class="rule-title" data-label="Rule">
                 <span class="pf-c-table__text">{{ rule.title }}</span>
             </td>
-            <td role="cell" data-label="Severity">
+            <td role="cell" class="rule-severity" data-label="Severity">
                 {% if rule.result not in ("pass", "fixed") and rule.severity == "low" %}
                 <span class="pf-c-label pf-m-blue">
                     <span class="pf-c-label__content">{{ rule.severity }}</span>
@@ -56,7 +56,7 @@
                 </span>
                 {% endif %}
             </td>
-            <td role="cell" data-label="Result">
+            <td role="cell" class="rule-result" data-label="Result">
                 {% if rule.result in ("pass", "fixed") %}
                 <span class="pf-c-label pf-m-green">
                     <span class="pf-c-label__content">
