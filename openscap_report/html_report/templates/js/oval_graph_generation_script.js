@@ -48,6 +48,7 @@ const SPAN = document.createElement("span");
 
 const BUTTON = document.createElement("button");
 const ICON = document.createElement("i");
+const CODE = document.createElement("code");
 
 const LI = document.createElement("li");
 const UL = document.createElement("ul");
@@ -368,7 +369,11 @@ function get_table_body(objects) {
         for (const key in object) {
             const clone_of_col = col.cloneNode();
             clone_of_col.setAttribute("data-label", key);
-            clone_of_col.textContent = object[key];
+            if(object[key] instanceof HTMLElement) {
+                clone_of_col.appendChild(object[key]);
+            } else {
+                clone_of_col.textContent = object[key];
+            }
             cols_fragment.appendChild(clone_of_col);
         }
         clone_of_row.appendChild(cols_fragment);
@@ -473,7 +478,7 @@ function filter_permissions(object) {
             return object;
         }
     }
-    let out = '<code>';
+    let out = '';
     Object.keys(permission).forEach(key => {
         if (permission[key] == 'true') {
             switch (key.substring(1, key.length)) {
@@ -494,8 +499,9 @@ function filter_permissions(object) {
             out += "-";
         }
     });
-    out += '<\/code>';
-    new_object['permission'] = out;
+    const permissions_code = CODE.cloneNode();
+    permissions_code.textContent = out;
+    new_object['permission'] = permissions_code;
     return new_object;
 }
 
