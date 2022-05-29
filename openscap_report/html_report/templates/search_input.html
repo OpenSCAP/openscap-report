@@ -1,9 +1,9 @@
 <div class="pf-c-accordion pf-m-display-lg">
     <div class="pf-c-input-group">
-        <input class="pf-c-form-control pf-m-search" oninput="search_rule($(this))" type="search"
+        <input class="pf-c-form-control pf-m-search" oninput="search_rule(this)" type="search"
             placeholder="Search rule" id="input-search-rule" />
         <button class="pf-c-button pf-m-control" type="button" aria-expanded="true" aria-label="Advanced options"
-            onclick="show_advanced_options($(this));">
+            onclick="show_advanced_options(this);">
             <i class="fas fa-caret-right" aria-hidden="true"></i>
         </button>
     </div>
@@ -76,7 +76,7 @@
             {%- if debug_setting.button_show_all_rules -%}
                 <br>
                 <div>
-                    <button class="pf-c-button pf-m-primary" type="button" onclick="show_all_rules_details($(this))">Show all result details</button>
+                    <button class="pf-c-button pf-m-primary" type="button" onclick="show_all_rules_details(this)">Show all result details</button>
                 </div>
             {%- endif -%}
         </div>
