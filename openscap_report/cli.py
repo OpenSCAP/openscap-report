@@ -29,7 +29,9 @@ DEBUG_FLAGS_DESCRIPTION = (
     "DEBUG FLAGS:\n"
     "\tNO-MINIFY - The HTML report will not be minified.\n"
     "\tBUTTON-SHOW-ALL-RULES - Adds a button to the HTML report for expanding all rules.\n"
-    "\tONLINE-CSS - Use the latest online version of Patternfly CSS/JS in the HTML report"
+    "\tONLINE-CSS - Use the latest online version of Patternfly CSS/JS in the HTML report\n"
+    "\tBUTTON-SHOW-ALL-RULES-AND-OVAL-TEST-DETAILS - "
+    "Adds a button to the HTML report for expanding all rules and all OVAL test details."
 )
 
 MASSAGE_FORMAT = '%(levelname)s: %(message)s'
@@ -97,7 +99,12 @@ def prepare_parser():
         action="store",
         nargs='+',
         default=[""],
-        choices=["NO-MINIFY", "BUTTON-SHOW-ALL-RULES", "ONLINE-CSS"],
+        choices=[
+            "NO-MINIFY",
+            "BUTTON-SHOW-ALL-RULES",
+            "ONLINE-CSS",
+            "BUTTON-SHOW-ALL-RULES-AND-OVAL-TEST-DETAILS"
+        ],
         help=(
             "extra HTML generation options for debugging"
             f"{DEBUG_FLAGS_DESCRIPTION}")
@@ -157,10 +164,14 @@ class CommandLineAPI():  # pylint: disable=R0902
 @dataclass
 class DebugSetting():
     no_minify: bool = False
-    options_require_debug_script: tuple = ("BUTTON-SHOW-ALL-RULES", )
+    options_require_debug_script: tuple = (
+        "BUTTON-SHOW-ALL-RULES",
+        "BUTTON-SHOW-ALL-RULES-AND-OVAL-TEST-DETAILS"
+    )
     include_debug_script: bool = False
     button_show_all_rules: bool = False
     use_online_css: bool = False
+    button_show_all_rules_and_oval_test_details: bool = False
 
     def update_settings_with_debug_flags(self, debug_flags):
         for flag in debug_flags:
@@ -172,6 +183,8 @@ class DebugSetting():
                 self.button_show_all_rules = True
             if flag == "ONLINE-CSS":
                 self.use_online_css = True
+            if flag == "BUTTON-SHOW-ALL-RULES-AND-OVAL-TEST-DETAILS":
+                self.button_show_all_rules_and_oval_test_details = True
 
 
 def main():

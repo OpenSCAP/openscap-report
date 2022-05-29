@@ -76,7 +76,13 @@
             {%- if debug_setting.button_show_all_rules -%}
                 <br>
                 <div>
-                    <button class="pf-c-button pf-m-primary" type="button" onclick="show_all_rules_details(this)">Show all result details</button>
+                    <button id="show-all-rules-details" class="pf-c-button pf-m-primary" type="button" onclick="show_all_rules_details(this)">Show all result details</button>
+                </div>
+            {%- endif -%}
+            {%- if debug_setting.button_show_all_rules_and_oval_test_details -%}
+                <br>
+                <div>
+                    <button id="show-all-oval-test-details" class="pf-c-button pf-m-primary" type="button" onclick="show_all_rules_details(this, true)">Show all result details with OVAL test details expanded</button>
                 </div>
             {%- endif -%}
         </div>
