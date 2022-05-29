@@ -1,4 +1,32 @@
 
+// eslint-disable-next-line no-extend-native
+String.prototype.asJqueryComplaintId = function() {
+    return this.replace(/\./ug, "");
+};
+
+// User events methods
+
+function toggle_OVAL_operator() { // eslint-disable-line no-unused-vars
+    const operator_parent = this.parentNode.parentNode;
+    operator_parent.classList.toggle('pf-m-expanded');
+    const children_to_hide_or_show = get_child_of_element_with_selector(operator_parent, "ul"); // eslint-disable-line no-undef
+    hide_or_show(children_to_hide_or_show); // eslint-disable-line no-undef
+}
+
+function show_OVAL_details(event) { // eslint-disable-line no-unused-vars
+    const oval_details = get_child_of_element_with_selector( // eslint-disable-line no-undef
+        event.currentTarget.param_this.parentNode,
+        event.currentTarget.param_selector
+    );
+    oval_details.classList.toggle('pf-m-expanded')
+    hide_or_show(oval_details); // eslint-disable-line no-undef
+    event.currentTarget.param_this.textContent = self.textContent == 'Show test details' ? 'Hide test details' : 'Show test details';
+    event.currentTarget.param_this.setAttribute('aria-label', event.currentTarget.param_this.textContent);
+}
+
+// OVAL graph generation constants
+
+
 const NEGATION_COLOR = {
     'pf-m-green': 'pf-m-red',
     'pf-m-red': 'pf-m-green',
@@ -15,105 +43,124 @@ const COLOR_TRANSLATION = {
     '': ''
 };
 
+const DIV = document.createElement("div");
+const SPAN = document.createElement("span");
 
-function toggle_OVAL_operator() { // eslint-disable-line no-unused-vars
-    var operator_parent = this.parentNode.parentNode;
-    operator_parent.classList.toggle('pf-m-expanded');
-    var children_to_hide_or_show = get_child_of_element_with_selector(operator_parent, "ul"); // eslint-disable-line no-undef
-    hide_or_show(children_to_hide_or_show); // eslint-disable-line no-undef
-}
+const BUTTON = document.createElement("button");
+const ICON = document.createElement("i");
 
-function show_OVAL_details(event) { // eslint-disable-line no-unused-vars
-    var oval_details = get_child_of_element_with_selector( // eslint-disable-line no-undef
-        event.currentTarget.param_this.parentNode,
-        event.currentTarget.param_selector
-    );
-    oval_details.classList.toggle('pf-m-expanded')
-    hide_or_show(oval_details); // eslint-disable-line no-undef
-    event.currentTarget.param_this.textContent = self.textContent == 'Show test details' ? 'Hide test details' : 'Show test details';
-    event.currentTarget.param_this.setAttribute('aria-label', event.currentTarget.param_this.textContent);
-}
+const LI = document.createElement("li");
+const UL = document.createElement("ul");
 
+const TABLE = document.createElement("table");
+const THEAD = document.createElement("thead");
+const TBODY = document.createElement("tbody");
+const ROW = document.createElement("tr");
+const COL = document.createElement("td");
+const HEADER_COL = document.createElement("th");
+
+const P = document.createElement("p");
+
+const BR = document.createElement("br");
+const B = document.createElement("b");
+
+// OVAL graph generation methods
+
+window.addEventListener('load', () => {
+    var selector = "table[id=rule-table] tbody[rule-id] button[id=show_hide_rule_detail_button]";
+    var rule_buttons = document.querySelectorAll(selector);
+
+    rule_buttons.forEach(async item => {
+        var rule_id = await item.parentNode.parentNode.parentNode.getAttribute("rule-id").asJqueryComplaintId();
+        generate_oval_tree(item, "oval_tree_of_rule_" + rule_id); // eslint-disable-line no-undef
+        generate_oval_tree(item, "cpe_tree_of_rule_" + rule_id); // eslint-disable-line no-undef
+    });
+});
 
 function generate_oval_tree(self, div_id_with_oval_graph_data) { // eslint-disable-line no-unused-vars
-    var div_with_tree = self.parentNode.parentNode.parentNode.querySelector(`div[id=${div_id_with_oval_graph_data}]`);
+    const div_with_tree = self.parentNode.parentNode.parentNode.querySelector(`div[id=${div_id_with_oval_graph_data}]`);
     if (div_with_tree === null) {
         return;
     }
-    var data = div_with_tree.getAttribute("data");
-    var tree_data = JSON.parse(data);
-    var tree_element = document.createElement("div");
+    if (div_with_tree.getAttribute("is_rendered") === 'true') {
+        return;
+    }
+    const data = div_with_tree.getAttribute("data");
+    const tree_data = JSON.parse(data);
+
+    const fragment = document.createDocumentFragment();
+    const tree_element = fragment.appendChild(DIV.cloneNode());
     tree_element.className = "pf-c-tree-view pf-m-guides pf-m-no-background";
-    var ul = document.createElement("ul");
+    const ul = UL.cloneNode();
     ul.className = "pf-c-tree-view__list";
     ul.setAttribute('role', "tree");
     tree_element.appendChild(ul);
 
-    if (div_with_tree.getAttribute("is_rendered") === 'false' && tree_data !== undefined) {
+    if (tree_data !== undefined) {
         ul.appendChild(get_OVAL_tree_node(tree_data));
-        div_with_tree.appendChild(tree_element);
+        div_with_tree.appendChild(fragment);
         div_with_tree.setAttribute("is_rendered", 'true');
     }
 }
 
 function get_OVAL_tree_node(root) {
-    if (root.node_type != 'value') {
-        var root_node = get_OVAL_tree_operator_node(root);
-        if (root.children) {
-            var ul = document.createElement("ul");
-            ul.className = "pf-c-tree-view__list";
-            ul.setAttribute('role', "group");
-            root_node.appendChild(ul);
+    if (root.node_type == 'value') {
+        return undefined;
+    }
 
-            for (const child of root.children) {
-                if (child.node_type == "value") {
-                    ul.appendChild(render_OVAL_test(child));
-                } else {
-                    ul.appendChild(get_OVAL_tree_node(child));
-                }
+    const root_node = get_OVAL_tree_operator_node(root);
+    if (root.children) {
+        const ul = UL.cloneNode();
+        ul.className = "pf-c-tree-view__list";
+        ul.setAttribute('role', "group");
+        const fragment = document.createDocumentFragment();
+        for (const child of root.children) {
+            if (child.node_type == "value") {
+                fragment.appendChild(render_OVAL_test(child));
+            } else {
+                fragment.appendChild(get_OVAL_tree_node(child));
             }
         }
-        return root_node;
+        ul.appendChild(fragment);
+        root_node.appendChild(ul);
     }
-    return undefined;
+    return root_node;
 }
 
-
 function get_test_node() {
-    var test_node = document.createElement("li");
+    const test_node = LI.cloneNode();
     test_node.className = "pf-c-tree-view__list-item";
     test_node.setAttribute("role", "treeitem");
     test_node.setAttribute("tabindex", "-1");
 
-    var content = document.createElement("div");
+    const content = DIV.cloneNode();
     content.className = "pf-c-tree-view__content";
     test_node.appendChild(content);
 
-    var node = document.createElement("div");
+    const node = DIV.cloneNode();
     node.className = "pf-c-tree-view__node";
     node.setAttribute("tabindex", "0");
     content.appendChild(node);
 
-    var node_container = document.createElement("div");
+    const node_container = DIV.cloneNode();
     node_container.className = "pf-c-tree-view__node-container";
     node.appendChild(node_container);
 
-    var node_content = document.createElement("div");
+    const node_content = DIV.cloneNode();
     node_content.className = "pf-c-tree-view__node-content";
     node_container.appendChild(node_content);
 
-    var node_text = document.createElement("span");
+    const node_text = SPAN.cloneNode();
     node_text.className = "pf-c-tree-view__node-text";
     node_content.appendChild(node_text);
     return { test_node, node_content, node_text };
 }
 
-
 function render_OVAL_test(node_data) {
-    var { test_node, node_content, node_text } = get_test_node();
+    const { test_node, node_content, node_text } = get_test_node();
 
-    var color = '';
-    var icon = 'fa-question-circle';
+    let color = '';
+    let icon = 'fa-question-circle';
     if (node_data.value == 'true') {
         color = 'pf-m-green';
         icon = 'fa-check';
@@ -121,36 +168,41 @@ function render_OVAL_test(node_data) {
         color = 'pf-m-red';
         icon = 'fa-times';
     }
-    var node = null;
+
+    let negate_color = '';
+    let negate_icon = icon;
+
     if (node_data.negation) {
-        node = get_node(COLOR_TRANSLATION[NEGATION_COLOR[color]]);
-        node_text.appendChild(node);
-        node.appendChild(get_icon_as_html(NEGATION_ICON[icon]));
-        node.appendChild(get_bold_text("NOT"));
+        negate_color = COLOR_TRANSLATION[NEGATION_COLOR[color]];
+        negate_icon = NEGATION_ICON[icon];
     } else {
-        node = get_node(COLOR_TRANSLATION[color]);
-        node_text.appendChild(node);
-        node.appendChild(get_icon_as_html(icon));
+        negate_color = COLOR_TRANSLATION[color];
+    }
+    const node = get_node(negate_color);
+    node_text.appendChild(node);
+    node.appendChild(get_icon_as_html(negate_icon));
+    if (node_data.negation) {
+        node.appendChild(get_bold_text("NOT"));
     }
 
-    var test_id = node_data.node_id.replace("oval:ssg-", "").replace(":tst:1", "");
+    const test_id = node_data.node_id.replace("oval:ssg-", "").replace(":tst:1", "");
     node.appendChild(get_bold_text(` ${test_id} `));
     node_text.appendChild(get_label(color, node_data.tag));
     node_text.appendChild(get_label(color, node_data.value, get_icon_as_html(icon)));
 
 
-    var info_id = 'info_of_test_' + test_id.replace(/[\.:_\-]/ug, "");
-    var button = document.createElement("button");
+    const info_id = 'info_of_test_' + test_id.replace(/[\.:_\-]/ug, "");
+    const button = BUTTON.cloneNode();
     button.className = "pf-c-button pf-m-inline pf-m-link";
     button.addEventListener("click", show_OVAL_details, false);
     button.param_this = button;
     button.param_selector = `[id=${info_id}]`;
     button.setAttribute("type", " button");
     button.setAttribute("aria-label", "Show test details");
-    button.appendChild(document.createTextNode("Show test details"))
+    button.textContent = "Show test details";
     node_content.appendChild(button);
 
-    var div = document.createElement("div");
+    const div = DIV.cloneNode();
     div.className = "pf-c-tree-view__node-container";
     div.setAttribute("id", info_id);
     div.style.display = "none";
@@ -162,12 +214,11 @@ function render_OVAL_test(node_data) {
     return test_node;
 }
 
-
 function get_icon_as_html(icon) {
-    var html_icon = document.createElement("span");
+    const html_icon = SPAN.cloneNode();
     html_icon.className = "pf-c-label__icon";
 
-    var i = document.createElement("i");
+    const i = ICON.cloneNode();
     i.className = `fas fa-fw ${icon}`;
     i.setAttribute("aria-hidden", "true");
     html_icon.appendChild(i);
@@ -175,24 +226,24 @@ function get_icon_as_html(icon) {
 }
 
 function get_node(color) {
-    var node = document.createElement("span");
+    const node = SPAN.cloneNode();
     node.style.cssText = "color:var(" + color + ")";
     return node;
 }
 
 function get_bold_text(text) {
-    var b = document.createElement("b");
-    b.appendChild(document.createTextNode(text));
+    const b = B.cloneNode();
+    b.textContent = text;
     return b;
 }
 
 function get_label(color, text, icon = undefined) {
-    var span = document.createElement("span");
+    const span = SPAN.cloneNode();
     span.className = `pf-c-label ${color}`;
 
-    var content = document.createElement("span");
+    const content = SPAN.cloneNode();
     content.className = "pf-c-label__content"
-    content.appendChild(document.createTextNode(text));
+    content.textContent = text;
     if (icon !== undefined) {
         content.appendChild(icon);
     }
@@ -201,54 +252,53 @@ function get_label(color, text, icon = undefined) {
 }
 
 function get_operator_node() {
-    var operator_node = document.createElement("li");
+    const operator_node = LI.cloneNode();
     operator_node.className = "pf-c-tree-view__list-item pf-m-expanded";
     operator_node.setAttribute("role", "treeitem");
     operator_node.setAttribute("aria-expanded", "true");
     operator_node.setAttribute("tabindex", "0");
 
-    var content = document.createElement("div");
+    const content = DIV.cloneNode();
     content.className = "pf-c-tree-view__content";
     operator_node.appendChild(content);
 
-    var button = document.createElement("button");
+    const button = BUTTON.cloneNode();
     button.className = "pf-c-tree-view__node";
     button.addEventListener("click", toggle_OVAL_operator);
     button.title = "Onclick shows or hides child nodes of the OVAL tree.";
     content.appendChild(button);
 
-    var node_container = document.createElement("div");
+    const node_container = DIV.cloneNode();
     node_container.className = "pf-c-tree-view__node-container";
     button.appendChild(node_container);
 
-    var node_toggle = document.createElement("div");
+    const node_toggle = DIV.cloneNode();
     node_toggle.className = "pf-c-tree-view__node-toggle";
     node_container.appendChild(node_toggle);
 
-    var node_toggle_icon = document.createElement("span");
+    const node_toggle_icon = SPAN.cloneNode();
     node_toggle_icon.className = "pf-c-tree-view__node-toggle-icon";
     node_toggle.appendChild(node_toggle_icon);
 
-    var icon = document.createElement("i");
+    const icon = ICON.cloneNode();
     icon.className = "fas fa-angle-right";
     icon.setAttribute("aria-hidden", "true");
     node_toggle_icon.appendChild(icon);
 
-    var node_content = document.createElement("div");
+    const node_content = DIV.cloneNode();
     node_content.className = "pf-c-tree-view__node-content";
     node_container.appendChild(node_content);
 
-    var node_text = document.createElement("span");
+    const node_text = SPAN.cloneNode();
     node_text.className = "pf-c-tree-view__node-text";
     node_content.appendChild(node_text);
     return { operator_node, node_text };
-
 }
 
 function get_OVAL_tree_operator_node(node_data) {
-    var { operator_node, node_text } = get_operator_node();
-    var color = '';
-    var icon = 'fa-question-circle';
+    const { operator_node, node_text } = get_operator_node();
+    let color = '';
+    let icon = 'fa-question-circle';
     if (node_data.value == 'true') {
         color = 'pf-m-green';
         icon = 'fa-check';
@@ -256,17 +306,22 @@ function get_OVAL_tree_operator_node(node_data) {
         color = 'pf-m-red';
         icon = 'fa-times';
     }
-    var node = null;
+
+    let negate_color = '';
+    let negate_icon = icon;
     if (node_data.negation) {
-        node = get_node(COLOR_TRANSLATION[NEGATION_COLOR[color]]);
-        node_text.appendChild(node);
-        node.appendChild(get_icon_as_html(NEGATION_ICON[icon]));
-        node.appendChild(get_bold_text("NOT"));
+        negate_color = COLOR_TRANSLATION[NEGATION_COLOR[color]];
+        negate_icon = NEGATION_ICON[icon];
     } else {
-        node = get_node(COLOR_TRANSLATION[color]);
-        node_text.appendChild(node);
-        node.appendChild(get_icon_as_html(icon));
+        negate_color = COLOR_TRANSLATION[color];
     }
+    const node = get_node(negate_color);
+    node_text.appendChild(node);
+    node.appendChild(get_icon_as_html(negate_icon));
+    if (node_data.negation) {
+        node.appendChild(get_bold_text("NOT"));
+    }
+
     node.appendChild(get_bold_text(` ${node_data.node_type} `));
     node_text.appendChild(get_label(color, node_data.tag));
     node_text.appendChild(get_label(color, node_data.value, get_icon_as_html(icon)));
@@ -274,68 +329,71 @@ function get_OVAL_tree_operator_node(node_data) {
 }
 
 function get_table_header(objects) {
-    var table_thead = document.createElement("thead");
+    const table_thead = THEAD.cloneNode();
     table_thead.className = "pf-c-table pf-m-compact pf-m-grid-md";
     table_thead.cssText = "table-layout:auto;"
     table_thead.setAttribute("role", "grid");
-    var row = document.createElement("tr");
+    const row = ROW.cloneNode();
     row.setAttribute("role", "row");
     table_thead.appendChild(row);
 
+    const fragment = document.createDocumentFragment();
+    const header_col = HEADER_COL.cloneNode();
+    header_col.setAttribute("role", "columnheader");
+    header_col.setAttribute("scope", "col");
+
     for (const item of get_header_items(objects)) {
-        var header_col = document.createElement("th");
-        header_col.setAttribute("role", "columnheader");
-        header_col.setAttribute("scope", "col");
-        var header_col_text = document.createTextNode(format_header_item(item));
-        header_col.appendChild(header_col_text);
-        row.appendChild(header_col);
+        const clone_header_col = header_col.cloneNode();
+        clone_header_col.textContent = format_header_item(item);
+        fragment.appendChild(clone_header_col);
     }
+    row.appendChild(fragment);
     return table_thead;
 }
 
 function get_table_body(objects) {
-    var tbody = document.createElement("tbody");
+    const tbody = TBODY.cloneNode();
     tbody.setAttribute("role", "rowgroup");
+    const rows_fragment = document.createDocumentFragment();
     for (const object of objects) {
-        var row = document.createElement("tr");
+        const row = ROW.cloneNode();
         row.setAttribute("role", "row");
-        tbody.appendChild(row);
+        rows_fragment.appendChild(row);
+        const cols_fragment = document.createDocumentFragment();
         for (const key in object) {
-            var col = document.createElement("td");
+            const col = COL.cloneNode();
             col.setAttribute("role", "cell");
             col.setAttribute("data-label", key);
-            var col_text = document.createTextNode(object[key]);
-            col.appendChild(col_text);
-            row.appendChild(col);
+            col.textContent = object[key];
+            cols_fragment.appendChild(col);
         }
+        row.appendChild(cols_fragment);
     }
+    tbody.appendChild(rows_fragment);
     return tbody;
 }
 
 function get_info_paragraf(test_info) {
-    var info_paragraf = document.createElement("p");
-    var info_text = null;
+    const info_paragraf = P.cloneNode();
     if (test_info.oval_object.flag == "complete") {
-        info_text = document.createTextNode('Following items have been found on the system:');
-        info_paragraf.appendChild(info_text);
+        info_paragraf.textContent ='Following items have been found on the system: ';
     } else {
-        info_text = document.createTextNode('No items have been found conforming to the following objects:');
-        info_paragraf.appendChild(info_text);
-        info_paragraf.appendChild(document.createElement("br"));
+        info_paragraf.textContent ='No items have been found conforming to the following objects: ';
+        info_paragraf.appendChild(BR.cloneNode());
 
-        var bold_text = document.createElement("b");
-        bold_text.appendChild(document.createTextNode(test_info.oval_object.object_id))
+        let bold_text = B.cloneNode();
+        bold_text.textContent = test_info.oval_object.object_id;
         info_paragraf.appendChild(bold_text);
         info_paragraf.appendChild(document.createTextNode(" of type "));
-        bold_text = document.createElement("b");
-        bold_text.appendChild(document.createTextNode(test_info.oval_object.object_type));
+        bold_text = B.cloneNode();
+        bold_text.textContent = test_info.oval_object.object_type;
         info_paragraf.appendChild(bold_text);
     }
     return info_paragraf;
 }
 
 function get_OVAL_test_info(test_info) {
-    var div = document.createElement("div");
+    const div = DIV.cloneNode();
     div.className = "pf-c-accordion__expanded-content-body";
     div.appendChild(get_label("pf-m-blue", test_info.comment));
     div.appendChild(get_label("", test_info.test_id));
@@ -346,13 +404,13 @@ function get_OVAL_test_info(test_info) {
         return undefined;
     }
     div.appendChild(get_info_paragraf(test_info));
-    var table_div = document.createElement("div");
+    const table_div = DIV.cloneNode();
     div.appendChild(table_div);
     table_div.cssText = "width: 0; min-width: 100em; overflow-x: auto;";
-    var table = document.createElement("table");
+    const table = TABLE.cloneNode();
     table_div.appendChild(table);
 
-    var objects = [];
+    const objects = [];
     for (const data of test_info.oval_object.object_data) {
         objects.push(filter_object(data, test_info.oval_object));
     }
@@ -362,7 +420,7 @@ function get_OVAL_test_info(test_info) {
 }
 
 function get_header_items(objects) {
-    var out = [];
+    const out = [];
     for (const object of objects) {
         for (const key in object) {
             if (!out.includes(key)) {
@@ -374,19 +432,18 @@ function get_header_items(objects) {
 }
 
 function format_header_item(str) {
-    var text = remove_uuid(str);
-    var text_with_spaces = text.replace("_", " ");
+    const text = remove_uuid(str);
+    const text_with_spaces = text.replace("_", " ");
     return text_with_spaces.charAt(0).toUpperCase() + text_with_spaces.slice(1);
 }
 
 function remove_uuid(str) {
-    var index_special_char = str.indexOf('@');
-    var text = str.substring(0, index_special_char != -1 ? index_special_char : str.length);
-    return text;
+    const index_special_char = str.indexOf('@');
+    return str.substring(0, index_special_char != -1 ? index_special_char : str.length);
 }
 
 function filter_permissions(object) {
-    var permission = {
+    const permission = {
         'uread': null,
         'uwrite': null,
         'uexec': null,
@@ -397,7 +454,7 @@ function filter_permissions(object) {
         'owrite': null,
         'oexec': null
     };
-    var new_object = {};
+    const new_object = {};
     Object.keys(object).forEach(key => {
         if (key in permission) {
             permission[key] = object[key];
@@ -410,7 +467,7 @@ function filter_permissions(object) {
             return object;
         }
     }
-    var out = '<code>';
+    let out = '<code>';
     Object.keys(permission).forEach(key => {
         if (permission[key] == 'true') {
             switch (key.substring(1, key.length)) {

@@ -4,14 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    {% block interactive_script %}{% endblock %}
-    {% block oval_graph_generation_script %}{% endblock %}
-    {%- if debug_setting.include_debug_script -%}
-        {% block debug_script %}{% endblock %}
-    {%- endif -%}
     {% block patternfly_css %}{% endblock %}
     <title>{% block title %}{% endblock %}</title>
     <style>
+        main {
+            scroll-behavior: smooth;
+        }
         pre {
             background: #cccccc;
             -webkit-box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.75);
@@ -65,6 +63,10 @@
         .text_block {
             text-align: justify;
         }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 
@@ -92,5 +94,10 @@
                 </div>
             </section>
     </div>
+    {% block interactive_script %}{% endblock %}
+    {% block oval_graph_generation_script %}{% endblock %}
+    {%- if debug_setting.include_debug_script -%}
+        {% block debug_script %}{% endblock %}
+    {%- endif -%}
 </body>
 </html>

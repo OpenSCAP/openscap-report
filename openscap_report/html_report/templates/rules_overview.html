@@ -15,12 +15,16 @@
     </thead>
     {% for rule_id, rule in report.rules.items() %}
     {%- if rule.result != "notselected" -%}
-    <tbody class="pf-m-expanded" role="rowgroup" title="{{ rule.title }}" rule-id="{{ rule.rule_id }}" result="{{ rule.result }}" severity="{{ rule.severity }}">
+        {% if loop.index > 50 %}
+            <tbody class="pf-m-expanded hidden" role="rowgroup" title="{{ rule.title }}" rule-id="{{ rule.rule_id }}" result="{{ rule.result }}" severity="{{ rule.severity }}">
+        {% else %}
+            <tbody class="pf-m-expanded" role="rowgroup" title="{{ rule.title }}" rule-id="{{ rule.rule_id }}" result="{{ rule.result }}" severity="{{ rule.severity }}">
+        {% endif %}
         <tr role="row">
             <td class="pf-c-table__toggle" role="cell">
                 <button
                     id="show_hide_rule_detail_button"
-                    class="pf-c-button pf-m-plain" onclick="show_rule_detail(this, '{{ rule.rule_id | replace('.', '') }}');"
+                    class="pf-c-button pf-m-plain" onclick="show_rule_detail(this);"
                     aria-label="Show details of rule (rule_id:{{ rule.rule_id }})"
                     title="Show details of rule (rule_id:{{ rule.rule_id }})"
                 >
@@ -83,7 +87,6 @@
                 {% endif %}
             </td>
         </tr>
-
         <tr class="pf-c-table__expandable-row" role="row">
             <td role="cell" colspan="4">
                 <div class="pf-c-table__expandable-row-content">
