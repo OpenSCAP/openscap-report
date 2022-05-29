@@ -1,7 +1,4 @@
-
 from setuptools import find_packages, setup
-
-import openscap_report
 
 
 def get_long_description():
@@ -9,8 +6,8 @@ def get_long_description():
         return readme_file.read()
 
 
-setup(name='openscap_report',
-      version=openscap_report.__version__,
+setup(name='openscap-report',
+      version='0.1.0',
       description='Tool for generating report from results of oscap scan.',
       long_description=get_long_description(),
       long_description_content_type="text/markdown",
