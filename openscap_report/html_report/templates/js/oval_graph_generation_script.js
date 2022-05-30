@@ -34,7 +34,7 @@ const NEGATION_COLOR = {
 };
 const NEGATION_ICON = {
     'fa-check': 'fa-times',
-    'pf-m-red': 'fa-check',
+    'fa-times': 'fa-check',
     'fa-question-circle': 'fa-question-circle'
 };
 const COLOR_TRANSLATION = {
