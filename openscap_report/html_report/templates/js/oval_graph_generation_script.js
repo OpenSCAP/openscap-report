@@ -181,9 +181,11 @@ function render_OVAL_test(node_data) {
     }
     const node = get_node(negate_color);
     node_text.appendChild(node);
-    node.appendChild(get_icon_as_html(negate_icon));
+    const html_icon = get_icon_as_html(negate_icon);
+    node.appendChild(html_icon);
     if (node_data.negation) {
         node.appendChild(get_bold_text("NOT"));
+        html_icon.classList.add("icon-space");
     }
 
     const test_id = node_data.node_id.replace("oval:ssg-", "").replace(":tst:1", "");
@@ -318,9 +320,11 @@ function get_OVAL_tree_operator_node(node_data) {
     }
     const node = get_node(negate_color);
     node_text.appendChild(node);
-    node.appendChild(get_icon_as_html(negate_icon));
+    const html_icon = get_icon_as_html(negate_icon);
+    node.appendChild(html_icon);
     if (node_data.negation) {
         node.appendChild(get_bold_text("NOT"));
+        html_icon.classList.add("icon-space");
     }
 
     node.appendChild(get_bold_text(` ${node_data.node_type} `));
