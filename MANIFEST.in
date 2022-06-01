@@ -1,5 +1,6 @@
 include README.md
 include LICENSE
+include LICENSE.spdx
 include tox.ini
 include requirements.txt
 include .eslintignore

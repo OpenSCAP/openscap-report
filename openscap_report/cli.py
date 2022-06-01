@@ -1,3 +1,6 @@
+# Copyright 2022, Red Hat, Inc.
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 import argparse
 import logging
 from dataclasses import dataclass

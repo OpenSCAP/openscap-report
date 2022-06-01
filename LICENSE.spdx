@@ -1,0 +1,8 @@
+SPDXVersion: SPDX-2.1
+DataLicense: CC0-1.0
+Creator: Jan Rodak
+PackageName: openscap-report
+PackageOriginator: Jan Rodak
+PackageHomePage: https://github.com/OpenSCAP/openscap-report
+PackageLicenseDeclared: LGPL-2.1-or-later AND GPL-2.0-or-later AND and Public Domain
+PackageSummary: <text>A tool for generating human-readable reports from SCAP XCCDF and ARF results.</text>

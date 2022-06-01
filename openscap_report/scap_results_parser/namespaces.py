@@ -1,3 +1,6 @@
+# Copyright 2022, Red Hat, Inc.
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 NAMESPACES = {
     'XMLSchema': 'http://oval.mitre.org/XMLSchema/oval-results-5',
     'xccdf': 'http://checklists.nist.gov/xccdf/1.2',

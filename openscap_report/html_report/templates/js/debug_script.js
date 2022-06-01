@@ -1,3 +1,7 @@
+/*
+ * Copyright 2022, Red Hat, Inc.
+ * SPDX-License-Identifier: LGPL-2.1-or-later
+ */
 
 function show_all_rules_details(self, expand_oval_test_details=false) { // eslint-disable-line no-unused-vars
     var other_button = get_other_button(self);

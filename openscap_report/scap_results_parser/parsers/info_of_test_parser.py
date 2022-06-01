@@ -1,3 +1,6 @@
+# Copyright 2022, Red Hat, Inc.
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 import uuid
 
 from ..data_structures import OvalObject, OvalTest
