@@ -13,13 +13,15 @@
             </th>
         </tr>
     </thead>
+    {% set count = 1 %}
     {% for rule_id, rule in report.rules.items() %}
     {%- if rule.result != "notselected" -%}
-        {% if loop.index > 50 %}
+        {% if count > 50 %}
             <tbody class="pf-m-expanded hidden" role="rowgroup" title="{{ rule.title }}" rule-id="{{ rule.rule_id }}" result="{{ rule.result }}" severity="{{ rule.severity }}">
         {% else %}
             <tbody class="pf-m-expanded" role="rowgroup" title="{{ rule.title }}" rule-id="{{ rule.rule_id }}" result="{{ rule.result }}" severity="{{ rule.severity }}">
         {% endif %}
+        {% set count = count + 1 %}
         <tr role="row">
             <td class="pf-c-table__toggle" role="cell">
                 <button
