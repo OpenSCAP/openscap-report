@@ -38,6 +38,7 @@ class OvalResult(NamedTuple):
         The AND operator produces a true result if every argument is true. If one or more arguments
         are false, the result of the AND is false. If one or more of the arguments are unknown, and
         if none of the arguments are false, then the AND operator produces a result of unknown.
+
         Returns:
                 str. return values::
                     true
@@ -63,6 +64,7 @@ class OvalResult(NamedTuple):
         more than argument is true (or if there are no true arguments), the result of the ONE
         is false. If one or more of the arguments are unknown, then the ONE operator produces
         a result of unknown.
+
         Returns:
             str. return values::
                 true
@@ -85,7 +87,9 @@ class OvalResult(NamedTuple):
         return out_result
 
     def _one_is_noteval(self):
-        """Evaluates if the result match noteval for one operator.
+        """
+        Evaluates if the result match noteval for one operator.
+
         Returns:
                 bool.
         """
@@ -104,7 +108,9 @@ class OvalResult(NamedTuple):
         return true_lt_two and false_notappl_ge_zero and noteval_ge_one and error_unknown_eq_zero
 
     def _one_is_unknown(self):
-        """Evaluates if the result match unknown for one operator.
+        """
+        Evaluates if the result match unknown for one operator.
+
         Returns:
                 bool.
         """
@@ -122,7 +128,9 @@ class OvalResult(NamedTuple):
         return true_lt_two and false_notappl_noteval_ge_zero and error_eq_zero and unknown_ge_one
 
     def _one_is_error(self):
-        """Evaluates if the result match unknown for one operator.
+        """
+        Evaluates if the result match unknown for one operator.
+
         Returns:
                 bool.
         """
@@ -139,6 +147,7 @@ class OvalResult(NamedTuple):
         """
         Evaluates if the result match false for one operator.
         Operator ONE has two cases of false state.
+
         Returns:
                 bool.
         """
@@ -167,6 +176,7 @@ class OvalResult(NamedTuple):
     def _one_is_true(self):
         """
         Evaluates if the result match true for one operator.
+
         Returns:
                 bool.
         """
@@ -183,6 +193,7 @@ class OvalResult(NamedTuple):
         The OR operator produces a true result if one or more arguments is true. If every argument
         is false, the result of the OR is false. If one or more of the arguments are unknown and
         if none of arguments are true, then the OR operator produces a result of unknown.
+
         Returns:
             str. return values::
                 true
@@ -222,6 +233,7 @@ class OvalResult(NamedTuple):
         """
         XOR is defined to be true if an odd number of its arguments are true, and false otherwise.
         If any of the arguments are unknown, then the XOR operator produces a result of unknown.
+
         Returns:
             str. return values::
                 true
@@ -249,6 +261,7 @@ class OvalResult(NamedTuple):
     def _eval_error_unknown_noteval_for_operators_and_or(self, operator):
         """
         Evaluates if the operator result match the values for error, unknown, noteval.
+
         Args:
             operator (str): Specifies for which operator is used
         Returns:
@@ -290,6 +303,7 @@ class OvalResult(NamedTuple):
     def is_notapp_result(self):
         """
         Evaluates if the counts of values in the result matches the notapp result.
+
         Returns:
             bool.
         """
