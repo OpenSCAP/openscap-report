@@ -1,3 +1,7 @@
+graft openscap_report
+graft docs
+graft tests
+global-exclude *.py[cod]
 include README.md
 include LICENSE
 include LICENSE.spdx
@@ -7,5 +11,3 @@ include .eslintignore
 include .eslintrc.yml
 include .pylintrc
 include .flake8
-recursive-include openscap_report *
-recursive-include tests *
