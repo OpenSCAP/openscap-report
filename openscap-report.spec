@@ -16,7 +16,8 @@ BuildRequires:  python3-sphinx
 BuildRequires:  python3-sphinx_rtd_theme
 
 %global _description %{expand:
-A tool for generating human-readable reports from SCAP XCCDF and ARF results.}
+This package provides a command-line tool for generating
+human-readable reports from SCAP XCCDF and ARF results.}
 
 %description %_description
 
