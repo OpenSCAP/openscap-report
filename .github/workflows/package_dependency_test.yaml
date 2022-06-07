@@ -18,7 +18,7 @@ jobs:
       - name: Build
         run: python3 setup.py bdist_rpm --requires=python3-lxml,python3-jinja2 --build-requires=python3-devel,python3-setuptools
       - name: RPM install
-        run: dnf install -y ./dist/openscap_report-*.noarch.rpm
+        run: dnf install -y ./dist/openscap-report-*.noarch.rpm
       - name: Test parameter -h
         run: oscap-report -h
       - name: Test of the basic function
@@ -37,7 +37,7 @@ jobs:
       - name: Build
         run: python3 setup.py bdist_rpm --requires=python3-lxml,python3-jinja2 --build-requires=python3-devel,python3-setuptools
       - name: RPM install
-        run: dnf install -y ./dist/openscap_report-*.noarch.rpm
+        run: dnf install -y ./dist/openscap-report-*.noarch.rpm
       - name: Test parameter -h
         run: oscap-report -h
       - name: Test of the basic function
@@ -58,7 +58,7 @@ jobs:
       - name: Build
         run: python3 setup.py bdist_rpm --requires=python3-lxml,python3-jinja2 --build-requires=python3-devel,python3-setuptools
       - name: RPM install
-        run: dnf install -y ./dist/openscap_report-*.noarch.rpm
+        run: dnf install -y ./dist/openscap-report-*.noarch.rpm
       - name: Test parameter -h
         run: oscap-report -h
       - name: Test of the basic function
