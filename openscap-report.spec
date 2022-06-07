@@ -1,8 +1,8 @@
 %global pymodule_name openscap_report
 
 Name:           openscap-report
-Version:        0.0.0
-Release:        0%{?dist}
+Version:        0.1.1
+Release:        1%{?dist}
 Summary:        A tool for generating human-readable reports from (SCAP) XCCDF and ARF results
 
 # The entire source code is LGPL-2.1+ and GPL-2.0+ except schemas/ and assets/, which are Public Domain
@@ -53,3 +53,5 @@ install -Dt %{buildroot}%{_mandir}/man8 _build_docs/oscap-report.8
 
 
 %changelog
+* Mon Jun 06 2022 Jan Rodak <jrodak@redhat.com> - 0.1.1-1
+- Initial version of the package.
