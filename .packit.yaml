@@ -12,7 +12,7 @@ jobs:
   trigger: pull_request
 actions:
   get-current-version:
-  - python3 -c "import openscap_report; print(openscap_report.__version__)"
+  - python3 setup.py --version
 synced_files:
 - .packit.yaml
 downstream_package_name: openscap-report
