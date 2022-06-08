@@ -1,4 +1,8 @@
 jobs:
+- job: propose_downstream
+  trigger: release
+  metadata:
+    dist_git_branches: fedora-rawhide
 - job: copr_build
   metadata:
     targets:
