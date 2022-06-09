@@ -2,28 +2,28 @@
 {# SPDX-License-Identifier: LGPL-2.1-or-later #}
 <div class="progress">
     {% if 0 != rule_result_stats.pass %}
-    <div class="progress-bar" role="progressbar"
+    <div class="progress-bar rule_result_stats_pass" role="progressbar"
         aria-label="{{ rule_result_stats.pass }} pass rules"
         aria-valuenow="{{ rule_result_stats.pass }}"
         aria-valuemin="0"
         aria-valuemax="{{ rule_result_stats.sum_of_rules }}"
-        style="width:{{ rule_result_stats.pass_percent }}%;background-color: #4FA843;">{{ rule_result_stats.pass }} Pass
+        style="width:{{ rule_result_stats.pass_percent }}%;">{{ rule_result_stats.pass }} Pass
     </div>
     {% endif %}
     {% if 0 != rule_result_stats.fail %}
-    <div class="progress-bar" role="progressbar"
+    <div class="progress-bar rule_result_stats_fail" role="progressbar"
         aria-label="{{ rule_result_stats.fail }} fail rules"
         aria-valuenow="{{ rule_result_stats.fail }}"
         aria-valuemin="0"
         aria-valuemax="{{ rule_result_stats.sum_of_rules }}"
-        style="width:{{ rule_result_stats.fail_percent }}%;background-color: #F32112;">{{ rule_result_stats.fail }} Fail</div>
+        style="width:{{ rule_result_stats.fail_percent }}%;">{{ rule_result_stats.fail }} Fail</div>
     {% endif %}
     {% if 0 != rule_result_stats.other %}
-    <div class="progress-bar" role="progressbar"
+    <div class="progress-bar rule_result_stats_other" role="progressbar"
         aria-label="{{ rule_result_stats.other }} other rules"
         aria-valuenow="{{ rule_result_stats.other }}"
         aria-valuemin="0"
         aria-valuemax="{{ rule_result_stats.sum_of_rules }}"
-        style="width:{{ rule_result_stats.other_percent }}%;background-color: #F0AB00;">{{ rule_result_stats.other }} Other</div>
+        style="width:{{ rule_result_stats.other_percent }}%;">{{ rule_result_stats.other }} Other</div>
     {% endif %}
 </div>
