@@ -1,3 +1,6 @@
+# Copyright 2022, Red Hat, Inc.
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 from .group import Group
 from .oval_node import OvalNode
 from .oval_object import OvalObject

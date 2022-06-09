@@ -1,3 +1,8 @@
+/*!
+ * Patternfly (https://www.patternfly.org)
+ * Copyright (c) 2019 Red Hat, Inc.
+ * Licensed under MIT (https://github.com/patternfly/patternfly/blob/main/LICENSE.txt)
+*/
 @charset "UTF-8";
 .pf-c-table, .pf-c-select, .pf-c-page__sidebar.pf-m-light, .pf-c-menu, .pf-c-masthead.pf-m-light-200, .pf-c-masthead.pf-m-light, .pf-c-input-group, .pf-c-form-control, .pf-c-data-list, .pf-c-context-selector__menu, .pf-c-chip-group, .pf-c-chip, .pf-c-calendar-month, .pf-c-banner.pf-m-warning, .pf-c-banner.pf-m-info, .pf-c-alert, .pf-c-accordion, .pf-t-light {
   --pf-global--Color--100: var(--pf-global--Color--dark-100);

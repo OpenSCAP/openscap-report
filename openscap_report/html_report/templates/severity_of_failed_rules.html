@@ -1,3 +1,5 @@
+{# Copyright 2022, Red Hat, Inc. #}
+{# SPDX-License-Identifier: LGPL-2.1-or-later #}
 {% set severity_of_failed_rules = report.get_severity_of_failed_rules_stats() %}
 <div class="progress">
     {% if 0 !=  severity_of_failed_rules.unknown %}
