@@ -6,7 +6,7 @@ OpenSCAP Report Generator
     :glob:
     :caption: Quick Start Guide (Man Page)
 
-    oscap-report.8.rst
+    oscap-report.1.rst
 
 .. toctree::
     :maxdepth: 2

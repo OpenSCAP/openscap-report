@@ -54,7 +54,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 #
 html_theme = 'sphinx_rtd_theme'
 
-man_pages = [('oscap-report.8', 'oscap-report', '', '', 8)]
+man_pages = [('oscap-report.1', 'oscap-report', '', '', 1)]
 
 
 # Add any paths that contain custom static files (such as style sheets) here,
