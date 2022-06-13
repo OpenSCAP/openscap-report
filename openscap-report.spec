@@ -39,7 +39,7 @@ sphinx-build -b man docs _build_docs
 %install
 %pyproject_install
 %pyproject_save_files %{pymodule_name}
-install -Dt %{buildroot}%{_mandir}/man8 _build_docs/oscap-report.8
+install -m 0644 -Dt %{buildroot}%{_mandir}/man8 _build_docs/oscap-report.8
 
 
 %check
