@@ -4,6 +4,7 @@
 import argparse
 import logging
 from dataclasses import dataclass
+from io import BytesIO
 from sys import exit as sys_exit
 from sys import stdin, stdout
 
@@ -93,7 +94,7 @@ def prepare_parser():
         "--format",
         action="store",
         default="HTML",
-        choices=["HTML", "OLD-STYLE-HTML"],
+        choices=["HTML", "OLD-STYLE-HTML", "JSON"],
         help="FORMAT: %(choices)s (default: %(default)s)."
     )
     parser.add_argument(
@@ -141,6 +142,9 @@ class CommandLineAPI():  # pylint: disable=R0902
         if self.output_format == "OLD-STYLE-HTML":
             report_generator = OldOSCAPReportGenerator(report_parser)
             return report_generator.generate_html_report()
+        if self.output_format == "JSON":
+            logging.fatal("JSON Format is not implemented!")
+            return BytesIO("{}".encode())
         report_generator = ReportGenerator(report_parser)
 
         self.debug_setting.update_settings_with_debug_flags(self.debug_flags)
