@@ -3,7 +3,6 @@
 
 import argparse
 import logging
-from io import BytesIO
 from sys import exit as sys_exit
 from sys import stdin, stdout
 
@@ -11,8 +10,8 @@ from lxml.etree import XMLSyntaxError
 
 from . import __version__
 from .debug_settings import DebugSetting
-from .html_report import ReportGenerator
-from .old_html_report_style import OldOSCAPReportGenerator
+from .report_generators import (HTMLReportGenerator, JSONReportGenerator,
+                                OldStyleHTMLReportGenerator)
 from .scap_results_parser import SCAPResultsParser
 
 DESCRIPTION = ("Generates an HTML report from an ARF (or XCCDF Result) file with results of "
@@ -158,19 +157,21 @@ class CommandLineAPI():  # pylint: disable=R0902
             level=self.log_level.upper()
         )
 
+    def get_report_generator(self, report_parser):
+        dict_of_report_generators = {
+            "HTML": HTMLReportGenerator,
+            "OLD-STYLE-HTML": OldStyleHTMLReportGenerator,
+            "JSON": JSONReportGenerator,
+        }
+        return dict_of_report_generators[self.output_format](report_parser)
+
     def generate_report(self, report_parser):
         logging.info("Generate report")
-        if self.output_format == "OLD-STYLE-HTML":
-            report_generator = OldOSCAPReportGenerator(report_parser)
-            return report_generator.generate_html_report()
-        if self.output_format == "JSON":
-            logging.fatal("JSON Format is not implemented!")
-            return BytesIO("{}".encode())
-        report_generator = ReportGenerator(report_parser)
+        report_generator = self.get_report_generator(report_parser)
 
         self.debug_setting.update_settings_with_debug_flags(self.debug_flags)
 
-        return report_generator.generate_html_report(self.debug_setting)
+        return report_generator.generate_report(self.debug_setting)
 
     def load_file(self):
         logging.info("Loading file: %s", self.report_file)
