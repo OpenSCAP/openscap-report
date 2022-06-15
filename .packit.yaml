@@ -28,10 +28,13 @@ jobs:
 - job: copr_build
   targets:
     - fedora-all-x86_64
+    - fedora-eln
     - epel-9-x86_64
   trigger: pull_request
 
 - job: tests
   targets:
     - fedora-all-x86_64
+    - fedora-eln
+    - epel-9-x86_64
   trigger: pull_request
