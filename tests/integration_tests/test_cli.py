@@ -31,6 +31,7 @@ def get_fake_args():
     )
 
 
+@pytest.mark.unit_test
 @mock.patch('argparse.ArgumentParser.parse_args',
             return_value=get_fake_args())
 def test_load_file(mock_args):  # pylint: disable=W0613
@@ -41,6 +42,7 @@ def test_load_file(mock_args):  # pylint: disable=W0613
     api.close_files()
 
 
+@pytest.mark.unit_test
 @pytest.mark.usefixtures("remove_generated_file")
 @mock.patch('argparse.ArgumentParser.parse_args',
             return_value=get_fake_args())
@@ -53,6 +55,7 @@ def test_store_file(mock_args):  # pylint: disable=W0613
         assert result_file.read() == data.getvalue().decode("utf-8")
 
 
+@pytest.mark.integration_test
 @mock.patch('argparse.ArgumentParser.parse_args',
             return_value=get_fake_args())
 def test_generate_report(mock_args):  # pylint: disable=W0613
@@ -64,6 +67,7 @@ def test_generate_report(mock_args):  # pylint: disable=W0613
     assert data.read().decode("utf-8").startswith("<!DOCTYPE html>")
 
 
+@pytest.mark.integration_test
 @pytest.mark.usefixtures("remove_generated_file")
 def test_command_with_input_from_stdin_and_output_to_stdout():
     command_stdout = None
@@ -72,12 +76,14 @@ def test_command_with_input_from_stdin_and_output_to_stdout():
     assert command_stdout.decode("utf-8").startswith("<!DOCTYPE html>")
 
 
+@pytest.mark.integration_test
 @pytest.mark.usefixtures("remove_generated_file")
 def test_command_with_input_from_file_and_output_to_stdout():
     command_stdout = subprocess.check_output([OSCAP_REPORT_COMMAND, str(PATH_TO_ARF)])
     assert command_stdout.decode("utf-8").startswith("<!DOCTYPE html>")
 
 
+@pytest.mark.integration_test
 @pytest.mark.usefixtures("remove_generated_file")
 def test_command_with_input_from_stdin_and_output_to_file():
     command_stdout = None
@@ -90,6 +96,7 @@ def test_command_with_input_from_stdin_and_output_to_file():
         assert result_file.read().startswith("<!DOCTYPE html>")
 
 
+@pytest.mark.integration_test
 @pytest.mark.usefixtures("remove_generated_file")
 def test_command_with_input_from_file_and_output_to_file():
     arguments = [str(PATH_TO_ARF), "-o", str(PATH_TO_RESULT_FILE)]
@@ -99,6 +106,7 @@ def test_command_with_input_from_file_and_output_to_file():
         assert result_file.read().startswith("<!DOCTYPE html>")
 
 
+@pytest.mark.integration_test
 @pytest.mark.usefixtures("remove_generated_file")
 def test_logging_to_file():
     log_file_path = Path(tempfile.gettempdir()) / "oscap-report-tests_log-file.log"
@@ -114,6 +122,7 @@ def test_logging_to_file():
         assert result_file.read().startswith("DEBUG:")
 
 
+@pytest.mark.integration_test
 def test_command_with_empty_input_file():
     arguments = [str(PATH_TO_EMPTY_FILE)]
     with subprocess.Popen([OSCAP_REPORT_COMMAND, *arguments], stderr=subprocess.PIPE) as command:
@@ -124,6 +133,7 @@ def test_command_with_empty_input_file():
         assert "empty" in std_err
 
 
+@pytest.mark.integration_test
 def test_command_with_empty_stdin():
     cat_command_args = ["cat", str(PATH_TO_EMPTY_FILE)]
     with subprocess.Popen(cat_command_args, stdout=subprocess.PIPE) as cat_command:
