@@ -53,3 +53,5 @@ install -Dt %{buildroot}%{_mandir}/man8 _build_docs/oscap-report.8
 
 
 %changelog
+* Mon Jun 06 2022 Jan Rodak <jrodak@redhat.com> - 0.0.0-0
+- Initial version of the package.
