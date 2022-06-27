@@ -1,7 +1,6 @@
-%global name        openscap-report
-%global module      openscap_report
+%global pymodule_name openscap_report
 
-Name:           %{name}
+Name:           openscap-report
 Version:        0.0.0
 Release:        0%{?dist}
 Summary:        A tool for generating human-readable reports from (SCAP) XCCDF and ARF results
@@ -17,11 +16,10 @@ BuildRequires:  python3-sphinx
 BuildRequires:  python3-sphinx_rtd_theme
 
 %global _description %{expand:
-A tool for generating human-readable reports from SCAP XCCDF and ARF results.}
+This package provides a command-line tool for generating
+human-readable reports from SCAP XCCDF and ARF results.}
 
 %description %_description
-
-Summary:        %{summary}
 
 
 %prep
@@ -40,7 +38,7 @@ sphinx-build -b man docs _build_docs
 
 %install
 %pyproject_install
-%pyproject_save_files %{module}
+%pyproject_save_files %{pymodule_name}
 install -Dt %{buildroot}%{_mandir}/man8 _build_docs/oscap-report.8
 
 
@@ -55,3 +53,5 @@ install -Dt %{buildroot}%{_mandir}/man8 _build_docs/oscap-report.8
 
 
 %changelog
+* Mon Jun 06 2022 Jan Rodak <jrodak@redhat.com> - 0.0.0-0
+- Initial version of the package.

@@ -1,20 +1,37 @@
+# See the documentation for more information:
+# https://packit.dev/docs/configuration/
+
+specfile_path: openscap-report.spec
+
+# add or remove files that should be synced
+files_to_sync:
+    - .packit.yaml
+
+# name in upstream package repository or registry (e.g. in PyPI)
+upstream_package_name: openscap-report
+# downstream (Fedora) RPM package name
+downstream_package_name: openscap-report
+# version tag template
+upstream_tag_template: v{version}
+
+actions:
+  get-current-version:
+    - python3 setup.py --version
+
 jobs:
+# Propose downstream is disabled because downstream repo doesn't exist yet.
+#- job: propose_downstream
+#  trigger: release
+#  dist_git_branches:
+#    - fedora-rawhide
+
 - job: copr_build
-  metadata:
-    targets:
+  targets:
     - fedora-all-x86_64
     - epel-9-x86_64
   trigger: pull_request
+
 - job: tests
-  metadata:
-    targets:
+  targets:
     - fedora-all-x86_64
   trigger: pull_request
-actions:
-  get-current-version:
-  - python3 -c "import openscap_report; print(openscap_report.__version__)"
-synced_files:
-- .packit.yaml
-downstream_package_name: openscap-report
-upstream_package_name: openscap-report
-specfile_path: openscap-report.spec
