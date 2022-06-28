@@ -10,7 +10,7 @@ def get_long_description():
 
 
 setup(name='openscap-report',
-      version='0.1.0',
+      version='0.1.1',
       description='Tool for generating report from results of oscap scan.',
       long_description=get_long_description(),
       long_description_content_type="text/markdown",
