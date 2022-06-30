@@ -1,0 +1,469 @@
+{
+    "title": "Report",
+    "type": "object",
+    "properties": {
+        "title": {
+            "title": "Title",
+            "default": "",
+            "type": "string"
+        },
+        "identity": {
+            "title": "Identity",
+            "default": "",
+            "type": "string"
+        },
+        "profile_name": {
+            "title": "Profile Name",
+            "default": "",
+            "type": "string"
+        },
+        "platform": {
+            "title": "Platform",
+            "default": "",
+            "type": "string"
+        },
+        "target": {
+            "title": "Target",
+            "default": "",
+            "type": "string"
+        },
+        "cpe_platforms": {
+            "title": "CPE Platforms",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "pattern": "[cC][pP][eE]:/[AHOaho]?(:[A-Za-z0-9\\._\\-~%]*){0,6}"
+            }
+        },
+        "scanner": {
+            "title": "Scanner",
+            "default": "",
+            "type": "string"
+        },
+        "scanner_version": {
+            "title": "Scanner Version",
+            "default": "",
+            "type": "string"
+        },
+        "benchmark_url": {
+            "title": "Benchmark URL",
+            "default": "",
+            "type": "string"
+        },
+        "benchmark_id": {
+            "title": "Benchmark ID",
+            "pattern": "xccdf_[^_]+_benchmark_.+",
+            "type": "string"
+        },
+        "benchmark_version": {
+            "title": "Benchmark Version",
+            "default": "",
+            "type": "string"
+        },
+        "start_time": {
+            "title": "Start Time",
+            "default": "",
+            "type": "string"
+        },
+        "end_time": {
+            "title": "End Time",
+            "default": "",
+            "type": "string"
+        },
+        "test_system": {
+            "title": "Test System",
+            "default": "",
+            "type": "string"
+        },
+        "score": {
+            "title": "Score",
+            "default": 0.0,
+            "type": "number"
+        },
+        "score_max": {
+            "title": "Score Max",
+            "default": 0.0,
+            "type": "number"
+        },
+        "rules": {
+            "title": "Rules",
+            "oneOf": [
+                {
+                    "type": "object",
+                    "patternProperties": {
+                        "xccdf_[^_]+_rule_.+": {
+                            "$ref": "#/definitions/Rule"
+                        }
+                    }
+                },
+                {
+                    "type": "null"
+                }
+            ]
+        },
+        "groups": {
+            "title": "Groups",
+            "type": "object",
+            "patternProperties": {
+                "xccdf_[^_]+_group_.+": {
+                    "$ref": "#/definitions/Group"
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Identifier": {
+            "title": "Identifier",
+            "type": "object",
+            "properties": {
+                "system": {
+                    "title": "System",
+                    "type": "string"
+                },
+                "text": {
+                    "title": "Text",
+                    "type": "string"
+                }
+            }
+        },
+        "Reference": {
+            "title": "Reference",
+            "type": "object",
+            "properties": {
+                "href": {
+                    "title": "Href",
+                    "type": "string"
+                },
+                "text": {
+                    "title": "Text",
+                    "type": "string"
+                }
+            }
+        },
+        "Remediation": {
+            "title": "Remediation",
+            "type": "object",
+            "properties": {
+                "remediation_id": {
+                    "title": "Remediation ID",
+                    "type": "string"
+                },
+                "system": {
+                    "title": "System",
+                    "default": "",
+                    "type": "string"
+                },
+                "complexity": {
+                    "title": "Complexity",
+                    "default": "",
+                    "type": "string"
+                },
+                "disruption": {
+                    "title": "Disruption",
+                    "default": "",
+                    "type": "string"
+                },
+                "strategy": {
+                    "title": "Strategy",
+                    "default": "",
+                    "type": "string"
+                },
+                "fix": {
+                    "title": "Fix",
+                    "default": "",
+                    "type": "string"
+                }
+            }
+        },
+        "OvalObject": {
+            "title": "OvalObject",
+            "type": "object",
+            "properties": {
+                "object_id": {
+                    "title": "Object ID",
+                    "pattern": "oval:[A-Za-z0-9_\\-\\.]+:obj:[1-9][0-9]*",
+                    "type": "string"
+                },
+                "flag": {
+                    "title": "Flag",
+                    "default": "",
+                    "type": "string"
+                },
+                "object_type": {
+                    "title": "Object Type",
+                    "default": "",
+                    "type": "string"
+                },
+                "object_data": {
+                    "title": "Object Data",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "OvalTest": {
+            "title": "OvalTest",
+            "type": "object",
+            "properties": {
+                "test_id": {
+                    "title": "Test ID",
+                    "pattern": "oval:[A-Za-z0-9_\\-\\.]+:tst:[1-9][0-9]*",
+                    "type": "string"
+                },
+                "test_type": {
+                    "title": "Test Type",
+                    "default": "",
+                    "type": "string"
+                },
+                "comment": {
+                    "title": "Comment",
+                    "default": "",
+                    "type": "string"
+                },
+                "oval_object": {
+                    "$ref": "#/definitions/OvalObject"
+                }
+            }
+        },
+        "OvalNode": {
+            "title": "OvalNode",
+            "type": "object",
+            "properties": {
+                "node_id": {
+                    "title": "Node ID",
+                    "oneOf": [
+                        {
+                            "type": "string",
+                            "pattern": "oval:[A-Za-z0-9_\\-\\.]+:def:[1-9][0-9]*"
+                        },
+                        {
+                            "type": "string",
+                            "pattern": "oval:[A-Za-z0-9_\\-\\.]+:tst:[1-9][0-9]*"
+                        },
+                        {
+                            "type": "string",
+                            "pattern": "no-id-criteria-*"
+                        },
+                        {
+                            "type": "string",
+                            "pattern": "[Pp]latforms*"
+                        }
+                    ]
+                },
+                "node_type": {
+                    "title": "Node Type",
+                    "type": "string"
+                },
+                "value": {
+                    "title": "Value",
+                    "type": "string"
+                },
+                "negation": {
+                    "title": "Negation",
+                    "default": false,
+                    "type": "boolean"
+                },
+                "comment": {
+                    "title": "Comment",
+                    "default": "",
+                    "type": "string"
+                },
+                "tag": {
+                    "title": "Tag",
+                    "default": "",
+                    "type": "string"
+                },
+                "children": {
+                    "title": "Children",
+                    "oneOf": [
+                        {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/OvalNode"
+                            }
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
+                },
+                "test_info": {
+                    "title": "test_info",
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/OvalTest"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
+                }
+            }
+        },
+        "Rule": {
+            "title": "Rule",
+            "type": "object",
+            "properties": {
+                "rule_id": {
+                    "title": "Rule ID",
+                    "pattern": "xccdf_[^_]+_rule_.+",
+                    "type": "string"
+                },
+                "title": {
+                    "title": "Title",
+                    "default": "",
+                    "type": "string"
+                },
+                "result": {
+                    "title": "Result",
+                    "default": "",
+                    "type": "string"
+                },
+                "multi_check": {
+                    "title": "Multi Check",
+                    "default": false,
+                    "type": "boolean"
+                },
+                "time": {
+                    "title": "Time",
+                    "default": "",
+                    "type": "string"
+                },
+                "severity": {
+                    "title": "Severity",
+                    "default": "",
+                    "type": "string"
+                },
+                "identifiers": {
+                    "title": "Identifiers",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Identifier"
+                    }
+                },
+                "references": {
+                    "title": "References",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Reference"
+                    }
+                },
+                "description": {
+                    "title": "Description",
+                    "default": "",
+                    "type": "string"
+                },
+                "rationale": {
+                    "title": "Rationale",
+                    "default": "",
+                    "type": "string"
+                },
+                "warnings": {
+                    "title": "Warnings",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "platforms": {
+                    "title": "Platforms",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "pattern": "[cC][pP][eE]:/[AHOaho]?(:[A-Za-z0-9\\._\\-~%]*){0,6}"
+                    }
+                },
+                "oval_definition_id": {
+                    "title": "Oval Definition ID",
+                    "type": "string",
+                    "pattern": "(oval:[A-Za-z0-9_\\-\\.]+:def:[1-9][0-9]*)|^$"
+                },
+                "messages": {
+                    "title": "Messages",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "remediations": {
+                    "title": "Remediations",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Remediation"
+                    }
+                },
+                "oval_tree": {
+                    "title": "OVAL tree",
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/OvalNode"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
+                },
+                "cpe_tree": {
+                    "title": "CPE tree",
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/OvalNode"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
+                }
+            }
+        },
+        "Group": {
+            "title": "Group",
+            "type": "object",
+            "properties": {
+                "group_id": {
+                    "title": "Group ID",
+                    "pattern": "xccdf_[^_]+_group_.+",
+                    "type": "string"
+                },
+                "title": {
+                    "title": "Title",
+                    "default": "",
+                    "type": "string"
+                },
+                "description": {
+                    "title": "Description",
+                    "default": "",
+                    "type": "string"
+                },
+                "platforms": {
+                    "title": "Platforms",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "pattern": "[cC][pP][eE]:/[AHOaho]?(:[A-Za-z0-9\\._\\-~%]*){0,6}"
+                    }
+                },
+                "rules_ids": {
+                    "title": "Rules Ids",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "pattern": "xccdf_[^_]+_rule_.+"
+                    }
+                },
+                "sub_groups": {
+                    "title": "Sub Groups",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Group"
+                    }
+                }
+            }
+        }
+    }
+}
