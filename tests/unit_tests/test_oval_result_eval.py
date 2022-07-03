@@ -221,6 +221,7 @@ RESULT_COUNTS_XOR_NOTEVAL = {
 }
 
 
+@pytest.mark.unit_test
 @pytest.mark.parametrize("eval_function, result", [
     (OvalResult(**RESULT_COUNTS_NOTAPPL).is_notapp_result, True),
 

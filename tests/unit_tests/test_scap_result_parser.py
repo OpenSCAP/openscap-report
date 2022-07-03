@@ -30,6 +30,7 @@ def get_parser(file_path):
     return SCAPResultsParser(xml_data)
 
 
+@pytest.mark.unit_test
 @pytest.mark.parametrize("file_path, result", [
     (PATH_TO_ARF, True),
     (PATH_TO_SIMPLE_RULE_PASS_ARF, True),
@@ -52,6 +53,7 @@ def test_validation(file_path, result):
     assert parser.validate(parser.arf_schemas_path) == result
 
 
+@pytest.mark.unit_test
 @pytest.mark.parametrize("file_path, number_of_cpe_platforms, os_cpe_platform", [
     (PATH_TO_ARF, 13, "cpe:/o:fedoraproject:fedora:32"),
     (PATH_TO_XCCDF, 13, "cpe:/o:fedoraproject:fedora:32"),
@@ -75,6 +77,7 @@ def test_get_profile_info(file_path, number_of_cpe_platforms, os_cpe_platform):
     assert report.platform == os_cpe_platform
 
 
+@pytest.mark.unit_test
 @pytest.mark.parametrize("file_path, number_of_rules", [
     (PATH_TO_ARF, 714),
     (PATH_TO_XCCDF, 714),
@@ -99,6 +102,7 @@ def test_get_info_about_rules_in_profile(file_path, number_of_rules):
         assert isinstance(rule, Rule)
 
 
+@pytest.mark.unit_test
 @pytest.mark.parametrize("file_path, contains_oval_tree", [
     (PATH_TO_ARF, True),
     (PATH_TO_XCCDF, False),
@@ -114,6 +118,7 @@ def test_parse_report(file_path, contains_oval_tree):
     assert (report.rules[rule_id].oval_tree is not None) == contains_oval_tree
 
 
+@pytest.mark.unit_test
 @pytest.mark.parametrize("file_path, contains_rules_some_multi_check_rule", [
     (PATH_TO_ARF, False),
     (PATH_TO_XCCDF, False),
@@ -130,6 +135,7 @@ def test_multi_check(file_path, contains_rules_some_multi_check_rule):
     assert result == contains_rules_some_multi_check_rule
 
 
+@pytest.mark.unit_test
 @pytest.mark.parametrize("rule, result", [
     (
         "xccdf_org.ssgproject.content_rule_prefer_64bit_os",
@@ -179,6 +185,7 @@ def test_description(rule, result):
     assert parser.rules[rule].description == result
 
 
+@pytest.mark.unit_test
 @pytest.mark.parametrize("rule, result", [
     (
         "xccdf_org.ssgproject.content_rule_prefer_64bit_os",
@@ -225,6 +232,7 @@ def test_rationale(rule, result):
     assert parser.rules[rule].rationale == result
 
 
+@pytest.mark.unit_test
 @pytest.mark.parametrize("rule, result", [
     (
         "xccdf_org.ssgproject.content_rule_prefer_64bit_os",
@@ -263,6 +271,7 @@ def test_warnings(rule, result):
     assert parser.rules[rule].warnings == result
 
 
+@pytest.mark.unit_test
 @pytest.mark.parametrize("rule, remediation_id, scripts", [
     (
         "xccdf_org.ssgproject.content_rule_prefer_64bit_os",

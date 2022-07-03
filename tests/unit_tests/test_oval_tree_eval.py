@@ -231,6 +231,7 @@ NOT_EXIST_OPERATOR_OVAL_TREE = OvalNode(
 )
 
 
+@pytest.mark.unit_test
 @pytest.mark.parametrize("tree, result", [
     (SAMPLE_OVAL_TREE, "false"),
     (OVAL_TREE_FALSE, "false"),

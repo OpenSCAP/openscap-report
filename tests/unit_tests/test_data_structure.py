@@ -35,6 +35,7 @@ def remove_all_rules_by_severity(report, severity=()):
     return report
 
 
+@pytest.mark.unit_test
 @pytest.mark.parametrize("to_remove, result", [
     (
         (),
@@ -80,6 +81,7 @@ def test_report_rule_results_stats(to_remove, result):
         assert result[key] == rule_results_stats[key]
 
 
+@pytest.mark.unit_test
 @pytest.mark.parametrize("to_remove", [
     ("fail", "pass", "notchecked", "error", "unknown", "error"),
     ("fail", "pass", "notchecked"),
@@ -91,6 +93,7 @@ def test_report_rule_results_stats_without_processable_rules(to_remove, caplog):
     assert 'There are no applicable or selected rules.' in caplog.text
 
 
+@pytest.mark.unit_test
 @pytest.mark.parametrize("to_remove, result", [
     (
         (),
@@ -152,18 +155,21 @@ def test_report_severity_of_failed_rules_stats(to_remove, result):
         assert result[key] == severity_of_failed_rules_stats[key]
 
 
+@pytest.mark.unit_test
 def test_report_severity_of_failed_rules_without_any_rules():
     report = remove_all_rules_by_severity(get_report(), ("low", "medium", "high", "unknown"))
     with pytest.raises(MissingProcessableRules):
         assert report.get_severity_of_failed_rules_stats()
 
 
+@pytest.mark.unit_test
 def test_report_severity_of_failed_rules_stats_without_failed_rules():
     report = remove_all_rules_by_result(get_report(), ("fail"))
     with pytest.raises(MissingProcessableRules):
         assert report.get_severity_of_failed_rules_stats()
 
 
+@pytest.mark.unit_test
 @pytest.mark.parametrize("system, type_of_remediation", [
     ("Unknown_system", "script"),
     ("urn:xccdf:fix:script:sh", "Shell script"),
