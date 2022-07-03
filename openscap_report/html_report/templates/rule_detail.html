@@ -111,12 +111,12 @@
                     <div class="pf-l-flex pf-m-column"><div class="pf-l-flex__item">
                     <p class="pf-c-table__text">
                     <div>
-                        {% for identifier in rule.identifiers -%}
-                        {% if identifier.href %}
+                        {%- for identifier in rule.identifiers -%}
+                        {%- if identifier.href -%}
                             <a href="{{ identifier.href | replace('&', ';') }}">{{ identifier.text }}</a>
-                        {% else %}
+                        {%- else -%}
                             <a href="identifier_href_not_found">{{ identifier.text }}</a>
-                        {% endif %}
+                        {%- endif -%}
                         {{- ", " if not loop.last else "" -}}
                         {%- endfor %}
                     </div>
@@ -132,14 +132,14 @@
                     <div class="pf-l-flex pf-m-column"><div class="pf-l-flex__item">
                     <p class="pf-c-table__text">
                     <div>
-                        {% for reference in rule.references -%}
-                        {% if reference.href %}
+                        {%- for reference in rule.references -%}
+                        {%- if reference.href -%}
                             <a href="{{ reference.href | replace('&', ';') }}">{{ reference.text }}</a>
-                        {% else %}
+                        {%- else -%}
                             <a href="reference_href_not_found">{{ reference.text }}</a>
-                        {% endif %}
+                        {%- endif -%}
                         {{- ", " if not loop.last else "" -}}
-                        {%- endfor %}
+                        {%- endfor -%}
                     </div>
                     </p>
                     </div></div>

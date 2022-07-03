@@ -29,7 +29,7 @@ class ReportGenerator():
     def generate_html_report(self, debug_setting):
         template = self.env.get_template("template_report.html")
         html_report = template.render(report=self.report, debug_setting=debug_setting)
-        if not debug_setting.no_minify:
+        if debug_setting.no_minify:
             return BytesIO(html_report.encode())
         minified_html_report = re.sub(r'>\s+<', '><', html_report)
         return BytesIO(minified_html_report.encode())
