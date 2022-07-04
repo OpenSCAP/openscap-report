@@ -9,4 +9,4 @@ from .oval_result_eval import (EMPTY_RESULT, FULL_RESULT_TO_SHORT_RESULT,
 from .oval_test import OvalTest
 from .remediation import Remediation
 from .report import Report
-from .rule import Rule
+from .rule import Identifier, Reference, Rule

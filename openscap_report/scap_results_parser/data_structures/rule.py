@@ -7,6 +7,24 @@ from .oval_node import OvalNode
 
 
 @dataclass
+class Identifier:
+    system: str
+    text: str
+
+    def as_dict(self):
+        return asdict(self)
+
+
+@dataclass
+class Reference:
+    href: str
+    text: str
+
+    def as_dict(self):
+        return asdict(self)
+
+
+@dataclass
 class Rule:  # pylint: disable=R0902
     rule_id: str = ""
     title: str = ""
