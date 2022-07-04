@@ -1,7 +1,7 @@
 # Copyright 2022, Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 
 from .oval_object import OvalObject
 
@@ -14,9 +14,4 @@ class OvalTest():
     oval_object: OvalObject = None
 
     def as_dict(self):
-        return {
-            "test_id": self.test_id,
-            "test_type": self.test_type,
-            "comment": self.comment,
-            "oval_object": self.oval_object.as_dict(),
-        }
+        return asdict(self)
