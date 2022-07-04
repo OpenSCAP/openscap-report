@@ -11,6 +11,12 @@ class CpeTreeBuilder:
         self.profile_platform = profile_platform
 
     @staticmethod
+    def _insert_platforms_cpe_trees_to_rule_cpe_tree(rule, oval_cpe_trees, rule_cpe_tree):
+        for platform in rule.platforms:
+            if platform in oval_cpe_trees:
+                rule_cpe_tree.children.append(oval_cpe_trees[platform])
+
+    @staticmethod
     def _build_rule_platforms(rule, oval_cpe_trees):
         tmp_rule_cpe_tree = OvalNode(
             node_id="Rule_platforms",
@@ -19,9 +25,12 @@ class CpeTreeBuilder:
             value="",
             children=[]
         )
-        for platform in rule.platforms:
-            if platform in oval_cpe_trees:
-                tmp_rule_cpe_tree.children.append(oval_cpe_trees[platform])
+        if rule.platforms:
+            CpeTreeBuilder._insert_platforms_cpe_trees_to_rule_cpe_tree(
+                rule,
+                oval_cpe_trees,
+                tmp_rule_cpe_tree
+            )
         tmp_rule_cpe_tree.value = tmp_rule_cpe_tree.evaluate_tree()
         return tmp_rule_cpe_tree
 
