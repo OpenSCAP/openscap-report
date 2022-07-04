@@ -34,14 +34,18 @@ class RuleParser():
         warnings = []
         for warning in rule.findall(".//xccdf:warning", NAMESPACES):
             warnings.append(self.full_text_parser.get_full_warning(warning))
-        return warnings
+        if warnings:
+            return warnings
+        return None
 
     def _get_remediations(self, rule):
         output = []
         for fix in rule.findall(".//xccdf:fix", NAMESPACES):
             remediation = self.remediation_parser.get_remediation(fix)
             output.append(remediation)
-        return output
+        if output:
+            return output
+        return None
 
     @staticmethod
     def _get_multi_check(rule):
@@ -81,12 +85,15 @@ class RuleParser():
             rule_dict["title"] = title.text
 
         platforms = rule.findall(".//xccdf:platform", NAMESPACES)
-        rule_dict["platforms"] = []
+        array_of_platforms = []
         if platforms is not None:
             for platform in platforms:
-                rule_dict["platforms"].append(platform.get("idref"))
+                array_of_platforms.append(platform.get("idref"))
+
+        if array_of_platforms:
+            rule_dict["platforms"] = array_of_platforms
 
         check_content_refs_dict = self._get_check_content_refs_dict(rule)
-        rule_dict["oval_definition_id"] = check_content_refs_dict.get("oval", "")
+        rule_dict["oval_definition_id"] = check_content_refs_dict.get("oval", None)
 
         return Rule(**rule_dict)

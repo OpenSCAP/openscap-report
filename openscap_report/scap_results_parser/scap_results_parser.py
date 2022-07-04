@@ -97,6 +97,8 @@ class SCAPResultsParser():  # pylint: disable=R0902
             logging.debug(rule)
 
     def _improve_result_of_remedied_rule(self, rule_id):
+        if not self.rules[rule_id].messages:
+            return
         remediation_error_code = None
         check_engine_result = None
         remediation_error_code_prefix = "Fix execution completed and returned:"
@@ -129,6 +131,8 @@ class SCAPResultsParser():  # pylint: disable=R0902
                 self.rules[rule_id].messages = []
                 for message in messages:
                     self.rules[rule_id].messages.append(message.text)
+                if not self.rules[rule_id].messages:
+                    self.rules[rule_id].messages = None
                 self._improve_result_of_remedied_rule(rule_id)
 
             if "fix" in self.rules[rule_id].result:
