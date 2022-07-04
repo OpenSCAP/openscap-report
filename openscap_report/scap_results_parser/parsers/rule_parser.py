@@ -1,7 +1,7 @@
 # Copyright 2022, Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from ..data_structures import Rule
+from ..data_structures import Identifier, Reference, Rule
 from ..namespaces import NAMESPACES
 from .full_text_parser import FullTextParser
 from .remediation_parser import RemediationParser
@@ -16,22 +16,14 @@ class RuleParser():
     def _get_references(rule):
         references = []
         for referenc in rule.findall(".//xccdf:reference", NAMESPACES):
-            ref = {
-                "href": referenc.get("href"),
-                "text": referenc.text,
-            }
-            references.append(ref)
+            references.append(Reference(referenc.get("href"), referenc.text))
         return references
 
     @staticmethod
     def _get_identifiers(rule):
         identifiers = []
         for identifier in rule.findall(".//xccdf:ident", NAMESPACES):
-            ident = {
-                "system": identifier.get("system"),
-                "text": identifier.text,
-            }
-            identifiers.append(ident)
+            identifiers.append(Identifier(identifier.get("system"), identifier.text))
         return identifiers
 
     def _get_warnings(self, rule):
