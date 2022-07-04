@@ -240,11 +240,11 @@ def test_rationale(rule, result):
     ),
     (
         "xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_lock_enabled",
-        []
+        None
     ),
     (
         "xccdf_org.ssgproject.content_rule_auditd_data_retention_action_mail_acct",
-        []
+        None
     ),
     (
         "xccdf_org.ssgproject.content_rule_sudoers_explicit_command_args",
@@ -276,7 +276,7 @@ def test_warnings(rule, result):
     (
         "xccdf_org.ssgproject.content_rule_prefer_64bit_os",
         None,
-        {}
+        None
     ),
     (
         "xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_lock_enabled",
@@ -298,6 +298,9 @@ def test_warnings(rule, result):
 def test_remediations(rule, remediation_id, scripts):
     parser = get_parser(PATH_TO_ARF)
     parser.process_groups_or_rules()
+    if parser.rules[rule].remediations == scripts is None:
+        return
+
     for remediation in parser.rules[rule].remediations:
         assert remediation.remediation_id == remediation_id
         assert remediation.system in scripts
