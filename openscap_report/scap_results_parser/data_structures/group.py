@@ -6,12 +6,12 @@ from dataclasses import asdict, dataclass
 
 @dataclass
 class Group:
-    group_id: str = ""
+    group_id: str
     title: str = ""
     description: str = ""
-    platforms: list = None
-    rules_ids: list = None
-    sub_groups: list = None
+    platforms: list[str] = None
+    rules_ids: list[str] = None
+    sub_groups: list['Group'] = None
 
     def as_dict(self):
         return asdict(self)
