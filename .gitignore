@@ -21,3 +21,4 @@ stats
 
 *.log
 report*.html
+report*.json
