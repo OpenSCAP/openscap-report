@@ -19,7 +19,7 @@ class OvalNode:  # pylint: disable=R0902
     negation: bool = False
     comment: str = ""
     tag: str = ""
-    children: list = None
+    children: list['OvalNode'] = None
     test_info: OvalTest = None
 
     def as_dict(self):
