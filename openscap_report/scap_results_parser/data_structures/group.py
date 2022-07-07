@@ -1,17 +1,17 @@
 # Copyright 2022, Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 
 
 @dataclass
 class Group:
-    group_id: str = ""
+    group_id: str
     title: str = ""
     description: str = ""
-    platforms: list = None
-    rules_ids: list = None
-    sub_groups: list = None
+    platforms: list[str] = field(default_factory=list)
+    rules_ids: list[str] = field(default_factory=list)
+    sub_groups: list['Group'] = field(default_factory=list)
 
     def as_dict(self):
         return asdict(self)
