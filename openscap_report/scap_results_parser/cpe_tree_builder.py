@@ -4,7 +4,7 @@
 from .data_structures import OvalNode
 
 
-class CpeTreeBulder:
+class CpeTreeBuilder:
     def __init__(self, rule_to_grup_id, group_to_platforms, profile_platform):
         self.rule_to_grup_id = rule_to_grup_id
         self.group_to_platforms = group_to_platforms
