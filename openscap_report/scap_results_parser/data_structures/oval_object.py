@@ -5,11 +5,11 @@ from dataclasses import asdict, dataclass
 
 
 @dataclass
-class OvalObject():
-    object_id: str = ""
+class OvalObject:
+    object_id: str
     flag: str = ""
     object_type: str = ""
-    object_data: dict = None
+    object_data: list[dict[str, str]] = None
 
     def as_dict(self):
         return asdict(self)
