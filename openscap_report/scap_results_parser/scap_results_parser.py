@@ -6,7 +6,7 @@ from pathlib import Path
 
 from lxml import etree
 
-from .cpe_tree_builder import CpeTreeBulder
+from .cpe_tree_builder import CpeTreeBuilder
 from .data_structures import Group, Report
 from .exceptions import MissingOVALResult
 from .namespaces import NAMESPACES
@@ -142,7 +142,7 @@ class SCAPResultsParser():  # pylint: disable=R0902
             oval_parser = OVALDefinitionParser(self.root)
             oval_trees = oval_parser.get_oval_trees()
             oval_cpe_trees = oval_parser.get_oval_cpe_trees()
-            cpe_tree_builder = CpeTreeBulder(
+            cpe_tree_builder = CpeTreeBuilder(
                 self.rule_to_grup_id,
                 self.group_to_platforms,
                 self.profile.platform
