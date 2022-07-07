@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 import logging
+import uuid
 
 from ..data_structures import OvalNode
 from ..exceptions import MissingOVALResult
@@ -70,7 +71,7 @@ class OVALDefinitionParser:
             dict_of_oval_definitions[id_definition] = self._build_node(
                 definition[0],
                 "Definition",
-                id_definition=id_definition
+                id_definition
             )
         return self._fill_extend_definition(dict_of_oval_definitions)
 
@@ -84,8 +85,8 @@ class OVALDefinitionParser:
             dict_of_oval_definitions[id_definition] = self._build_node(
                 definition[0],
                 "CPE Definition",
-                True,
-                id_definition
+                id_definition,
+                True
             )
         oval_cpe_trees = self._fill_extend_definition(dict_of_oval_definitions)
         cpe_dict = self._get_cpe_dict()
@@ -142,7 +143,7 @@ class OVALDefinitionParser:
             test_info=parser_of_test_info.get_test_info(test_id),
         )
 
-    def _build_node(self, tree, tag, is_cpe=False, id_definition=None):
+    def _build_node(self, tree, tag, id_definition, is_cpe=False):
         negation = self._get_negation(tree)
         node = OvalNode(
             node_id=id_definition,
@@ -154,7 +155,14 @@ class OVALDefinitionParser:
         )
         for child in tree:
             if child.get('operator') is not None:
-                node.children.append(self._build_node(child, "Criteria", is_cpe))
+                node.children.append(
+                    self._build_node(
+                        child,
+                        "Criteria",
+                        f"no-id-criteria-{uuid.uuid4()}",
+                        is_cpe
+                    )
+                )
             else:
                 if child.get('definition_ref') is not None:
                     node.children.append(self._get_extend_definition_node(child))
