@@ -6,7 +6,7 @@ from dataclasses import asdict, dataclass
 
 @dataclass
 class Remediation:
-    remediation_id: str = ""
+    remediation_id: str
     system: str = ""
     complexity: str = ""
     disruption: str = ""
