@@ -7,8 +7,8 @@ from .oval_object import OvalObject
 
 
 @dataclass
-class OvalTest():
-    test_id: str = ""
+class OvalTest:
+    test_id: str
     test_type: str = ""
     comment: str = ""
     oval_object: OvalObject = None
