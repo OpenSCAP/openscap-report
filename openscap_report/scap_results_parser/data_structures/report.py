@@ -5,6 +5,8 @@ import logging
 from dataclasses import asdict, dataclass
 
 from ..exceptions import MissingProcessableRules
+from .group import Group
+from .rule import Rule
 
 
 @dataclass
@@ -14,7 +16,7 @@ class Report:  # pylint: disable=R0902
     profile_name: str = ""
     platform: str = ""
     target: str = ""
-    cpe_platforms: str = ""
+    cpe_platforms: list[str] = None
     scanner: str = ""
     scanner_version: str = ""
     benchmark_url: str = ""
@@ -25,8 +27,8 @@ class Report:  # pylint: disable=R0902
     test_system: str = ""
     score: float = 0.0
     score_max: float = 0.0
-    rules: dict = None
-    groups: dict = None
+    rules: dict[str, Rule] = None
+    groups: dict[str, Group] = None
 
     def as_dict(self):
         return asdict(self)
