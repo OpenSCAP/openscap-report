@@ -78,6 +78,33 @@ def test_command_with_input_from_stdin_and_output_to_stdout():
 
 @pytest.mark.integration_test
 @pytest.mark.usefixtures("remove_generated_file")
+@pytest.mark.parametrize("arguments, expected_start_string", [
+    (
+        [],
+        '<!DOCTYPE html><html lang="en" class="pf-m-redhat-font">'
+    ),
+    (
+        ["-f", "HTML"],
+        '<!DOCTYPE html><html lang="en" class="pf-m-redhat-font">'
+    ),
+    (
+        ["-f", "OLD-STYLE-HTML"],
+        '<!DOCTYPE html>\n<html lang="en">'
+    ),
+    (
+        ["-f", "JSON"],
+        "{"
+    )
+])
+def test_command_with_different_formats(arguments, expected_start_string):
+    command_stdout = None
+    with subprocess.Popen(CAT_ARF_FILE, stdout=subprocess.PIPE) as cat_command:
+        command_stdout = subprocess.check_output(
+            [OSCAP_REPORT_COMMAND, *arguments], stdin=cat_command.stdout)
+    assert command_stdout.decode("utf-8").startswith(expected_start_string)
+
+
+@pytest.mark.usefixtures("remove_generated_file")
 def test_command_with_input_from_file_and_output_to_stdout():
     command_stdout = subprocess.check_output([OSCAP_REPORT_COMMAND, str(PATH_TO_ARF)])
     assert command_stdout.decode("utf-8").startswith("<!DOCTYPE html>")
