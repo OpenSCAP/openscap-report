@@ -123,7 +123,6 @@ class OVALDefinitionParser:
             node_type="extend_definition",
             value=result_of_node,
             negation=negation,
-            comment=None,
             tag="Extend definition",
         )
 
