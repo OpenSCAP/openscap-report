@@ -6,16 +6,18 @@ from pathlib import Path
 
 from lxml import etree
 
+from .report_generator import ReportGenerator
+
 XSL_DIR = Path(__file__).parent / "xsl"
 
 
-class ReportGenerator():
-    def __init__(self, parser):
+class OldStyleHTMLReportGenerator(ReportGenerator):
+    def __init__(self, parser):  # pylint: disable=W0231
         self.xml_report = parser.root
         self.xslt_doc = etree.parse(str(XSL_DIR / "xccdf-report.xsl"))
         self.xslt_transformer = etree.XSLT(self.xslt_doc)
 
-    def generate_html_report(self):
+    def generate_report(self, debug_setting):
         html_report = self.xslt_transformer(self.xml_report)
         result_html = etree.tostring(
             html_report,
@@ -25,5 +27,5 @@ class ReportGenerator():
             standalone=False,
             with_tail=False,
             method="html",
-            pretty_print=False)
+            pretty_print=debug_setting.no_minify)
         return BytesIO(result_html)

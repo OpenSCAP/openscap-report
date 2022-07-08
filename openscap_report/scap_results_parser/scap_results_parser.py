@@ -97,6 +97,8 @@ class SCAPResultsParser():  # pylint: disable=R0902
             logging.debug(rule)
 
     def _improve_result_of_remedied_rule(self, rule_id):
+        if not self.rules[rule_id].messages:
+            return
         remediation_error_code = None
         check_engine_result = None
         remediation_error_code_prefix = "Fix execution completed and returned:"
@@ -129,6 +131,8 @@ class SCAPResultsParser():  # pylint: disable=R0902
                 self.rules[rule_id].messages = []
                 for message in messages:
                     self.rules[rule_id].messages.append(message.text)
+                if not self.rules[rule_id].messages:
+                    self.rules[rule_id].messages = None
                 self._improve_result_of_remedied_rule(rule_id)
 
             if "fix" in self.rules[rule_id].result:
@@ -153,6 +157,19 @@ class SCAPResultsParser():  # pylint: disable=R0902
                 rule.cpe_tree = cpe_tree_builder.build_cpe_tree(rule, oval_cpe_trees)
         except MissingOVALResult:
             logging.warning("Not found OVAL results!")
+
+    def insert_to_dict_group_to_platforms(self, group_dict, platforms):
+        platforms_of_group = list(set(group_dict.get("platforms")) | set(platforms))
+        self.group_to_platforms[group_dict.get("group_id")] = platforms_of_group
+
+    @staticmethod
+    def remove_empty_array(group_dict):
+        if not group_dict["platforms"]:
+            group_dict["platforms"] = None
+        if not group_dict["rules_ids"]:
+            group_dict["rules_ids"] = None
+        if not group_dict["sub_groups"]:
+            group_dict["sub_groups"] = None
 
     def get_group(self, group, platforms=None):
         if platforms is None:
@@ -183,8 +200,8 @@ class SCAPResultsParser():  # pylint: disable=R0902
             if "Group" in item.tag:
                 group_dict["sub_groups"].append(self.get_group(item, group_dict.get("platforms")))
 
-        platforms_of_group = list(set(group_dict.get("platforms")) | set(platforms))
-        self.group_to_platforms[group_dict.get("group_id")] = platforms_of_group
+        self.insert_to_dict_group_to_platforms(group_dict, platforms)
+        self.remove_empty_array(group_dict)
         return Group(**group_dict)
 
     def process_groups_or_rules(self):
