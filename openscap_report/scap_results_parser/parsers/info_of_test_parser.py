@@ -86,7 +86,8 @@ class InfoOfTest:
                     items.append(self._get_item(item_id))
             else:
                 items = self._get_object_items(xml_object, xml_collected_object)
-            object_dict["object_data"] = items
+            if items:
+                object_dict["object_data"] = items
         return OvalObject(**object_dict)
 
     def get_object(self, id_object):
@@ -111,7 +112,9 @@ class InfoOfTest:
                 out.append({id_in_dict: self._get_ref_var(element, xml_collected_object)})
         if len(out) > 1:
             return [dict(pair for dict_item in out for pair in dict_item.items())]
-        return out
+        if out:
+            return out
+        return None
 
     def _get_ref_var(self, element, xml_collected_object):
         variable_value = ''

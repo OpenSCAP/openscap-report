@@ -1,7 +1,7 @@
 # Copyright 2022, Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from ..data_structures import Rule
+from ..data_structures import Identifier, Reference, Rule
 from ..namespaces import NAMESPACES
 from .full_text_parser import FullTextParser
 from .remediation_parser import RemediationParser
@@ -16,36 +16,36 @@ class RuleParser():
     def _get_references(rule):
         references = []
         for referenc in rule.findall(".//xccdf:reference", NAMESPACES):
-            ref = {
-                "href": referenc.get("href"),
-                "text": referenc.text,
-            }
-            references.append(ref)
-        return references
+            references.append(Reference(referenc.get("href"), referenc.text))
+        if references:
+            return references
+        return None
 
     @staticmethod
     def _get_identifiers(rule):
         identifiers = []
         for identifier in rule.findall(".//xccdf:ident", NAMESPACES):
-            ident = {
-                "system": identifier.get("system"),
-                "text": identifier.text,
-            }
-            identifiers.append(ident)
-        return identifiers
+            identifiers.append(Identifier(identifier.get("system"), identifier.text))
+        if identifiers:
+            return identifiers
+        return None
 
     def _get_warnings(self, rule):
         warnings = []
         for warning in rule.findall(".//xccdf:warning", NAMESPACES):
             warnings.append(self.full_text_parser.get_full_warning(warning))
-        return warnings
+        if warnings:
+            return warnings
+        return None
 
     def _get_remediations(self, rule):
         output = []
         for fix in rule.findall(".//xccdf:fix", NAMESPACES):
             remediation = self.remediation_parser.get_remediation(fix)
             output.append(remediation)
-        return output
+        if output:
+            return output
+        return None
 
     @staticmethod
     def _get_multi_check(rule):
@@ -85,12 +85,15 @@ class RuleParser():
             rule_dict["title"] = title.text
 
         platforms = rule.findall(".//xccdf:platform", NAMESPACES)
-        rule_dict["platforms"] = []
+        array_of_platforms = []
         if platforms is not None:
             for platform in platforms:
-                rule_dict["platforms"].append(platform.get("idref"))
+                array_of_platforms.append(platform.get("idref"))
+
+        if array_of_platforms:
+            rule_dict["platforms"] = array_of_platforms
 
         check_content_refs_dict = self._get_check_content_refs_dict(rule)
-        rule_dict["oval_definition_id"] = check_content_refs_dict.get("oval", "")
+        rule_dict["oval_definition_id"] = check_content_refs_dict.get("oval", None)
 
         return Rule(**rule_dict)

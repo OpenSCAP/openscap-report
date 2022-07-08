@@ -2,9 +2,11 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 import logging
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 
 from ..exceptions import MissingProcessableRules
+from .group import Group
+from .rule import Rule
 
 
 @dataclass
@@ -14,7 +16,7 @@ class Report:  # pylint: disable=R0902
     profile_name: str = ""
     platform: str = ""
     target: str = ""
-    cpe_platforms: str = ""
+    cpe_platforms: list[str] = None
     scanner: str = ""
     scanner_version: str = ""
     benchmark_url: str = ""
@@ -25,30 +27,11 @@ class Report:  # pylint: disable=R0902
     test_system: str = ""
     score: float = 0.0
     score_max: float = 0.0
-    rules: dict = None
-    groups: dict = None
+    rules: dict[str, Rule] = None
+    groups: dict[str, Group] = None
 
     def as_dict(self):
-        return {
-            "title": self.title,
-            "profile_name": self.profile_name,
-            "platform": self.platform,
-            "target": self.target,
-            "identit": self.identity,
-            "cpe_platforms": self.cpe_platforms,
-            "scanner": self.scanner,
-            "scanner_version": self.scanner_version,
-            "benchmark_url": self.benchmark_url,
-            "benchmark_id": self.benchmark_id,
-            "benchmark_version": self.benchmark_version,
-            "start_time": self.start_time,
-            "end_time": self.end_time,
-            "test_system": self.test_system,
-            "score": self.score,
-            "score_max": self.score_max,
-            "rules": self.rules,
-            "groups": self.groups,
-        }
+        return asdict(self)
 
     def get_rule_results_stats(self):
         results_stats = {
