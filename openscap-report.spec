@@ -15,6 +15,8 @@ BuildRequires:  python3-devel
 BuildRequires:  python3-sphinx
 BuildRequires:  python3-sphinx_rtd_theme
 
+Provides:       bundled(patternfly) = 4
+
 %global _description %{expand:
 This package provides a command-line tool for generating
 human-readable reports from SCAP XCCDF and ARF results.}
