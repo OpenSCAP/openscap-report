@@ -45,11 +45,11 @@ install -m 0644 -Dt %{buildroot}%{_mandir}/man1 _build_docs/oscap-report.1
 %check
 %tox
 
-
 %files -f %{pyproject_files}
 %{_mandir}/man1/oscap-report.*
 %{_bindir}/oscap-report
 %exclude %{python3_sitelib}/tests/
+%license LICENSE
 
 
 %changelog
