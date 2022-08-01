@@ -353,35 +353,35 @@
 
 @font-face {
   font-family: "RedHatDisplay";
-  src: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/RedHatDisplay/RedHatDisplay-Regular.woff2') }}") format("woff2"), url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/RedHatDisplay/RedHatDisplay-Regular.woff') }}") format("woff");
+  src: local("RedHatDisplay-Regular"), url("data:font/ttf;base64,{{ include_file_in_base64('/usr/share/fonts/redhat/RedHatDisplay-Regular.ttf') }}") format("ttf");
   font-style: normal;
   font-weight: 300;
   text-rendering: optimizeLegibility;
 }
 @font-face {
   font-family: "RedHatDisplay";
-  src: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/RedHatDisplay/RedHatDisplay-Medium.woff2') }}") format("woff2"), url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/RedHatDisplay/RedHatDisplay-Medium.woff') }}") format("woff");
+  src: local("RedHatDisplay-Medium"), url("data:font/ttf;base64,{{ include_file_in_base64('/usr/share/fonts/redhat/RedHatDisplay-Medium.ttf') }}") format("ttf");
   font-style: normal;
   font-weight: 400;
   text-rendering: optimizeLegibility;
 }
 @font-face {
   font-family: "RedHatDisplay";
-  src: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/RedHatDisplay/RedHatDisplay-Bold.woff2') }}") format("woff2"), url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/RedHatDisplay/RedHatDisplay-Bold.woff') }}") format("woff");
+  src: local("RedHatDisplay-Bold"), url("data:font/ttf;base64,{{ include_file_in_base64('/usr/share/fonts/redhat/RedHatDisplay-Bold.ttf') }}") format("ttf");
   font-style: normal;
   font-weight: 700;
   text-rendering: optimizeLegibility;
 }
 @font-face {
   font-family: "RedHatText";
-  src: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/RedHatText/RedHatText-Regular.woff2') }}") format("woff2"), url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/RedHatText/RedHatText-Regular.woff') }}") format("woff");
+  src: local("RedHatText-Regular"), url("data:font/ttf;base64,{{ include_file_in_base64('/usr/share/fonts/redhat/RedHatText-Regular.ttf') }}") format("ttf");
   font-style: normal;
   font-weight: 400;
   text-rendering: optimizeLegibility;
 }
 @font-face {
   font-family: "RedHatText";
-  src: url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/RedHatText/RedHatText-Medium.woff2') }}") format("woff2"), url("data:application/x-font-woff;charset=utf-8;base64,{{ include_file_in_base64('./assets/fonts/RedHatText/RedHatText-Medium.woff') }}") format("woff");
+  src: local("RedHatText-Medium"), url("data:font/ttf;base64,{{ include_file_in_base64('/usr/share/fonts/redhat/RedHatText-Medium.ttf') }}") format("ttf");
   font-style: normal;
   font-weight: 700;
   text-rendering: optimizeLegibility;

@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 import base64
+import logging
 import re
 from io import BytesIO
 from pathlib import Path
@@ -42,6 +43,11 @@ class ReportGenerator():
     @pass_context
     def include_file_in_base64(context, relative_path):
         real_path = Path(context.environment.loader.searchpath[0]) / relative_path
+        if "RedHat" in relative_path:
+            real_path = Path(relative_path)
+        if not real_path.exists():
+            logging.warning("Please, install font: %s", real_path.name)
+            return Markup("NO-FONT-DATA")
         base64_data = None
         with open(real_path, "rb") as file_data:
             base64_data = (base64.b64encode(file_data.read())).decode('utf-8')
