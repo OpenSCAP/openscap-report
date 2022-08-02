@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 import html
+import logging
 
 from lxml import etree
 
@@ -13,7 +14,12 @@ class FullTextParser():
         self.ref_values = ref_values
 
     def replace_sub_tag(self, tag):
-        return self.ref_values.get(tag.get("idref"))
+        id_ref = tag.get("idref")
+        if id_ref in self.ref_values:
+            return self.ref_values.get(id_ref)
+        error_msg = f"Sub tag reference does not exist: {id_ref}"
+        logging.warning(error_msg)
+        return f"<span class='error-id-ref'>{error_msg}</span>"
 
     @staticmethod
     def _get_html_attributes_as_string(attributes):
