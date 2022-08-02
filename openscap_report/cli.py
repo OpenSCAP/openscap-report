@@ -3,13 +3,13 @@
 
 import argparse
 import logging
-from dataclasses import dataclass
 from sys import exit as sys_exit
 from sys import stdin, stdout
 
 from lxml.etree import XMLSyntaxError
 
 from . import __version__
+from .debug_settings import DebugSetting
 from .html_report import ReportGenerator
 from .old_html_report_style import OldOSCAPReportGenerator
 from .scap_results_parser import SCAPResultsParser
@@ -162,32 +162,6 @@ class CommandLineAPI():  # pylint: disable=R0902
         logging.info("Close files")
         self.report_file.close()
         self.output_file.close()
-
-
-@dataclass
-class DebugSetting():
-    no_minify: bool = False
-    options_require_debug_script: tuple = (
-        "BUTTON-SHOW-ALL-RULES",
-        "BUTTON-SHOW-ALL-RULES-AND-OVAL-TEST-DETAILS"
-    )
-    include_debug_script: bool = False
-    button_show_all_rules: bool = False
-    use_online_css: bool = False
-    button_show_all_rules_and_oval_test_details: bool = False
-
-    def update_settings_with_debug_flags(self, debug_flags):
-        for flag in debug_flags:
-            if flag in self.options_require_debug_script:
-                self.include_debug_script = True
-            if flag == "NO-MINIFY":
-                self.no_minify = True
-            if flag == "BUTTON-SHOW-ALL-RULES":
-                self.button_show_all_rules = True
-            if flag == "ONLINE-CSS":
-                self.use_online_css = True
-            if flag == "BUTTON-SHOW-ALL-RULES-AND-OVAL-TEST-DETAILS":
-                self.button_show_all_rules_and_oval_test_details = True
 
 
 def main():
