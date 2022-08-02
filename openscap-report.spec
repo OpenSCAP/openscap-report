@@ -5,8 +5,8 @@ Version:        0.0.0
 Release:        0%{?dist}
 Summary:        A tool for generating human-readable reports from (SCAP) XCCDF and ARF results
 
-# The entire source code is LGPL-2.1+ and GPL-2.0+ except schemas/ and assets/, which are Public Domain
-License:        LGPLv2+ and GPLv2+ and Public Domain
+# The entire source code is LGPL-2.1+ and GPL-2.0+ and MIT except schemas/ and assets/, which are Public Domain
+License:        LGPLv2+ and GPLv2+ and MIT and Public Domain
 URL:            https://github.com/OpenSCAP/%{name}
 Source0:        https://github.com/OpenSCAP/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.gz
 
@@ -14,6 +14,12 @@ BuildArch:      noarch
 BuildRequires:  python3-devel
 BuildRequires:  python3-sphinx
 BuildRequires:  python3-sphinx_rtd_theme
+
+Provides:       bundled(patternfly) = 4
+
+Requires:       python3-lxml
+Requires:       redhat-display-fonts
+Requires:       redhat-text-fonts
 
 %global _description %{expand:
 This package provides a command-line tool for generating
@@ -45,11 +51,11 @@ install -m 0644 -Dt %{buildroot}%{_mandir}/man1 _build_docs/oscap-report.1
 %check
 %tox
 
-
 %files -f %{pyproject_files}
 %{_mandir}/man1/oscap-report.*
 %{_bindir}/oscap-report
 %exclude %{python3_sitelib}/tests/
+%license LICENSE
 
 
 %changelog
