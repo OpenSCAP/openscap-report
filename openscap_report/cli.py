@@ -47,10 +47,27 @@ EXIT_FAILURE_CODE = 1
 EXIT_SUCCESS_CODE = 0
 
 
+class CustomHelpFormatter(argparse.RawTextHelpFormatter):
+    def _format_action_invocation(self, action):
+        if not action.option_strings:
+            metavar, = self._metavar_formatter(action, action.dest)(1)
+            return metavar
+
+        parts = []
+        if action.nargs == 0:
+            parts.extend(action.option_strings)
+        else:
+            default = action.dest.upper()
+            args_string = self._format_args(action, default)
+            options_string = ", ".join(action.option_strings)
+            parts.append(f'{options_string} {args_string}')
+        return ',  '.join(parts)
+
+
 def prepare_parser():
     parser = argparse.ArgumentParser(
         prog="oscap-report",
-        formatter_class=argparse.RawTextHelpFormatter,
+        formatter_class=CustomHelpFormatter,
         description=DESCRIPTION,
         add_help=False,
     )
