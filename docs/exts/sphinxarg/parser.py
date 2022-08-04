@@ -1,5 +1,6 @@
 import re
 from argparse import _HelpAction, _StoreConstAction, _SubParsersAction
+from io import TextIOWrapper
 
 
 class NavigationException(Exception):
@@ -132,6 +133,9 @@ def parse_parser(parser, data=None, **kwargs):
             # Skip lines for subcommands
             if name == ['==SUPPRESS==']:
                 continue
+
+            if isinstance(default, TextIOWrapper):
+                default = default.name
 
             if isinstance(action, _StoreConstAction):
                 option = {
