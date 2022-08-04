@@ -17,25 +17,29 @@ from .scap_results_parser import SCAPResultsParser
 DESCRIPTION = ("Generates an HTML report from an ARF (or XCCDF Result) file with results of "
                "a SCAP-compatible utility scan. Unless the --output option is specified "
                "the report will be written to the standard output.")
-LOG_LEVES_DESCRIPTION = (
-    "LOG LEVELS:\n"
-    "\tDEBUG - Detailed information, typically of interest only for diagnosing problems.\n"
-    "\tINFO - A confirmation that things are working as expected.\n"
-    "\tWARING -  An indication that something unexpected happened, or a signal of"
-    " a possible problem in the future. The software is still working as expected.\n"
-    "\tERROR - Due to a more serious problems, the software has not been able to perform "
-    "its function to the full extent.\n"
-    "\tCRITICAL - A serious error, indicating that the program itself may be unable "
-    "to continue operating.\n"
-)
-DEBUG_FLAGS_DESCRIPTION = (
-    "DEBUG FLAGS:\n"
-    "\tNO-MINIFY - The HTML report will not be minified.\n"
-    "\tBUTTON-SHOW-ALL-RULES - Adds a button to the HTML report for expanding all rules.\n"
-    "\tONLINE-CSS - Use the latest online version of Patternfly CSS/JS in the HTML report\n"
-    "\tBUTTON-SHOW-ALL-RULES-AND-OVAL-TEST-DETAILS - "
-    "Adds a button to the HTML report for expanding all rules and all OVAL test details."
-)
+LOG_LEVELS_DESCRIPTION = """
+LOG LEVELS:
+    DEBUG - Detailed information, typically of interest only for diagnosing problems.
+
+    INFO - A confirmation that things are working as expected.
+
+    WARNING -  An indication that something unexpected happened, or a signal of a possible problem in the future. The software is still working as expected.
+
+    ERROR - Due to a more serious problems, the software has not been able to perform its function to the full extent.
+
+    CRITICAL - A serious error, indicating that the program itself may be unable to continue operating.
+"""
+
+DEBUG_FLAGS_DESCRIPTION = """
+DEBUG FLAGS:
+    NO-MINIFY - The HTML report will not be minified.
+
+    BUTTON-SHOW-ALL-RULES - Adds a button to the HTML report for expanding all rules.
+
+    ONLINE-CSS - Use the latest online version of Patternfly CSS/JS in the HTML report.
+
+    BUTTON-SHOW-ALL-RULES-AND-OVAL-TEST-DETAILS - Adds a button to the HTML report for expanding all rules and all OVAL test details.
+"""
 
 MASSAGE_FORMAT = '%(levelname)s: %(message)s'
 EXPECTED_ERRORS = (XMLSyntaxError, )
@@ -86,7 +90,7 @@ def prepare_parser():
         choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
         help=(
             "write debug information to the log up to the LOG_LEVEL."
-            f"\n{LOG_LEVES_DESCRIPTION}")
+            f"\n{LOG_LEVELS_DESCRIPTION}")
     )
     parser.add_argument(
         "-f",
@@ -94,7 +98,7 @@ def prepare_parser():
         action="store",
         default="HTML",
         choices=["HTML", "OLD-STYLE-HTML"],
-        help="FORMAT: %(choices)s (default: %(default)s)."
+        help="FORMAT: %(choices)s"
     )
     parser.add_argument(
         "-d",
@@ -104,13 +108,13 @@ def prepare_parser():
         default=[""],
         choices=[
             "NO-MINIFY",
-            "BUTTON-SHOW-ALL-RULES",
             "ONLINE-CSS",
+            "BUTTON-SHOW-ALL-RULES",
             "BUTTON-SHOW-ALL-RULES-AND-OVAL-TEST-DETAILS"
         ],
         help=(
-            "extra HTML generation options for debugging"
-            f"{DEBUG_FLAGS_DESCRIPTION}")
+            "extra HTML generation options for debugging."
+            f"\n{DEBUG_FLAGS_DESCRIPTION}")
     )
     return parser
 
