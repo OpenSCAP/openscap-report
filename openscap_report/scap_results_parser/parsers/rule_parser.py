@@ -8,7 +8,9 @@ from .remediation_parser import RemediationParser
 
 
 class RuleParser():
-    def __init__(self, ref_values):
+    def __init__(self, root, test_results, ref_values):
+        self.root = root
+        self.test_results = test_results
         self.full_text_parser = FullTextParser(ref_values)
         self.remediation_parser = RemediationParser(ref_values)
 
@@ -63,7 +65,7 @@ class RuleParser():
         rule_dict = {
             "rule_id": rule_id,
             "severity": rule.get("severity", "Unknown"),
-            "description": self.full_text_parser.get_full_description(rule),
+            "description": self.full_text_parser.get_full_description_of_rule(rule),
             "references": self._get_references(rule),
             "identifiers": self._get_identifiers(rule),
             "warnings": self._get_warnings(rule),
@@ -86,3 +88,54 @@ class RuleParser():
         rule_dict["oval_definition_id"] = check_content_refs_dict.get("oval", "")
 
         return Rule(**rule_dict)
+
+    def _improve_result_of_remedied_rule(self, rule_id, rules):
+        if not rules[rule_id].messages:
+            return
+        remediation_error_code = None
+        check_engine_result = None
+        remediation_error_code_prefix = "Fix execution completed and returned:"
+        check_engine_result_prefix = "Checking engine returns:"
+
+        for message in rules[rule_id].messages:
+            if message.startswith(remediation_error_code_prefix):
+                error_code = message.replace(remediation_error_code_prefix, "")
+                remediation_error_code = int(error_code)
+
+            index = message.find(check_engine_result_prefix)
+            if index:
+                check_engine_result = message[index:]
+
+        if check_engine_result is not None and "fail" in check_engine_result:
+            rules[rule_id].result = "fix unsuccessful"
+
+        if remediation_error_code is not None and remediation_error_code > 0:
+            rules[rule_id].result = "fix failed"
+
+    def _insert_rules_results(self, rules):
+        rules_results = self.test_results.findall('.//xccdf:rule-result', NAMESPACES)
+        for rule_result in rules_results:
+            rule_id = rule_result.get('idref')
+            rules[rule_id].time = rule_result.get('time')
+            rules[rule_id].result = rule_result.find('.//xccdf:result', NAMESPACES).text
+
+            messages = rule_result.findall('.//xccdf:message', NAMESPACES)
+            if messages is not None:
+                rules[rule_id].messages = []
+                for message in messages:
+                    rules[rule_id].messages.append(message.text)
+                self._improve_result_of_remedied_rule(rule_id, rules)
+
+            if "fix" in rules[rule_id].result:
+                message = (
+                    "The OVAL graph of the rule as it was displayed before the fix was performed."
+                )
+                rules[rule_id].messages.append(message)
+
+    def get_rules(self):
+        rules = {}
+        for rule in self.root.findall(".//xccdf:Rule", NAMESPACES):
+            rule = self.process_rule(rule)
+            rules[rule.rule_id] = rule
+        self._insert_rules_results(rules)
+        return rules

@@ -53,11 +53,12 @@ class FullTextParser():
             text += html.escape(child.tail) if child.tail is not None else ""
         return text
 
-    def get_full_description(self, rule):
+    def get_full_description_of_rule(self, rule):
         description = rule.find(".//xccdf:description", NAMESPACES)
-        if description is None:
-            return ""
-        return self._get_element_as_string(description)
+        return self._get_element_as_string(description) if description is not None else ""
+
+    def get_full_description(self, item):
+        return self._get_element_as_string(item)
 
     def get_full_warning(self, warning):
         return self._get_element_as_string(warning)
