@@ -2,9 +2,13 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 import pytest
+from lxml import etree
 
 from openscap_report.scap_results_parser import SCAPResultsParser
 from openscap_report.scap_results_parser.data_structures import Report, Rule
+from openscap_report.scap_results_parser.namespaces import NAMESPACES
+from openscap_report.scap_results_parser.parsers import (ReportParser,
+                                                         RuleParser)
 
 from ..constants import (PATH_TO_ARF, PATH_TO_ARF_SCANNED_ON_CONTAINER,
                          PATH_TO_ARF_WITH_MULTI_CHECK,
@@ -28,6 +32,32 @@ def get_parser(file_path):
     with open(file_path, "r", encoding="utf-8") as xml_report:
         xml_data = xml_report.read().encode()
     return SCAPResultsParser(xml_data)
+
+
+def get_root(file_path):
+    xml_data = None
+    with open(file_path, "r", encoding="utf-8") as xml_report:
+        xml_data = xml_report.read().encode()
+    return etree.XML(xml_data)
+
+
+def get_test_results(root):
+    return root.find('.//xccdf:TestResult', NAMESPACES)
+
+
+def get_ref_values(root):
+    return {
+        ref_value.get("idref"): ref_value.text
+        for ref_value in root.findall('.//xccdf:set-value', NAMESPACES)
+    }
+
+
+def get_rules(file_path=PATH_TO_ARF):
+    root = get_root(file_path)
+    test_results = get_test_results(root)
+    ref_values = get_ref_values(root)
+    rule_parser = RuleParser(root, test_results, ref_values)
+    return rule_parser.get_rules()
 
 
 @pytest.mark.unit_test
@@ -71,8 +101,9 @@ def test_validation(file_path, result):
     (PATH_TO_RULE_AND_CPE_CHECK_XCCDF, 1, "cpe:/o:example:applicable:5"),
 ])
 def test_get_profile_info(file_path, number_of_cpe_platforms, os_cpe_platform):
-    parser = get_parser(file_path)
-    report = parser.get_profile_info()
+    root = get_root(file_path)
+    report_parser = ReportParser(root, get_test_results(root))
+    report = report_parser.get_report()
     assert len(report.cpe_platforms) == number_of_cpe_platforms
     assert report.platform == os_cpe_platform
 
@@ -95,10 +126,9 @@ def test_get_profile_info(file_path, number_of_cpe_platforms, os_cpe_platform):
     (PATH_TO_RULE_AND_CPE_CHECK_XCCDF, 3),
 ])
 def test_get_info_about_rules_in_profile(file_path, number_of_rules):
-    parser = get_parser(file_path)
-    parser.process_groups_or_rules()
-    assert len(parser.rules.keys()) == number_of_rules
-    for rule in parser.rules.values():
+    rules = get_rules(file_path)
+    assert len(rules.keys()) == number_of_rules
+    for rule in rules.values():
         assert isinstance(rule, Rule)
 
 
@@ -126,10 +156,9 @@ def test_parse_report(file_path, contains_oval_tree):
     (PATH_TO_ARF_WITH_MULTI_CHECK, True),
 ])
 def test_multi_check(file_path, contains_rules_some_multi_check_rule):
-    parser = get_parser(file_path)
-    parser.process_groups_or_rules()
+    rules = get_rules(file_path)
     result = False
-    for rule in parser.rules.values():
+    for rule in rules.values():
         if rule.multi_check:
             result = True
     assert result == contains_rules_some_multi_check_rule
@@ -180,9 +209,8 @@ def test_multi_check(file_path, contains_rules_some_multi_check_rule):
     ),
 ])
 def test_description(rule, result):
-    parser = get_parser(PATH_TO_ARF)
-    parser.process_groups_or_rules()
-    assert parser.rules[rule].description == result
+    rules = get_rules()
+    assert rules[rule].description == result
 
 
 @pytest.mark.unit_test
@@ -227,9 +255,8 @@ def test_description(rule, result):
     )
 ])
 def test_rationale(rule, result):
-    parser = get_parser(PATH_TO_ARF)
-    parser.process_groups_or_rules()
-    assert parser.rules[rule].rationale == result
+    rules = get_rules()
+    assert rules[rule].rationale == result
 
 
 @pytest.mark.unit_test
@@ -266,9 +293,8 @@ def test_rationale(rule, result):
     )
 ])
 def test_warnings(rule, result):
-    parser = get_parser(PATH_TO_ARF)
-    parser.process_groups_or_rules()
-    assert parser.rules[rule].warnings == result
+    rules = get_rules()
+    assert rules[rule].warnings == result
 
 
 @pytest.mark.unit_test
@@ -296,9 +322,11 @@ def test_warnings(rule, result):
     )
 ])
 def test_remediations(rule, remediation_id, scripts):
-    parser = get_parser(PATH_TO_ARF)
-    parser.process_groups_or_rules()
-    for remediation in parser.rules[rule].remediations:
+    rules = get_rules()
+    if rules[rule].remediations == scripts is None:
+        return
+
+    for remediation in rules[rule].remediations:
         assert remediation.remediation_id == remediation_id
         assert remediation.system in scripts
         path = PATH_TO_REMEDIATIONS_SCRIPTS / str(scripts[remediation.system])
