@@ -52,11 +52,13 @@ class RuleParser():
     def _get_check_content_refs_dict(rule):
         check_content_refs = rule.findall(".//xccdf:check-content-ref", NAMESPACES)
         check_content_refs_dict = {}
-        if check_content_refs is not None:
-            for check_ref in check_content_refs:
-                name = check_ref.get("name", "")
-                id_check = name[:name.find(":")]
-                check_content_refs_dict[id_check] = name
+        if check_content_refs is None:
+            return check_content_refs_dict
+
+        for check_ref in check_content_refs:
+            name = check_ref.get("name", "")
+            id_check = name[:name.find(":")]
+            check_content_refs_dict[id_check] = name
         return check_content_refs_dict
 
     def process_rule(self, rule):
@@ -74,43 +76,71 @@ class RuleParser():
             "rationale": self.full_text_parser.get_full_rationale(rule),
         }
 
+        self._add_title(rule_dict, rule)
+        self._add_platforms(rule_dict, rule)
+        self._add_oval_definition_id(rule_dict, rule)
+        return Rule(**rule_dict)
+
+    @staticmethod
+    def _add_title(rule_dict, rule):
         title = rule.find(".//xccdf:title", NAMESPACES)
         if title is not None:
             rule_dict["title"] = title.text
 
+    @staticmethod
+    def _add_platforms(rule_dict, rule):
         platforms = rule.findall(".//xccdf:platform", NAMESPACES)
         rule_dict["platforms"] = []
         if platforms is not None:
             for platform in platforms:
                 rule_dict["platforms"].append(platform.get("idref"))
 
+    def _add_oval_definition_id(self, rule_dict, rule):
         check_content_refs_dict = self._get_check_content_refs_dict(rule)
         rule_dict["oval_definition_id"] = check_content_refs_dict.get("oval", "")
 
-        return Rule(**rule_dict)
+    @staticmethod
+    def _get_remediation_exit_code(message):
+        remediation_exit_code_prefix = "Fix execution completed and returned:"
+        if message.startswith(remediation_exit_code_prefix):
+            exit_code = message.replace(remediation_exit_code_prefix, "")
+            return int(exit_code)
+        return None
+
+    @staticmethod
+    def _get_check_engine_result(message):
+        check_engine_result_prefix = "Checking engine returns:"
+        index = message.find(check_engine_result_prefix)
+        return message[index:] if index else None
+
+    @staticmethod
+    def _evaluate_and_set_result(rule_id, rules, remediation_exit_code, check_engine_result):
+        if check_engine_result is not None and "fail" in check_engine_result:
+            rules[rule_id].result = "fix unsuccessful"
+
+        if remediation_exit_code is not None and remediation_exit_code > 0:
+            rules[rule_id].result = "fix failed"
 
     def _improve_result_of_remedied_rule(self, rule_id, rules):
         if not rules[rule_id].messages:
             return
-        remediation_error_code = None
+        remediation_exit_code = None
         check_engine_result = None
-        remediation_error_code_prefix = "Fix execution completed and returned:"
-        check_engine_result_prefix = "Checking engine returns:"
 
         for message in rules[rule_id].messages:
-            if message.startswith(remediation_error_code_prefix):
-                error_code = message.replace(remediation_error_code_prefix, "")
-                remediation_error_code = int(error_code)
+            if remediation_exit_code is None:
+                remediation_exit_code = self._get_remediation_exit_code(message)
 
-            index = message.find(check_engine_result_prefix)
-            if index:
-                check_engine_result = message[index:]
+            if check_engine_result is None:
+                check_engine_result = self._get_check_engine_result(message)
 
-        if check_engine_result is not None and "fail" in check_engine_result:
-            rules[rule_id].result = "fix unsuccessful"
+        self._evaluate_and_set_result(rule_id, rules, remediation_exit_code, check_engine_result)
 
-        if remediation_error_code is not None and remediation_error_code > 0:
-            rules[rule_id].result = "fix failed"
+    @staticmethod
+    def _add_message_about_oval(rule_id, rules):
+        if "fix" in rules[rule_id].result:
+            msg = "The OVAL graph of the rule as it was displayed before the fix was performed."
+            rules[rule_id].messages.append(msg)
 
     def _insert_rules_results(self, rules):
         rules_results = self.test_results.findall('.//xccdf:rule-result', NAMESPACES)
@@ -125,12 +155,7 @@ class RuleParser():
                 for message in messages:
                     rules[rule_id].messages.append(message.text)
                 self._improve_result_of_remedied_rule(rule_id, rules)
-
-            if "fix" in rules[rule_id].result:
-                message = (
-                    "The OVAL graph of the rule as it was displayed before the fix was performed."
-                )
-                rules[rule_id].messages.append(message)
+            self._add_message_about_oval(rule_id, rules)
 
     def get_rules(self):
         rules = {}
