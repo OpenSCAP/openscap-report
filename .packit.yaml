@@ -19,11 +19,10 @@ actions:
     - python3 setup.py --version
 
 jobs:
-# Propose downstream is disabled because downstream repo doesn't exist yet.
-#- job: propose_downstream
-#  trigger: release
-#  dist_git_branches:
-#    - fedora-rawhide
+- job: propose_downstream
+  trigger: release
+  dist_git_branches:
+    - fedora-rawhide
 
 - job: copr_build
   targets:
