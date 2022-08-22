@@ -8,14 +8,12 @@ from .report_generator import ReportGenerator
 
 
 class JSONReportGenerator(ReportGenerator):
-    def __init__(self, parser):  # pylint: disable=W0231
-        self.report = parser.parse_report()
+    def __init__(self, parser):
+        super().__init__(parser)
+        self.get_report_dict = self.report.as_dict_for_default_json
 
     def generate_report(self, debug_setting):
         logging.warning("JSON Format is experimental output!")
-
-        indent = None
-        if debug_setting.no_minify:
-            indent = "\t"
-        json_data = json.dumps(self.report.as_dict(), indent=indent)
+        indent = "\t" if debug_setting.no_minify else None
+        json_data = json.dumps(self.get_report_dict(), indent=indent)
         return BytesIO(json_data.encode())

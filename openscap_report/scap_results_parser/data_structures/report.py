@@ -30,6 +30,21 @@ class Report:  # pylint: disable=R0902
     rules: dict[str, Rule] = field(default_factory=dict)
     groups: dict[str, Group] = field(default_factory=dict)
 
+    @staticmethod
+    def default_json_filter(dictionary):
+        allowed_keys = [
+            "title",
+            "profile_name",
+            "cpe_platforms",
+            "scanner",
+            "benchmark_id",
+            "score"
+        ]
+        return {key: value for (key, value) in dictionary if key in allowed_keys}
+
+    def as_dict_for_default_json(self):
+        return asdict(self, dict_factory=self.default_json_filter)
+
     def as_dict(self):
         return asdict(self)
 
