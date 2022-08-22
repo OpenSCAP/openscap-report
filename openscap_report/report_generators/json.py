@@ -17,3 +17,9 @@ class JSONReportGenerator(ReportGenerator):
         indent = "\t" if debug_setting.no_minify else None
         json_data = json.dumps(self.get_report_dict(), indent=indent)
         return BytesIO(json_data.encode())
+
+
+class JSONEverythingReportGenerator(JSONReportGenerator):
+    def __init__(self, parser):
+        super().__init__(parser)
+        self.get_report_dict = self.report.as_dict
