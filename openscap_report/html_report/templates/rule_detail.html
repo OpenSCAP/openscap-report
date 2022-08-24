@@ -10,7 +10,18 @@
                 <th class="pf-m-fit-content" role="rowheader" scope="row"><p class="pf-c-table__text"><b>Rule ID:</b></p></th>
                 <td role="cell">
                     <div class="pf-l-flex pf-m-column"><div class="pf-l-flex__item">
-                    <p class="pf-c-table__text">{{ rule.rule_id }}</p></div></div>
+                    <p class="pf-c-table__text">
+                        <div class="pf-c-clipboard-copy pf-m-inline">
+                            <span class="pf-c-clipboard-copy__text">{{ rule.rule_id }}</span>
+                            <span class="pf-c-clipboard-copy__actions">
+                                <span class="pf-c-clipboard-copy__actions-item">
+                                    <button id="copy" class="pf-c-button pf-m-plain" type="button" aria-label="Copy to clipboard">
+                                        <i class="fas fa-copy" aria-hidden="true"></i>
+                                    </button>
+                                </span>
+                            </span>
+                        </div>
+                    </p></div></div>
                 </td>
             </tr>
             <tr role="row">

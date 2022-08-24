@@ -119,3 +119,9 @@ function show_rule_detail(self) { // eslint-disable-line no-unused-vars
     );
     element_to_show.classList.toggle('pf-m-expanded');
 }
+
+const selector = ".pf-c-clipboard-copy__text";
+document.querySelectorAll("#copy").forEach(el => el.addEventListener('click', () => {
+    const el_with_text = el.parentElement.parentElement.parentElement.querySelector(selector);
+    navigator.clipboard.writeText(el_with_text.textContent);
+}));
