@@ -30,6 +30,12 @@
 {% endif %}
 {% endblock %}
 
+{% block style %}
+<style>
+    {%- include './css/style.css' -%}
+</style>
+{% endblock %}
+
 {% block title%}OpenSCAP Evaluation Report{% endblock %}
 
 {% block content %}
