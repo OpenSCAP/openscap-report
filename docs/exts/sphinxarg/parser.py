@@ -134,6 +134,9 @@ def parse_parser(parser, data=None, **kwargs):
             if name == ['==SUPPRESS==']:
                 continue
 
+            for i, value in enumerate(name):
+                name[i] = f" {value}"
+
             if isinstance(default, TextIOWrapper):
                 default = default.name
 
