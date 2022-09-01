@@ -28,7 +28,7 @@ def test_replace_sub_tag(tag, return_data):
 
 
 def get_report(src):
-    with open(src, "r") as report_file:
+    with open(src, "r", encoding="utf-8") as report_file:
         return SCAPResultsParser(report_file.read().encode()).parse_report()
 
 
