@@ -7,23 +7,23 @@ import uuid
 from ..data_structures import OvalNode
 from ..exceptions import MissingOVALResult
 from ..namespaces import NAMESPACES
-from .test_info_parser import InfoOfTest
+from .oval_test_info_parser import OVALTestInfoParser
 
 STR_TO_BOOL = {'true': True, 'false': False}
 STR_NEGATION_BOOL = {'true': 'false', 'false': 'true'}
 
 
-class OVALDefinitionParser:
+class OVALResultParser:
     def __init__(self, root):
         self.root = root
         self.oval_reports = self._get_oval_reports()
         logging.info(self.oval_reports)
         self.oval_results = self._get_oval_results("oval0")
-        self.parser_info_of_test = InfoOfTest(self.oval_reports.get("oval0", None))
+        self.parser_info_of_test = OVALTestInfoParser(self.oval_reports.get("oval0", None))
         self.oval_cpe_results = self._get_oval_results("oval1")
         self.parser_info_of_cpe_test = None
         if "oval1" in self.oval_reports:
-            self.parser_info_of_cpe_test = InfoOfTest(self.oval_reports["oval1"])
+            self.parser_info_of_cpe_test = OVALTestInfoParser(self.oval_reports["oval1"])
 
     def _get_oval_reports(self):
         oval_reports = {}

@@ -5,7 +5,7 @@ import logging
 
 from .data_structures import OvalNode
 from .exceptions import MissingOVALResult
-from .parsers import OVALDefinitionParser
+from .parsers import OVALResultParser
 
 
 class OVALAndCPETreeBuilder:
@@ -15,7 +15,7 @@ class OVALAndCPETreeBuilder:
         self.group_parser = group_parser
         self.missing_oval_results = False
         try:
-            self.oval_parser = OVALDefinitionParser(self.root)
+            self.oval_parser = OVALResultParser(self.root)
             self.oval_trees = self.oval_parser.get_oval_trees()
             self.oval_cpe_trees = self.oval_parser.get_oval_cpe_trees()
         except MissingOVALResult:
