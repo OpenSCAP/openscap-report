@@ -45,7 +45,7 @@ function get_next_five_rules() {
     for(let i = 0; i <= count_five && FIRST_HIDDEN_ELEMENT !== null; i += 1) {
         next_five_rules.push(FIRST_HIDDEN_ELEMENT);
         FIRST_HIDDEN_ELEMENT = FIRST_HIDDEN_ELEMENT.nextSibling;
-        if (!(FIRST_HIDDEN_ELEMENT instanceof HTMLElement)) {
+        if (!(FIRST_HIDDEN_ELEMENT instanceof HTMLElement) && FIRST_HIDDEN_ELEMENT !== null) {
             FIRST_HIDDEN_ELEMENT = FIRST_HIDDEN_ELEMENT.nextSibling;
         }
     }
