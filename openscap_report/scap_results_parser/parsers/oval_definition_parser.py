@@ -8,9 +8,9 @@ from .oval_result_parser import OVALResultParser
 
 
 class OVALDefinitionParser:
-    def __init__(self, root):
+    def __init__(self, root, platform_to_oval_cpe_id):
         self.root = root
-        self.oval_result_parser = OVALResultParser(self.root)
+        self.oval_result_parser = OVALResultParser(self.root, platform_to_oval_cpe_id)
         self.oval_trees = self.oval_result_parser.get_oval_trees()
         self.oval_cpe_trees = self.oval_result_parser.get_oval_cpe_trees()
 

@@ -14,8 +14,9 @@ STR_NEGATION_BOOL = {'true': 'false', 'false': 'true'}
 
 
 class OVALResultParser:
-    def __init__(self, root):
+    def __init__(self, root, platform_to_oval_cpe_id):
         self.root = root
+        self.platform_to_oval_cpe_id = platform_to_oval_cpe_id
         self.oval_reports = self._get_oval_reports()
         logging.info(self.oval_reports)
         self.oval_results = self._get_oval_results("oval0")
@@ -45,25 +46,6 @@ class OVALResultParser:
             ('.//XMLSchema:oval_results/XMLSchema:results/'
              'XMLSchema:system/XMLSchema:definitions'), NAMESPACES)
 
-    def _get_oval_definitions(self):
-        return self.root.find(
-            './/arf:report-requests/arf:report-request/'
-            'arf:content/scap:data-stream-collection/'
-            'scap:component/oval-definitions:oval_definitions/'
-            'oval-definitions:definitions', NAMESPACES)
-
-    def _get_cpe_dict(self):
-        cpe_list = self.root.find(".//ds:component/cpe-dict:cpe-list", NAMESPACES)
-        cpe_dict = {}
-        for cpe_item in cpe_list:
-            name = cpe_item.get("name")
-            check = cpe_item.find(".//cpe-dict:check", NAMESPACES)
-            oval_id = name
-            if check is not None:
-                oval_id = check.text
-            cpe_dict[name] = oval_id
-        return cpe_dict
-
     def get_oval_trees(self):
         dict_of_oval_definitions = {}
         for definition in self.oval_results:
@@ -89,12 +71,11 @@ class OVALResultParser:
                 True
             )
         oval_cpe_trees = self._fill_extend_definition(dict_of_oval_definitions)
-        cpe_dict = self._get_cpe_dict()
         out = {}
-        for value, oval_id in cpe_dict.items():
+        for oval_id in self.platform_to_oval_cpe_id.values():
             if oval_id in oval_cpe_trees:
-                out[value] = oval_cpe_trees[oval_id]
-        return out
+                out[oval_id] = oval_cpe_trees[oval_id]
+        return oval_cpe_trees
 
     @staticmethod
     def _get_negation(node):
