@@ -1,0 +1,75 @@
+{
+	"title": "OSCAP Scan Result",
+	"identity": "jrodak",
+	"profile_name": "xccdf_com.example.www_profile_test_single_rule",
+	"platform": "",
+	"target": "rh-hony",
+	"cpe_platforms": [],
+	"scanner": "OpenSCAP",
+	"scanner_version": "1.3.5",
+	"benchmark_url": "#scap_org.open-scap_comp_test_single_rule.xccdf.xml",
+	"benchmark_id": "xccdf_com.example.www_benchmark_dummy",
+	"benchmark_version": "1.0",
+	"start_time": "2021-11-30T12:27:51+01:00",
+	"end_time": "2021-11-30T12:27:51+01:00",
+	"test_system": "cpe:/a:redhat:openscap:1.3.5",
+	"score": 100.0,
+	"score_max": 100.0,
+	"rules": {
+		"xccdf_com.example.www_rule_test-pass": {
+			"rule_id": "xccdf_com.example.www_rule_test-pass",
+			"title": "This rule always passes",
+			"result": "pass",
+			"multi_check": false,
+			"time": "2021-11-30T12:27:51+01:00",
+			"severity": "Unknown",
+			"identifiers": [],
+			"references": [],
+			"description": "Description",
+			"rationale": "",
+			"warnings": [],
+			"platforms": [],
+			"oval_definition_id": "oval:x:def:1",
+			"messages": [],
+			"remediations": [],
+			"oval_tree": {
+				"node_id": "oval:x:def:1",
+				"node_type": "AND",
+				"value": "true",
+				"negation": false,
+				"comment": "",
+				"tag": "Definition",
+				"children": [
+					{
+						"node_id": "oval:x:tst:1",
+						"node_type": "value",
+						"value": "true",
+						"negation": false,
+						"comment": "",
+						"tag": "Test",
+						"children": [],
+						"test_info": {
+							"test_id": "oval:x:tst:1",
+							"test_type": "variable_test",
+							"comment": "always pass",
+							"oval_object": {
+								"object_id": "oval:x:obj:1",
+								"flag": "complete",
+								"object_type": "variable_object",
+								"object_data": [
+									{
+										"var_ref": "oval:x:var:1",
+										"value": "100"
+									}
+								]
+							}
+						}
+					}
+				],
+				"test_info": null
+			},
+			"cpe_tree": null
+		}
+	},
+	"groups": {}
+}
