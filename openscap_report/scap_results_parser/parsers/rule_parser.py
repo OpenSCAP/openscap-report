@@ -159,8 +159,8 @@ class RuleParser():
 
     def get_rules(self):
         rules = {}
-        for rule in self.root.findall(".//xccdf:Rule", NAMESPACES):
-            rule = self.process_rule(rule)
+        for rule_el in self.root.findall(".//xccdf:Rule", NAMESPACES):
+            rule = self.process_rule(rule_el)
             rules[rule.rule_id] = rule
         self._insert_rules_results(rules)
         return rules
