@@ -4,6 +4,7 @@
 from dataclasses import asdict, dataclass, field
 
 from .identifier import Identifier
+from .oval_definition import OvalDefinition
 from .oval_node import OvalNode
 from .reference import Reference
 from .remediation import Remediation
@@ -24,9 +25,9 @@ class Rule:  # pylint: disable=R0902
     warnings: list[str] = field(default_factory=list)
     platforms: list[str] = field(default_factory=list)
     oval_definition_id: str = None
+    oval_definition: OvalDefinition = None
     messages: list[str] = field(default_factory=list)
     remediations: list[Remediation] = field(default_factory=list)
-    oval_tree: OvalNode = None
     cpe_tree: OvalNode = None
 
     def as_dict(self):

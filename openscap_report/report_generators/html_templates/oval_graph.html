@@ -1,31 +1,33 @@
 {# Copyright 2022, Red Hat, Inc. #}
 {# SPDX-License-Identifier: LGPL-2.1-or-later #}
-{% if rule.oval_tree -%}
+{% if rule.oval_definition -%}
     <div class="pf-c-helper-text">    
-        {% if rule.oval_tree.value == 'true' -%}
+        {% if rule.oval_definition.oval_tree.value == 'true' -%}
             <div class="pf-c-helper-text__item pf-m-success">
                 <span class="pf-c-helper-text__item-icon">
                     <i class="fas fa-fw fa-check-circle" aria-hidden="true"></i>
                 </span>
-                <span class="pf-c-helper-text__item-text"><b>OVAL graph of OVAL definition: {{ rule.oval_tree.node_id }}</b></span>
+                <span class="pf-c-helper-text__item-text"><b>OVAL graph of OVAL definition: {{ rule.oval_definition_id }}</b></span>
             </div>
-        {% elif rule.oval_tree.value == 'false' %}
+        {% elif rule.oval_definition.oval_tree.value == 'false' %}
             <div class="pf-c-helper-text__item pf-m-error">
                 <span class="pf-c-helper-text__item-icon">
                     <i class="fas fa-fw fa-exclamation-circle" aria-hidden="true"></i>
                 </span>
-                <span class="pf-c-helper-text__item-text"><b>OVAL graph of OVAL definition: {{ rule.oval_tree.node_id }}</b></span>
+                <span class="pf-c-helper-text__item-text"><b>OVAL graph of OVAL definition: {{ rule.oval_definition_id }}</b></span>
             </div>
         {% else %}
             <div class="pf-c-helper-text__item pf-m-warning">
                 <span class="pf-c-helper-text__item-icon">
                     <i class="fas fa-fw fa-exclamation-triangle" aria-hidden="true"></i>
                 </span>
-                <span class="pf-c-helper-text__item-text"><b>OVAL graph of OVAL definition: {{ rule.oval_tree.node_id }}</b></span>
+                <span class="pf-c-helper-text__item-text"><b>OVAL graph of OVAL definition: {{ rule.oval_definition_id }}</b></span>
             </div>    
         {%- endif %}
     </div>
-    <div id="oval_tree_of_rule_{{ rule.rule_id | replace('.', '') }}" is_rendered="false" data='{{ rule.oval_tree.as_dict() | tojson }}'></div>
+{%- endif -%}
+{%- if rule.oval_definition.oval_tree -%}
+    <div id="oval_tree_of_rule_{{ rule.rule_id | replace('.', '') }}" is_rendered="false" data='{{ rule.oval_definition.oval_tree.as_dict() | tojson }}'></div>
 {% else %}
 <div class="pf-c-alert pf-m-warning pf-m-inline">
     <div class="pf-c-alert__icon">

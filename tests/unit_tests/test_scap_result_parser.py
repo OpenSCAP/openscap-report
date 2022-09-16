@@ -145,7 +145,7 @@ def test_parse_report(file_path, contains_oval_tree):
     assert report.rules is not None
     rule_id = "xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_deny"
     assert isinstance(report.rules[rule_id], Rule)
-    assert (report.rules[rule_id].oval_tree is not None) == contains_oval_tree
+    assert (report.rules[rule_id].oval_definition is not None) == contains_oval_tree
 
 
 @pytest.mark.unit_test

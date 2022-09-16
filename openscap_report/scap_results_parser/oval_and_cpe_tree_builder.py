@@ -118,5 +118,5 @@ class OVALAndCPETreeBuilder:  # pylint: disable=R0902
 
         for rule in rules.values():
             if rule.oval_definition_id in self.oval_definitions:
-                rule.oval_tree = self.oval_definitions[rule.oval_definition_id].oval_tree
+                rule.oval_definition = self.oval_definitions[rule.oval_definition_id]
             rule.cpe_tree = self.build_cpe_tree(rule)
