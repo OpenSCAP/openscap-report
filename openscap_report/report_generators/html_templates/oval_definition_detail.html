@@ -1,0 +1,50 @@
+{# Copyright 2022, Red Hat, Inc. #}
+{# SPDX-License-Identifier: LGPL-2.1-or-later #}
+{% if rule.oval_definition -%}
+<tr role="row">
+    <th class="pf-m-fit-content" role="rowheader" scope="row"><b>OVAL definition:</b></th>
+</tr>
+<tr role="row">
+    <th class="pf-m-fit-content" role="rowheader" scope="row"><p class="pf-c-table__text"><b>Definition ID:</b></p></th>
+    <td role="cell">
+        <div class="pf-l-flex pf-m-column"><div class="pf-l-flex__item">
+        <p class="pf-c-table__text">{{ rule.oval_definition_id }}</p>
+        </div></div>
+    </td>
+</tr>
+<tr role="row">
+    <th class="pf-m-fit-content" role="rowheader" scope="row"><b>Title:</b></th>
+    <td role="cell">
+        <div class="pf-l-flex pf-m-column"><div class="pf-l-flex__item">
+        <p class="pf-c-table__text">{{ rule.oval_definition.title }}</p></div></div>
+    </td>
+</tr>
+<tr role="row">
+    <th class="pf-m-fit-content" role="rowheader" scope="row"><b>Version:</b></th>
+    <td role="cell">
+        <div class="pf-l-flex pf-m-column"><div class="pf-l-flex__item">
+        <p class="pf-c-table__text">{{ rule.oval_definition.version }}</p></div></div>
+    </td>
+</tr>
+<tr role="row">
+    <th class="pf-m-fit-content" role="rowheader" scope="row"><b>Description:</b></th>
+    <td role="cell">
+        <div class="pf-l-flex pf-m-column"><div class="pf-l-flex__item">
+        <p class="pf-c-table__text">{{ rule.oval_definition.description }}</p></div></div>
+    </td>
+</tr>
+{% else %}
+<tr role="row">
+    <td colspan="2" role="cell">
+        <div class="pf-c-alert pf-m-warning pf-m-inline">
+            <div class="pf-c-alert__icon">
+                <i class="fas fa-fw fa-exclamation-triangle" aria-hidden="true"></i>
+            </div>
+            <p class="pf-c-alert__title">
+                <span class="pf-screen-reader">Warning alert:</span>
+                There is no OVAL definition.<br>
+            </p>
+        </div>
+    </td>
+</tr>
+{% endif %}
