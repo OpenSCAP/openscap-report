@@ -61,6 +61,7 @@ def get_rules(file_path=PATH_TO_ARF):
 
 
 DEFAULT_RULES = get_rules()
+DEFAULT_REPORT = get_parser(PATH_TO_ARF).parse_report()
 
 
 @pytest.mark.unit_test
@@ -322,14 +323,65 @@ def test_warnings(rule, result):
     )
 ])
 def test_remediations(rule, remediation_id, scripts):
-    rules = get_rules()
-    if rules[rule].remediations == scripts is None:
+    if DEFAULT_RULES[rule].remediations == scripts is None:
         return
 
-    for remediation in rules[rule].remediations:
+    for remediation in DEFAULT_RULES[rule].remediations:
         assert remediation.remediation_id == remediation_id
         assert remediation.system in scripts
         path = PATH_TO_REMEDIATIONS_SCRIPTS / str(scripts[remediation.system])
         with open(path, "r", encoding="utf-8") as script:
             data = script.read()
             assert data == remediation.fix
+
+
+@pytest.mark.unit_test
+@pytest.mark.parametrize("rule, oval_def_id, title, description, version", [
+    (
+        "xccdf_org.ssgproject.content_rule_prefer_64bit_os",
+        "oval:ssg-prefer_64bit_os:def:1",
+        "Prefer to use a 64-bit Operating System when supported",
+        "Check if the system supports a 64-bit Operating System",
+        "1"
+    ),
+    (
+        "xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_lock_enabled",
+        "oval:ssg-dconf_gnome_screensaver_lock_enabled:def:1",
+        "Enable GNOME3 Screensaver Lock After Idle Period",
+        "Idle activation of the screen lock should be enabled.",
+        "2",
+    ),
+    (
+        "xccdf_org.ssgproject.content_rule_installed_OS_is_FIPS_certified",
+        "oval:ssg-installed_OS_is_FIPS_certified:def:1",
+        "The Installed Operating System Is FIPS 140-2 Certified",
+        (
+            "\n          The operating system installed on the system is"
+            " a certified operating system that meets FIPS 140-2 requirements.\n      "
+        ),
+        "1",
+    ),
+    (
+        "xccdf_org.ssgproject.content_rule_dconf_db_up_to_date",
+        "oval:ssg-dconf_db_up_to_date:def:1",
+        "Make sure that the dconf databases are up-to-date with regards to respective keyfiles",
+        "Make sure that the dconf databases are up-to-date with regards to respective keyfiles.",
+        "2",
+    ),
+    (
+        "xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_lock_delay",
+        "oval:ssg-dconf_gnome_screensaver_lock_delay:def:1",
+        "Set GNOME3 Screensaver Lock Delay After Activation Period",
+        (
+            "Idle activation of the screen lock should be enabled immediately or"
+            "\n      after a delay."
+        ),
+        "2",
+    )
+])
+def test_oval_definition_in_rules(rule, oval_def_id, title, description, version):
+    oval_definition = DEFAULT_REPORT.rules[rule].oval_definition
+    assert oval_definition.definition_id == oval_def_id
+    assert oval_definition.title == title
+    assert oval_definition.version == version
+    assert oval_definition.description == description
