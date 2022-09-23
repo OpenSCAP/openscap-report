@@ -60,6 +60,9 @@ def get_rules(file_path=PATH_TO_ARF):
     return rule_parser.get_rules()
 
 
+DEFAULT_RULES = get_rules()
+
+
 @pytest.mark.unit_test
 @pytest.mark.parametrize("file_path, result", [
     (PATH_TO_ARF, True),
@@ -209,8 +212,7 @@ def test_multi_check(file_path, contains_rules_some_multi_check_rule):
     ),
 ])
 def test_description(rule, result):
-    rules = get_rules()
-    assert rules[rule].description == result
+    assert DEFAULT_RULES[rule].description == result
 
 
 @pytest.mark.unit_test
@@ -255,8 +257,7 @@ def test_description(rule, result):
     )
 ])
 def test_rationale(rule, result):
-    rules = get_rules()
-    assert rules[rule].rationale == result
+    assert DEFAULT_RULES[rule].rationale == result
 
 
 @pytest.mark.unit_test
@@ -293,8 +294,7 @@ def test_rationale(rule, result):
     )
 ])
 def test_warnings(rule, result):
-    rules = get_rules()
-    assert rules[rule].warnings == result
+    assert DEFAULT_RULES[rule].warnings == result
 
 
 @pytest.mark.unit_test
