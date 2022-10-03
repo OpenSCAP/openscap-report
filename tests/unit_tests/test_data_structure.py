@@ -181,5 +181,5 @@ def test_report_severity_of_failed_rules_stats_without_failed_rules():
     ("urn:xccdf:fix:script:pejskoskript", "script"),
 ])
 def test_remediation_type(system, type_of_remediation):
-    remediation = Remediation(system=system)
+    remediation = Remediation(remediation_id="ID-1234", system=system)
     assert remediation.get_type() == type_of_remediation

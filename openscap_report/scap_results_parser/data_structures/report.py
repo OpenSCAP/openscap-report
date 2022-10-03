@@ -2,9 +2,11 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 import logging
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 
 from ..exceptions import MissingProcessableRules
+from .group import Group
+from .rule import Rule
 
 
 @dataclass
@@ -14,7 +16,7 @@ class Report:  # pylint: disable=R0902
     profile_name: str = ""
     platform: str = ""
     target: str = ""
-    cpe_platforms: str = ""
+    cpe_platforms: list[str] = field(default_factory=list)
     scanner: str = ""
     scanner_version: str = ""
     benchmark_url: str = ""
@@ -25,8 +27,8 @@ class Report:  # pylint: disable=R0902
     test_system: str = ""
     score: float = 0.0
     score_max: float = 0.0
-    rules: dict = None
-    groups: dict = None
+    rules: dict[str, Rule] = field(default_factory=dict)
+    groups: dict[str, Group] = field(default_factory=dict)
 
     def as_dict(self):
         return asdict(self)

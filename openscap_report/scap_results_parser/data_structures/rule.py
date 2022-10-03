@@ -1,28 +1,31 @@
 # Copyright 2022, Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 
+from .identifier import Identifier
 from .oval_node import OvalNode
+from .reference import Reference
+from .remediation import Remediation
 
 
 @dataclass
 class Rule:  # pylint: disable=R0902
-    rule_id: str = ""
+    rule_id: str
     title: str = ""
     result: str = ""
     multi_check: bool = False
     time: str = ""
     severity: str = ""
-    identifiers: list = None
-    references: list = None
+    identifiers: list[Identifier] = field(default_factory=list)
+    references: list[Reference] = field(default_factory=list)
     description: str = ""
     rationale: str = ""
-    warnings: list = None
-    platforms: list = None
-    oval_definition_id: str = ""
-    message: str = ""
-    remediations: list = None
+    warnings: list[str] = field(default_factory=list)
+    platforms: list[str] = field(default_factory=list)
+    oval_definition_id: str = None
+    messages: list[str] = field(default_factory=list)
+    remediations: list[Remediation] = field(default_factory=list)
     oval_tree: OvalNode = None
     cpe_tree: OvalNode = None
 
