@@ -10,7 +10,9 @@ from .oval_reference import OvalReference
 from .oval_result_eval import (EMPTY_RESULT, FULL_RESULT_TO_SHORT_RESULT,
                                SHORT_RESULT_TO_FULL_RESULT, OvalResult)
 from .oval_test import OvalTest
+from .profile_info import ProfileInfo
 from .reference import Reference
 from .remediation import Remediation
 from .report import Report
+from .result_of_scan import ResultOfScan
 from .rule import Rule
