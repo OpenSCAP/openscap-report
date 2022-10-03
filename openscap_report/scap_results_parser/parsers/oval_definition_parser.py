@@ -7,7 +7,7 @@ import uuid
 from ..data_structures import OvalNode
 from ..exceptions import MissingOVALResult
 from ..namespaces import NAMESPACES
-from .info_of_test_parser import InfoOfTest
+from .test_info_parser import InfoOfTest
 
 STR_TO_BOOL = {'true': True, 'false': False}
 STR_NEGATION_BOOL = {'true': 'false', 'false': 'true'}

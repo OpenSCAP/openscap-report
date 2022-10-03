@@ -5,9 +5,8 @@ from abc import ABC, abstractmethod
 
 
 class ReportGenerator(ABC):
-    @abstractmethod
     def __init__(self, parser):
-        raise NotImplementedError
+        self.report = parser.parse_report()
 
     @abstractmethod
     def generate_report(self, debug_setting):

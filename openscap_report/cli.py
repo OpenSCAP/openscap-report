@@ -10,7 +10,9 @@ from lxml.etree import XMLSyntaxError
 
 from . import __version__
 from .debug_settings import DebugSetting
-from .report_generators import (HTMLReportGenerator, JSONReportGenerator,
+from .report_generators import (HTMLReportGenerator,
+                                JSONEverythingReportGenerator,
+                                JSONReportGenerator,
                                 OldStyleHTMLReportGenerator)
 from .scap_results_parser import SCAPResultsParser
 
@@ -114,7 +116,7 @@ def prepare_parser():
         "--format",
         action="store",
         default="HTML",
-        choices=["HTML", "OLD-STYLE-HTML", "JSON"],
+        choices=["HTML", "OLD-STYLE-HTML", "JSON", "JSON-EVERYTHING"],
         help="FORMAT: %(choices)s"
     )
     parser.add_argument(
@@ -162,6 +164,7 @@ class CommandLineAPI():  # pylint: disable=R0902
             "HTML": HTMLReportGenerator,
             "OLD-STYLE-HTML": OldStyleHTMLReportGenerator,
             "JSON": JSONReportGenerator,
+            "JSON-EVERYTHING": JSONEverythingReportGenerator,
         }
         return dict_of_report_generators[self.output_format](report_parser)
 
