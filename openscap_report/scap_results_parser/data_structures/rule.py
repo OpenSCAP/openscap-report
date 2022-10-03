@@ -1,7 +1,7 @@
 # Copyright 2022, Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 
 from .oval_node import OvalNode
 
@@ -27,22 +27,4 @@ class Rule:  # pylint: disable=R0902
     cpe_tree: OvalNode = None
 
     def as_dict(self):
-        return {
-            "rule_id": self.rule_id,
-            "title": self.title,
-            "result": self.result,
-            "multi_check": self.multi_check,
-            "time": self.time,
-            "severity": self.severity,
-            "identifiers": self.identifiers,
-            "references": self.references,
-            "description": self.description,
-            "rationale": self.rationale,
-            "warnings": self.warnings,
-            "platforms": self.platforms,
-            "oval_definition_id": self.oval_definition_id,
-            "message": self.message,
-            "remediations": self.remediations,
-            "oval_tree": self.oval_tree.as_dict(),
-            "cpe_tree": self.cpe_tree.as_dict(),
-        }
+        return asdict(self)

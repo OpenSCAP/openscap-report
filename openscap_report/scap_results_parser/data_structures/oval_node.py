@@ -4,7 +4,7 @@
 import json
 import logging
 from collections import Counter
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 
 from .oval_result_eval import (EMPTY_RESULT, FULL_RESULT_TO_SHORT_RESULT,
                                SHORT_RESULT_TO_FULL_RESULT, OvalResult)
@@ -23,27 +23,7 @@ class OvalNode:  # pylint: disable=R0902
     test_info: OvalTest = None
 
     def as_dict(self):
-        if not self.children:
-            return {
-                'node_id': self.node_id,
-                'node_type': self.node_type,
-                'value': self.value,
-                'negation': self.negation,
-                'comment': self.comment,
-                'tag': self.tag,
-                'test_info': self.test_info.as_dict(),
-                'children': None
-            }
-        return {
-            'node_id': self.node_id,
-            'node_type': self.node_type,
-            'value': self.value,
-            'negation': self.negation,
-            'comment': self.comment,
-            'tag': self.tag,
-            'test_info': None,
-            'children': [child.as_dict() for child in self.children]
-        }
+        return asdict(self)
 
     def as_json(self):
         return json.dumps(self.as_dict())
