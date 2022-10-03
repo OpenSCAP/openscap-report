@@ -6,9 +6,10 @@ from ..namespaces import NAMESPACES
 
 
 class ScanResultParser:
-    def __init__(self, test_results_el, benchmark_el):
+    def __init__(self, test_results_el, root):
+        self.root = root
         self.test_results_el = test_results_el
-        self.benchmark_el = benchmark_el
+        self.benchmark_el = self.root.find(".//xccdf:benchmark", NAMESPACES)
 
     def _get_cpe_platforms(self):
         return [

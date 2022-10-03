@@ -9,8 +9,9 @@ from .full_text_parser import FullTextParser
 
 
 class GroupParser:
-    def __init__(self, root, ref_values):
+    def __init__(self, root, ref_values, benchmark_el):
         self.root = root
+        self.benchmark_el = benchmark_el
         self.description_parser = FullTextParser(ref_values)
         self.rule_to_grup_id = {}
         self.group_to_platforms = {}
@@ -37,14 +38,14 @@ class GroupParser:
         group_dict["rules_ids"].append(item.get("id"))
         self.rule_to_grup_id[item.get("id")] = group_dict.get("group_id")
 
-    def get_group(self, group, platforms=None):
+    def get_group(self, group_el, platforms=None):
         if platforms is None:
             platforms = []
         group_dict = {
             "platforms": [],
             "rules_ids": [],
             "sub_groups": [],
-            "group_id": group.get("id"),
+            "group_id": group_el.get("id"),
         }
 
         tag_to_function = {
@@ -55,7 +56,7 @@ class GroupParser:
             "Rule": self._append_rule_id_to_group_dict,
         }
 
-        for item in group.iterchildren():
+        for item in group_el.iterchildren():
             tag_without_namespace_prefix = re.sub(r"{(.*?)}", "", item.tag)
             if tag_without_namespace_prefix in tag_to_function:
                 tag_to_function[tag_without_namespace_prefix](group_dict, item)
@@ -65,12 +66,11 @@ class GroupParser:
 
     def get_groups(self):
         groups = {}
-        group = self.root.find(".//xccdf:Group", NAMESPACES)
-        benchmark = self.root.find(".//xccdf:Benchmark", NAMESPACES)
-        if group is None or benchmark is None:
+        group_el = self.root.find(".//xccdf:Group", NAMESPACES)
+        if group_el is None or self.benchmark_el is None:
             return groups
 
-        for item in benchmark:
+        for item in self.benchmark_el:
             if "Group" in item.tag:
                 groups[item.get("id")] = self.get_group(item)
         return groups
