@@ -36,6 +36,18 @@ class Report:
     def as_dict(self):
         return asdict(self)
 
+    def get_selected_rules(self):
+        if not self.profile_info.selected_rules_ids:
+            return [
+                (rule_id, rule)
+                for rule_id, rule in self.rules.items()
+                if rule.result != "notselected"
+            ]
+        return [
+            (rule_id, self.rules[rule_id])
+            for rule_id in self.profile_info.selected_rules_ids
+        ]
+
     def get_rule_results_stats(self):
         results_stats = {
             "fail": len(list(

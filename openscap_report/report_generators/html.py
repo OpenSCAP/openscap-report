@@ -16,8 +16,6 @@ except ImportError:
 
 from markupsafe import Markup
 
-from ..scap_results_parser.data_structures import Rule
-from .exceptions import FilterNotSupportDataStructureException
 from .report_generator import ReportGenerator
 
 
@@ -28,7 +26,6 @@ class HTMLReportGenerator(ReportGenerator):
         self.env = Environment(loader=self.file_loader)
         self.env.globals['include_file_in_base64'] = self.include_file_in_base64
         self.env.filters['set_css_for_list'] = self.set_css_for_list
-        self.env.filters['get_selected_rules'] = self.get_selected_rules
         self.env.trim_blocks = True
         self.env.lstrip_blocks = True
 
@@ -58,14 +55,4 @@ class HTMLReportGenerator(ReportGenerator):
     def set_css_for_list(data):
         out = data.replace("<ul>", "<ul class=\"pf-c-list\">")
         out = out.replace("<ol>", "<ol class=\"pf-c-list\">")
-        return out
-
-    @staticmethod
-    def get_selected_rules(data):
-        out = []
-        for rule_id, rule in data.items():
-            if not isinstance(rule, Rule):
-                raise FilterNotSupportDataStructureException
-            if rule.result != "notselected":
-                out.append((rule_id, rule))
         return out
