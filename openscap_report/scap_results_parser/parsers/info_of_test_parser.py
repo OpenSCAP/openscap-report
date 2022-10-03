@@ -101,17 +101,23 @@ class InfoOfTest:
         object_dict["object_data"] = self._get_object_items(xml_object, xml_collected_object)
         return OvalObject(**object_dict)
 
+    def _transform_tuples_to_dict(self, array):
+        out_dict = {}
+        for key, value in array:
+            if key in out_dict:
+                key = self._get_unique_key(key)
+            out_dict[key] = value
+        return out_dict
+
     def _get_object_items(self, xml_object, xml_collected_object):
         out = []
         for element in xml_object.iterchildren():
             id_in_dict = self._get_unique_id_in_dict(element, out)
             if element.text and element.text.strip():
-                out.append({id_in_dict: element.text})
+                out.append((id_in_dict, element.text))
             else:
-                out.append({id_in_dict: self._get_ref_var(element, xml_collected_object)})
-        if len(out) > 1:
-            return [dict(pair for dict_item in out for pair in dict_item.items())]
-        return out
+                out.append((id_in_dict, self._get_ref_var(element, xml_collected_object)))
+        return [self._transform_tuples_to_dict(out)]
 
     def _get_ref_var(self, element, xml_collected_object):
         variable_value = ''
