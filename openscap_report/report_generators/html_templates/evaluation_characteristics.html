@@ -17,7 +17,7 @@
                         <div class="pf-c-data-list__item-content">
                             <div class="pf-c-data-list__cell"><b>Profile ID:</b></div>
                             <div class="pf-c-data-list__cell">
-                                {{- report.profile_name -}}
+                                {{- report.profile_info.profile_id -}}
                             </div>
                         </div>
                     </div>
@@ -28,7 +28,7 @@
                         <div class="pf-c-data-list__item-content">
                             <div class="pf-c-data-list__cell"><b>Evaluation target:</b></div>
                             <div class="pf-c-data-list__cell">
-                                {{- report.target -}}
+                                {{- report.scan_result.target -}}
                             </div>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                         <div class="pf-c-data-list__item-content">
                             <div class="pf-c-data-list__cell"><b>Performed by:</b></div>
                             <div class="pf-c-data-list__cell">
-                                {{- report.identity -}}
+                                {{- report.scan_result.identity -}}
                             </div>
                         </div>
                     </div>
@@ -50,7 +50,7 @@
                         <div class="pf-c-data-list__item-content">
                             <div class="pf-c-data-list__cell"><b>Scanner:</b></div>
                             <div class="pf-c-data-list__cell">
-                                {{- report.scanner -}} {{- report.scanner_version -}}
+                                {{- report.scan_result.scanner -}} {{- report.scan_result.scanner_version -}}
                             </div>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                         <div class="pf-c-data-list__item-content">
                             <div class="pf-c-data-list__cell"><b>Benchmark ID:</b></div>
                             <div class="pf-c-data-list__cell">
-                                {{- report.benchmark_id -}}
+                                {{- report.scan_result.benchmark_id -}}
                             </div>
                         </div>
                     </div>
@@ -72,7 +72,7 @@
                         <div class="pf-c-data-list__item-content">
                             <div class="pf-c-data-list__cell"><b>Benchmark url:</b></div>
                             <div class="pf-c-data-list__cell">
-                                {{- report.benchmark_url -}}
+                                {{- report.scan_result.benchmark_url -}}
                             </div>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                         <div class="pf-c-data-list__item-content">
                             <div class="pf-c-data-list__cell"><b>Benchmark version:</b></div>
                             <div class="pf-c-data-list__cell">
-                                {{- report.benchmark_version -}}
+                                {{- report.scan_result.benchmark_version -}}
                             </div>
                         </div>
                     </div>
@@ -94,7 +94,7 @@
                         <div class="pf-c-data-list__item-content">
                             <div class="pf-c-data-list__cell"><b>Started at:</b></div>
                             <div class="pf-c-data-list__cell">
-                                {{- report.start_time -}}
+                                {{- report.scan_result.start_time -}}
                             </div>
                         </div>
                     </div>
@@ -105,7 +105,7 @@
                         <div class="pf-c-data-list__item-content">
                             <div class="pf-c-data-list__cell"><b>Finished at:</b></div>
                             <div class="pf-c-data-list__cell">
-                                {{- report.end_time -}}
+                                {{- report.scan_result.end_time -}}
                             </div>
                         </div>
                     </div>
@@ -116,7 +116,7 @@
                         <div class="pf-c-data-list__item-content">
                             <div class="pf-c-data-list__cell"><b>Test system:</b></div>
                             <div class="pf-c-data-list__cell">
-                                {{- report.test_system -}}
+                                {{- report.scan_result.test_system -}}
                             </div>
                         </div>
                     </div>

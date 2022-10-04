@@ -1,20 +1,20 @@
 {# Copyright 2022, Red Hat, Inc. #}
 {# SPDX-License-Identifier: LGPL-2.1-or-later #}
-{% if 50 >= report.score %}
+{% if 50 >= report.scan_result.score %}
 <div class="pf-c-progress pf-m-danger">
-    {% elif 99 >= report.score %}
+    {% elif 99 >= report.scan_result.score %}
     <div class="pf-c-progress pf-m-warning">
         {% else %}
         <div class="pf-c-progress pf-m-success">
             {% endif %}
             <div class="pf-c-progress__status">
-                <span class="pf-c-progress__measure">{{ "%.2f"|format(report.score) }} of {{
-                    "%.2f"|format(report.score_max) }}</span>
-                {% if 50 >= report.score %}
+                <span class="pf-c-progress__measure">{{ "%.2f"|format(report.scan_result.score) }} of {{
+                    "%.2f"|format(report.scan_result.score_max) }}</span>
+                {% if 50 >= report.scan_result.score %}
                 <span class="pf-c-progress__status-icon">
                     <i class="fas fa-fw fa-times-circle"></i>
                 </span>
-                {% elif 99 >= report.score %}
+                {% elif 99 >= report.scan_result.score %}
                 <span class="pf-c-progress__status-icon">
                     <i class="fas fa-fw fa-exclamation-triangle"></i>
                 </span>
@@ -25,6 +25,6 @@
                 {% endif %}
             </div>
             <div class="pf-c-progress__bar" role="progressbar" aria-label="Score of scan">
-                <div class="pf-c-progress__indicator" style="width:{{ '%.2f'|format(report.score) }}%;"></div>
+                <div class="pf-c-progress__indicator" style="width:{{ '%.2f'|format(report.scan_result.score) }}%;"></div>
             </div>
         </div>
