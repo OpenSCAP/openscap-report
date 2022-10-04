@@ -41,6 +41,13 @@ def get_root(file_path):
     return etree.XML(xml_data)
 
 
+def get_benchmark(root):
+    benchmark_el = root.find(".//xccdf:Benchmark", NAMESPACES)
+    if "Benchmark" in root.tag:
+        benchmark_el = root
+    return benchmark_el
+
+
 def get_test_results(root):
     return root.find('.//xccdf:TestResult', NAMESPACES)
 
@@ -89,27 +96,31 @@ def test_validation(file_path, result):
 
 @pytest.mark.unit_test
 @pytest.mark.parametrize("file_path, number_of_cpe_platforms, os_cpe_platform", [
-    (PATH_TO_ARF, 13, "cpe:/o:fedoraproject:fedora:32"),
-    (PATH_TO_XCCDF, 13, "cpe:/o:fedoraproject:fedora:32"),
-    (PATH_TO_SIMPLE_RULE_PASS_ARF, 0, ""),
-    (PATH_TO_SIMPLE_RULE_FAIL_ARF, 0, ""),
-    (PATH_TO_ARF_WITHOUT_INFO, 0, ""),
-    (PATH_TO_ARF_WITHOUT_SYSTEM_DATA, 0, ""),
-    (PATH_TO_ARF_SCANNED_ON_CONTAINER, 6, "cpe:/o:fedoraproject:fedora:35"),
-    (PATH_TO_RULE_AND_CPE_CHECK_ARF, 1, "cpe:/o:example:applicable:5"),
-    (PATH_TO_ARF_WITH_OS_CPE_CHECK, 0, "cpe:/o:fedoraproject:fedora:1"),
-    (PATH_TO_SIMPLE_RULE_PASS_XCCDF, 0, ""),
-    (PATH_TO_SIMPLE_RULE_FAIL_XCCDF, 0, ""),
-    (PATH_TO_XCCDF_WITHOUT_INFO, 0, ""),
-    (PATH_TO_XCCDF_WITHOUT_SYSTEM_DATA, 0, ""),
-    (PATH_TO_RULE_AND_CPE_CHECK_XCCDF, 1, "cpe:/o:example:applicable:5"),
+    (PATH_TO_ARF, 13, {"cpe:/o:fedoraproject:fedora:32": True}),
+    (PATH_TO_XCCDF, 13, {"cpe:/o:fedoraproject:fedora:32": True}),
+    (PATH_TO_SIMPLE_RULE_PASS_ARF, 0, {}),
+    (PATH_TO_SIMPLE_RULE_FAIL_ARF, 0, {}),
+    (PATH_TO_ARF_WITHOUT_INFO, 0, {}),
+    (PATH_TO_ARF_WITHOUT_SYSTEM_DATA, 0, {}),
+    (PATH_TO_ARF_SCANNED_ON_CONTAINER, 6, {
+        'cpe:/o:fedoraproject:fedora:35': True,
+        'cpe:/o:fedoraproject:fedora:34': True,
+        'cpe:/o:fedoraproject:fedora:33': True
+    }),
+    (PATH_TO_RULE_AND_CPE_CHECK_ARF, 1, {}),
+    (PATH_TO_ARF_WITH_OS_CPE_CHECK, 0, {"cpe:/o:fedoraproject:fedora:1": False}),
+    (PATH_TO_SIMPLE_RULE_PASS_XCCDF, 0, {}),
+    (PATH_TO_SIMPLE_RULE_FAIL_XCCDF, 0, {}),
+    (PATH_TO_XCCDF_WITHOUT_INFO, 0, {}),
+    (PATH_TO_XCCDF_WITHOUT_SYSTEM_DATA, 0, {}),
+    (PATH_TO_RULE_AND_CPE_CHECK_XCCDF, 1, {}),
 ])
 def test_get_profile_info(file_path, number_of_cpe_platforms, os_cpe_platform):
     root = get_root(file_path)
-    report_parser = ReportParser(root, get_test_results(root))
+    report_parser = ReportParser(root, get_test_results(root), get_benchmark(root))
     report = report_parser.get_report()
-    assert len(report.cpe_platforms) == number_of_cpe_platforms
-    assert report.platform == os_cpe_platform
+    assert len(report.scan_result.cpe_platforms) == number_of_cpe_platforms
+    assert report.profile_info.cpe_platforms_for_profile == os_cpe_platform
 
 
 @pytest.mark.unit_test
@@ -145,7 +156,7 @@ def test_parse_report(file_path, contains_oval_tree):
     parser = get_parser(file_path)
     report = parser.parse_report()
     assert isinstance(report, Report)
-    assert report.profile_name is not None
+    assert report.profile_info.profile_id is not None
     assert report.rules is not None
     rule_id = "xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_deny"
     assert isinstance(report.rules[rule_id], Rule)
