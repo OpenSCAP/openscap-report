@@ -20,4 +20,4 @@ This command consumes the ARF file, which is one of the possible standardized fo
 oscap-report ssg-fedora-ds-arf.xml > report.html
 ```
 
-More information about command line usage in man page (`man oscap-report`) or on [readthedocs](TBD)
+More information about command line usage in man page (`man oscap-report`) or on [readthedocs](https://openscap-report.readthedocs.io/en/latest/)
