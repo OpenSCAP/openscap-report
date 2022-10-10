@@ -12,6 +12,14 @@ openscap\_report.scap\_results\_parser.data\_structures.group module
    :undoc-members:
    :show-inheritance:
 
+openscap\_report.scap\_results\_parser.data\_structures.identifier module
+-------------------------------------------------------------------------
+
+.. automodule:: openscap_report.scap_results_parser.data_structures.identifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 openscap\_report.scap\_results\_parser.data\_structures.oval\_node module
 -------------------------------------------------------------------------
 
@@ -40,6 +48,14 @@ openscap\_report.scap\_results\_parser.data\_structures.oval\_test module
 -------------------------------------------------------------------------
 
 .. automodule:: openscap_report.scap_results_parser.data_structures.oval_test
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+openscap\_report.scap\_results\_parser.data\_structures.reference module
+------------------------------------------------------------------------
+
+.. automodule:: openscap_report.scap_results_parser.data_structures.reference
    :members:
    :undoc-members:
    :show-inheritance:
