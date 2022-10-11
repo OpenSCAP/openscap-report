@@ -1,0 +1,687 @@
+{
+    "title": "OSCAP Scan Result",
+    "identity": "jrodak",
+    "profile_name": "xccdf_org.ssgproject.content_profile_ospp_customized",
+    "platform": "cpe:/o:fedoraproject:fedora:38",
+    "target": "rh-hony",
+    "cpe_platforms": [
+        "cpe:/o:fedoraproject:fedora:35",
+        "cpe:/o:fedoraproject:fedora:36",
+        "cpe:/o:fedoraproject:fedora:37",
+        "cpe:/o:fedoraproject:fedora:38",
+        "#pam"
+    ],
+    "scanner": "OpenSCAP",
+    "scanner_version": "1.3.6",
+    "benchmark_url": "#scap_org.open-scap_comp_ssg-fedora-xccdf-1.2.xml",
+    "benchmark_id": "xccdf_org.ssgproject.content_benchmark_FEDORA",
+    "benchmark_version": "0.1.63",
+    "start_time": "2022-10-10T14:21:55+01:00",
+    "end_time": "2022-10-10T14:21:56+01:00",
+    "test_system": "cpe:/a:redhat:openscap:1.3.6",
+    "score": 0.0,
+    "score_max": 100.0,
+    "rules": {
+        "xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_deny": {
+            "rule_id": "xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_deny",
+            "title": "Lock Accounts After Failed Password Attempts",
+            "result": "fail",
+            "multi_check": false,
+            "time": "2022-10-10T14:21:56+01:00",
+            "severity": "medium",
+            "identifiers": [],
+            "references": [
+                {
+                    "href": "http://www.ssi.gouv.fr/administration/bonnes-pratiques/",
+                    "text": "BP28(R18)"
+                },
+                {
+                    "href": "https://www.cisecurity.org/controls/",
+                    "text": "1"
+                },
+                {
+                    "href": "https://www.cisecurity.org/controls/",
+                    "text": "12"
+                },
+                {
+                    "href": "https://www.cisecurity.org/controls/",
+                    "text": "15"
+                },
+                {
+                    "href": "https://www.cisecurity.org/controls/",
+                    "text": "16"
+                },
+                {
+                    "href": "https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf",
+                    "text": "5.5.3"
+                },
+                {
+                    "href": "https://www.isaca.org/resources/cobit",
+                    "text": "DSS05.04"
+                },
+                {
+                    "href": "https://www.isaca.org/resources/cobit",
+                    "text": "DSS05.10"
+                },
+                {
+                    "href": "https://www.isaca.org/resources/cobit",
+                    "text": "DSS06.10"
+                },
+                {
+                    "href": "http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf",
+                    "text": "3.1.8"
+                },
+                {
+                    "href": "https://public.cyber.mil/stigs/cci/",
+                    "text": "CCI-000044"
+                },
+                {
+                    "href": "https://public.cyber.mil/stigs/cci/",
+                    "text": "CCI-002236"
+                },
+                {
+                    "href": "https://public.cyber.mil/stigs/cci/",
+                    "text": "CCI-002237"
+                },
+                {
+                    "href": "https://public.cyber.mil/stigs/cci/",
+                    "text": "CCI-002238"
+                },
+                {
+                    "href": "https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat",
+                    "text": "4.3.3.6.1"
+                },
+                {
+                    "href": "https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat",
+                    "text": "4.3.3.6.2"
+                },
+                {
+                    "href": "https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat",
+                    "text": "4.3.3.6.3"
+                },
+                {
+                    "href": "https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat",
+                    "text": "4.3.3.6.4"
+                },
+                {
+                    "href": "https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat",
+                    "text": "4.3.3.6.5"
+                },
+                {
+                    "href": "https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat",
+                    "text": "4.3.3.6.6"
+                },
+                {
+                    "href": "https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat",
+                    "text": "4.3.3.6.7"
+                },
+                {
+                    "href": "https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat",
+                    "text": "4.3.3.6.8"
+                },
+                {
+                    "href": "https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat",
+                    "text": "4.3.3.6.9"
+                },
+                {
+                    "href": "https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu",
+                    "text": "SR 1.1"
+                },
+                {
+                    "href": "https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu",
+                    "text": "SR 1.10"
+                },
+                {
+                    "href": "https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu",
+                    "text": "SR 1.2"
+                },
+                {
+                    "href": "https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu",
+                    "text": "SR 1.5"
+                },
+                {
+                    "href": "https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu",
+                    "text": "SR 1.7"
+                },
+                {
+                    "href": "https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu",
+                    "text": "SR 1.8"
+                },
+                {
+                    "href": "https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu",
+                    "text": "SR 1.9"
+                },
+                {
+                    "href": "",
+                    "text": "0421"
+                },
+                {
+                    "href": "",
+                    "text": "0422"
+                },
+                {
+                    "href": "",
+                    "text": "0431"
+                },
+                {
+                    "href": "",
+                    "text": "0974"
+                },
+                {
+                    "href": "",
+                    "text": "1173"
+                },
+                {
+                    "href": "",
+                    "text": "1401"
+                },
+                {
+                    "href": "",
+                    "text": "1504"
+                },
+                {
+                    "href": "",
+                    "text": "1505"
+                },
+                {
+                    "href": "",
+                    "text": "1546"
+                },
+                {
+                    "href": "",
+                    "text": "1557"
+                },
+                {
+                    "href": "",
+                    "text": "1558"
+                },
+                {
+                    "href": "",
+                    "text": "1559"
+                },
+                {
+                    "href": "",
+                    "text": "1560"
+                },
+                {
+                    "href": "",
+                    "text": "1561"
+                },
+                {
+                    "href": "https://www.iso.org/standard/54534.html",
+                    "text": "A.18.1.4"
+                },
+                {
+                    "href": "https://www.iso.org/standard/54534.html",
+                    "text": "A.9.2.1"
+                },
+                {
+                    "href": "https://www.iso.org/standard/54534.html",
+                    "text": "A.9.2.4"
+                },
+                {
+                    "href": "https://www.iso.org/standard/54534.html",
+                    "text": "A.9.3.1"
+                },
+                {
+                    "href": "https://www.iso.org/standard/54534.html",
+                    "text": "A.9.4.2"
+                },
+                {
+                    "href": "https://www.iso.org/standard/54534.html",
+                    "text": "A.9.4.3"
+                },
+                {
+                    "href": "http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf",
+                    "text": "CM-6(a)"
+                },
+                {
+                    "href": "http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf",
+                    "text": "AC-7(a)"
+                },
+                {
+                    "href": "https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.04162018.pdf",
+                    "text": "PR.AC-7"
+                },
+                {
+                    "href": "https://www.niap-ccevs.org/Profile/PP.cfm",
+                    "text": "FIA_AFL.1"
+                },
+                {
+                    "href": "https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf",
+                    "text": "Req-8.1.6"
+                },
+                {
+                    "href": "https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os",
+                    "text": "SRG-OS-000329-GPOS-00128"
+                },
+                {
+                    "href": "https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os",
+                    "text": "SRG-OS-000021-GPOS-00005"
+                },
+                {
+                    "href": "",
+                    "text": "SRG-OS-000021-VMM-000050"
+                }
+            ],
+            "description": "This rule configures the system to lock out accounts after a number of incorrect login attempts\nusing <code>pam_faillock.so</code>.\n\npam_faillock.so module requires multiple entries in pam files. These entries must be carefully\ndefined to work as expected. In order to avoid errors when manually editing these files, it is\nrecommended to use the appropriate tools, such as <code>authselect</code> or <code>authconfig</code>,\ndepending on the OS version.",
+            "rationale": "Locking out user accounts after a number of incorrect attempts prevents direct password\nguessing attacks. In combination with the <code>silent</code> option, user enumeration attacks\nare also mitigated.",
+            "warnings": [
+                "If the system relies on <code>authselect</code> tool to manage PAM settings, the remediation\nwill also use <code>authselect</code> tool. However, if any manual modification was made in\nPAM files, the <code>authselect</code> integrity check will fail and the remediation will be\naborted in order to preserve intentional changes. In this case, an informative message will\nbe shown in the remediation report.\nIf the system supports the <code>/etc/security/faillock.conf</code> file, the pam_faillock\nparameters should be defined in <code>faillock.conf</code> file."
+            ],
+            "platforms": [
+                "#pam"
+            ],
+            "oval_definition_id": "oval:ssg-accounts_passwords_pam_faillock_deny:def:1",
+            "messages": [],
+            "remediations": [
+                {
+                    "remediation_id": "accounts_passwords_pam_faillock_deny",
+                    "system": "urn:xccdf:fix:script:sh",
+                    "complexity": "",
+                    "disruption": "",
+                    "strategy": "",
+                    "fix": "# Remediation is applicable only in certain platforms\nif rpm --quiet -q pam; then\n\nvar_accounts_passwords_pam_faillock_deny='3'\n\n\nif [ -f /usr/bin/authselect ]; then\n    if ! authselect check; then\necho \"\nauthselect integrity check failed. Remediation aborted!\nThis remediation could not be applied because an authselect profile was not selected or the selected profile is not intact.\nIt is not recommended to manually edit the PAM files when authselect tool is available.\nIn cases where the default authselect profile does not cover a specific demand, a custom authselect profile is recommended.\"\nexit 1\nfi\nauthselect enable-feature with-faillock\n\nauthselect apply-changes -b\nelse\n    AUTH_FILES=(\"/etc/pam.d/system-auth\" \"/etc/pam.d/password-auth\")\nfor pam_file in \"${AUTH_FILES[@]}\"\ndo\n    if ! grep -qE '^\\s*auth\\s+required\\s+pam_faillock\\.so\\s+(preauth silent|authfail).*$' \"$pam_file\" ; then\n        sed -i --follow-symlinks '/^auth.*sufficient.*pam_unix.so.*/i auth        required      pam_faillock.so preauth silent' \"$pam_file\"\n        sed -i --follow-symlinks '/^auth.*required.*pam_deny.so.*/i auth        required      pam_faillock.so authfail' \"$pam_file\"\n        sed -i --follow-symlinks '/^account.*required.*pam_unix.so.*/i account     required      pam_faillock.so' \"$pam_file\"\n    fi\n    sed -Ei 's/(auth.*)(\\[default=die\\])(.*pam_faillock.so)/\\1required     \\3/g' \"$pam_file\"\ndone\nfi\nAUTH_FILES=(\"/etc/pam.d/system-auth\" \"/etc/pam.d/password-auth\")\nFAILLOCK_CONF=\"/etc/security/faillock.conf\"\nif [ -f $FAILLOCK_CONF ]; then\n    regex=\"^\\s*deny\\s*=\"\n    line=\"deny = $var_accounts_passwords_pam_faillock_deny\"\n    if ! grep -q $regex $FAILLOCK_CONF; then\n        echo $line >> $FAILLOCK_CONF\n    else\n        sed -i --follow-symlinks 's|^\\s*\\(deny\\s*=\\s*\\)\\(\\S\\+\\)|\\1'\"$var_accounts_passwords_pam_faillock_deny\"'|g' $FAILLOCK_CONF\n    fi\n    for pam_file in \"${AUTH_FILES[@]}\"\n    do\n        if [ -e \"$pam_file\" ] ; then\n            PAM_FILE_PATH=\"$pam_file\"\n            if [ -f /usr/bin/authselect ]; then\n                if ! authselect check; then\n                    echo \"\n                    authselect integrity check failed. Remediation aborted!\n                    This remediation could not be applied because an authselect profile was not selected or the selected profile is not intact.\n                    It is not recommended to manually edit the PAM files when authselect tool is available.\n                    In cases where the default authselect profile does not cover a specific demand, a custom authselect profile is recommended.\"\n                    exit 1\n                    fi\n                CURRENT_PROFILE=$(authselect current -r | awk '{ print $1 }')\n                # If not already in use, a custom profile is created preserving the enabled features.\n                if [[ ! $CURRENT_PROFILE == custom/* ]]; then\n                    ENABLED_FEATURES=$(authselect current | tail -n+3 | awk '{ print $2 }')\n                    authselect create-profile hardening -b $CURRENT_PROFILE\n                    CURRENT_PROFILE=\"custom/hardening\"\n                    \n                    authselect apply-changes -b --backup=before-hardening-custom-profile\n                    authselect select $CURRENT_PROFILE\n                    for feature in $ENABLED_FEATURES; do\n                        authselect enable-feature $feature;\n                    done\n                    \n                    authselect apply-changes -b --backup=after-hardening-custom-profile\n                fi\n                PAM_FILE_NAME=$(basename \"$pam_file\")\n                PAM_FILE_PATH=\"/etc/authselect/$CURRENT_PROFILE/$PAM_FILE_NAME\"\n                \n                authselect apply-changes -b\n            fi\n            \n        if grep -qP '^\\s*auth\\s.*\\bpam_faillock.so\\s.*\\bdeny\\b' \"$PAM_FILE_PATH\"; then\n            sed -i -E --follow-symlinks 's/(.*auth.*pam_faillock.so.*)\\bdeny\\b=?[[:alnum:]]*(.*)/\\1\\2/g' \"$PAM_FILE_PATH\"\n        fi\n            if [ -f /usr/bin/authselect ]; then\n                \n                authselect apply-changes -b\n            fi\n        else\n            echo \"$pam_file was not found\" >&2\n        fi\n    done\nelse\n    for pam_file in \"${AUTH_FILES[@]}\"\n    do\n        if ! grep -qE '^\\s*auth.*pam_faillock.so (preauth|authfail).*deny' \"$pam_file\"; then\n            sed -i --follow-symlinks '/^auth.*required.*pam_faillock.so.*preauth.*silent.*/ s/$/ deny='\"$var_accounts_passwords_pam_faillock_deny\"'/' \"$pam_file\"\n            sed -i --follow-symlinks '/^auth.*required.*pam_faillock.so.*authfail.*/ s/$/ deny='\"$var_accounts_passwords_pam_faillock_deny\"'/' \"$pam_file\"\n        else\n            sed -i --follow-symlinks 's/\\(^auth.*required.*pam_faillock.so.*preauth.*silent.*\\)\\('\"deny\"'=\\)[0-9]\\+\\(.*\\)/\\1\\2'\"$var_accounts_passwords_pam_faillock_deny\"'\\3/' \"$pam_file\"\n            sed -i --follow-symlinks 's/\\(^auth.*required.*pam_faillock.so.*authfail.*\\)\\('\"deny\"'=\\)[0-9]\\+\\(.*\\)/\\1\\2'\"$var_accounts_passwords_pam_faillock_deny\"'\\3/' \"$pam_file\"\n        fi\n    done\nfi\n\nelse\n    >&2 echo 'Remediation is not applicable, nothing was done'\nfi\n"
+                },
+                {
+                    "remediation_id": "accounts_passwords_pam_faillock_deny",
+                    "system": "urn:xccdf:fix:script:ansible",
+                    "complexity": "low",
+                    "disruption": "low",
+                    "strategy": "restrict",
+                    "fix": "- name: Gather the package facts\n  package_facts:\n    manager: auto\n  tags:\n  - CJIS-5.5.3\n  - NIST-800-171-3.1.8\n  - NIST-800-53-AC-7(a)\n  - NIST-800-53-CM-6(a)\n  - PCI-DSS-Req-8.1.6\n  - accounts_passwords_pam_faillock_deny\n  - low_complexity\n  - low_disruption\n  - medium_severity\n  - no_reboot_needed\n  - restrict_strategy\n\n- name: Lock Accounts After Failed Password Attempts - Check if system relies on authselect\n    tool\n  ansible.builtin.stat:\n    path: /usr/bin/authselect\n  register: result_authselect_present\n  when: '\"pam\" in ansible_facts.packages'\n  tags:\n  - CJIS-5.5.3\n  - NIST-800-171-3.1.8\n  - NIST-800-53-AC-7(a)\n  - NIST-800-53-CM-6(a)\n  - PCI-DSS-Req-8.1.6\n  - accounts_passwords_pam_faillock_deny\n  - low_complexity\n  - low_disruption\n  - medium_severity\n  - no_reboot_needed\n  - restrict_strategy\n\n- name: Lock Accounts After Failed Password Attempts - Remediation where authselect\n    tool is present\n  block:\n\n  - name: Lock Accounts After Failed Password Attempts - Check integrity of authselect\n      current profile\n    ansible.builtin.command:\n      cmd: authselect check\n    register: result_authselect_check_cmd\n    changed_when: false\n    ignore_errors: true\n\n  - name: Lock Accounts After Failed Password Attempts - Informative message based\n      on the authselect integrity check result\n    ansible.builtin.assert:\n      that:\n      - result_authselect_check_cmd is success\n      fail_msg:\n      - authselect integrity check failed. Remediation aborted!\n      - This remediation could not be applied because an authselect profile was not\n        selected or the selected profile is not intact.\n      - It is not recommended to manually edit the PAM files when authselect tool\n        is available.\n      - In cases where the default authselect profile does not cover a specific demand,\n        a custom authselect profile is recommended.\n      success_msg:\n      - authselect integrity check passed\n\n  - name: Lock Accounts After Failed Password Attempts - Get authselect current features\n    ansible.builtin.shell:\n      cmd: authselect current | tail -n+3 | awk '{ print $2 }'\n    register: result_authselect_features\n    changed_when: false\n    when:\n    - result_authselect_check_cmd is success\n\n  - name: Lock Accounts After Failed Password Attempts - Ensure \"with-faillock\" feature\n      is enabled using authselect tool\n    ansible.builtin.command:\n      cmd: authselect enable-feature with-faillock\n    register: result_authselect_enable_feature_cmd\n    when:\n    - result_authselect_check_cmd is success\n    - result_authselect_features.stdout is not search(\"with-faillock\")\n\n  - name: Lock Accounts After Failed Password Attempts - Ensure authselect changes\n      are applied\n    ansible.builtin.command:\n      cmd: authselect apply-changes -b\n    when:\n    - result_authselect_enable_feature_cmd is not skipped\n    - result_authselect_enable_feature_cmd is success\n  when:\n  - '\"pam\" in ansible_facts.packages'\n  - result_authselect_present.stat.exists\n  tags:\n  - CJIS-5.5.3\n  - NIST-800-171-3.1.8\n  - NIST-800-53-AC-7(a)\n  - NIST-800-53-CM-6(a)\n  - PCI-DSS-Req-8.1.6\n  - accounts_passwords_pam_faillock_deny\n  - low_complexity\n  - low_disruption\n  - medium_severity\n  - no_reboot_needed\n  - restrict_strategy\n\n- name: Lock Accounts After Failed Password Attempts - Remediation where authselect\n    tool is not present\n  block:\n\n  - name: Lock Accounts After Failed Password Attempts - Check if pam_faillock.so\n      is already enabled\n    ansible.builtin.lineinfile:\n      path: /etc/pam.d/system-auth\n      regexp: .*auth.*pam_faillock.so (preauth|authfail)\n      state: absent\n    check_mode: true\n    changed_when: false\n    register: result_pam_faillock_is_enabled\n\n  - name: Lock Accounts After Failed Password Attempts - Enable pam_faillock.so preauth\n      editing PAM files\n    ansible.builtin.lineinfile:\n      path: '{{ item }}'\n      line: auth        required      pam_faillock.so preauth\n      insertbefore: ^auth.*sufficient.*pam_unix.so.*\n      state: present\n    loop:\n    - /etc/pam.d/system-auth\n    - /etc/pam.d/password-auth\n    when:\n    - result_pam_faillock_is_enabled.found == 0\n\n  - name: Lock Accounts After Failed Password Attempts - Enable pam_faillock.so authfail\n      editing PAM files\n    ansible.builtin.lineinfile:\n      path: '{{ item }}'\n      line: auth        required      pam_faillock.so authfail\n      insertbefore: ^auth.*required.*pam_deny.so.*\n      state: present\n    loop:\n    - /etc/pam.d/system-auth\n    - /etc/pam.d/password-auth\n    when:\n    - result_pam_faillock_is_enabled.found == 0\n\n  - name: Lock Accounts After Failed Password Attempts - Enable pam_faillock.so account\n      section editing PAM files\n    ansible.builtin.lineinfile:\n      path: '{{ item }}'\n      line: account     required      pam_faillock.so\n      insertbefore: ^account.*required.*pam_unix.so.*\n      state: present\n    loop:\n    - /etc/pam.d/system-auth\n    - /etc/pam.d/password-auth\n    when:\n    - result_pam_faillock_is_enabled.found == 0\n  when:\n  - '\"pam\" in ansible_facts.packages'\n  - not result_authselect_present.stat.exists\n  tags:\n  - CJIS-5.5.3\n  - NIST-800-171-3.1.8\n  - NIST-800-53-AC-7(a)\n  - NIST-800-53-CM-6(a)\n  - PCI-DSS-Req-8.1.6\n  - accounts_passwords_pam_faillock_deny\n  - low_complexity\n  - low_disruption\n  - medium_severity\n  - no_reboot_needed\n  - restrict_strategy\n- name: XCCDF Value var_accounts_passwords_pam_faillock_deny # promote to variable\n  set_fact:\n    var_accounts_passwords_pam_faillock_deny: !!str 3\n  tags:\n    - always\n\n- name: Lock Accounts After Failed Password Attempts - Check the presence of /etc/security/faillock.conf\n    file\n  ansible.builtin.stat:\n    path: /etc/security/faillock.conf\n  register: result_faillock_conf_check\n  when: '\"pam\" in ansible_facts.packages'\n  tags:\n  - CJIS-5.5.3\n  - NIST-800-171-3.1.8\n  - NIST-800-53-AC-7(a)\n  - NIST-800-53-CM-6(a)\n  - PCI-DSS-Req-8.1.6\n  - accounts_passwords_pam_faillock_deny\n  - low_complexity\n  - low_disruption\n  - medium_severity\n  - no_reboot_needed\n  - restrict_strategy\n\n- name: Lock Accounts After Failed Password Attempts - Ensure the pam_faillock.so\n    deny parameter in /etc/security/faillock.conf\n  ansible.builtin.lineinfile:\n    path: /etc/security/faillock.conf\n    regexp: ^\\s*deny\\s*=\n    line: deny = {{ var_accounts_passwords_pam_faillock_deny }}\n    state: present\n  when:\n  - '\"pam\" in ansible_facts.packages'\n  - result_faillock_conf_check.stat.exists\n  tags:\n  - CJIS-5.5.3\n  - NIST-800-171-3.1.8\n  - NIST-800-53-AC-7(a)\n  - NIST-800-53-CM-6(a)\n  - PCI-DSS-Req-8.1.6\n  - accounts_passwords_pam_faillock_deny\n  - low_complexity\n  - low_disruption\n  - medium_severity\n  - no_reboot_needed\n  - restrict_strategy\n\n- name: Lock Accounts After Failed Password Attempts - Ensure the pam_faillock.so\n    deny parameter not in PAM files\n  block:\n\n  - name: Lock Accounts After Failed Password Attempts - Check if /etc/pam.d/system-auth\n      file is present\n    ansible.builtin.stat:\n      path: /etc/pam.d/system-auth\n    register: result_pam_file_present\n\n  - name: Lock Accounts After Failed Password Attempts - Check the proper remediation\n      for the system\n    block:\n\n    - name: Lock Accounts After Failed Password Attempts - Define the PAM file to\n        be edited as a local fact\n      ansible.builtin.set_fact:\n        pam_file_path: /etc/pam.d/system-auth\n\n    - name: Lock Accounts After Failed Password Attempts - Check if system relies\n        on authselect\n      ansible.builtin.stat:\n        path: /usr/bin/authselect\n      register: result_authselect_present\n\n    - name: Lock Accounts After Failed Password Attempts - Remediate using authselect\n      block:\n\n      - name: Lock Accounts After Failed Password Attempts - Check integrity of authselect\n          current profile\n        ansible.builtin.command:\n          cmd: authselect check\n        register: result_authselect_check_cmd\n        changed_when: false\n        ignore_errors: true\n\n      - name: Lock Accounts After Failed Password Attempts - Informative message based\n          on the authselect integrity check result\n        ansible.builtin.assert:\n          that:\n          - result_authselect_check_cmd is success\n          fail_msg:\n          - authselect integrity check failed. Remediation aborted!\n          - This remediation could not be applied because an authselect profile was\n            not selected or the selected profile is not intact.\n          - It is not recommended to manually edit the PAM files when authselect tool\n            is available.\n          - In cases where the default authselect profile does not cover a specific\n            demand, a custom authselect profile is recommended.\n          success_msg:\n          - authselect integrity check passed\n\n      - name: Lock Accounts After Failed Password Attempts - Get authselect current\n          profile\n        ansible.builtin.shell:\n          cmd: authselect current -r | awk '{ print $1 }'\n        register: result_authselect_profile\n        changed_when: false\n        when:\n        - result_authselect_check_cmd is success\n\n      - name: Lock Accounts After Failed Password Attempts - Define the current authselect\n          profile as a local fact\n        ansible.builtin.set_fact:\n          authselect_current_profile: '{{ result_authselect_profile.stdout }}'\n          authselect_custom_profile: '{{ result_authselect_profile.stdout }}'\n        when:\n        - result_authselect_profile is not skipped\n        - result_authselect_profile.stdout is match(\"custom/\")\n\n      - name: Lock Accounts After Failed Password Attempts - Define the new authselect\n          custom profile as a local fact\n        ansible.builtin.set_fact:\n          authselect_current_profile: '{{ result_authselect_profile.stdout }}'\n          authselect_custom_profile: custom/hardening\n        when:\n        - result_authselect_profile is not skipped\n        - result_authselect_profile.stdout is not match(\"custom/\")\n\n      - name: Lock Accounts After Failed Password Attempts - Get authselect current\n          features to also enable them in the custom profile\n        ansible.builtin.shell:\n          cmd: authselect current | tail -n+3 | awk '{ print $2 }'\n        register: result_authselect_features\n        changed_when: false\n        when:\n        - result_authselect_profile is not skipped\n        - authselect_current_profile is not match(\"custom/\")\n\n      - name: Lock Accounts After Failed Password Attempts - Check if any custom profile\n          with the same name was already created\n        ansible.builtin.stat:\n          path: /etc/authselect/{{ authselect_custom_profile }}\n        register: result_authselect_custom_profile_present\n        changed_when: false\n        when:\n        - authselect_current_profile is not match(\"custom/\")\n\n      - name: Lock Accounts After Failed Password Attempts - Create an authselect\n          custom profile based on the current profile\n        ansible.builtin.command:\n          cmd: authselect create-profile hardening -b {{ authselect_current_profile\n            }}\n        when:\n        - result_authselect_check_cmd is success\n        - authselect_current_profile is not match(\"custom/\")\n        - not result_authselect_custom_profile_present.stat.exists\n\n      - name: Lock Accounts After Failed Password Attempts - Ensure authselect changes\n          are applied\n        ansible.builtin.command:\n          cmd: authselect apply-changes -b --backup=before-hardening-custom-profile\n        when:\n        - result_authselect_check_cmd is success\n        - result_authselect_profile is not skipped\n        - authselect_current_profile is not match(\"custom/\")\n        - authselect_custom_profile is not match(authselect_current_profile)\n\n      - name: Lock Accounts After Failed Password Attempts - Ensure the authselect\n          custom profile is selected\n        ansible.builtin.command:\n          cmd: authselect select {{ authselect_custom_profile }}\n        register: result_pam_authselect_select_profile\n        when:\n        - result_authselect_check_cmd is success\n        - result_authselect_profile is not skipped\n        - authselect_current_profile is not match(\"custom/\")\n        - authselect_custom_profile is not match(authselect_current_profile)\n\n      - name: Lock Accounts After Failed Password Attempts - Restore the authselect\n          features in the custom profile\n        ansible.builtin.command:\n          cmd: authselect enable-feature {{ item }}\n        loop: '{{ result_authselect_features.stdout_lines }}'\n        register: result_pam_authselect_restore_features\n        when:\n        - result_authselect_profile is not skipped\n        - result_authselect_features is not skipped\n        - result_pam_authselect_select_profile is not skipped\n\n      - name: Lock Accounts After Failed Password Attempts - Ensure authselect changes\n          are applied\n        ansible.builtin.command:\n          cmd: authselect apply-changes -b --backup=after-hardening-custom-profile\n        when:\n        - result_authselect_check_cmd is success\n        - result_authselect_profile is not skipped\n        - result_pam_authselect_restore_features is not skipped\n\n      - name: Lock Accounts After Failed Password Attempts - Change the PAM file to\n          be edited according to the custom authselect profile\n        ansible.builtin.set_fact:\n          pam_file_path: /etc/authselect/{{ authselect_custom_profile }}/{{ pam_file_path\n            | basename }}\n      when:\n      - result_authselect_present.stat.exists\n\n    - name: Lock Accounts After Failed Password Attempts - Ensure the \"deny\" option\n        from \"pam_faillock.so\" is not present in {{ pam_file_path }}\n      ansible.builtin.replace:\n        dest: '{{ pam_file_path }}'\n        regexp: (.*auth.*pam_faillock.so.*)\\bdeny\\b=?[0-9a-zA-Z]*(.*)\n        replace: \\1\\2\n      register: result_pam_option_removal\n\n    - name: Lock Accounts After Failed Password Attempts - Ensure authselect changes\n        are applied\n      ansible.builtin.command:\n        cmd: authselect apply-changes -b\n      when:\n      - result_authselect_present.stat.exists\n      - result_pam_option_removal is changed\n    when:\n    - result_pam_file_present.stat.exists\n\n  - name: Lock Accounts After Failed Password Attempts - Check if /etc/pam.d/password-auth\n      file is present\n    ansible.builtin.stat:\n      path: /etc/pam.d/password-auth\n    register: result_pam_file_present\n\n  - name: Lock Accounts After Failed Password Attempts - Check the proper remediation\n      for the system\n    block:\n\n    - name: Lock Accounts After Failed Password Attempts - Define the PAM file to\n        be edited as a local fact\n      ansible.builtin.set_fact:\n        pam_file_path: /etc/pam.d/password-auth\n\n    - name: Lock Accounts After Failed Password Attempts - Check if system relies\n        on authselect\n      ansible.builtin.stat:\n        path: /usr/bin/authselect\n      register: result_authselect_present\n\n    - name: Lock Accounts After Failed Password Attempts - Remediate using authselect\n      block:\n\n      - name: Lock Accounts After Failed Password Attempts - Check integrity of authselect\n          current profile\n        ansible.builtin.command:\n          cmd: authselect check\n        register: result_authselect_check_cmd\n        changed_when: false\n        ignore_errors: true\n\n      - name: Lock Accounts After Failed Password Attempts - Informative message based\n          on the authselect integrity check result\n        ansible.builtin.assert:\n          that:\n          - result_authselect_check_cmd is success\n          fail_msg:\n          - authselect integrity check failed. Remediation aborted!\n          - This remediation could not be applied because an authselect profile was\n            not selected or the selected profile is not intact.\n          - It is not recommended to manually edit the PAM files when authselect tool\n            is available.\n          - In cases where the default authselect profile does not cover a specific\n            demand, a custom authselect profile is recommended.\n          success_msg:\n          - authselect integrity check passed\n\n      - name: Lock Accounts After Failed Password Attempts - Get authselect current\n          profile\n        ansible.builtin.shell:\n          cmd: authselect current -r | awk '{ print $1 }'\n        register: result_authselect_profile\n        changed_when: false\n        when:\n        - result_authselect_check_cmd is success\n\n      - name: Lock Accounts After Failed Password Attempts - Define the current authselect\n          profile as a local fact\n        ansible.builtin.set_fact:\n          authselect_current_profile: '{{ result_authselect_profile.stdout }}'\n          authselect_custom_profile: '{{ result_authselect_profile.stdout }}'\n        when:\n        - result_authselect_profile is not skipped\n        - result_authselect_profile.stdout is match(\"custom/\")\n\n      - name: Lock Accounts After Failed Password Attempts - Define the new authselect\n          custom profile as a local fact\n        ansible.builtin.set_fact:\n          authselect_current_profile: '{{ result_authselect_profile.stdout }}'\n          authselect_custom_profile: custom/hardening\n        when:\n        - result_authselect_profile is not skipped\n        - result_authselect_profile.stdout is not match(\"custom/\")\n\n      - name: Lock Accounts After Failed Password Attempts - Get authselect current\n          features to also enable them in the custom profile\n        ansible.builtin.shell:\n          cmd: authselect current | tail -n+3 | awk '{ print $2 }'\n        register: result_authselect_features\n        changed_when: false\n        when:\n        - result_authselect_profile is not skipped\n        - authselect_current_profile is not match(\"custom/\")\n\n      - name: Lock Accounts After Failed Password Attempts - Check if any custom profile\n          with the same name was already created\n        ansible.builtin.stat:\n          path: /etc/authselect/{{ authselect_custom_profile }}\n        register: result_authselect_custom_profile_present\n        changed_when: false\n        when:\n        - authselect_current_profile is not match(\"custom/\")\n\n      - name: Lock Accounts After Failed Password Attempts - Create an authselect\n          custom profile based on the current profile\n        ansible.builtin.command:\n          cmd: authselect create-profile hardening -b {{ authselect_current_profile\n            }}\n        when:\n        - result_authselect_check_cmd is success\n        - authselect_current_profile is not match(\"custom/\")\n        - not result_authselect_custom_profile_present.stat.exists\n\n      - name: Lock Accounts After Failed Password Attempts - Ensure authselect changes\n          are applied\n        ansible.builtin.command:\n          cmd: authselect apply-changes -b --backup=before-hardening-custom-profile\n        when:\n        - result_authselect_check_cmd is success\n        - result_authselect_profile is not skipped\n        - authselect_current_profile is not match(\"custom/\")\n        - authselect_custom_profile is not match(authselect_current_profile)\n\n      - name: Lock Accounts After Failed Password Attempts - Ensure the authselect\n          custom profile is selected\n        ansible.builtin.command:\n          cmd: authselect select {{ authselect_custom_profile }}\n        register: result_pam_authselect_select_profile\n        when:\n        - result_authselect_check_cmd is success\n        - result_authselect_profile is not skipped\n        - authselect_current_profile is not match(\"custom/\")\n        - authselect_custom_profile is not match(authselect_current_profile)\n\n      - name: Lock Accounts After Failed Password Attempts - Restore the authselect\n          features in the custom profile\n        ansible.builtin.command:\n          cmd: authselect enable-feature {{ item }}\n        loop: '{{ result_authselect_features.stdout_lines }}'\n        register: result_pam_authselect_restore_features\n        when:\n        - result_authselect_profile is not skipped\n        - result_authselect_features is not skipped\n        - result_pam_authselect_select_profile is not skipped\n\n      - name: Lock Accounts After Failed Password Attempts - Ensure authselect changes\n          are applied\n        ansible.builtin.command:\n          cmd: authselect apply-changes -b --backup=after-hardening-custom-profile\n        when:\n        - result_authselect_check_cmd is success\n        - result_authselect_profile is not skipped\n        - result_pam_authselect_restore_features is not skipped\n\n      - name: Lock Accounts After Failed Password Attempts - Change the PAM file to\n          be edited according to the custom authselect profile\n        ansible.builtin.set_fact:\n          pam_file_path: /etc/authselect/{{ authselect_custom_profile }}/{{ pam_file_path\n            | basename }}\n      when:\n      - result_authselect_present.stat.exists\n\n    - name: Lock Accounts After Failed Password Attempts - Ensure the \"deny\" option\n        from \"pam_faillock.so\" is not present in {{ pam_file_path }}\n      ansible.builtin.replace:\n        dest: '{{ pam_file_path }}'\n        regexp: (.*auth.*pam_faillock.so.*)\\bdeny\\b=?[0-9a-zA-Z]*(.*)\n        replace: \\1\\2\n      register: result_pam_option_removal\n\n    - name: Lock Accounts After Failed Password Attempts - Ensure authselect changes\n        are applied\n      ansible.builtin.command:\n        cmd: authselect apply-changes -b\n      when:\n      - result_authselect_present.stat.exists\n      - result_pam_option_removal is changed\n    when:\n    - result_pam_file_present.stat.exists\n  when:\n  - '\"pam\" in ansible_facts.packages'\n  - result_faillock_conf_check.stat.exists\n  tags:\n  - CJIS-5.5.3\n  - NIST-800-171-3.1.8\n  - NIST-800-53-AC-7(a)\n  - NIST-800-53-CM-6(a)\n  - PCI-DSS-Req-8.1.6\n  - accounts_passwords_pam_faillock_deny\n  - low_complexity\n  - low_disruption\n  - medium_severity\n  - no_reboot_needed\n  - restrict_strategy\n\n- name: Lock Accounts After Failed Password Attempts - Ensure the pam_faillock.so\n    deny parameter in PAM files\n  block:\n\n  - name: Lock Accounts After Failed Password Attempts - Check if pam_faillock.so\n      deny parameter is already enabled in pam files\n    ansible.builtin.lineinfile:\n      path: /etc/pam.d/system-auth\n      regexp: .*auth.*pam_faillock.so (preauth|authfail).*deny\n      state: absent\n    check_mode: true\n    changed_when: false\n    register: result_pam_faillock_deny_parameter_is_present\n\n  - name: Lock Accounts After Failed Password Attempts - Ensure the inclusion of pam_faillock.so\n      preauth deny parameter in auth section\n    ansible.builtin.lineinfile:\n      path: '{{ item }}'\n      backrefs: true\n      regexp: (^\\s*auth\\s+)([\\w\\[].*\\b)(\\s+pam_faillock.so preauth.*)\n      line: \\1required\\3 deny={{ var_accounts_passwords_pam_faillock_deny }}\n      state: present\n    loop:\n    - /etc/pam.d/system-auth\n    - /etc/pam.d/password-auth\n    when:\n    - result_pam_faillock_deny_parameter_is_present.found == 0\n\n  - name: Lock Accounts After Failed Password Attempts - Ensure the inclusion of pam_faillock.so\n      authfail deny parameter in auth section\n    ansible.builtin.lineinfile:\n      path: '{{ item }}'\n      backrefs: true\n      regexp: (^\\s*auth\\s+)([\\w\\[].*\\b)(\\s+pam_faillock.so authfail.*)\n      line: \\1required\\3 deny={{ var_accounts_passwords_pam_faillock_deny }}\n      state: present\n    loop:\n    - /etc/pam.d/system-auth\n    - /etc/pam.d/password-auth\n    when:\n    - result_pam_faillock_deny_parameter_is_present.found == 0\n\n  - name: Lock Accounts After Failed Password Attempts - Ensure the desired value\n      for pam_faillock.so preauth deny parameter in auth section\n    ansible.builtin.lineinfile:\n      path: '{{ item }}'\n      backrefs: true\n      regexp: (^\\s*auth\\s+)([\\w\\[].*\\b)(\\s+pam_faillock.so preauth.*)(deny)=[0-9]+(.*)\n      line: \\1required\\3\\4={{ var_accounts_passwords_pam_faillock_deny }}\\5\n      state: present\n    loop:\n    - /etc/pam.d/system-auth\n    - /etc/pam.d/password-auth\n    when:\n    - result_pam_faillock_deny_parameter_is_present.found > 0\n\n  - name: Lock Accounts After Failed Password Attempts - Ensure the desired value\n      for pam_faillock.so authfail deny parameter in auth section\n    ansible.builtin.lineinfile:\n      path: '{{ item }}'\n      backrefs: true\n      regexp: (^\\s*auth\\s+)([\\w\\[].*\\b)(\\s+pam_faillock.so authfail.*)(deny)=[0-9]+(.*)\n      line: \\1required\\3\\4={{ var_accounts_passwords_pam_faillock_deny }}\\5\n      state: present\n    loop:\n    - /etc/pam.d/system-auth\n    - /etc/pam.d/password-auth\n    when:\n    - result_pam_faillock_deny_parameter_is_present.found > 0\n  when:\n  - '\"pam\" in ansible_facts.packages'\n  - not result_faillock_conf_check.stat.exists\n  tags:\n  - CJIS-5.5.3\n  - NIST-800-171-3.1.8\n  - NIST-800-53-AC-7(a)\n  - NIST-800-53-CM-6(a)\n  - PCI-DSS-Req-8.1.6\n  - accounts_passwords_pam_faillock_deny\n  - low_complexity\n  - low_disruption\n  - medium_severity\n  - no_reboot_needed\n  - restrict_strategy\n"
+                }
+            ],
+            "oval_tree": {
+                "node_id": "oval:ssg-accounts_passwords_pam_faillock_deny:def:1",
+                "node_type": "AND",
+                "value": "false",
+                "negation": false,
+                "comment": "",
+                "tag": "Definition",
+                "children": [
+                    {
+                        "node_id": "no-id-criteria-68768720-bdd6-4aef-a9c3-b17a7d9885fc",
+                        "node_type": "AND",
+                        "value": "false",
+                        "negation": false,
+                        "comment": "",
+                        "tag": "Criteria",
+                        "children": [
+                            {
+                                "node_id": "no-id-criteria-e56b25ce-0f08-416f-b253-8ee9126b91ec",
+                                "node_type": "AND",
+                                "value": "true",
+                                "negation": false,
+                                "comment": "",
+                                "tag": "Criteria",
+                                "children": [
+                                    {
+                                        "node_id": "oval:ssg-test_accounts_passwords_pam_faillock_deny_system_pam_unix_auth:tst:1",
+                                        "node_type": "value",
+                                        "value": "true",
+                                        "negation": false,
+                                        "comment": "",
+                                        "tag": "Test",
+                                        "children": [],
+                                        "test_info": {
+                                            "test_id": "oval:ssg-test_accounts_passwords_pam_faillock_deny_system_pam_unix_auth:tst:1",
+                                            "test_type": "textfilecontent54_test",
+                                            "comment": "No more than one pam_unix.so is expected in auth section of system-auth",
+                                            "oval_object": {
+                                                "object_id": "oval:ssg-object_accounts_passwords_pam_faillock_deny_system_pam_unix_auth:obj:1",
+                                                "flag": "does not exist",
+                                                "object_type": "textfilecontent54_object",
+                                                "object_data": [
+                                                    {
+                                                        "filepath": "^/etc/pam.d/system-auth$",
+                                                        "pattern": "^[\\s]*auth\\N+pam_unix\\.so",
+                                                        "instance": "1"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "node_id": "oval:ssg-test_accounts_passwords_pam_faillock_deny_password_pam_unix_auth:tst:1",
+                                        "node_type": "value",
+                                        "value": "true",
+                                        "negation": false,
+                                        "comment": "",
+                                        "tag": "Test",
+                                        "children": [],
+                                        "test_info": {
+                                            "test_id": "oval:ssg-test_accounts_passwords_pam_faillock_deny_password_pam_unix_auth:tst:1",
+                                            "test_type": "textfilecontent54_test",
+                                            "comment": "No more than one pam_unix.so is expected in auth section of password-auth",
+                                            "oval_object": {
+                                                "object_id": "oval:ssg-object_accounts_passwords_pam_faillock_deny_password_pam_unix_auth:obj:1",
+                                                "flag": "does not exist",
+                                                "object_type": "textfilecontent54_object",
+                                                "object_data": [
+                                                    {
+                                                        "filepath": "^/etc/pam.d/password-auth$",
+                                                        "pattern": "^[\\s]*auth\\N+pam_unix\\.so",
+                                                        "instance": "1"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                ],
+                                "test_info": null
+                            },
+                            {
+                                "node_id": "no-id-criteria-bc4db8da-ffc5-4fac-b40b-162e067dca68",
+                                "node_type": "AND",
+                                "value": "false",
+                                "negation": false,
+                                "comment": "",
+                                "tag": "Criteria",
+                                "children": [
+                                    {
+                                        "node_id": "oval:ssg-test_accounts_passwords_pam_faillock_deny_system_pam_faillock_auth:tst:1",
+                                        "node_type": "value",
+                                        "value": "false",
+                                        "negation": false,
+                                        "comment": "",
+                                        "tag": "Test",
+                                        "children": [],
+                                        "test_info": {
+                                            "test_id": "oval:ssg-test_accounts_passwords_pam_faillock_deny_system_pam_faillock_auth:tst:1",
+                                            "test_type": "textfilecontent54_test",
+                                            "comment": "One and only one occurrence is expected in auth section of system-auth",
+                                            "oval_object": {
+                                                "object_id": "oval:ssg-object_accounts_passwords_pam_faillock_deny_system_pam_faillock_auth:obj:1",
+                                                "flag": "does not exist",
+                                                "object_type": "textfilecontent54_object",
+                                                "object_data": [
+                                                    {
+                                                        "filepath": "^/etc/pam.d/system-auth$",
+                                                        "pattern": "^[\\s]*auth[\\s]+(required|\\[(?=.*?\\bsuccess=ok\\b)(?=.*?\\bnew_authtok_reqd=ok\\b)(?=.*?\\bignore=ignore\\b)(?=.*?\\bdefault=bad\\b).*\\])[\\s]+pam_faillock\\.so[\\s\\w\\d=]+preauth[\\s\\S]*^[\\s]*auth[\\s]+(sufficient|\\[(?=.*\\bsuccess=done\\b)(?=.*?\\bnew_authtok_reqd=done\\b)(?=.*?\\bdefault=ignore\\b).*\\])[\\s]+pam_unix\\.so[\\s\\S]*^[\\s]*auth[\\s]+(required|\\[(?=.*?\\bsuccess=ok\\b)(?=.*?\\bnew_authtok_reqd=ok\\b)(?=.*?\\bignore=ignore\\b)(?=.*?\\bdefault=bad\\b).*\\])[\\s]+pam_faillock\\.so[\\s\\w\\d=]+authfail",
+                                                        "instance": "1"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "node_id": "oval:ssg-test_accounts_passwords_pam_faillock_deny_system_pam_faillock_account:tst:1",
+                                        "node_type": "value",
+                                        "value": "false",
+                                        "negation": false,
+                                        "comment": "",
+                                        "tag": "Test",
+                                        "children": [],
+                                        "test_info": {
+                                            "test_id": "oval:ssg-test_accounts_passwords_pam_faillock_deny_system_pam_faillock_account:tst:1",
+                                            "test_type": "textfilecontent54_test",
+                                            "comment": "One and only one occurrence is expected in auth section of system-auth",
+                                            "oval_object": {
+                                                "object_id": "oval:ssg-object_accounts_passwords_pam_faillock_deny_system_pam_faillock_account:obj:1",
+                                                "flag": "does not exist",
+                                                "object_type": "textfilecontent54_object",
+                                                "object_data": [
+                                                    {
+                                                        "filepath": "^/etc/pam.d/system-auth$",
+                                                        "pattern": "^[\\s]*account[\\s]+(required|\\[(?=.*?\\bsuccess=ok\\b)(?=.*?\\bnew_authtok_reqd=ok\\b)(?=.*?\\bignore=ignore\\b)(?=.*?\\bdefault=bad\\b).*\\])[\\s]+pam_faillock\\.so[\\s\\S]*^[\\s]*account[\\s]+(required|\\[(?=.*?\\bsuccess=ok\\b)(?=.*?\\bnew_authtok_reqd=ok\\b)(?=.*?\\bignore=ignore\\b)(?=.*?\\bdefault=bad\\b).*\\])[\\s]+pam_unix\\.so",
+                                                        "instance": "1"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "node_id": "oval:ssg-test_accounts_passwords_pam_faillock_deny_password_pam_faillock_auth:tst:1",
+                                        "node_type": "value",
+                                        "value": "false",
+                                        "negation": false,
+                                        "comment": "",
+                                        "tag": "Test",
+                                        "children": [],
+                                        "test_info": {
+                                            "test_id": "oval:ssg-test_accounts_passwords_pam_faillock_deny_password_pam_faillock_auth:tst:1",
+                                            "test_type": "textfilecontent54_test",
+                                            "comment": "One and only one occurrence is expected in auth section of password-auth",
+                                            "oval_object": {
+                                                "object_id": "oval:ssg-object_accounts_passwords_pam_faillock_deny_password_pam_faillock_auth:obj:1",
+                                                "flag": "does not exist",
+                                                "object_type": "textfilecontent54_object",
+                                                "object_data": [
+                                                    {
+                                                        "filepath": "^/etc/pam.d/password-auth$",
+                                                        "pattern": "^[\\s]*auth[\\s]+(required|\\[(?=.*?\\bsuccess=ok\\b)(?=.*?\\bnew_authtok_reqd=ok\\b)(?=.*?\\bignore=ignore\\b)(?=.*?\\bdefault=bad\\b).*\\])[\\s]+pam_faillock\\.so[\\s\\w\\d=]+preauth[\\s\\S]*^[\\s]*auth[\\s]+(sufficient|\\[(?=.*\\bsuccess=done\\b)(?=.*?\\bnew_authtok_reqd=done\\b)(?=.*?\\bdefault=ignore\\b).*\\])[\\s]+pam_unix\\.so[\\s\\S]*^[\\s]*auth[\\s]+(required|\\[(?=.*?\\bsuccess=ok\\b)(?=.*?\\bnew_authtok_reqd=ok\\b)(?=.*?\\bignore=ignore\\b)(?=.*?\\bdefault=bad\\b).*\\])[\\s]+pam_faillock\\.so[\\s\\w\\d=]+authfail",
+                                                        "instance": "1"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "node_id": "oval:ssg-test_accounts_passwords_pam_faillock_deny_password_pam_faillock_account:tst:1",
+                                        "node_type": "value",
+                                        "value": "false",
+                                        "negation": false,
+                                        "comment": "",
+                                        "tag": "Test",
+                                        "children": [],
+                                        "test_info": {
+                                            "test_id": "oval:ssg-test_accounts_passwords_pam_faillock_deny_password_pam_faillock_account:tst:1",
+                                            "test_type": "textfilecontent54_test",
+                                            "comment": "One and only one occurrence is expected in auth section of password-auth",
+                                            "oval_object": {
+                                                "object_id": "oval:ssg-object_accounts_passwords_pam_faillock_deny_password_pam_faillock_account:obj:1",
+                                                "flag": "does not exist",
+                                                "object_type": "textfilecontent54_object",
+                                                "object_data": [
+                                                    {
+                                                        "filepath": "^/etc/pam.d/password-auth$",
+                                                        "pattern": "^[\\s]*account[\\s]+(required|\\[(?=.*?\\bsuccess=ok\\b)(?=.*?\\bnew_authtok_reqd=ok\\b)(?=.*?\\bignore=ignore\\b)(?=.*?\\bdefault=bad\\b).*\\])[\\s]+pam_faillock\\.so[\\s\\S]*^[\\s]*account[\\s]+(required|\\[(?=.*?\\bsuccess=ok\\b)(?=.*?\\bnew_authtok_reqd=ok\\b)(?=.*?\\bignore=ignore\\b)(?=.*?\\bdefault=bad\\b).*\\])[\\s]+pam_unix\\.so",
+                                                        "instance": "1"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                ],
+                                "test_info": null
+                            }
+                        ],
+                        "test_info": null
+                    },
+                    {
+                        "node_id": "no-id-criteria-c53d38a9-6473-4aed-b3b0-4afc73cad8f2",
+                        "node_type": "OR",
+                        "value": "false",
+                        "negation": false,
+                        "comment": "",
+                        "tag": "Criteria",
+                        "children": [
+                            {
+                                "node_id": "no-id-criteria-40b5c7a3-bf69-429c-b737-915cc06b3bf3",
+                                "node_type": "AND",
+                                "value": "false",
+                                "negation": false,
+                                "comment": "",
+                                "tag": "Criteria",
+                                "children": [
+                                    {
+                                        "node_id": "oval:ssg-test_accounts_passwords_pam_faillock_deny_parameter_pamd_system:tst:1",
+                                        "node_type": "value",
+                                        "value": "false",
+                                        "negation": false,
+                                        "comment": "",
+                                        "tag": "Test",
+                                        "children": [],
+                                        "test_info": {
+                                            "test_id": "oval:ssg-test_accounts_passwords_pam_faillock_deny_parameter_pamd_system:tst:1",
+                                            "test_type": "textfilecontent54_test",
+                                            "comment": "Check the expected deny value in system-auth",
+                                            "oval_object": {
+                                                "object_id": "oval:ssg-object_accounts_passwords_pam_faillock_deny_parameter_pamd_system:obj:1",
+                                                "flag": "does not exist",
+                                                "object_type": "textfilecontent54_object",
+                                                "object_data": [
+                                                    {
+                                                        "filepath": "^/etc/pam.d/system-auth$",
+                                                        "pattern": "^[\\s]*auth[\\s]+.+[\\s]+pam_faillock.so[\\s]+[^\\n]*deny=([0-9]+)",
+                                                        "instance": "1"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "node_id": "oval:ssg-test_accounts_passwords_pam_faillock_deny_parameter_pamd_password:tst:1",
+                                        "node_type": "value",
+                                        "value": "false",
+                                        "negation": false,
+                                        "comment": "",
+                                        "tag": "Test",
+                                        "children": [],
+                                        "test_info": {
+                                            "test_id": "oval:ssg-test_accounts_passwords_pam_faillock_deny_parameter_pamd_password:tst:1",
+                                            "test_type": "textfilecontent54_test",
+                                            "comment": "Check the expected deny value in password-auth",
+                                            "oval_object": {
+                                                "object_id": "oval:ssg-object_accounts_passwords_pam_faillock_deny_parameter_pamd_password:obj:1",
+                                                "flag": "does not exist",
+                                                "object_type": "textfilecontent54_object",
+                                                "object_data": [
+                                                    {
+                                                        "filepath": "^/etc/pam.d/password-auth$",
+                                                        "pattern": "^[\\s]*auth[\\s]+.+[\\s]+pam_faillock.so[\\s]+[^\\n]*deny=([0-9]+)",
+                                                        "instance": "1"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "node_id": "oval:ssg-test_accounts_passwords_pam_faillock_deny_parameter_no_faillock_conf:tst:1",
+                                        "node_type": "value",
+                                        "value": "true",
+                                        "negation": false,
+                                        "comment": "",
+                                        "tag": "Test",
+                                        "children": [],
+                                        "test_info": {
+                                            "test_id": "oval:ssg-test_accounts_passwords_pam_faillock_deny_parameter_no_faillock_conf:tst:1",
+                                            "test_type": "textfilecontent54_test",
+                                            "comment": "Check the absence of deny parameter in /etc/security/faillock.conf",
+                                            "oval_object": {
+                                                "object_id": "oval:ssg-object_accounts_passwords_pam_faillock_deny_parameter_faillock_conf:obj:1",
+                                                "flag": "does not exist",
+                                                "object_type": "textfilecontent54_object",
+                                                "object_data": [
+                                                    {
+                                                        "filepath": "^/etc/security/faillock.conf$",
+                                                        "pattern": "^[\\s]*deny[\\s]*=[\\s]*([0-9]+)",
+                                                        "instance": "1"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                ],
+                                "test_info": null
+                            },
+                            {
+                                "node_id": "no-id-criteria-21bf3464-841d-4105-9f4f-f1a082ad9aaa",
+                                "node_type": "AND",
+                                "value": "false",
+                                "negation": false,
+                                "comment": "",
+                                "tag": "Criteria",
+                                "children": [
+                                    {
+                                        "node_id": "oval:ssg-test_accounts_passwords_pam_faillock_deny_parameter_no_pamd_system:tst:1",
+                                        "node_type": "value",
+                                        "value": "true",
+                                        "negation": false,
+                                        "comment": "",
+                                        "tag": "Test",
+                                        "children": [],
+                                        "test_info": {
+                                            "test_id": "oval:ssg-test_accounts_passwords_pam_faillock_deny_parameter_no_pamd_system:tst:1",
+                                            "test_type": "textfilecontent54_test",
+                                            "comment": "Check the absence of deny parameter in system-auth",
+                                            "oval_object": {
+                                                "object_id": "oval:ssg-object_accounts_passwords_pam_faillock_deny_parameter_pamd_system:obj:1",
+                                                "flag": "does not exist",
+                                                "object_type": "textfilecontent54_object",
+                                                "object_data": [
+                                                    {
+                                                        "filepath": "^/etc/pam.d/system-auth$",
+                                                        "pattern": "^[\\s]*auth[\\s]+.+[\\s]+pam_faillock.so[\\s]+[^\\n]*deny=([0-9]+)",
+                                                        "instance": "1"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "node_id": "oval:ssg-test_accounts_passwords_pam_faillock_deny_parameter_no_pamd_password:tst:1",
+                                        "node_type": "value",
+                                        "value": "true",
+                                        "negation": false,
+                                        "comment": "",
+                                        "tag": "Test",
+                                        "children": [],
+                                        "test_info": {
+                                            "test_id": "oval:ssg-test_accounts_passwords_pam_faillock_deny_parameter_no_pamd_password:tst:1",
+                                            "test_type": "textfilecontent54_test",
+                                            "comment": "Check the absence of deny parameter in password-auth",
+                                            "oval_object": {
+                                                "object_id": "oval:ssg-object_accounts_passwords_pam_faillock_deny_parameter_pamd_password:obj:1",
+                                                "flag": "does not exist",
+                                                "object_type": "textfilecontent54_object",
+                                                "object_data": [
+                                                    {
+                                                        "filepath": "^/etc/pam.d/password-auth$",
+                                                        "pattern": "^[\\s]*auth[\\s]+.+[\\s]+pam_faillock.so[\\s]+[^\\n]*deny=([0-9]+)",
+                                                        "instance": "1"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "node_id": "oval:ssg-test_accounts_passwords_pam_faillock_deny_parameter_faillock_conf:tst:1",
+                                        "node_type": "value",
+                                        "value": "false",
+                                        "negation": false,
+                                        "comment": "",
+                                        "tag": "Test",
+                                        "children": [],
+                                        "test_info": {
+                                            "test_id": "oval:ssg-test_accounts_passwords_pam_faillock_deny_parameter_faillock_conf:tst:1",
+                                            "test_type": "textfilecontent54_test",
+                                            "comment": "Check the expected deny value in in /etc/security/faillock.conf",
+                                            "oval_object": {
+                                                "object_id": "oval:ssg-object_accounts_passwords_pam_faillock_deny_parameter_faillock_conf:obj:1",
+                                                "flag": "does not exist",
+                                                "object_type": "textfilecontent54_object",
+                                                "object_data": [
+                                                    {
+                                                        "filepath": "^/etc/security/faillock.conf$",
+                                                        "pattern": "^[\\s]*deny[\\s]*=[\\s]*([0-9]+)",
+                                                        "instance": "1"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                ],
+                                "test_info": null
+                            }
+                        ],
+                        "test_info": null
+                    }
+                ],
+                "test_info": null
+            },
+            "cpe_tree": null
+        }
+    }
+}
