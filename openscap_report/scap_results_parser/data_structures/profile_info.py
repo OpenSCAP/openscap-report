@@ -16,3 +16,11 @@ class ProfileInfo:
 
     def as_dict(self):
         return asdict(self)
+
+    def get_applicable_cpe_platforms_for_profile(self):
+        return ", ".join(self.cpe_platforms_for_profile.keys())
+
+    def get_cpe_platforms_that_satisfy_evaluation_target(self):
+        return ", ".join(
+            [cpe_id for cpe_id, is_satisfy in self.cpe_platforms_for_profile.items() if is_satisfy]
+        )

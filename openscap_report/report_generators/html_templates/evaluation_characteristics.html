@@ -12,12 +12,46 @@
     <div class="pf-c-accordion__expanded-content" style="display: none;">
         <div class="pf-c-accordion__expanded-content-body">
             <ul class="pf-c-data-list" role="list">
+
                 <li class="pf-c-data-list__item">
                     <div class="pf-c-data-list__item-row">
                         <div class="pf-c-data-list__item-content">
                             <div class="pf-c-data-list__cell"><b>Profile ID:</b></div>
                             <div class="pf-c-data-list__cell">
                                 {{- report.profile_info.profile_id -}}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                {%- if report.profile_info.extends -%}
+                <li class="pf-c-data-list__item">
+                    <div class="pf-c-data-list__item-row">
+                        <div class="pf-c-data-list__item-content">
+                            <div class="pf-c-data-list__cell"><b>Extends Profile ID:</b></div>
+                            <div class="pf-c-data-list__cell">
+                                {{- report.profile_info.extends -}}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                {%- endif -%}
+                <li class="pf-c-data-list__item">
+                    <div class="pf-c-data-list__item-row">
+                        <div class="pf-c-data-list__item-content">
+                            <div class="pf-c-data-list__cell"><b>This profile is applicable for this CPE platforms:</b></div>
+                            <div class="pf-c-data-list__cell">
+                                {{- report.profile_info.get_applicable_cpe_platforms_for_profile() -}}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="pf-c-data-list__item">
+                    <div class="pf-c-data-list__item-row">
+                        <div class="pf-c-data-list__item-content">
+                            <div class="pf-c-data-list__cell"><b>CPE platforms that were found applicable on the evaluated machine:</b></div>
+                            <div class="pf-c-data-list__cell">
+                                {{- report.profile_info.get_cpe_platforms_that_satisfy_evaluation_target() -}}
                             </div>
                         </div>
                     </div>
