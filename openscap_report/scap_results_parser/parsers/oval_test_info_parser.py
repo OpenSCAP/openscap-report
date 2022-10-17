@@ -9,7 +9,7 @@ from ..namespaces import NAMESPACES
 MAX_MESSAGE_LEN = 99
 
 
-class InfoOfTest:
+class OVALTestInfoParser:
     def __init__(self, oval_report):
         self.oval_report = oval_report
         self.oval_definitions = self._get_oval_definitions()

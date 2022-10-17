@@ -1,204 +1,133 @@
 # Copyright 2022, Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-import logging
-import uuid
-
-from ..data_structures import OvalNode
+from ..data_structures import OvalDefinition, OvalReference
 from ..exceptions import MissingOVALResult
 from ..namespaces import NAMESPACES
-from .test_info_parser import InfoOfTest
-
-STR_TO_BOOL = {'true': True, 'false': False}
-STR_NEGATION_BOOL = {'true': 'false', 'false': 'true'}
+from .oval_result_parser import OVALResultParser
 
 
 class OVALDefinitionParser:
-    def __init__(self, root):
+    def __init__(self, root, platform_to_oval_cpe_id):
         self.root = root
-        self.oval_reports = self._get_oval_reports()
-        logging.info(self.oval_reports)
-        self.oval_results = self._get_oval_results("oval0")
-        self.parser_info_of_test = InfoOfTest(self.oval_reports.get("oval0", None))
-        self.oval_cpe_results = self._get_oval_results("oval1")
-        self.parser_info_of_cpe_test = None
-        if "oval1" in self.oval_reports:
-            self.parser_info_of_cpe_test = InfoOfTest(self.oval_reports["oval1"])
+        self.oval_result_parser = OVALResultParser(self.root, platform_to_oval_cpe_id)
+        self.oval_trees = self.oval_result_parser.get_oval_trees()
+        self.oval_cpe_trees = self.oval_result_parser.get_oval_cpe_trees()
 
-    def _get_oval_reports(self):
-        oval_reports = {}
-        reports = self.root.find('.//arf:reports', NAMESPACES)
-        if reports is None:
+        self.oval_reports = self.oval_result_parser.oval_reports
+        self.oval_definitions = self._get_xml_elements_of_oval_definitions()
+
+    def _get_xml_elements_of_oval_definitions(self):
+        out = {}
+        for oval, oval_report in self.oval_reports.items():
+            out[oval] = oval_report.find(
+                './/oval-definitions:oval_definitions/oval-definitions:definitions', NAMESPACES)
+        return out
+
+    def _get_references(self, definition):
+        references = []
+        for ref in definition.findall('.//oval-definitions:reference', NAMESPACES):
+            references.append(OvalReference(ref.get("source"), ref.get("ref_id")))
+        return references
+
+    def parse_oval_definition(self, definition_id, definition):
+        oval_definition_dict = {
+            "definition_id": definition_id,
+            "title": definition.find('.//oval-definitions:title', NAMESPACES).text,
+            "description": definition.find('.//oval-definitions:description', NAMESPACES).text,
+            "version": definition.get("version"),
+            "references": self._get_references(definition),
+        }
+        return OvalDefinition(**oval_definition_dict)
+
+    def _get_oval_definitions(self, oval):
+        if oval not in self.oval_definitions:
             raise MissingOVALResult
 
-        for report in reports:
-            report_id = report.get("id")
-            if "oval" in report_id:
-                oval_reports[report_id] = report
-        return oval_reports
+        definitions = {}
+        dict_of_criteria = {}
+        for definition in self.oval_definitions[oval]:
+            definition_id = definition.get("id")
+            oval_definition = self.parse_oval_definition(definition_id, definition)
+            criteria = definition.find('.//oval-definitions:criteria', NAMESPACES)
+            dict_of_criteria[definition_id] = self._create_dict_from_criteria(criteria)
+            definitions[definition_id] = oval_definition
 
-    def _get_oval_results(self, oval_id):
-        oval_report = self.oval_reports.get(oval_id, None)
-        if oval_report is None:
-            return None
-        return oval_report.find(
-            ('.//XMLSchema:oval_results/XMLSchema:results/'
-             'XMLSchema:system/XMLSchema:definitions'), NAMESPACES)
+        self._add_comments_to_oval_tree(dict_of_criteria, oval)
+        self._add_oval_tree_to_definition(definitions, oval)
+        return definitions
 
-    def _get_oval_definitions(self):
-        return self.root.find(
-            './/arf:report-requests/arf:report-request/'
-            'arf:content/scap:data-stream-collection/'
-            'scap:component/oval-definitions:oval_definitions/'
-            'oval-definitions:definitions', NAMESPACES)
+    def get_oval_definitions(self):
+        return self._get_oval_definitions("oval0")
 
-    def _get_cpe_dict(self):
-        cpe_list = self.root.find(".//ds:component/cpe-dict:cpe-list", NAMESPACES)
-        cpe_dict = {}
-        for cpe_item in cpe_list:
-            name = cpe_item.get("name")
-            check = cpe_item.find(".//cpe-dict:check", NAMESPACES)
-            oval_id = name
-            if check is not None:
-                oval_id = check.text
-            cpe_dict[name] = oval_id
-        return cpe_dict
+    def get_oval_cpe_definitions(self):
+        return self._get_oval_definitions("oval1")
 
-    def get_oval_trees(self):
-        dict_of_oval_definitions = {}
-        for definition in self.oval_results:
-            id_definition = definition.get('definition_id')
-            dict_of_oval_definitions[id_definition] = self._build_node(
-                definition[0],
-                "Definition",
-                id_definition
-            )
-        return self._fill_extend_definition(dict_of_oval_definitions)
-
-    def get_oval_cpe_trees(self):
-        dict_of_oval_definitions = {}
-        if self.oval_cpe_results is None:
-            return dict_of_oval_definitions
-
-        for definition in self.oval_cpe_results:
-            id_definition = definition.get('definition_id')
-            dict_of_oval_definitions[id_definition] = self._build_node(
-                definition[0],
-                "CPE Definition",
-                id_definition,
-                True
-            )
-        oval_cpe_trees = self._fill_extend_definition(dict_of_oval_definitions)
-        cpe_dict = self._get_cpe_dict()
-        out = {}
-        for value, oval_id in cpe_dict.items():
-            if oval_id in oval_cpe_trees:
-                out[value] = oval_cpe_trees[oval_id]
+    def _get_test_criteria(self, criterion):
+        out = {"comment": criterion.get("comment")}
+        if criterion.get('definition_ref'):
+            out['extend_definition'] = criterion.get('definition_ref')
+        else:
+            out['value_id'] = criterion.get('test_ref')
         return out
+
+    def _create_dict_from_criteria(self, criteria):
+        criteria_dict = {
+            "operator": criteria.get("operator", "AND"),
+            "comment": criteria.get("comment"),
+            "child_criteria": [],
+        }
+        for criterion in criteria:
+            if criterion.get("operator") or "criteria" in criterion.tag:
+                criteria_dict["child_criteria"].append(self._create_dict_from_criteria(criterion))
+            else:
+                criteria_dict["child_criteria"].append(self._get_test_criteria(criterion))
+        return criteria_dict
+
+    def _add_oval_tree_to_definition(self, definitions, oval):
+        for definition_id in definitions:
+            oval_tree_source = self.oval_trees
+            if oval == "oval1":
+                oval_tree_source = self.oval_cpe_trees
+            self._set_oval_tree_to_definition(definitions, definition_id, oval_tree_source)
+
+    def _set_oval_tree_to_definition(self, definitions, definition_id, oval_tree_source):
+        if definition_id in self.oval_trees:
+            oval_tree_source[definition_id].comment = definitions[definition_id].description
+            definitions[definition_id].oval_tree = oval_tree_source[definition_id]
 
     @staticmethod
-    def _get_negation(node):
-        negation = False
-        if node.get('negate') is not None:
-            negation = STR_TO_BOOL[node.get('negate')]
-        return negation
+    def _get_criteria(criteria_id, criteria, criteria_dict):
+        if criteria is None and criteria_id is not None:
+            criteria = criteria_dict[criteria_id]
+        return criteria
 
     @staticmethod
-    def _get_result(negation, tree):
-        """
-            This  method  removes  the  negation of
-            the result. Because negation is already
-            included in the result in ARF file.
-        """
-        result = tree.get('result')
-        if negation and result in ('true', 'false'):
-            result = STR_NEGATION_BOOL[result]
-        return result
+    def _set_comment_to_oval_tree(oval_tree, criteria):
+        if not oval_tree.comment:
+            oval_tree.comment = criteria.get("comment")
 
-    def _get_extend_definition_node(self, child):
-        negation = self._get_negation(child)
-        result_of_node = self._get_result(negation, child)
-        return OvalNode(
-            node_id=child.get('definition_ref'),
-            node_type="extend_definition",
-            value=result_of_node,
-            negation=negation,
-            tag="Extend definition",
-        )
+    def _fill_oval_tree_with_comments(self, oval_tree, criteria_id, criteria_dict, criteria=None):
+        criteria = self._get_criteria(criteria_id, criteria, criteria_dict)
+        self._set_comment_to_oval_tree(oval_tree, criteria)
 
-    def _get_test_node(self, child, is_cpe=False):
-        negation = self._get_negation(child)
-        result_of_node = self._get_result(negation, child)
-        test_id = child.get('test_ref')
-        parser_of_test_info = self.parser_info_of_test
-        if is_cpe:
-            parser_of_test_info = self.parser_info_of_cpe_test
-        return OvalNode(
-            node_id=test_id,
-            node_type="value",
-            value=result_of_node,
-            negation=negation,
-            tag="Test",
-            test_info=parser_of_test_info.get_test_info(test_id),
-        )
+        for criterion, oval_node in zip(criteria["child_criteria"], oval_tree.children):
+            oval_node.comment = criterion.get("comment")
+            if criterion.get('operator'):
+                self._fill_oval_tree_with_comments(
+                    oval_node, None, criteria_dict, criterion)
+            if criterion.get("extend_definition"):
+                self._fill_oval_tree_with_comments(
+                    oval_node, criterion.get("extend_definition"), criteria_dict)
 
-    def _build_node(self, tree, tag, id_definition, is_cpe=False):
-        negation = self._get_negation(tree)
-        node = OvalNode(
-            node_id=id_definition,
-            node_type=tree.get('operator'),
-            negation=negation,
-            value=self._get_result(negation, tree),
-            tag=tag,
-            children=[],
-        )
-        for child in tree:
-            if child.get('operator') is not None:
-                node.children.append(
-                    self._build_node(
-                        child,
-                        "Criteria",
-                        f"no-id-criteria-{uuid.uuid4()}",
-                        is_cpe
-                    )
-                )
-            else:
-                if child.get('definition_ref') is not None:
-                    node.children.append(self._get_extend_definition_node(child))
-                else:
-                    node.children.append(self._get_test_node(child, is_cpe))
-        return node
+    def _add_comments_to_oval_tree(self, dict_of_criteria, oval):
+        for id_ in dict_of_criteria:
+            oval_tree_source = self.oval_trees
+            if oval == "oval1":
+                oval_tree_source = self.oval_cpe_trees
 
-    def _fill_extend_definition(self, dict_of_oval_definitions):
-        out = {}
-        for id_definition, definition in dict_of_oval_definitions.items():
-            out[id_definition] = self._fill_extend_definition_help(
-                definition, dict_of_oval_definitions)
-        return out
+            if id_ not in oval_tree_source:
+                continue
 
-    def _fill_extend_definition_help(self, node, dict_of_oval_definitions):
-        out = OvalNode(
-            node_id=node.node_id,
-            node_type=node.node_type,
-            negation=node.negation,
-            value=node.value,
-            tag=node.tag,
-            children=[],
-        )
-        for child in node.children:
-            if child.node_type in ("AND", "OR", "ONE", "XOR"):
-                out.children.append(
-                    self._fill_extend_definition_help(child, dict_of_oval_definitions))
-            elif child.node_type == "extend_definition":
-                out.children.append(
-                    self._find_definition_by_id(child, dict_of_oval_definitions))
-            else:
-                out.children.append(child)
-        return out
-
-    def _find_definition_by_id(self, node, dict_of_oval_definitions):
-        extend_definition_id = node.node_id
-        dict_of_oval_definitions[extend_definition_id].negation = node.negation
-        dict_of_oval_definitions[extend_definition_id].tag = node.tag
-        return self._fill_extend_definition_help(
-            dict_of_oval_definitions[extend_definition_id], dict_of_oval_definitions)
+            oval_tree = oval_tree_source[id_]
+            self._fill_oval_tree_with_comments(oval_tree, id_, dict_of_criteria)

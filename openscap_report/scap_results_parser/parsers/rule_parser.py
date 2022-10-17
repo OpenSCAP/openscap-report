@@ -97,7 +97,7 @@ class RuleParser():
 
     def _add_oval_definition_id(self, rule_dict, rule):
         check_content_refs_dict = self._get_check_content_refs_dict(rule)
-        rule_dict["oval_definition_id"] = check_content_refs_dict.get("oval", "")
+        rule_dict["oval_definition_id"] = check_content_refs_dict.get("oval")
 
     @staticmethod
     def _get_remediation_exit_code(message):
