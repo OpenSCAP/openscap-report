@@ -31,8 +31,16 @@
             "title": "CPE Platforms",
             "type": "array",
             "items": {
-                "type": "string",
-                "pattern": "[cC][pP][eE]:/[AHOaho]?(:[A-Za-z0-9\\._\\-~%]*){0,6}"
+                "oneOf": [
+                    {
+                        "type": "string",
+                        "pattern": "^\\#\\w+"
+                    },
+                    {
+                        "type": "string",
+                        "pattern": "[cC][pP][eE]:/[AHOaho]?(:[A-Za-z0-9\\._\\-~%]*){0,6}"
+                    }
+                ]
             }
         },
         "scanner": {
@@ -374,8 +382,16 @@
                     "title": "Platforms",
                     "type": "array",
                     "items": {
-                        "type": "string",
-                        "pattern": "[cC][pP][eE]:/[AHOaho]?(:[A-Za-z0-9\\._\\-~%]*){0,6}"
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "pattern": "^\\#\\w+"
+                            },
+                            {
+                                "type": "string",
+                                "pattern": "[cC][pP][eE]:/[AHOaho]?(:[A-Za-z0-9\\._\\-~%]*){0,6}"
+                            }
+                        ]
                     }
                 },
                 "oval_definition_id": {
@@ -444,8 +460,16 @@
                     "title": "Platforms",
                     "type": "array",
                     "items": {
-                        "type": "string",
-                        "pattern": "[cC][pP][eE]:/[AHOaho]?(:[A-Za-z0-9\\._\\-~%]*){0,6}"
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "pattern": "^\\#\\w+"
+                            },
+                            {
+                                "type": "string",
+                                "pattern": "[cC][pP][eE]:/[AHOaho]?(:[A-Za-z0-9\\._\\-~%]*){0,6}"
+                            }
+                        ]
                     }
                 },
                 "rules_ids": {
