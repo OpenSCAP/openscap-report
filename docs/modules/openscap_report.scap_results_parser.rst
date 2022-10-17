@@ -13,14 +13,6 @@ Subpackages
 Submodules
 ----------
 
-openscap\_report.scap\_results\_parser.cpe\_tree\_builder module
-----------------------------------------------------------------
-
-.. automodule:: openscap_report.scap_results_parser.cpe_tree_builder
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 openscap\_report.scap\_results\_parser.exceptions module
 --------------------------------------------------------
 
@@ -33,6 +25,14 @@ openscap\_report.scap\_results\_parser.namespaces module
 --------------------------------------------------------
 
 .. automodule:: openscap_report.scap_results_parser.namespaces
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+openscap\_report.scap\_results\_parser.oval\_and\_cpe\_tree\_builder module
+---------------------------------------------------------------------------
+
+.. automodule:: openscap_report.scap_results_parser.oval_and_cpe_tree_builder
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,3 +1,5 @@
+.. _man page:
+
 oscap-report
 ============
 
