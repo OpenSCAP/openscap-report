@@ -28,9 +28,10 @@ class OVALAndCPETreeBuilder:  # pylint: disable=R0902
             )
             self.oval_definitions = self.oval_definition_parser.get_oval_definitions()
             self.oval_cpe_definitions = self.oval_definition_parser.get_oval_cpe_definitions()
-        except MissingOVALResult:
-            logging.warning("Not found OVAL results!")
-            self.missing_oval_results = True
+        except MissingOVALResult as error:
+            logging.warning("OVAL results \"%s\" not found!", error)
+            if str(error) != "oval1":
+                self.missing_oval_results = True
 
     def get_platform_to_oval_cpe_id_dict(self):
         cpe_list = self.root.find(".//ds:component/cpe-dict:cpe-list", NAMESPACES)
@@ -50,7 +51,7 @@ class OVALAndCPETreeBuilder:  # pylint: disable=R0902
             cpe_oval_id = self.platform_to_oval_cpe_id[platform]
         if cpe_oval_id in self.oval_cpe_definitions:
             return self.oval_cpe_definitions[cpe_oval_id].oval_tree
-        logging.warning("There is no CPE check for platform: %s", platform)
+        logging.warning("There is no CPE check for the platform \"%s\".", platform)
         return None
 
     def _insert_platforms_cpe_trees_to_rule_cpe_tree(self, rule, rule_cpe_tree):

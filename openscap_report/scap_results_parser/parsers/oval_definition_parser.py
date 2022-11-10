@@ -42,7 +42,7 @@ class OVALDefinitionParser:
 
     def _get_oval_definitions(self, oval):
         if oval not in self.oval_definitions:
-            raise MissingOVALResult
+            raise MissingOVALResult(oval)
 
         definitions = {}
         dict_of_criteria = {}
