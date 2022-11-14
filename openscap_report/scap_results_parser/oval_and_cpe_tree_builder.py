@@ -113,10 +113,16 @@ class OVALAndCPETreeBuilder:  # pylint: disable=R0902
             cpe_tree.children.append(rule_cpe_tree)
         if groups_cpe_tree.value is not None:
             cpe_tree.children.append(groups_cpe_tree)
+
+        skip_fedora = False
         for profile_platform in self.profile_platforms:
+            if "fedora" in profile_platform and skip_fedora:
+                continue
             if profile_platform in self.platform_to_oval_cpe_id:
                 cpe_oval_id = self.platform_to_oval_cpe_id[profile_platform]
                 cpe_tree.children.append(self._get_cpe_tree_of_profile_platform(cpe_oval_id))
+            if "fedora" in profile_platform:
+                skip_fedora = True
         return cpe_tree
 
     def build_cpe_tree(self, rule):
