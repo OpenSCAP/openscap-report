@@ -1,6 +1,8 @@
 # Copyright 2022, Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+from .cpe_logical_test import LogicalTest
+from .cpe_platform import Platform
 from .group import Group
 from .identifier import Identifier
 from .oval_definition import OvalDefinition
