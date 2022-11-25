@@ -7,3 +7,7 @@ class MissingOVALResult(Exception):
 
 class MissingProcessableRules(Exception):
     """Raised when processable rules are missing in the report"""
+
+
+class ExceptionNoCPEApplicabilityLanguage(Exception):
+    """Raise when there is no CPE Applicability Language platform specification"""
