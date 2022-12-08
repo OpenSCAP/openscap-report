@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 from dataclasses import asdict, dataclass, field
+from typing import Dict, List
 
 from .cpe_platform import Platform
 from .identifier import Identifier
@@ -39,18 +40,18 @@ class Rule:  # pylint: disable=R0902
     time: str = ""
     severity: str = ""
     weight: float = 0.0
-    identifiers: list[Identifier] = field(default_factory=list)
-    references: list[Reference] = field(default_factory=list)
+    identifiers: List[Identifier] = field(default_factory=list)
+    references: List[Reference] = field(default_factory=list)
     description: str = ""
     rationale: str = ""
-    warnings: list[RuleWarning] = field(default_factory=list)
-    platforms: list[str] = field(default_factory=list)
+    warnings: List[RuleWarning] = field(default_factory=list)
+    platforms: List[str] = field(default_factory=list)
     oval_definition_id: str = None
     oval_definition: OvalDefinition = None
-    messages: list[str] = field(default_factory=list)
-    remediations: list[Remediation] = field(default_factory=list)
-    cpe_oval_dict: dict[str, dict[str, OvalNode]] = field(default_factory=dict)
-    cpe_al: dict[str, dict[str, Platform]] = field(default_factory=dict)
+    messages: List[str] = field(default_factory=list)
+    remediations: List[Remediation] = field(default_factory=list)
+    cpe_oval_dict: Dict[str, Dict[str, OvalNode]] = field(default_factory=dict)
+    cpe_al: Dict[str, Dict[str, Platform]] = field(default_factory=dict)
 
     def as_dict(self):
         return asdict(self)

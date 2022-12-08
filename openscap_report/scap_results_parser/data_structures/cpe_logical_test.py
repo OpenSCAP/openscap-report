@@ -3,6 +3,7 @@
 
 from collections import Counter
 from dataclasses import asdict, dataclass, field
+from typing import List
 
 from .cpe_result_eval import EMPTY_RESULT, OVAL_RESULT_TO_CPE_RESULT, CpeResult
 from .oval_node import OvalNode
@@ -20,7 +21,7 @@ class LogicalTest:
     value: str = ""
     oval_tree: OvalNode = None
     negation: bool = False
-    children: list['LogicalTest'] = field(default_factory=list)
+    children: List['LogicalTest'] = field(default_factory=list)
 
     def as_dict(self):
         return asdict(self)

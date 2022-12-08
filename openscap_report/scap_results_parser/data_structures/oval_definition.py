@@ -1,7 +1,9 @@
 
 from dataclasses import asdict, dataclass, field
+from typing import List
 
 from .oval_node import OvalNode
+from .oval_reference import OvalReference
 
 OVAL_DEFINITION_JSON_KEYS = [
     "definition_id",
@@ -17,7 +19,7 @@ class OvalDefinition:
     title: str
     description: str = ""
     version: str = ""
-    references: list = field(default_factory=list)
+    references: List[OvalReference] = field(default_factory=list)
     oval_tree: OvalNode = None
 
     def as_dict(self):

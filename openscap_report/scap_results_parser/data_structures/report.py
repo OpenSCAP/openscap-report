@@ -3,6 +3,7 @@
 
 import logging
 from dataclasses import asdict, dataclass, field
+from typing import Dict
 
 from ..exceptions import MissingProcessableRules
 from .group import GROUP_JSON_KEYS, Group
@@ -38,8 +39,8 @@ JSON_REPORT_CONTENT = [
 class Report:
     profile_info: ProfileInfo = field(default_factory=ProfileInfo)
     scan_result: ResultOfScan = field(default_factory=ResultOfScan)
-    rules: dict[str, Rule] = field(default_factory=dict)
-    groups: dict[str, Group] = field(default_factory=dict)
+    rules: Dict[str, Rule] = field(default_factory=dict)
+    groups: Dict[str, Group] = field(default_factory=dict)
 
     @staticmethod
     def default_json_filter(dictionary):
