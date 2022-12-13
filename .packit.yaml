@@ -14,6 +14,15 @@ downstream_package_name: openscap-report
 # version tag template
 upstream_tag_template: v{version}
 
+srpm_build_deps:
+  - python3-devel
+  - python3-sphinx
+  - python3-sphinx_rtd_theme
+  - python3-jinja2
+  - python3-lxml
+  - redhat-display-fonts
+  - redhat-text-fonts
+
 actions:
   get-current-version:
     - python3 setup.py --version
