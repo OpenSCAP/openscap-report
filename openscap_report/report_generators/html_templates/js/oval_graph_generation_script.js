@@ -83,17 +83,13 @@ window.addEventListener('load', () => {
         var rule_id = await item.parentNode.parentNode.parentNode.getAttribute("rule-id").asJqueryComplaintId();
         generate_oval_tree(item, "oval_tree_of_rule_" + rule_id); // eslint-disable-line no-undef
         generate_oval_tree(item, "cpe_tree_of_rule_" + rule_id); // eslint-disable-line no-undef
+        generate_cpe_al(item, "cpe_al_tree_of_rule_profile_platforms_" + rule_id); // eslint-disable-line no-undef
+        generate_cpe_al(item, "cpe_al_tree_of_rule_group_platforms_" + rule_id); // eslint-disable-line no-undef
+        generate_cpe_al(item, "cpe_al_tree_of_rule_rule_platforms_" + rule_id); // eslint-disable-line no-undef
     });
 });
 
-function generate_oval_tree(self, div_id_with_oval_graph_data) { // eslint-disable-line no-unused-vars
-    const div_with_tree = self.parentNode.parentNode.parentNode.querySelector(`div[id=${div_id_with_oval_graph_data}]`);
-    if (div_with_tree === null) {
-        return;
-    }
-    if (div_with_tree.getAttribute("is_rendered") === 'true') {
-        return;
-    }
+function get_base_of_tree(div_with_tree) {
     const data = div_with_tree.getAttribute("data");
     const tree_data = JSON.parse(data);
 
@@ -104,13 +100,140 @@ function generate_oval_tree(self, div_id_with_oval_graph_data) { // eslint-disab
     ul.className = "pf-c-tree-view__list";
     ul.setAttribute('role', "tree");
     tree_element.appendChild(ul);
-
-    if (tree_data !== undefined) {
-        ul.appendChild(get_OVAL_tree_node(tree_data));
-        div_with_tree.appendChild(fragment);
-        div_with_tree.setAttribute("is_rendered", 'true');
-    }
+    return { tree_data, fragment, ul };
 }
+
+
+function generate_cpe_al(self, div_id_with_data) { // eslint-disable-line no-unused-vars
+    const divs_with_tree = self.parentNode.parentNode.parentNode.querySelectorAll(`div[id=${div_id_with_data}]`);
+
+    divs_with_tree.forEach(div_with_tree => {
+        if (div_with_tree.getAttribute("is_rendered") === 'true') {
+            return;
+        }
+        const { tree_data, fragment, ul } = get_base_of_tree(div_with_tree);
+        if (tree_data !== undefined) {
+            ul.appendChild(get_CPL_AL_tree_node(tree_data));
+            div_with_tree.appendChild(fragment);
+            div_with_tree.setAttribute("is_rendered", 'true');
+        }
+    });
+}
+
+
+function generate_oval_tree(self, div_id_with_oval_graph_data) { // eslint-disable-line no-unused-vars
+    const divs_with_tree = self.parentNode.parentNode.parentNode.querySelectorAll(`div[id=${div_id_with_oval_graph_data}]`);
+
+    divs_with_tree.forEach(div_with_tree => {
+        if (div_with_tree.getAttribute("is_rendered") === 'true') {
+            return;
+        }
+        const { tree_data, fragment, ul } = get_base_of_tree(div_with_tree);
+        if (tree_data !== undefined) {
+            ul.appendChild(get_OVAL_tree_node(tree_data));
+            div_with_tree.appendChild(fragment);
+            div_with_tree.setAttribute("is_rendered", 'true');
+        }
+    });
+}
+
+function get_CPL_AL_tree_node(root) {
+    if (root.node_type == 'frac-ref') {
+        return undefined;
+    }
+
+    const root_node = get_CPE_AL_operator_node(root);
+    if (root.children) {
+        const ul = UL.cloneNode();
+        ul.className = "pf-c-tree-view__list";
+        ul.setAttribute('role', "group");
+        const fragment = document.createDocumentFragment();
+        for (const child of root.children) {
+            if (child.node_type == "frac-ref") {
+                fragment.appendChild(render_CPE_frac_ref(child));
+            } else {
+                fragment.appendChild(get_CPL_AL_tree_node(child));
+            }
+        }
+        ul.appendChild(fragment);
+        root_node.appendChild(ul);
+    }
+    return root_node;
+}
+
+
+function get_colors_and_icons(node_data) {
+    let color = '';
+    let icon = 'fa-question-circle';
+    if (node_data.value == 'true') {
+        color = 'pf-m-green';
+        icon = 'fa-check';
+    } else if (node_data.value == 'false') {
+        color = 'pf-m-red';
+        icon = 'fa-times';
+    }
+
+    let negate_color = '';
+    let negate_icon = icon;
+    if (node_data.negation) {
+        negate_color = COLOR_TRANSLATION[NEGATION_COLOR[color]];
+        negate_icon = NEGATION_ICON[icon];
+    } else {
+        negate_color = COLOR_TRANSLATION[color];
+    }
+    return { color, icon, negate_color, negate_icon };
+}
+
+
+function base_operator_node(node_data, node_text) {
+    const { color, icon, negate_color, negate_icon } = get_colors_and_icons(node_data);
+    const node = get_node(negate_color);
+    node_text.appendChild(node);
+    const html_icon = get_icon_as_html(negate_icon);
+    node.appendChild(html_icon);
+    if (node_data.negation) {
+        node.appendChild(get_bold_text("NOT"));
+        html_icon.classList.add("icon-space");
+    }
+    return { node, color, icon };
+}
+
+function get_CPE_AL_operator_node(node_data) {
+    const { operator_node, node_text } = get_operator_node();
+    const { node, color, icon } = base_operator_node(node_data, node_text);
+    node.appendChild(get_bold_text(` ${node_data.node_type} `));
+    node_text.appendChild(get_label(color, "CPE AL operator", undefined, "cpe-label"," cpe-label__content"));
+    const span_space = SPAN.cloneNode();
+    span_space.innerText = "\u00A0";
+    node_text.appendChild(span_space);
+    node_text.appendChild(get_label(color, node_data.value, get_icon_as_html(icon), "cpe-label", "cpe-label__content"));
+    return operator_node;
+}
+
+
+function render_CPE_frac_ref(node_data) {
+    const { operator_node, node_text } = get_operator_node();
+    const { node, color, icon } = base_operator_node(node_data.oval_tree, node_text);
+
+    node.appendChild(get_bold_text(` Reference to OVAL definition `));
+    node_text.appendChild(get_label(color, "frac-ref", undefined, "cpe-label"," cpe-label__content"));
+    const span_space = SPAN.cloneNode();
+    span_space.innerText = "\u00A0";
+    node_text.appendChild(span_space);
+    node_text.appendChild(get_label(color, node_data.value, get_icon_as_html(icon), "cpe-label", "cpe-label__content"));
+
+    const ul = UL.cloneNode();
+    ul.className = "pf-c-tree-view__list";
+    ul.setAttribute('role', "group");
+    const fragment = document.createDocumentFragment();
+    fragment.appendChild(get_OVAL_tree_node(node_data.oval_tree));
+
+    ul.appendChild(fragment);
+    operator_node.appendChild(ul);
+
+    return operator_node;
+}
+
 
 function get_OVAL_tree_node(root) {
     if (root.node_type == 'value') {
@@ -159,37 +282,19 @@ function get_test_node() {
     node_content.className = "pf-c-tree-view__node-content";
     node_container.appendChild(node_content);
 
-    const node_title = SPAN.cloneNode();
-    node_title.className = "pf-c-tree-view__node-text";
-    node_content.appendChild(node_title);
+    const node_text = SPAN.cloneNode();
+    node_text.className = "pf-c-tree-view__node-text";
+    node_content.appendChild(node_text);
 
-    return { test_node, node_content, node_title };
+    return { test_node, node_content, node_text };
 }
 
 function render_OVAL_test(node_data) {
-    const { test_node, node_content, node_title } = get_test_node();
+    const { test_node, node_content, node_text } = get_test_node();
+    const { color, icon, negate_color, negate_icon } = get_colors_and_icons(node_data);
 
-    let color = '';
-    let icon = 'fa-question-circle';
-    if (node_data.value == 'true') {
-        color = 'pf-m-green';
-        icon = 'fa-check';
-    } else if (node_data.value == 'false') {
-        color = 'pf-m-red';
-        icon = 'fa-times';
-    }
-
-    let negate_color = '';
-    let negate_icon = icon;
-
-    if (node_data.negation) {
-        negate_color = COLOR_TRANSLATION[NEGATION_COLOR[color]];
-        negate_icon = NEGATION_ICON[icon];
-    } else {
-        negate_color = COLOR_TRANSLATION[color];
-    }
     const node = get_node(negate_color);
-    node_title.appendChild(node);
+    node_text.appendChild(node);
     const html_icon = get_icon_as_html(negate_icon);
     node.appendChild(html_icon);
     if (node_data.negation) {
@@ -199,9 +304,9 @@ function render_OVAL_test(node_data) {
 
     const test_id = node_data.node_id.replace("oval:ssg-", "").replace(":tst:1", "");
     node.appendChild(get_bold_text(` ${test_id} `));
-    node_title.appendChild(get_label(color, node_data.tag));
-    node_title.appendChild(get_label(color, node_data.value, get_icon_as_html(icon)));
-    node_title.appendChild(get_note(`\u00A0\u00A0${node_data.comment}`));
+    node_text.appendChild(get_label(color, node_data.tag));
+    node_text.appendChild(get_label(color, node_data.value, get_icon_as_html(icon)));
+    node_text.appendChild(get_note(`\u00A0\u00A0${node_data.comment ? node_data.comment : ""}`));
 
     const info_id = 'info_of_test_' + test_id.replace(/[\.:_\-]/ug, "");
     const button = BUTTON.cloneNode();
@@ -249,12 +354,13 @@ function get_bold_text(text) {
     return b;
 }
 
-function get_label(color, text, icon = undefined) {
+// eslint-disable-next-line max-params
+function get_label(color, text, icon = undefined, cpe_al_class_label="", cpe_al_class_label__content="") {
     const span = SPAN.cloneNode();
-    span.className = `pf-c-label ${color}`;
+    span.className = `pf-c-label ${color} ${cpe_al_class_label}`;
 
     const content = SPAN.cloneNode();
-    content.className = "pf-c-label__content"
+    content.className = `pf-c-label__content ${cpe_al_class_label__content}`;
     content.textContent = text;
     if (icon !== undefined) {
         content.appendChild(icon);
@@ -309,46 +415,22 @@ function get_operator_node() {
     node_content.className = "pf-c-tree-view__node-content";
     node_container.appendChild(node_content);
 
-    const node_title = SPAN.cloneNode();
-    node_title.className = "pf-c-tree-view__node-text";
-    node_content.appendChild(node_title);
+    const node_text = SPAN.cloneNode();
+    node_text.className = "pf-c-tree-view__node-text";
+    node_content.appendChild(node_text);
 
-    return { operator_node, node_title };
+    return { operator_node, node_text };
 }
 
 function get_OVAL_tree_operator_node(node_data) {
-    const { operator_node, node_title } = get_operator_node();
-    let color = '';
-    let icon = 'fa-question-circle';
-    if (node_data.value == 'true') {
-        color = 'pf-m-green';
-        icon = 'fa-check';
-    } else if (node_data.value == 'false') {
-        color = 'pf-m-red';
-        icon = 'fa-times';
-    }
-
-    let negate_color = '';
-    let negate_icon = icon;
-    if (node_data.negation) {
-        negate_color = COLOR_TRANSLATION[NEGATION_COLOR[color]];
-        negate_icon = NEGATION_ICON[icon];
-    } else {
-        negate_color = COLOR_TRANSLATION[color];
-    }
-    const node = get_node(negate_color);
-    node_title.appendChild(node);
-    const html_icon = get_icon_as_html(negate_icon);
-    node.appendChild(html_icon);
-    if (node_data.negation) {
-        node.appendChild(get_bold_text("NOT"));
-        html_icon.classList.add("icon-space");
-    }
+    const { operator_node, node_text } = get_operator_node();
+    const { node, color, icon } = base_operator_node(node_data, node_text);
 
     node.appendChild(get_bold_text(` ${node_data.node_type} `));
-    node_title.appendChild(get_label(color, node_data.tag));
-    node_title.appendChild(get_label(color, node_data.value, get_icon_as_html(icon)));
-    node_title.appendChild(get_note(`\u00A0\u00A0${node_data.comment}`));
+    node_text.appendChild(get_label(color, node_data.tag));
+    node_text.appendChild(get_label(color, node_data.value, get_icon_as_html(icon)));
+    node_text.appendChild(get_note(`\u00A0\u00A0${node_data.comment ? node_data.comment : ""}`));
+
     return operator_node;
 }
 
