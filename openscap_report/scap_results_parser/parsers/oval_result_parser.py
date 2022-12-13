@@ -66,7 +66,7 @@ class OVALResultParser:
             id_definition = definition.get('definition_id')
             dict_of_oval_definitions[id_definition] = self._build_node(
                 definition[0],
-                "CPE Definition",
+                "OVAL definition of CPE platform",
                 id_definition,
                 True
             )
