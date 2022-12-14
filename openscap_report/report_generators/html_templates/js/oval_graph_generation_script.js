@@ -69,6 +69,10 @@ const P = document.createElement("p");
 const BR = document.createElement("br");
 const B = document.createElement("b");
 
+const SMALL = document.createElement("small");
+const I = document.createElement("i");
+
+
 // OVAL graph generation methods
 
 window.addEventListener('load', () => {
@@ -155,14 +159,19 @@ function get_test_node() {
     node_content.className = "pf-c-tree-view__node-content";
     node_container.appendChild(node_content);
 
+    const node_title = SPAN.cloneNode();
+    node_title.className = "pf-c-tree-view__node-title";
+    node_content.appendChild(node_title);
+
     const node_text = SPAN.cloneNode();
     node_text.className = "pf-c-tree-view__node-text";
     node_content.appendChild(node_text);
-    return { test_node, node_content, node_text };
+
+    return { test_node, node_content, node_title, node_text };
 }
 
 function render_OVAL_test(node_data) {
-    const { test_node, node_content, node_text } = get_test_node();
+    const { test_node, node_content, node_title, node_text } = get_test_node();
 
     let color = '';
     let icon = 'fa-question-circle';
@@ -184,7 +193,7 @@ function render_OVAL_test(node_data) {
         negate_color = COLOR_TRANSLATION[color];
     }
     const node = get_node(negate_color);
-    node_text.appendChild(node);
+    node_title.appendChild(node);
     const html_icon = get_icon_as_html(negate_icon);
     node.appendChild(html_icon);
     if (node_data.negation) {
@@ -192,11 +201,12 @@ function render_OVAL_test(node_data) {
         html_icon.classList.add("icon-space");
     }
 
+    node_text.appendChild(get_note(node_data.comment));
+
     const test_id = node_data.node_id.replace("oval:ssg-", "").replace(":tst:1", "");
     node.appendChild(get_bold_text(` ${test_id} `));
-    node_text.appendChild(get_label(color, node_data.tag));
-    node_text.appendChild(get_label(color, node_data.value, get_icon_as_html(icon)));
-
+    node_title.appendChild(get_label(color, node_data.tag));
+    node_title.appendChild(get_label(color, node_data.value, get_icon_as_html(icon)));
 
     const info_id = 'info_of_test_' + test_id.replace(/[\.:_\-]/ug, "");
     const button = BUTTON.cloneNode();
@@ -258,6 +268,14 @@ function get_label(color, text, icon = undefined) {
     return span;
 }
 
+function get_note(text) {
+    const small = SMALL.cloneNode();
+    const i = I.cloneNode();
+    i.textContent = text;
+    small.appendChild(i);
+    return small;
+}
+
 function get_operator_node() {
     const operator_node = LI.cloneNode();
     operator_node.className = "pf-c-tree-view__list-item pf-m-expanded";
@@ -296,14 +314,18 @@ function get_operator_node() {
     node_content.className = "pf-c-tree-view__node-content";
     node_container.appendChild(node_content);
 
+    const node_title = SPAN.cloneNode();
+    node_title.className = "pf-c-tree-view__node-title";
+    node_content.appendChild(node_title);
+
     const node_text = SPAN.cloneNode();
     node_text.className = "pf-c-tree-view__node-text";
     node_content.appendChild(node_text);
-    return { operator_node, node_text };
+    return { operator_node, node_title, node_text };
 }
 
 function get_OVAL_tree_operator_node(node_data) {
-    const { operator_node, node_text } = get_operator_node();
+    const { operator_node, node_title, node_text } = get_operator_node();
     let color = '';
     let icon = 'fa-question-circle';
     if (node_data.value == 'true') {
@@ -323,7 +345,7 @@ function get_OVAL_tree_operator_node(node_data) {
         negate_color = COLOR_TRANSLATION[color];
     }
     const node = get_node(negate_color);
-    node_text.appendChild(node);
+    node_title.appendChild(node);
     const html_icon = get_icon_as_html(negate_icon);
     node.appendChild(html_icon);
     if (node_data.negation) {
@@ -331,9 +353,11 @@ function get_OVAL_tree_operator_node(node_data) {
         html_icon.classList.add("icon-space");
     }
 
+    node_text.appendChild(get_note(node_data.comment));
+
     node.appendChild(get_bold_text(` ${node_data.node_type} `));
-    node_text.appendChild(get_label(color, node_data.tag));
-    node_text.appendChild(get_label(color, node_data.value, get_icon_as_html(icon)));
+    node_title.appendChild(get_label(color, node_data.tag));
+    node_title.appendChild(get_label(color, node_data.value, get_icon_as_html(icon)));
     return operator_node;
 }
 
