@@ -33,13 +33,22 @@ jobs:
   dist_git_branches:
     - fedora-rawhide
 
-- job: copr_build
-  targets:
-    - fedora-all-x86_64
-    - epel-9-x86_64
-  trigger: pull_request
-
 - job: tests
-  targets:
-    - fedora-all-x86_64
   trigger: pull_request
+  identifier: fedora
+  targets:
+    - fedora-all
+
+- job: copr_build
+  trigger: pull_request
+  identifier: fedora
+  targets:
+    - fedora-all
+    - epel-9
+
+- job: copr_build
+  trigger: pull_request
+  specfile_path: ./epel8/openscap-report.rhel8.spec
+  identifier: epel8
+  targets:
+    - epel-8

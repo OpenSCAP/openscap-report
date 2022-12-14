@@ -11,6 +11,7 @@ URL:            https://github.com/OpenSCAP/%{name}
 Source0:        https://github.com/OpenSCAP/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.gz
 
 BuildArch:      noarch
+
 BuildRequires:  python3-devel
 BuildRequires:  python3-sphinx
 BuildRequires:  python3-sphinx_rtd_theme
