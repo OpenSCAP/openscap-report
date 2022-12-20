@@ -111,7 +111,7 @@ class RuleParser():
     def _get_check_engine_result(message):
         check_engine_result_prefix = "Checking engine returns:"
         index = message.find(check_engine_result_prefix)
-        return message[index:] if index else None
+        return message[index:] if index > -1 else None
 
     @staticmethod
     def _evaluate_and_set_result(rule_id, rules, remediation_exit_code, check_engine_result):
