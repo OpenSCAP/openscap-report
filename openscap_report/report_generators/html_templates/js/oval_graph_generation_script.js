@@ -160,18 +160,14 @@ function get_test_node() {
     node_container.appendChild(node_content);
 
     const node_title = SPAN.cloneNode();
-    node_title.className = "pf-c-tree-view__node-title";
+    node_title.className = "pf-c-tree-view__node-text";
     node_content.appendChild(node_title);
 
-    const node_text = SPAN.cloneNode();
-    node_text.className = "pf-c-tree-view__node-text";
-    node_content.appendChild(node_text);
-
-    return { test_node, node_content, node_title, node_text };
+    return { test_node, node_content, node_title };
 }
 
 function render_OVAL_test(node_data) {
-    const { test_node, node_content, node_title, node_text } = get_test_node();
+    const { test_node, node_content, node_title } = get_test_node();
 
     let color = '';
     let icon = 'fa-question-circle';
@@ -201,12 +197,11 @@ function render_OVAL_test(node_data) {
         html_icon.classList.add("icon-space");
     }
 
-    node_text.appendChild(get_note(node_data.comment));
-
     const test_id = node_data.node_id.replace("oval:ssg-", "").replace(":tst:1", "");
     node.appendChild(get_bold_text(` ${test_id} `));
     node_title.appendChild(get_label(color, node_data.tag));
     node_title.appendChild(get_label(color, node_data.value, get_icon_as_html(icon)));
+    node_title.appendChild(get_note(`\u00A0\u00A0${node_data.comment}`));
 
     const info_id = 'info_of_test_' + test_id.replace(/[\.:_\-]/ug, "");
     const button = BUTTON.cloneNode();
@@ -315,17 +310,14 @@ function get_operator_node() {
     node_container.appendChild(node_content);
 
     const node_title = SPAN.cloneNode();
-    node_title.className = "pf-c-tree-view__node-title";
+    node_title.className = "pf-c-tree-view__node-text";
     node_content.appendChild(node_title);
 
-    const node_text = SPAN.cloneNode();
-    node_text.className = "pf-c-tree-view__node-text";
-    node_content.appendChild(node_text);
-    return { operator_node, node_title, node_text };
+    return { operator_node, node_title };
 }
 
 function get_OVAL_tree_operator_node(node_data) {
-    const { operator_node, node_title, node_text } = get_operator_node();
+    const { operator_node, node_title } = get_operator_node();
     let color = '';
     let icon = 'fa-question-circle';
     if (node_data.value == 'true') {
@@ -353,11 +345,10 @@ function get_OVAL_tree_operator_node(node_data) {
         html_icon.classList.add("icon-space");
     }
 
-    node_text.appendChild(get_note(node_data.comment));
-
     node.appendChild(get_bold_text(` ${node_data.node_type} `));
     node_title.appendChild(get_label(color, node_data.tag));
     node_title.appendChild(get_label(color, node_data.value, get_icon_as_html(icon)));
+    node_title.appendChild(get_note(`\u00A0\u00A0${node_data.comment}`));
     return operator_node;
 }
 
