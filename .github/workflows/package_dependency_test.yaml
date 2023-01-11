@@ -1,9 +1,9 @@
 name: package_dependency_test
 on:
   push:
-    branches: ["master", "*"]
+    branches: ["main", "*"]
   pull_request:
-    branches: ["master"]
+    branches: ["main"]
 jobs:
   test-centos-stream-9:
     name: Test on CentOS Stream 9 (Container)

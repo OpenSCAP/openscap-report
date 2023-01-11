@@ -43,7 +43,7 @@ create_tag(){
 
 push_changes(){
     echo "INFO: Push changes."
-    git push upstream master
+    git push upstream main
     git push upstream --tags
 }
 
