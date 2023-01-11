@@ -1,9 +1,9 @@
 # OpenSCAP Report Generator
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/OpenSCAP/openscap-report/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/OpenSCAP/openscap-report/?branch=master) 
-[![Build Status](https://scrutinizer-ci.com/g/OpenSCAP/openscap-report/badges/build.png?b=master)](https://scrutinizer-ci.com/g/OpenSCAP/openscap-report/build-status/master)
-[![Code Coverage](https://scrutinizer-ci.com/g/OpenSCAP/openscap-report/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/OpenSCAP/openscap-report/?branch=master)
-[![Code Intelligence Status](https://scrutinizer-ci.com/g/OpenSCAP/openscap-report/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/OpenSCAP/openscap-report/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/OpenSCAP/openscap-report/?branch=main) 
+[![Build Status](https://scrutinizer-ci.com/g/OpenSCAP/openscap-report/badges/build.png?b=main)](https://scrutinizer-ci.com/g/OpenSCAP/openscap-report/build-status/main)
+[![Code Coverage](https://scrutinizer-ci.com/g/OpenSCAP/openscap-report/badges/coverage.png?b=main)](https://scrutinizer-ci.com/g/OpenSCAP/openscap-report/?branch=main)
+[![Code Intelligence Status](https://scrutinizer-ci.com/g/OpenSCAP/openscap-report/badges/code-intelligence.svg?b=main)](https://scrutinizer-ci.com/code-intelligence)
 
 Tool for generating report from results of oscap scan.
 
@@ -13,7 +13,7 @@ Tool for generating report from results of oscap scan.
 
 ## Example usage
 
-This command consumes the ARF file, which is one of the possible standardized formats for the results of SCAP-compliant scanners. You can read about generating ARF report files using OpenSCAP in the OpenSCAP User Manual. Or you can use test arf files from repository [`/tests/test_data`](https://github.com/OpenSCAP/openscap-report/tree/master/tests/test_data).
+This command consumes the ARF file, which is one of the possible standardized formats for the results of SCAP-compliant scanners. You can read about generating ARF report files using OpenSCAP in the OpenSCAP User Manual. Or you can use test arf files from repository [`/tests/test_data`](https://github.com/OpenSCAP/openscap-report/tree/main/tests/test_data).
 
 ```bash
 oscap-report < ssg-fedora-ds-arf.xml > report.html
