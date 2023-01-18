@@ -42,7 +42,7 @@ class OVALDefinitionParser:
 
     def _get_oval_definitions(self, oval):
         if oval not in self.oval_definitions:
-            raise MissingOVALResult
+            raise MissingOVALResult(oval)
 
         definitions = {}
         dict_of_criteria = {}
@@ -92,7 +92,7 @@ class OVALDefinitionParser:
             self._set_oval_tree_to_definition(definitions, definition_id, oval_tree_source)
 
     def _set_oval_tree_to_definition(self, definitions, definition_id, oval_tree_source):
-        if definition_id in self.oval_trees:
+        if definition_id in oval_tree_source:
             oval_tree_source[definition_id].comment = definitions[definition_id].description
             definitions[definition_id].oval_tree = oval_tree_source[definition_id]
 

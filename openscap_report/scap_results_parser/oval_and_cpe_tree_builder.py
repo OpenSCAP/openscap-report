@@ -28,9 +28,10 @@ class OVALAndCPETreeBuilder:  # pylint: disable=R0902
             )
             self.oval_definitions = self.oval_definition_parser.get_oval_definitions()
             self.oval_cpe_definitions = self.oval_definition_parser.get_oval_cpe_definitions()
-        except MissingOVALResult:
-            logging.warning("Not found OVAL results!")
-            self.missing_oval_results = True
+        except MissingOVALResult as error:
+            logging.warning("OVAL results \"%s\" not found!", error)
+            if str(error) != "oval1":
+                self.missing_oval_results = True
 
     def get_platform_to_oval_cpe_id_dict(self):
         cpe_list = self.root.find(".//ds:component/cpe-dict:cpe-list", NAMESPACES)
@@ -44,11 +45,20 @@ class OVALAndCPETreeBuilder:  # pylint: disable=R0902
             out[name] = oval_id
         return out
 
+    def _get_oval_tree_from_oval_cpe_definition(self, platform):
+        cpe_oval_id = ""
+        if platform in self.platform_to_oval_cpe_id:
+            cpe_oval_id = self.platform_to_oval_cpe_id[platform]
+        if cpe_oval_id in self.oval_cpe_definitions:
+            return self.oval_cpe_definitions[cpe_oval_id].oval_tree
+        logging.warning("There is no CPE check for the platform \"%s\".", platform)
+        return None
+
     def _insert_platforms_cpe_trees_to_rule_cpe_tree(self, rule, rule_cpe_tree):
         for platform in rule.platforms:
-            if platform in self.platform_to_oval_cpe_id:
-                cpe_oval_id = self.platform_to_oval_cpe_id[platform]
-                rule_cpe_tree.children.append(self.oval_cpe_definitions[cpe_oval_id].oval_tree)
+            oval_tree = self._get_oval_tree_from_oval_cpe_definition(platform)
+            if oval_tree is not None:
+                rule_cpe_tree.children.append(oval_tree)
 
     def _build_rule_platforms(self, rule):
         tmp_rule_cpe_tree = OvalNode(
@@ -80,11 +90,9 @@ class OVALAndCPETreeBuilder:  # pylint: disable=R0902
 
         rule_group = self.group_parser.rule_to_grup_id[rule.rule_id]
         for platform in self.group_parser.group_to_platforms[rule_group]:
-            if platform in self.platform_to_oval_cpe_id:
-                cpe_oval_id = self.platform_to_oval_cpe_id[platform]
-                tmp_groups_cpe_tree.children.append(
-                    self.oval_cpe_definitions[cpe_oval_id].oval_tree
-                )
+            oval_tree = self._get_oval_tree_from_oval_cpe_definition(platform)
+            if oval_tree is not None:
+                tmp_groups_cpe_tree.children.append(oval_tree)
         tmp_groups_cpe_tree.value = tmp_groups_cpe_tree.evaluate_tree()
         return tmp_groups_cpe_tree
 
@@ -101,8 +109,9 @@ class OVALAndCPETreeBuilder:  # pylint: disable=R0902
         if groups_cpe_tree.value is not None:
             cpe_tree.children.append(groups_cpe_tree)
         if self.profile_platform in self.platform_to_oval_cpe_id:
-            cpe_oval_id = self.platform_to_oval_cpe_id[self.profile_platform]
-            cpe_tree.children.append(self.oval_cpe_definitions[cpe_oval_id].oval_tree)
+            oval_tree = self._get_oval_tree_from_oval_cpe_definition(self.profile_platform)
+            if oval_tree is not None:
+                cpe_tree.children.append(oval_tree)
         return cpe_tree
 
     def build_cpe_tree(self, rule):
