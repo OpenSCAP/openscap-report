@@ -3,7 +3,7 @@
 
 import uuid
 
-from ..data_structures import OvalObject, OvalTest
+from ..data_structures import OvalObject, OvalState, OvalTest
 from ..namespaces import NAMESPACES
 
 MAX_MESSAGE_LEN = 99
@@ -15,6 +15,7 @@ class OVALTestInfoParser:
         self.oval_definitions = self._get_oval_definitions()
         self.tests = self._get_tests()
         self.objects = self._get_objects_by_id()
+        self.states = self._get_states_by_id()
         self.oval_system_characteristics = self._get_oval_system_characteristics()
         self.collected_objects = self._get_collected_objects_by_id()
         self.system_data = self._get_system_data_by_id()
@@ -53,6 +54,11 @@ class OVALTestInfoParser:
             ('.//oval-definitions:objects'), NAMESPACES)
         return self._get_data_by_id(data)
 
+    def _get_states_by_id(self):
+        data = self.oval_definitions.find(
+            ('.//oval-definitions:states'), NAMESPACES)
+        return self._get_data_by_id(data)
+
     @staticmethod
     def get_key_of_xml_element(element):
         return element.tag[element.tag.index('}') + 1:] if '}' in element.tag else element.tag
@@ -72,12 +78,13 @@ class OVALTestInfoParser:
         return self.get_key_of_xml_element(object_)
 
     def _get_collected_objects_info(self, xml_collected_object, xml_object):
-        object_dict = {}
-        object_dict["object_id"] = xml_collected_object.attrib.get('id')
-        object_dict["flag"] = xml_collected_object.attrib.get('flag')
-        object_dict["object_type"] = self.get_key_of_xml_element(xml_object)
+        object_dict = {
+            "object_id": xml_collected_object.attrib.get('id'),
+            "flag": xml_collected_object.attrib.get('flag'),
+            "object_type": self.get_key_of_xml_element(xml_object),
+        }
         if len(xml_collected_object) == 0:
-            object_dict["object_data"] = self._get_object_items(xml_object, xml_collected_object)
+            object_dict["object_data"] = [self._get_object_items(xml_object, xml_collected_object)]
         else:
             item_refs = self._find_item_ref(xml_collected_object)
             items = []
@@ -85,7 +92,7 @@ class OVALTestInfoParser:
                 for item_id in item_refs:
                     items.append(self._get_item(item_id))
             else:
-                items = self._get_object_items(xml_object, xml_collected_object)
+                items.append(self._get_object_items(xml_object, xml_collected_object))
             object_dict["object_data"] = items
         return OvalObject(**object_dict)
 
@@ -94,11 +101,12 @@ class OVALTestInfoParser:
         xml_collected_object = self.collected_objects.get(id_object)
         if xml_collected_object is not None:
             return self._get_collected_objects_info(xml_collected_object, xml_object)
-        object_dict = {}
-        object_dict["object_id"] = xml_object.attrib.get('id')
-        object_dict["flag"] = "does not exist"
-        object_dict["object_type"] = self.get_key_of_xml_element(xml_object)
-        object_dict["object_data"] = self._get_object_items(xml_object, xml_collected_object)
+        object_dict = {
+            "object_id": id_object,
+            "flag": "does not exist",
+            "object_type": self.get_key_of_xml_element(xml_object),
+            "object_data": [self._get_object_items(xml_object, xml_collected_object)],
+        }
         return OvalObject(**object_dict)
 
     def _transform_tuples_to_dict(self, array):
@@ -117,7 +125,7 @@ class OVALTestInfoParser:
                 out.append((id_in_dict, element.text))
             else:
                 out.append((id_in_dict, self._get_ref_var(element, xml_collected_object)))
-        return [self._transform_tuples_to_dict(out)]
+        return self._transform_tuples_to_dict(out)
 
     def _get_ref_var(self, element, xml_collected_object):
         variable_value = ''
@@ -151,19 +159,49 @@ class OVALTestInfoParser:
                 out[self._get_unique_id_in_dict(element, out)] = element.text
         return out
 
+    def get_state(self, state_id):
+        xml_state = self.states[state_id]
+        state_dict = {
+            "state_id": state_id,
+            "comment": xml_state.attrib.get("comment", ""),
+            "state_type": self.get_key_of_xml_element(xml_state),
+            "state_data": self._get_state_items(xml_state),
+        }
+        return OvalState(**state_dict)
+
+    def _get_state_items(self, xml_state):
+        out = []
+        for element in xml_state.iterchildren():
+            id_in_dict = self._get_unique_id_in_dict(element, out)
+            if element.text and element.text.strip():
+                out.append((id_in_dict, element.text))
+            else:
+                out.append((id_in_dict, element.get("var_ref")))
+
+            operation = element.get("operation")
+            if operation is not None:
+                out.append(("operation", operation))
+        return self._transform_tuples_to_dict(out)
+
     def get_test_info(self, test_id):
         test = self.tests[test_id]
         oval_object = None
+        oval_state = None
+
         for item in self.tests[test_id]:
-            object_id = item.attrib.get('object_ref')
+            object_id = item.attrib.get("object_ref")
             if object_id is not None:
                 oval_object = self.get_object(object_id)
+            state_id = item.attrib.get("state_ref")
+            if state_id is not None:
+                oval_state = self.get_state(state_id)
 
         return OvalTest(
             test_id=test_id,
             check_existence=test.attrib.get("check_existence", ""),
             check=test.attrib.get("check", ""),
             test_type=test.tag[test.tag.index('}') + 1:],
-            comment=test.attrib.get('comment'),
+            comment=test.attrib.get("comment", ""),
             oval_object=oval_object,
+            oval_state=oval_state,
         )

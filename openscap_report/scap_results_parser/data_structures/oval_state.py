@@ -9,7 +9,7 @@ class OvalState:
     state_id: str
     comment: str = ""
     state_type: str = ""
-    state_data: list[dict[str, str]] = field(default_factory=list)
+    state_data: dict[str, str] = field(default_factory=dict)
 
     def as_dict(self):
         return asdict(self)
