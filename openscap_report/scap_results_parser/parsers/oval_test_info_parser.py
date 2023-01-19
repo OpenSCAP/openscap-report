@@ -161,6 +161,8 @@ class OVALTestInfoParser:
 
         return OvalTest(
             test_id=test_id,
+            check_existence=test.attrib.get("check_existence", ""),
+            check=test.attrib.get("check", ""),
             test_type=test.tag[test.tag.index('}') + 1:],
             comment=test.attrib.get('comment'),
             oval_object=oval_object,

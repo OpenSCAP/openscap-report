@@ -9,6 +9,8 @@ from .oval_object import OvalObject
 @dataclass
 class OvalTest:
     test_id: str
+    check_existence: str = ""
+    check: str = ""
     test_type: str = ""
     comment: str = ""
     oval_object: OvalObject = None
