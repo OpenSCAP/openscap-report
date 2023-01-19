@@ -1,15 +1,15 @@
 # Copyright 2022, Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-import uuid
-
-from ..data_structures import OvalObject, OvalState, OvalTest
+from ..data_structures import OvalTest
 from ..namespaces import NAMESPACES
+from .oval_object_parser import OVALObjectParser
+from .oval_state_parser import OVALStateParser
 
 MAX_MESSAGE_LEN = 99
 
 
-class OVALTestInfoParser:
+class OVALTestInfoParser:  # pylint: disable=R0902
     def __init__(self, oval_report):
         self.oval_report = oval_report
         self.oval_definitions = self._get_oval_definitions()
@@ -19,6 +19,12 @@ class OVALTestInfoParser:
         self.oval_system_characteristics = self._get_oval_system_characteristics()
         self.collected_objects = self._get_collected_objects_by_id()
         self.system_data = self._get_system_data_by_id()
+        self.states_parser = OVALStateParser(self.states)
+        self.objects_parser = OVALObjectParser(
+            self.objects,
+            self.collected_objects,
+            self.system_data
+        )
 
     def _get_oval_system_characteristics(self):
         return self.oval_report.find(
@@ -59,142 +65,23 @@ class OVALTestInfoParser:
             ('.//oval-definitions:states'), NAMESPACES)
         return self._get_data_by_id(data)
 
-    @staticmethod
-    def get_key_of_xml_element(element):
-        return element.tag[element.tag.index('}') + 1:] if '}' in element.tag else element.tag
-
-    @staticmethod
-    def _find_item_ref(object_):
-        list_of_item_ref = [item.get('item_ref') for item in object_]
-        return list(filter(None, list_of_item_ref))
-
-    @staticmethod
-    def _get_unique_key(key):
-        return key + '@' + str(uuid.uuid4())
-
-    def _get_unique_id_in_dict(self, object_, dict_):
-        if self.get_key_of_xml_element(object_) in dict_:
-            return self._get_unique_key(self.get_key_of_xml_element(object_))
-        return self.get_key_of_xml_element(object_)
-
-    def _get_collected_objects_info(self, xml_collected_object, xml_object):
-        object_dict = {
-            "object_id": xml_collected_object.attrib.get('id'),
-            "flag": xml_collected_object.attrib.get('flag'),
-            "object_type": self.get_key_of_xml_element(xml_object),
-        }
-        if len(xml_collected_object) == 0:
-            object_dict["object_data"] = [self._get_object_items(xml_object, xml_collected_object)]
-        else:
-            item_refs = self._find_item_ref(xml_collected_object)
-            items = []
-            if item_refs:
-                for item_id in item_refs:
-                    items.append(self._get_item(item_id))
-            else:
-                items.append(self._get_object_items(xml_object, xml_collected_object))
-            object_dict["object_data"] = items
-        return OvalObject(**object_dict)
-
-    def get_object(self, id_object):
-        xml_object = self.objects.get(id_object)
-        xml_collected_object = self.collected_objects.get(id_object)
-        if xml_collected_object is not None:
-            return self._get_collected_objects_info(xml_collected_object, xml_object)
-        object_dict = {
-            "object_id": id_object,
-            "flag": "does not exist",
-            "object_type": self.get_key_of_xml_element(xml_object),
-            "object_data": [self._get_object_items(xml_object, xml_collected_object)],
-        }
-        return OvalObject(**object_dict)
-
-    def _transform_tuples_to_dict(self, array):
-        out_dict = {}
-        for key, value in array:
-            if key in out_dict:
-                key = self._get_unique_key(key)
-            out_dict[key] = value
-        return out_dict
-
-    def _get_object_items(self, xml_object, xml_collected_object):
-        out = []
-        for element in xml_object.iterchildren():
-            id_in_dict = self._get_unique_id_in_dict(element, out)
-            if element.text and element.text.strip():
-                out.append((id_in_dict, element.text))
-            else:
-                out.append((id_in_dict, self._get_ref_var(element, xml_collected_object)))
-        return self._transform_tuples_to_dict(out)
-
-    def _get_ref_var(self, element, xml_collected_object):
-        variable_value = ''
-        if self._collected_object_is_not_none_and_contain_var_ref(
-                element, xml_collected_object):
-            var_id = element.attrib.get('var_ref')
-            for item in xml_collected_object:
-                if var_id == item.attrib.get('variable_id'):
-                    variable_value += item.text
-                elif self.get_key_of_xml_element(item) == 'message':
-                    variable_value += self._complete_message(item, var_id) + '<br>'
-        else:
-            variable_value = 'no value'
-        return variable_value
-
-    @staticmethod
-    def _complete_message(item, var_id):
-        if len(item.text) == MAX_MESSAGE_LEN and var_id[:item.text.find('(')] in var_id:
-            return f"{item.text[:item.text.find('(') + 1]}{var_id})"
-        return item.text
-
-    @staticmethod
-    def _collected_object_is_not_none_and_contain_var_ref(element, collected_object):
-        return collected_object is not None and 'var_ref' in element.attrib
-
-    def _get_item(self, item_ref):
-        item = self.system_data.get(item_ref)
-        out = {}
-        for element in item.iterchildren():
-            if element.text and element.text.strip():
-                out[self._get_unique_id_in_dict(element, out)] = element.text
-        return out
-
-    def get_state(self, state_id):
-        xml_state = self.states[state_id]
-        state_dict = {
-            "state_id": state_id,
-            "comment": xml_state.attrib.get("comment", ""),
-            "state_type": self.get_key_of_xml_element(xml_state),
-            "state_data": self._get_state_items(xml_state),
-        }
-        return OvalState(**state_dict)
-
-    def _get_state_items(self, xml_state):
-        out = []
-        for element in xml_state.iterchildren():
-            id_in_dict = self._get_unique_id_in_dict(element, out)
-            if element.text and element.text.strip():
-                out.append((id_in_dict, element.text))
-            else:
-                out.append((id_in_dict, element.get("var_ref")))
-
-            operation = element.get("operation")
-            if operation is not None:
-                out.append(("operation", operation))
-        return self._transform_tuples_to_dict(out)
-
     def get_test_info(self, test_id):
         test = self.tests[test_id]
+
+        list_object_of_test = test.xpath('.//*[local-name()="object"]')
+        list_state_of_test = test.xpath('.//*[local-name()="state"]')
+
+        oval_object_el = list_object_of_test.pop() if list_object_of_test else None
+        oval_state_el = list_state_of_test.pop() if list_state_of_test else None
+
         oval_object = None
         oval_state = None
 
-        for item in self.tests[test_id]:
-            object_id = item.attrib.get("object_ref")
-            if object_id is not None:
-                oval_object = self.get_object(object_id)
-            state_id = item.attrib.get("state_ref")
-            if state_id is not None:
-                oval_state = self.get_state(state_id)
+        if oval_object_el is not None:
+            oval_object = self.objects_parser.get_object(oval_object_el.get("object_ref", ""))
+
+        if oval_state_el is not None:
+            oval_state = self.states_parser.get_state(oval_state_el.get("state_ref", ""))
 
         return OvalTest(
             test_id=test_id,
