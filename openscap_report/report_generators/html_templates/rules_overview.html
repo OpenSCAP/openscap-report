@@ -22,9 +22,9 @@
             {%- set rule_title = rule_id  -%}
         {%- endif -%}
         {% if loop.index > 50 %}
-            <tbody class="pf-m-expanded hidden" role="rowgroup" title="{{ rule_title }}" rule-id="{{ rule.rule_id }}" result="{{ rule.result }}" severity="{{ rule.severity }}">
+            <tbody class="pf-m-expanded hidden" role="rowgroup" rule-title="{{ rule_title }}" rule-id="{{ rule.rule_id }}" result="{{ rule.result }}" severity="{{ rule.severity }}">
         {% else %}
-            <tbody class="pf-m-expanded" role="rowgroup" title="{{ rule_title }}" rule-id="{{ rule.rule_id }}" result="{{ rule.result }}" severity="{{ rule.severity }}">
+            <tbody class="pf-m-expanded" role="rowgroup" rule-title="{{ rule_title }}" rule-id="{{ rule.rule_id }}" result="{{ rule.result }}" severity="{{ rule.severity }}">
         {% endif %}
         <tr role="row">
             <td class="pf-c-table__toggle" role="cell">

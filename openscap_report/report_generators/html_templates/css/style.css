@@ -173,3 +173,31 @@ footer {
 .cpe-label__content::before {
     border-radius: 0px !important;
 }
+
+.tooltip-box {
+    visibility: hidden;
+    position: absolute;
+    top: 16%;
+    left: 102%;
+}
+
+.tooltip-wrapper:hover .tooltip-box {
+    visibility: visible;
+    z-index: 10;
+}
+
+.tooltip-wrapper {
+    text-decoration: underline dotted;
+}
+
+.tooltip-wrapper:hover {
+    text-decoration: underline;
+}
+
+.tooltip__content-width {
+    width: 20vw;
+    text-align: justify;
+    white-space: pre-line;
+    word-break: break-word;
+    hyphens: auto;
+}

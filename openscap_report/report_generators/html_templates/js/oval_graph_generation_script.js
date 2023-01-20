@@ -31,6 +31,20 @@ function show_OVAL_details(event) { // eslint-disable-line no-unused-vars
 // OVAL graph generation constants
 
 
+const CHECK_ATTRIBUTE_TO_TEXT = {
+    "all": "All collected objects must meet the requirements given in the OVAL state for the OVAL test to evaluate to \"true\".",
+    "at least one": "At least one collected object must meet the requirements given in the OVAL state for the OVAL test to evaluate to \"true\".",
+    "none exist": "None of the collected objects must meet the requirements given in the OVAL state for the OVAL test to evaluate to \"true\".",
+    "none satisfy": "None of the collected objects must meet the requirements given in the OVAL state for the OVAL test to evaluate to \"true\".",
+    "only one": "Only one of the collected objects must meet the requirements given in the OVAL state for the OVAL test to evaluate to \"true\"."
+};
+const CHECK_EXISTENCE_ATTRIBUTE_TO_TEXT = {
+    "all_exist": "The test requires that all objects defined by the OVAL object exist for the OVAL test to evaluate to \"true\".",
+    "any_exist": "The test requires zero or more objects defined by the OVAL object to exist for the OVAL test to evaluate to \"true\".",
+    "at_least_one_exists": "The test requires that there be at least one object defined by the OVAL object for the OVAL test to evaluate to \"true\".",
+    "none_exist": "The test requires that none of the objects defined by the OVAL object exist for the OVAL test to evaluate to \"true\".",
+    "only_one_exists": "The test requires only one of the object defined by the OVAL object to exist for the OVAL test to evaluate to \"true\"."
+};
 const NEGATION_COLOR = {
     'pf-m-green': 'pf-m-red',
     'pf-m-red': 'pf-m-green',
@@ -354,8 +368,34 @@ function get_bold_text(text) {
     return b;
 }
 
+function get_tooltip(text) {
+    const div = DIV.cloneNode();
+    div.className = "tooltip-wrapper";
+
+    const icon = ICON.cloneNode();
+    icon.className = "fas fa-info-circle";
+    icon.setAttribute("aria-hidden", "true");
+    div.appendChild(icon);
+
+    const tooltip_div = DIV.cloneNode();
+    tooltip_div.className = "pf-c-tooltip pf-m-right-top tooltip-box";
+    tooltip_div.setAttribute("role", "tooltip");
+    div.appendChild(tooltip_div);
+
+    const tooltip_arrow_div = DIV.cloneNode();
+    tooltip_arrow_div.className = "pf-c-tooltip__arrow";
+    tooltip_div.appendChild(tooltip_arrow_div);
+
+    const tooltip_content_div = DIV.cloneNode();
+    tooltip_content_div.className = "pf-c-tooltip__content tooltip__content-width";
+    tooltip_content_div.textContent = text;
+    tooltip_div.appendChild(tooltip_content_div);
+
+    return div;
+}
+
 // eslint-disable-next-line max-params
-function get_label(color, text, icon = undefined, cpe_al_class_label="", cpe_al_class_label__content="") {
+function get_label(color, text, icon = undefined, cpe_al_class_label="", cpe_al_class_label__content="", tooltip_text=undefined) {
     const span = SPAN.cloneNode();
     if (!text) {
         return span;
@@ -367,6 +407,10 @@ function get_label(color, text, icon = undefined, cpe_al_class_label="", cpe_al_
     content.textContent = text;
     if (icon !== undefined) {
         content.appendChild(icon);
+    }
+    if(tooltip_text !== undefined && tooltip_text) {
+        content.className = `${content.className} tooltip-wrapper`;
+        content.appendChild(get_tooltip(tooltip_text));
     }
     span.appendChild(content);
     return span;
@@ -539,8 +583,7 @@ function get_OVAL_state_labels(oval_state) {
     text.appendChild(BR.cloneNode());
 
     div.appendChild(text);
-    div.appendChild(get_label("", oval_state.state_id));
-    div.appendChild(get_label("pf-m-blue", oval_state.comment));
+    div.appendChild(get_label("", `${oval_state.state_id}\u00A0`, undefined, "", "", oval_state.comment));
     return div;
 }
 
@@ -565,12 +608,17 @@ function generate_OVAL_state(test_info, div) {
     table.appendChild(get_table_body(objects));
 }
 
-
 function get_OVAL_test_info(test_info) {
     const div = DIV.cloneNode();
     div.className = "pf-c-accordion__expanded-content-body";
-    div.appendChild(get_label("", test_info.test_id));
-    div.appendChild(get_label("pf-m-blue", test_info.comment));
+    div.appendChild(get_label("", `${test_info.test_id}\u00A0`, undefined, "", "", test_info.comment));
+    if (test_info.check && test_info.check in CHECK_ATTRIBUTE_TO_TEXT) {
+        div.appendChild(get_label("pf-m-cyan", `Check atribute: ${test_info.check}\u00A0`, undefined, "", "", CHECK_ATTRIBUTE_TO_TEXT[test_info.check]));
+    }
+    if (test_info.check_existence && test_info.check_existence in CHECK_EXISTENCE_ATTRIBUTE_TO_TEXT) {
+        div.appendChild(get_label("pf-m-cyan", `Check existence atribute: ${test_info.check_existence}\u00A0`, undefined, "", "", CHECK_EXISTENCE_ATTRIBUTE_TO_TEXT[test_info.check_existence]));
+    }
+
     generate_OVAL_object(test_info, div);
     generate_OVAL_state(test_info, div);
     return div;
