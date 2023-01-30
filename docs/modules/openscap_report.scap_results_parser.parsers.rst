@@ -28,6 +28,22 @@ openscap\_report.scap\_results\_parser.parsers.oval\_definition\_parser module
    :undoc-members:
    :show-inheritance:
 
+openscap\_report.scap\_results\_parser.parsers.oval\_result\_parser module
+--------------------------------------------------------------------------
+
+.. automodule:: openscap_report.scap_results_parser.parsers.oval_result_parser
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+openscap\_report.scap\_results\_parser.parsers.oval\_test\_info\_parser module
+------------------------------------------------------------------------------
+
+.. automodule:: openscap_report.scap_results_parser.parsers.oval_test_info_parser
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 openscap\_report.scap\_results\_parser.parsers.remediation\_parser module
 -------------------------------------------------------------------------
 
@@ -48,14 +64,6 @@ openscap\_report.scap\_results\_parser.parsers.rule\_parser module
 ------------------------------------------------------------------
 
 .. automodule:: openscap_report.scap_results_parser.parsers.rule_parser
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-openscap\_report.scap\_results\_parser.parsers.test\_info\_parser module
-------------------------------------------------------------------------
-
-.. automodule:: openscap_report.scap_results_parser.parsers.test_info_parser
    :members:
    :undoc-members:
    :show-inheritance:
