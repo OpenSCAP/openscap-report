@@ -104,6 +104,7 @@ def test_command_with_different_formats(arguments, expected_start_string):
     assert command_stdout.decode("utf-8").startswith(expected_start_string)
 
 
+@pytest.mark.integration_test
 @pytest.mark.usefixtures("remove_generated_file")
 def test_command_with_input_from_file_and_output_to_stdout():
     command_stdout = subprocess.check_output([OSCAP_REPORT_COMMAND, str(PATH_TO_ARF)])

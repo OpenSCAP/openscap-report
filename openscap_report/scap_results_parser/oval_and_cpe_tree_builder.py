@@ -10,8 +10,8 @@ from .parsers import OVALDefinitionParser
 
 
 class OVALAndCPETreeBuilder:  # pylint: disable=R0902
-    def __init__(self, root, group_parser, profile_platform):
-        self.profile_platform = profile_platform
+    def __init__(self, root, group_parser, profile_platforms):
+        self.profile_platforms = profile_platforms
         self.root = root
         self.group_parser = group_parser
         self.missing_oval_results = False
@@ -96,6 +96,11 @@ class OVALAndCPETreeBuilder:  # pylint: disable=R0902
         tmp_groups_cpe_tree.value = tmp_groups_cpe_tree.evaluate_tree()
         return tmp_groups_cpe_tree
 
+    def _get_cpe_tree_of_profile_platform(self, profile_platform):
+        cpe_tree = self.oval_cpe_definitions[profile_platform].oval_tree
+        cpe_tree.tag = "CPE platforms of profile"
+        return cpe_tree
+
     def _merge_cpe_trees_applicable_for_rule(self, rule_cpe_tree, groups_cpe_tree):
         cpe_tree = OvalNode(
             node_id="Platforms_applicable_for_rule",
@@ -108,10 +113,16 @@ class OVALAndCPETreeBuilder:  # pylint: disable=R0902
             cpe_tree.children.append(rule_cpe_tree)
         if groups_cpe_tree.value is not None:
             cpe_tree.children.append(groups_cpe_tree)
-        if self.profile_platform in self.platform_to_oval_cpe_id:
-            oval_tree = self._get_oval_tree_from_oval_cpe_definition(self.profile_platform)
-            if oval_tree is not None:
-                cpe_tree.children.append(oval_tree)
+
+        skip_fedora = False
+        for profile_platform in self.profile_platforms:
+            if "fedora" in profile_platform and skip_fedora:
+                continue
+            if profile_platform in self.platform_to_oval_cpe_id:
+                cpe_oval_id = self.platform_to_oval_cpe_id[profile_platform]
+                cpe_tree.children.append(self._get_cpe_tree_of_profile_platform(cpe_oval_id))
+            if "fedora" in profile_platform:
+                skip_fedora = True
         return cpe_tree
 
     def build_cpe_tree(self, rule):

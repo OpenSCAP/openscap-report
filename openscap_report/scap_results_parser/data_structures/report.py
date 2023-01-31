@@ -6,27 +6,15 @@ from dataclasses import asdict, dataclass, field
 
 from ..exceptions import MissingProcessableRules
 from .group import Group
+from .profile_info import ProfileInfo
+from .result_of_scan import ResultOfScan
 from .rule import Rule
 
 
 @dataclass
-class Report:  # pylint: disable=R0902
-    title: str = ""
-    identity: str = ""
-    profile_name: str = ""
-    platform: str = ""
-    target: str = ""
-    cpe_platforms: list[str] = field(default_factory=list)
-    scanner: str = ""
-    scanner_version: str = ""
-    benchmark_url: str = ""
-    benchmark_id: str = ""
-    benchmark_version: str = ""
-    start_time: str = ""
-    end_time: str = ""
-    test_system: str = ""
-    score: float = 0.0
-    score_max: float = 0.0
+class Report:
+    profile_info: ProfileInfo = field(default_factory=ProfileInfo)
+    scan_result: ResultOfScan = field(default_factory=ResultOfScan)
     rules: dict[str, Rule] = field(default_factory=dict)
     groups: dict[str, Group] = field(default_factory=dict)
 
@@ -47,6 +35,18 @@ class Report:  # pylint: disable=R0902
 
     def as_dict(self):
         return asdict(self)
+
+    def get_selected_rules(self):
+        if not self.profile_info.selected_rules_ids:
+            return [
+                (rule_id, rule)
+                for rule_id, rule in self.rules.items()
+                if rule.result != "notselected"
+            ]
+        return [
+            (rule_id, self.rules[rule_id])
+            for rule_id in self.profile_info.selected_rules_ids
+        ]
 
     def get_rule_results_stats(self):
         results_stats = {

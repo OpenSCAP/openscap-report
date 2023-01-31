@@ -21,7 +21,6 @@ class SCAPResultsParser():
             logging.warning("This file is not valid ARF report!")
         else:
             logging.info("The file is valid ARF report")
-        self.test_results = self.root.find('.//xccdf:TestResult', NAMESPACES)
         self.ref_values = self._get_ref_values()
 
     def validate(self, xsd_path):
@@ -42,23 +41,40 @@ class SCAPResultsParser():
             logging.debug(rule_id)
             logging.debug(rule)
 
-    def parse_report(self):
-        report_parser = ReportParser(self.root, self.test_results)
-        profile = report_parser.get_report()
-        logging.debug(profile)
+    @staticmethod
+    def _get_applicable_cpe_ids_for_machine(cpe_platforms_for_profile):
+        return [
+            cpe_id for cpe_id, applicable_for_machine in cpe_platforms_for_profile.items()
+            if applicable_for_machine
+        ]
 
-        group_parser = GroupParser(self.root, self.ref_values)
+    def _get_benchmark_element(self):
+        benchmark_el = self.root.find(".//xccdf:Benchmark", NAMESPACES)
+        if "Benchmark" in self.root.tag:
+            benchmark_el = self.root
+        return benchmark_el
+
+    def parse_report(self):
+        test_results_el = self.root.find('.//xccdf:TestResult', NAMESPACES)
+        benchmark_el = self._get_benchmark_element()
+
+        report_parser = ReportParser(self.root, test_results_el, benchmark_el)
+        report = report_parser.get_report()
+        logging.debug(report)
+
+        group_parser = GroupParser(self.root, self.ref_values, benchmark_el)
         groups = group_parser.get_groups()
 
-        rule_parser = RuleParser(self.root, self.test_results, self.ref_values)
+        rule_parser = RuleParser(self.root, test_results_el, self.ref_values)
         rules = rule_parser.get_rules()
 
         OVAL_and_CPE_tree_builder = OVALAndCPETreeBuilder(  # pylint: disable=C0103
-            self.root, group_parser, profile.platform
+            self.root, group_parser,
+            self._get_applicable_cpe_ids_for_machine(report.profile_info.cpe_platforms_for_profile)
         )
         OVAL_and_CPE_tree_builder.insert_oval_and_cpe_trees_to_rules(rules)
 
         self._debug_show_rules(rules)
-        profile.rules = rules
-        profile.groups = groups
-        return profile
+        report.rules = rules
+        report.groups = groups
+        return report

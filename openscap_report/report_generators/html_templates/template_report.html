@@ -39,22 +39,31 @@
 {% block title%}OpenSCAP Evaluation Report{% endblock %}
 
 {% block content %}
+<h2 class="pf-c-title pf-m-3xl">About profile</h2>
+<br>
+{% include 'profile_info.html' %}
+<br>
+
 <h2 class="pf-c-title pf-m-3xl">Compliance and Scoring</h2>
 <br>
 {% set rule_result_stats = report.get_rule_results_stats() %}
 {% include 'summary_banner.html' %}
 <br>
-<h2 class="pf-c-title pf-m-2xl">Rule results</h2>
-<br>
-{% include 'rule_results.html' %}
-<br>
-
+<div class="row_with_statistic_of_scan">
+    <div class="column_with_statistic_of_scan">
+        <h2 class="pf-c-title pf-m-2xl">Rule results</h2>
+        <br>
+        {% include 'rule_results.html' %}
+    </div>
 {% if report.get_failed_rules()|length != 0 %}
-<h2 class="pf-c-title pf-m-2xl">Severity of failed rules</h2>
-<br>
-{% include 'severity_of_failed_rules.html'%}
-<br>
+    <div class="column_with_statistic_of_scan">
+        <h2 class="pf-c-title pf-m-2xl">Severity of failed rules</h2>
+        <br>
+        {% include 'severity_of_failed_rules.html'%}
+    </div>
 {% endif %}
+</div>
+<br>
 
 <h2 class="pf-c-title pf-m-2xl">Score</h2>
 {% include 'score_bar.html' %}

@@ -156,3 +156,12 @@ footer {
 .rule_result_stats_other {
     background-color: #F0AB00;
 }
+
+.column_with_statistic_of_scan {
+    flex: auto !important;
+}
+
+.row_with_statistic_of_scan {
+    display: flex;
+    column-gap: 20px;
+}

@@ -6,6 +6,7 @@ import pytest
 from openscap_report.debug_settings import DebugSetting
 
 
+@pytest.mark.unit_test
 @pytest.mark.parametrize("debug_flags, expected_values", [
     (
         [
