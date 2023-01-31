@@ -1,3 +1,4 @@
+import logging
 import re
 from argparse import _HelpAction, _StoreConstAction, _SubParsersAction
 from io import TextIOWrapper
@@ -120,8 +121,8 @@ def parse_parser(parser, data=None, **kwargs):
             help_str = action.help or ''  # Ensure we don't print None
             try:
                 help_str = help_str % format_dict
-            except Exception:
-                pass
+            except Exception as error:
+                logging.warning(error)
 
             # Options have the option_strings set, positional arguments don't
             name = action.option_strings

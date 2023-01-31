@@ -3,8 +3,8 @@
 
 import argparse
 import logging
+import sys
 from sys import exit as sys_exit
-from sys import stdin, stdout
 
 from lxml.etree import XMLSyntaxError
 
@@ -88,14 +88,14 @@ def prepare_parser():
         'FILE',
         type=argparse.FileType("r"),
         nargs='?',
-        default=stdin,
+        default=sys.stdin,
         help="ARF (XCCDF) file or stdin if not provided.")
     parser.add_argument(
         "-o",
         "--output",
         action="store",
         type=argparse.FileType("wb+", 0),
-        default=stdout,
+        default=sys.stdout,
         help="write the report to a file instead of the standard output.")
     parser.add_argument(
         "--log-file",

@@ -440,12 +440,15 @@ class ArgParseDirective(Directive):
             attr_name = _parts[-1]
         elif 'filename' in self.options and 'func' in self.options:
             mod = {}
+            data_file = None
             try:
-                f = open(self.options['filename'])
+                with open(self.options['filename'], "r", encoding="utf-8") as f:
+                    data_file = f.read()
             except OSError:
                 # try open with abspath
-                f = open(os.path.abspath(self.options['filename']))
-            code = compile(f.read(), self.options['filename'], 'exec')
+                with open(os.path.abspath(self.options['filename']), "r", encoding="utf-8") as f:
+                    data_file = f.read()
+            code = compile(data_file, self.options['filename'], 'exec')
             exec(code, mod)
             attr_name = self.options['func']
             func = mod[attr_name]

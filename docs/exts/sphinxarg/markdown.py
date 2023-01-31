@@ -1,3 +1,5 @@
+import logging
+
 try:
     from commonmark import Parser
 except ImportError:
@@ -6,6 +8,7 @@ try:
     from commonmark.node import Node
 except ImportError:
     from CommonMark.node import Node
+
 from docutils import nodes
 from docutils.utils.code_analyzer import Lexer
 
@@ -29,8 +32,8 @@ def custom_walker(node, space=''):
     txt = ''
     try:
         txt = node.literal
-    except Exception:
-        pass
+    except Exception as error:
+        logging.warning(error)
 
     if txt is None or txt == '':
         print(f'{space}{node.t}')
@@ -123,8 +126,8 @@ def literal(node):
             l = Lexer(node.literal, node.info, tokennames="long")
             for _ in l:
                 rendered.append(node.inline(classes=_[0], text=_[1]))
-    except Exception:
-        pass
+    except Exception as error:
+        logging.warning(error)
 
     classes = ['code']
     if node.info is not None:
@@ -151,8 +154,8 @@ def literal_block(node):
             l = Lexer(node.literal, node.info, tokennames="long")
             for _ in l:
                 rendered.append(node.inline(classes=_[0], text=_[1]))
-    except Exception:
-        pass
+    except Exception as error:
+        logging.warning(error)
 
     classes = ['code']
     if node.info is not None:
