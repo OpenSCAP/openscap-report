@@ -3,6 +3,13 @@
 
 from dataclasses import asdict, dataclass, field
 
+PROFILE_JSON_KEYS = [
+    "profile_id",
+    "description",
+    "title",
+    "extends",
+]
+
 
 @dataclass
 class ProfileInfo:

@@ -11,6 +11,23 @@ from .reference import Reference
 from .remediation import Remediation
 from .warning import RuleWarning
 
+RULE_JSON_KEYS = [
+    "rule_id",
+    "title",
+    "result",
+    "time",
+    "severity",
+    "identifiers",
+    "references",
+    "description",
+    "rationale",
+    "warnings",
+    "platforms",
+    "oval_definition_id",
+    "messages",
+    "remediations",
+]
+
 
 @dataclass
 class Rule:  # pylint: disable=R0902

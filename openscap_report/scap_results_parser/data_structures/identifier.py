@@ -3,6 +3,11 @@
 
 from dataclasses import asdict, dataclass
 
+IDENTIFIER_JSON_KEYS = [
+    "system",
+    "text",
+]
+
 
 @dataclass
 class Identifier:

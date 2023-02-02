@@ -3,6 +3,15 @@
 
 from dataclasses import asdict, dataclass, field
 
+GROUP_JSON_KEYS = [
+    "group_id",
+    "title",
+    "description",
+    "platforms",
+    "rules_ids",
+    "sub_groups",
+]
+
 
 @dataclass
 class Group:

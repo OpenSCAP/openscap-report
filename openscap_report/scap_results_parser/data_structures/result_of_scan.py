@@ -3,6 +3,24 @@
 
 from dataclasses import asdict, dataclass, field
 
+SCAN_JSON_KEYS = [
+    "title",
+    "identity",
+    "profile_id",
+    "target",
+    "cpe_platforms",
+    "scanner",
+    "scanner_version",
+    "benchmark_url",
+    "benchmark_id",
+    "benchmark_version",
+    "start_time",
+    "end_time",
+    "test_system",
+    "score",
+    "score_max",
+]
+
 
 @dataclass
 class ResultOfScan:  # pylint: disable=R0902

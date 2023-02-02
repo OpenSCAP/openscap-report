@@ -5,10 +5,30 @@ import logging
 from dataclasses import asdict, dataclass, field
 
 from ..exceptions import MissingProcessableRules
-from .group import Group
-from .profile_info import ProfileInfo
-from .result_of_scan import ResultOfScan
-from .rule import Rule
+from .group import GROUP_JSON_KEYS, Group
+from .identifier import IDENTIFIER_JSON_KEYS
+from .oval_definition import OVAL_DEFINITION_JSON_KEYS
+from .profile_info import PROFILE_JSON_KEYS, ProfileInfo
+from .reference import REFERENCE_JSON_KEYS
+from .remediation import REMEDIATION_JSON_KEYS
+from .result_of_scan import SCAN_JSON_KEYS, ResultOfScan
+from .rule import RULE_JSON_KEYS, Rule
+from .warning import WARNING_JSON_KEYS
+
+JSON_REPORT_CONTENT = [
+    "profile_info",
+    "scan_result",
+    "rules",
+    *GROUP_JSON_KEYS,
+    *IDENTIFIER_JSON_KEYS,
+    *OVAL_DEFINITION_JSON_KEYS,
+    *PROFILE_JSON_KEYS,
+    *REFERENCE_JSON_KEYS,
+    *REMEDIATION_JSON_KEYS,
+    *RULE_JSON_KEYS,
+    *SCAN_JSON_KEYS,
+    *WARNING_JSON_KEYS,
+]
 
 
 @dataclass
@@ -20,18 +40,11 @@ class Report:
 
     @staticmethod
     def default_json_filter(dictionary):
-        allowed_keys = [
-            "title",
-            "profile_name",
-            "cpe_platforms",
-            "scanner",
-            "benchmark_id",
-            "score"
-        ]
-        return {key: value for (key, value) in dictionary if key in allowed_keys}
+        return {key: value for (key, value) in dictionary if key in JSON_REPORT_CONTENT}
 
     def as_dict_for_default_json(self):
-        return asdict(self, dict_factory=self.default_json_filter)
+        json_dict = asdict(self, dict_factory=self.default_json_filter)
+        return json_dict
 
     def as_dict(self):
         return asdict(self)
