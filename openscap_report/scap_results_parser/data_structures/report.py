@@ -7,6 +7,9 @@ from dataclasses import asdict, dataclass, field
 from ..exceptions import MissingProcessableRules
 from .group import GROUP_JSON_KEYS, Group
 from .identifier import IDENTIFIER_JSON_KEYS
+from .json_transformation import (rearrange_identifiers, rearrange_references,
+                                  remove_empty_values,
+                                  remove_not_selected_rules)
 from .oval_definition import OVAL_DEFINITION_JSON_KEYS
 from .profile_info import PROFILE_JSON_KEYS, ProfileInfo
 from .reference import REFERENCE_JSON_KEYS
@@ -44,6 +47,10 @@ class Report:
 
     def as_dict_for_default_json(self):
         json_dict = asdict(self, dict_factory=self.default_json_filter)
+        remove_not_selected_rules(json_dict, self.profile_info.selected_rules_ids)
+        rearrange_references(json_dict)
+        rearrange_identifiers(json_dict)
+        json_dict = remove_empty_values(json_dict)
         return json_dict
 
     def as_dict(self):
