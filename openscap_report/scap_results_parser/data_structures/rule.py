@@ -9,6 +9,7 @@ from .oval_definition import OvalDefinition
 from .oval_node import OvalNode
 from .reference import Reference
 from .remediation import Remediation
+from .warning import RuleWarning
 
 
 @dataclass
@@ -23,7 +24,7 @@ class Rule:  # pylint: disable=R0902
     references: list[Reference] = field(default_factory=list)
     description: str = ""
     rationale: str = ""
-    warnings: list[str] = field(default_factory=list)
+    warnings: list[RuleWarning] = field(default_factory=list)
     platforms: list[str] = field(default_factory=list)
     oval_definition_id: str = None
     oval_definition: OvalDefinition = None
