@@ -5,7 +5,8 @@ import pytest
 from lxml import etree
 
 from openscap_report.scap_results_parser import SCAPResultsParser
-from openscap_report.scap_results_parser.data_structures import Report, Rule
+from openscap_report.scap_results_parser.data_structures import (Report, Rule,
+                                                                 RuleWarning)
 from openscap_report.scap_results_parser.namespaces import NAMESPACES
 from openscap_report.scap_results_parser.parsers import (ReportParser,
                                                          RuleParser)
@@ -276,7 +277,9 @@ def test_rationale(rule, result):
 @pytest.mark.parametrize("rule, result", [
     (
         "xccdf_org.ssgproject.content_rule_prefer_64bit_os",
-        ["There is no remediation besides installing a 64-bit operating system."]
+        [RuleWarning(
+            "There is no remediation besides installing a 64-bit operating system.", "general"
+        )]
     ),
     (
         "xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_lock_enabled",
@@ -289,18 +292,18 @@ def test_rationale(rule, result):
     (
         "xccdf_org.ssgproject.content_rule_sudoers_explicit_command_args",
         [
-            (
+            RuleWarning(
                 "This rule doesn&#x27;t come with a remediation, as absence of arguments in"
                 " the user spec doesn&#x27;t mean that the command is intended to be executed "
-                "with no arguments."
+                "with no arguments.", "general"
             ),
-            (
+            RuleWarning(
                 "The rule can produce false findings when an argument contains a"
                 " comma - sudoers syntax allows comma escaping using backslash, but"
                 " the check doesn&#x27;t support that. For example,"
                 " <code>root ALL=(ALL) echo 1\\,2</code> allows root to execute"
                 " <code>echo 1,2</code>, but the check would interpret it as two commands "
-                "<code>echo 1\\</code> and <code>2</code>."
+                "<code>echo 1\\</code> and <code>2</code>.", "general"
             )
         ]
     )
