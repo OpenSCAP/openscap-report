@@ -24,7 +24,7 @@ RESULT_COUNTS_1 = {
     "number_of_notappl": 3
 }
 
-RESULT_COUNTS_NOTAPPL = dict(**EMPTY_RESULT)
+RESULT_COUNTS_NOTAPPL = EMPTY_RESULT.copy()
 RESULT_COUNTS_NOTAPPL["number_of_notappl"] = 5
 
 # AND cases
