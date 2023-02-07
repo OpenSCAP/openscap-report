@@ -23,7 +23,7 @@ class HTMLReportGenerator(ReportGenerator):
     def __init__(self, parser):  # pylint: disable=W0231
         self.report = parser.parse_report()
         self.file_loader = FileSystemLoader(str(Path(__file__).parent / "html_templates"))
-        self.env = Environment(loader=self.file_loader, autoescape=True)
+        self.env = Environment(loader=self.file_loader)
         self.env.globals['include_file_in_base64'] = self.include_file_in_base64
         self.env.filters['set_css_for_list'] = self.set_css_for_list
         self.env.trim_blocks = True
