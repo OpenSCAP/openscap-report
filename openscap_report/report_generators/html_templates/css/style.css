@@ -165,3 +165,11 @@ footer {
     display: flex;
     column-gap: 20px;
 }
+
+.cpe-label {
+    border-radius: 0px !important;
+}
+
+.cpe-label__content::before {
+    border-radius: 0px !important;
+}

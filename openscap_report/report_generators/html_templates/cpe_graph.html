@@ -1,41 +1,73 @@
 {# Copyright 2022, Red Hat, Inc. #}
 {# SPDX-License-Identifier: LGPL-2.1-or-later #}
-{% if rule.cpe_tree -%}
-    <div class="pf-c-helper-text">    
-        {% if rule.cpe_tree.value == 'true' -%}
-            <div class="pf-c-helper-text__item pf-m-success">
-                <span class="pf-c-helper-text__item-icon">
-                    <i class="fas fa-fw fa-check-circle" aria-hidden="true"></i>
-                </span>
-                <span class="pf-c-helper-text__item-text"><b>Graph of CPE check: {{ rule.cpe_tree.node_id }}</b></span>
-            </div>
-        {% elif rule.cpe_tree.value == 'false' %}
-            <div class="pf-c-helper-text__item pf-m-error">
-                <span class="pf-c-helper-text__item-icon">
-                    <i class="fas fa-fw fa-exclamation-circle" aria-hidden="true"></i>
-                </span>
-                <span class="pf-c-helper-text__item-text"><b>Graph of CPE check: {{ rule.cpe_tree.node_id }}</b></span>
-            </div>
-        {% else %}
-            <div class="pf-c-helper-text__item pf-m-warning">
-                <span class="pf-c-helper-text__item-icon">
-                    <i class="fas fa-fw fa-exclamation-triangle" aria-hidden="true"></i>
-                </span>
-                <span class="pf-c-helper-text__item-text"><b>Graph of CPE check: {{ rule.cpe_tree.node_id }}</b></span>
-            </div>    
-        {%- endif %}
-    </div>
-    <div id="cpe_tree_of_rule_{{ rule.rule_id | replace('.', '') }}" is_rendered="false" data='{{ rule.cpe_tree.as_dict() | tojson }}'></div>
-{% else %}
-{% if rule.platform -%}
+{%- if rule.cpe_al -%}
+{% set platforms_dict = rule.cpe_al -%}
+{%- endif %}
+{%- if rule.cpe_oval_dict -%}
+{% set platforms_dict = rule.cpe_oval_dict -%}
+{%- endif %}
+{% if not platforms_dict -%}
     <div class="pf-c-alert pf-m-warning pf-m-inline">
         <div class="pf-c-alert__icon">
             <i class="fas fa-fw fa-exclamation-triangle" aria-hidden="true"></i>
         </div>
         <p class="pf-c-alert__title">
             <span class="pf-screen-reader">Warning alert:</span>
-            There is no CPE check.<br>
+            There is no CPE applicability check.<br>
         </p>
     </div>
 {%- endif %}
+{% for key, platforms in platforms_dict.items() %}
+{% if platforms %}
+{% if key == 'profile_platforms' -%}
+<tr role="row">
+    <th class="pf-m-fit-content" role="rowheader" scope="row"><b>CPE platform required by profile:</b></th>
+</tr>
+{% elif key == 'group_platforms' %}
+<tr role="row">
+    <th class="pf-m-fit-content" role="rowheader" scope="row"><b>CPE platform required by group:</b></th>
+</tr>
+{% elif key == 'rule_platforms' %}
+<tr role="row">
+    <th class="pf-m-fit-content" role="rowheader" scope="row"><b>CPE platform required by rule:</b></th>
+</tr>
 {%- endif %}
+{% for platform_id, platform in platforms.items() %}
+<tr role="row">
+<td colspan="2" role="cell">
+<div class="pf-c-helper-text">
+    {% set result = platform.result if platform.result else platform.value -%}
+    {% if result == 'true' -%}
+        <div class="pf-c-helper-text__item pf-m-success">
+            <span class="pf-c-helper-text__item-icon">
+                <i class="fas fa-fw fa-check-circle" aria-hidden="true"></i>
+            </span>
+            <span class="pf-c-helper-text__item-text"><b>{{ platform_id }} {{ platform.title }}</b></span>
+        </div>
+    {% elif result == 'false' %}
+        <div class="pf-c-helper-text__item pf-m-error">
+            <span class="pf-c-helper-text__item-icon">
+                <i class="fas fa-fw fa-exclamation-circle" aria-hidden="true"></i>
+            </span>
+            <span class="pf-c-helper-text__item-text"><b>{{ platform_id }} {{ platform.title }}</b></span>
+        </div>
+    {% else %}
+        <div class="pf-c-helper-text__item pf-m-warning">
+            <span class="pf-c-helper-text__item-icon">
+                <i class="fas fa-fw fa-exclamation-triangle" aria-hidden="true"></i>
+            </span>
+            <span class="pf-c-helper-text__item-text"><b>{{ platform_id }} {{ platform.title }}</b></span>
+        </div>
+    {%- endif %}
+</div>
+{%- if rule.cpe_al -%}
+<div id="cpe_al_tree_of_rule_{{ key }}_{{ rule.rule_id | replace('.', '') }}" is_rendered="false" data='{{ platform.logical_test.as_dict() | tojson }}'></div>
+{%- endif %}
+{%- if rule.cpe_oval_dict -%}
+<div id="cpe_tree_of_rule_{{ rule.rule_id | replace('.', '') }}" is_rendered="false" data='{{ platform.as_dict() | tojson }}'></div>
+{%- endif %}
+</td>
+</tr>
+{% endfor %}
+{%- endif %}
+{% endfor %}
