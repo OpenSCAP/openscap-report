@@ -3,7 +3,7 @@
 
 from dataclasses import asdict, dataclass, field
 
-from .cpe_logical_test import LogicalTest
+from .cpe_platform import Platform
 from .identifier import Identifier
 from .oval_definition import OvalDefinition
 from .oval_node import OvalNode
@@ -30,7 +30,7 @@ class Rule:  # pylint: disable=R0902
     messages: list[str] = field(default_factory=list)
     remediations: list[Remediation] = field(default_factory=list)
     cpe_oval_dict: dict[str, dict[str, OvalNode]] = field(default_factory=dict)
-    cpe_al: dict[str, dict[str, LogicalTest]] = field(default_factory=dict)
+    cpe_al: dict[str, dict[str, Platform]] = field(default_factory=dict)
 
     def as_dict(self):
         return asdict(self)
