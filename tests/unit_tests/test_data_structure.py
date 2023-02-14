@@ -9,7 +9,11 @@ from openscap_report.scap_results_parser import MissingProcessableRules
 from openscap_report.scap_results_parser.data_structures import Remediation
 from tests.unit_tests.test_scap_result_parser import get_parser
 
-from ..constants import PATH_TO_ARF
+from ..constants import (PATH_TO_ARF, PATH_TO_ARF_SCANNED_ON_CONTAINER,
+                         PATH_TO_SIMPLE_RULE_FAIL_ARF,
+                         PATH_TO_SIMPLE_RULE_FAIL_XCCDF,
+                         PATH_TO_SIMPLE_RULE_PASS_ARF,
+                         PATH_TO_SIMPLE_RULE_PASS_XCCDF, PATH_TO_XCCDF)
 
 
 def get_report():
@@ -183,3 +187,19 @@ def test_report_severity_of_failed_rules_stats_without_failed_rules():
 def test_remediation_type(system, type_of_remediation):
     remediation = Remediation(remediation_id="ID-1234", system=system)
     assert remediation.get_type() == type_of_remediation
+
+
+@pytest.mark.unit_test
+@pytest.mark.parametrize("file_path, count_of_selected_rules", [
+    (PATH_TO_ARF, 714),
+    (PATH_TO_XCCDF, 712),
+    (PATH_TO_ARF_SCANNED_ON_CONTAINER, 121),
+    (PATH_TO_SIMPLE_RULE_FAIL_ARF, 1),
+    (PATH_TO_SIMPLE_RULE_FAIL_XCCDF, 1),
+    (PATH_TO_SIMPLE_RULE_PASS_ARF, 1),
+    (PATH_TO_SIMPLE_RULE_PASS_XCCDF, 1)
+])
+def test_report_get_selected_rules(file_path, count_of_selected_rules):
+    parser = get_parser(file_path)
+    report = parser.parse_report()
+    assert len(report.get_selected_rules()) == count_of_selected_rules

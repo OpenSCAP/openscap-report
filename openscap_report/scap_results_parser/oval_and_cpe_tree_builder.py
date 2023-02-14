@@ -107,7 +107,7 @@ class OVALAndCPETreeBuilder:  # pylint: disable=R0902
         for rule in rules.values():
             if rule.oval_definition_id in self.oval_definitions:
                 rule.oval_definition = self.oval_definitions[rule.oval_definition_id]
-            rule_group = self.group_parser.rule_to_grup_id[rule.rule_id]
+            rule_group = self.group_parser.rule_to_grup_id.get(rule.rule_id, "")
             group_platforms = self.group_parser.group_to_platforms.get(rule_group, [])
             self._remove_double_cpe_requirement(rule, group_platforms)
             if not self.cpe_al:

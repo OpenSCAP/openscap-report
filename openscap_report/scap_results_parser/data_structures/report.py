@@ -43,10 +43,13 @@ class Report:
                 for rule_id, rule in self.rules.items()
                 if rule.result != "notselected"
             ]
-        return [
-            (rule_id, self.rules[rule_id])
-            for rule_id in self.profile_info.selected_rules_ids
-        ]
+        out = []
+        for rule_id in self.profile_info.selected_rules_ids:
+            if rule_id in self.rules:
+                out.append((rule_id, self.rules[rule_id]))
+            else:
+                logging.warning("Missing definition of selected rule: '%s'", rule_id)
+        return out
 
     def get_rule_results_stats(self):
         results_stats = {
