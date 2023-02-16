@@ -18,3 +18,4 @@ from .remediation import Remediation
 from .report import Report
 from .result_of_scan import ResultOfScan
 from .rule import Rule
+from .warning import RuleWarning

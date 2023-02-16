@@ -178,7 +178,10 @@
                             <i class="fas fa-fw fa-exclamation-triangle" aria-hidden="true"></i>
                         </div>
                         <div class="pf-c-alert__title">
-                            {{- warning | set_css_for_list -}}
+                            {{- warning.category | capitalize -}}&nbsp;warning
+                        </div>
+                        <div class="pf-c-alert__description">
+                            {{- warning.text | set_css_for_list -}}
                         </div>
                     </div>
                     <br>

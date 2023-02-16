@@ -1,7 +1,7 @@
 # Copyright 2022, Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from ..data_structures import Identifier, Reference, Rule
+from ..data_structures import Identifier, Reference, Rule, RuleWarning
 from ..namespaces import NAMESPACES
 from .full_text_parser import FullTextParser
 from .remediation_parser import RemediationParser
@@ -31,7 +31,11 @@ class RuleParser():
     def _get_warnings(self, rule):
         warnings = []
         for warning in rule.findall(".//xccdf:warning", NAMESPACES):
-            warnings.append(self.full_text_parser.get_full_warning(warning))
+            warnings.append(
+                RuleWarning(
+                    self.full_text_parser.get_full_warning(warning),
+                    warning.get("category")
+                ))
         return warnings
 
     def _get_remediations(self, rule):
