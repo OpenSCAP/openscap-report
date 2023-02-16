@@ -7,7 +7,7 @@ analyse-fallback-blocks=no
 
 # Clear in-memory caches upon conclusion of linting. Useful if running pylint
 # in a server-like mode.
-clear-cache-post-run=no
+#clear-cache-post-run=no
 
 # Load and enable all available extensions. Use --list-extensions to see a list
 # all available extensions.
@@ -352,7 +352,7 @@ single-line-if-stmt=no
 allow-any-import-level=
 
 # Allow explicit reexports by alias from a package __init__.
-allow-reexport-from-package=no
+#allow-reexport-from-package=no
 
 # Allow wildcard imports from modules that define __all__.
 allow-wildcard-with-all=no
