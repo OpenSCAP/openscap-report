@@ -1,12 +1,19 @@
 # Copyright 2022, Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+import logging
+from contextlib import nullcontext as does_not_raise
+
 import pytest
 from lxml import etree
+from lxml.etree import XMLSyntaxError
 
-from openscap_report.scap_results_parser import SCAPResultsParser
+from openscap_report.scap_results_parser import (ARF_SCHEMAS_PATH,
+                                                 SCAPResultsParser)
 from openscap_report.scap_results_parser.data_structures import (Report, Rule,
                                                                  RuleWarning)
+from openscap_report.scap_results_parser.exceptions import \
+    NotSupportedReportingFormat
 from openscap_report.scap_results_parser.namespaces import NAMESPACES
 from openscap_report.scap_results_parser.parsers import (ReportParser,
                                                          RuleParser)
@@ -15,7 +22,7 @@ from ..constants import (PATH_TO_ARF, PATH_TO_ARF_SCANNED_ON_CONTAINER,
                          PATH_TO_ARF_WITH_MULTI_CHECK,
                          PATH_TO_ARF_WITH_OS_CPE_CHECK,
                          PATH_TO_ARF_WITHOUT_INFO,
-                         PATH_TO_ARF_WITHOUT_SYSTEM_DATA,
+                         PATH_TO_ARF_WITHOUT_SYSTEM_DATA, PATH_TO_EMPTY_FILE,
                          PATH_TO_EMPTY_XML_FILE, PATH_TO_REMEDIATIONS_SCRIPTS,
                          PATH_TO_RULE_AND_CPE_CHECK_ARF,
                          PATH_TO_RULE_AND_CPE_CHECK_XCCDF,
@@ -25,7 +32,7 @@ from ..constants import (PATH_TO_ARF, PATH_TO_ARF_SCANNED_ON_CONTAINER,
                          PATH_TO_SIMPLE_RULE_PASS_XCCDF, PATH_TO_XCCDF,
                          PATH_TO_XCCDF_WITH_MULTI_CHECK,
                          PATH_TO_XCCDF_WITHOUT_INFO,
-                         PATH_TO_XCCDF_WITHOUT_SYSTEM_DATA)
+                         PATH_TO_XCCDF_WITHOUT_SYSTEM_DATA, PATH_TO_XML_FILE)
 
 
 def get_parser(file_path):
@@ -88,11 +95,28 @@ DEFAULT_REPORT = get_parser(PATH_TO_ARF).parse_report()
     (PATH_TO_RULE_AND_CPE_CHECK_XCCDF, False),
     (PATH_TO_XCCDF_WITHOUT_INFO, False),
     (PATH_TO_XCCDF_WITHOUT_SYSTEM_DATA, False),
-    (PATH_TO_EMPTY_XML_FILE, False),
 ])
 def test_validation(file_path, result):
     parser = get_parser(file_path)
-    assert parser.validate(parser.arf_schemas_path) == result
+    assert parser.validate(ARF_SCHEMAS_PATH) == result
+
+
+@pytest.mark.unit_test
+@pytest.mark.parametrize("file_path, expectation, e_msg", [
+    (PATH_TO_ARF, does_not_raise(), ""),
+    (PATH_TO_XCCDF, does_not_raise(), "input is the XCCDF"),
+    (PATH_TO_EMPTY_XML_FILE, pytest.raises(NotSupportedReportingFormat), "isn't a valid"),
+    (PATH_TO_EMPTY_FILE, pytest.raises(XMLSyntaxError), "empty"),
+    (PATH_TO_XML_FILE, pytest.raises(NotSupportedReportingFormat), "isn't a valid"),
+])
+def test_parsers_init(file_path, expectation, e_msg, caplog):
+    caplog.set_level(logging.WARNING)
+    with expectation as excinfo:
+        get_parser(file_path)
+    if excinfo is not None:
+        assert e_msg in str(excinfo.value)
+    else:
+        assert e_msg in str(caplog.text)
 
 
 @pytest.mark.unit_test
