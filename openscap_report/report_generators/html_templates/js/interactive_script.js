@@ -69,7 +69,7 @@ function search_rule(self) { // eslint-disable-line no-unused-vars
     const value = self.value.toLowerCase();
     const rules = document.querySelectorAll("table[id=rule-table] tbody[rule-id]");
     rules.forEach(function (rule) {
-        const is_matched_title = rule.getAttribute("title").toLowerCase().includes(value);
+        const is_matched_title = rule.getAttribute("rule-title").toLowerCase().includes(value);
         const is_matched_rule_id = rule.getAttribute("rule-id").toLowerCase().includes(value);
         const result_of_rule = rule.getAttribute("result").asId('result-');
         const severity_of_rule = rule.getAttribute("severity").asId('severity-');
