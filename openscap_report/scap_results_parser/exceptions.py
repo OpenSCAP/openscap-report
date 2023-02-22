@@ -11,3 +11,7 @@ class MissingProcessableRules(Exception):
 
 class ExceptionNoCPEApplicabilityLanguage(Exception):
     """Raise when there is no CPE Applicability Language platform specification"""
+
+
+class NotSupportedReportingFormat(Exception):
+    """Raise when the given input isn't a valid ARF report or XCCDF report"""

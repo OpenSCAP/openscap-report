@@ -16,7 +16,7 @@
             There is no CPE applicability check.<br>
         </p>
     </div>
-{%- endif %}
+{%- else -%}
 {% for key, platforms in platforms_dict.items() %}
 {% if platforms %}
 {% if key == 'profile_platforms' -%}
@@ -71,3 +71,4 @@
 {% endfor %}
 {%- endif %}
 {% endfor %}
+{%- endif %}

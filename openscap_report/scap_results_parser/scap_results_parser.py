@@ -6,22 +6,43 @@ from pathlib import Path
 
 from lxml import etree
 
+from .exceptions import NotSupportedReportingFormat
 from .namespaces import NAMESPACES
 from .oval_and_cpe_tree_builder import OVALAndCPETreeBuilder
 from .parsers import GroupParser, ReportParser, RuleParser
 
 SCHEMAS_DIR = Path(__file__).parent / "schemas"
+ARF_SCHEMAS_PATH = 'arf/1.1/asset-reporting-format_1.1.0.xsd'
+XCCDF_1_2_SCHEMAS_PATH = 'xccdf/1.2/xccdf_1.2.xsd'
 
 
 class SCAPResultsParser():
     def __init__(self, data):
         self.root = etree.XML(data)
-        self.arf_schemas_path = 'arf/1.1/asset-reporting-format_1.1.0.xsd'
-        if not self.validate(self.arf_schemas_path):
-            logging.warning("This file is not valid ARF report!")
-        else:
-            logging.info("The file is valid ARF report")
         self.ref_values = self._get_ref_values()
+        self._validate_xccdf_or_arf()
+
+    def _validate_xccdf_or_arf(self):
+        is_valid_arf = self.validate(ARF_SCHEMAS_PATH)
+        is_valid_xccdf_1_2 = self.validate(XCCDF_1_2_SCHEMAS_PATH)
+
+        if not is_valid_arf and not is_valid_xccdf_1_2:
+            raise NotSupportedReportingFormat(
+                "The given input isn't a valid ARF report or XCCDF report!"
+            )
+        if is_valid_xccdf_1_2:
+            logging.warning(("The given input is the XCCDF report,"
+                             " some information will not appear in the report."
+                             " Use the ARF report for the complete report."
+                             ))
+        self._log_info_about_input_report_type(is_valid_arf, is_valid_xccdf_1_2)
+
+    @staticmethod
+    def _log_info_about_input_report_type(is_valid_arf, is_valid_xccdf_1_2):
+        if is_valid_arf:
+            logging.info("The given input is a valid ARF report.")
+        if is_valid_xccdf_1_2:
+            logging.info("The given input is a valid XCCDF 1.2 report.")
 
     def validate(self, xsd_path):
         xsd_path = str(SCHEMAS_DIR / xsd_path)

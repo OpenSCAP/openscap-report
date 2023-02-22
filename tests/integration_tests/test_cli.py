@@ -11,7 +11,8 @@ from unittest import mock
 import pytest
 
 from openscap_report.cli import CommandLineAPI
-from openscap_report.scap_results_parser import SCAPResultsParser
+from openscap_report.scap_results_parser import (ARF_SCHEMAS_PATH,
+                                                 SCAPResultsParser)
 
 from ..constants import PATH_TO_ARF, PATH_TO_EMPTY_FILE
 
@@ -38,7 +39,7 @@ def test_load_file(mock_args):  # pylint: disable=W0613
     api = CommandLineAPI()
     xml_report = api.load_file()
     parser = SCAPResultsParser(xml_report)
-    assert parser.validate(parser.arf_schemas_path)
+    assert parser.validate(ARF_SCHEMAS_PATH)
     api.close_files()
 
 

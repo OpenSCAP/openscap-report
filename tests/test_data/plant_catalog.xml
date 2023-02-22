@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CATALOG>
+  <PLANT>
+    <COMMON>Bloodroot</COMMON>
+    <BOTANICAL>Sanguinaria canadensis</BOTANICAL>
+    <ZONE>4</ZONE>
+    <LIGHT>Mostly Shady</LIGHT>
+    <PRICE>$2.44</PRICE>
+    <AVAILABILITY>031599</AVAILABILITY>
+  </PLANT>
+  <PLANT>
+    <COMMON>Columbine</COMMON>
+    <BOTANICAL>Aquilegia canadensis</BOTANICAL>
+    <ZONE>3</ZONE>
+    <LIGHT>Mostly Shady</LIGHT>
+    <PRICE>$9.37</PRICE>
+    <AVAILABILITY>030699</AVAILABILITY>
+  </PLANT>
+  <PLANT>
+    <COMMON>Wake Robin</COMMON>
+    <BOTANICAL>Trillium grandiflorum</BOTANICAL>
+    <ZONE>5</ZONE>
+    <LIGHT>Sun or Shade</LIGHT>
+    <PRICE>$3.20</PRICE>
+    <AVAILABILITY>022199</AVAILABILITY>
+  </PLANT>
+</CATALOG>

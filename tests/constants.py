@@ -8,6 +8,8 @@ PATH_TO_REMEDIATIONS_SCRIPTS = Path(__file__).parent / "test_data/remediations_s
 PATH_TO_EMPTY_XML_FILE = Path(__file__).parent / "test_data/empty.xml"
 PATH_TO_EMPTY_FILE = Path(__file__).parent / "test_data/empty.txt"
 
+PATH_TO_XML_FILE = Path(__file__).parent / "test_data/plant_catalog.xml"
+
 PATH_TO_ARF = Path(__file__).parent / "test_data/arf-report.xml"
 PATH_TO_SIMPLE_RULE_FAIL_ARF = Path(__file__).parent / "test_data/arf_simple_rule_fail.xml"
 PATH_TO_SIMPLE_RULE_PASS_ARF = Path(__file__).parent / "test_data/arf_simple_rule_pass.xml"

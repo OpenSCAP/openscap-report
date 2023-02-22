@@ -13,7 +13,7 @@ class GroupParser:
         self.root = root
         self.benchmark_el = benchmark_el
         self.description_parser = FullTextParser(ref_values)
-        self.rule_to_grup_id = {}
+        self.rule_to_group_id = {}
         self.group_to_platforms = {}
 
     def insert_to_dict_group_to_platforms(self, group_dict, platforms):
@@ -36,7 +36,7 @@ class GroupParser:
 
     def _append_rule_id_to_group_dict(self, group_dict, item):
         group_dict["rules_ids"].append(item.get("id"))
-        self.rule_to_grup_id[item.get("id")] = group_dict.get("group_id")
+        self.rule_to_group_id[item.get("id")] = group_dict.get("group_id")
 
     def get_group(self, group_el, platforms=None):
         if platforms is None:

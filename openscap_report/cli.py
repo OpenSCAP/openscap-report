@@ -14,7 +14,7 @@ from .report_generators import (HTMLReportGenerator,
                                 JSONEverythingReportGenerator,
                                 JSONReportGenerator,
                                 OldStyleHTMLReportGenerator)
-from .scap_results_parser import SCAPResultsParser
+from .scap_results_parser import NotSupportedReportingFormat, SCAPResultsParser
 
 DESCRIPTION = ("Generates an HTML report from an ARF (or XCCDF Result) file with results of "
                "a SCAP-compatible utility scan. Unless the --output option is specified "
@@ -44,7 +44,7 @@ DEBUG FLAGS:
 """
 
 MASSAGE_FORMAT = '%(levelname)s: %(message)s'
-EXPECTED_ERRORS = (XMLSyntaxError, )
+EXPECTED_ERRORS = (XMLSyntaxError, NotSupportedReportingFormat)
 EXIT_FAILURE_CODE = 1
 EXIT_SUCCESS_CODE = 0
 

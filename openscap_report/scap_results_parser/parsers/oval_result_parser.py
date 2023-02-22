@@ -30,7 +30,7 @@ class OVALResultParser:
         oval_reports = {}
         reports = self.root.find('.//arf:reports', NAMESPACES)
         if reports is None:
-            raise MissingOVALResult
+            raise MissingOVALResult("all_OVAL_results")
 
         for report in reports:
             report_id = report.get("id")

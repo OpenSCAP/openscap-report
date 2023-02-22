@@ -32,7 +32,9 @@ class OVALAndCPETreeBuilder:  # pylint: disable=R0902
             self.oval_cpe_definitions = self.oval_definition_parser.get_oval_cpe_definitions()
             self._load_cpe_platforms()
         except MissingOVALResult as error:
-            logging.warning("OVAL results \"%s\" not found!", error)
+            logging.warning((
+                "The given input doesn't contain OVAL results (\"%s\"),"
+                " OVAL details won't be shown in the report."), error)
             if str(error) != "oval1":
                 self.missing_oval_results = True
 
@@ -105,7 +107,7 @@ class OVALAndCPETreeBuilder:  # pylint: disable=R0902
         for rule in rules.values():
             if rule.oval_definition_id in self.oval_definitions:
                 rule.oval_definition = self.oval_definitions[rule.oval_definition_id]
-            rule_group = self.group_parser.rule_to_grup_id[rule.rule_id]
+            rule_group = self.group_parser.rule_to_group_id.get(rule.rule_id, "")
             group_platforms = self.group_parser.group_to_platforms.get(rule_group, [])
             self._remove_double_cpe_requirement(rule, group_platforms)
             if not self.cpe_al:
