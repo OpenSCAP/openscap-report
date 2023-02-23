@@ -5,18 +5,15 @@ import logging
 from contextlib import nullcontext as does_not_raise
 
 import pytest
-from lxml import etree
 from lxml.etree import XMLSyntaxError
 
-from openscap_report.scap_results_parser import (ARF_SCHEMAS_PATH,
-                                                 SCAPResultsParser)
+from openscap_report.scap_results_parser import ARF_SCHEMAS_PATH
 from openscap_report.scap_results_parser.data_structures import (Report, Rule,
                                                                  RuleWarning)
 from openscap_report.scap_results_parser.exceptions import \
     NotSupportedReportingFormat
-from openscap_report.scap_results_parser.namespaces import NAMESPACES
-from openscap_report.scap_results_parser.parsers import (ReportParser,
-                                                         RuleParser)
+from openscap_report.scap_results_parser.parsers.report_parser import \
+    ReportParser
 
 from ..constants import (PATH_TO_ARF, PATH_TO_ARF_SCANNED_ON_CONTAINER,
                          PATH_TO_ARF_WITH_MULTI_CHECK,
@@ -33,50 +30,8 @@ from ..constants import (PATH_TO_ARF, PATH_TO_ARF_SCANNED_ON_CONTAINER,
                          PATH_TO_XCCDF_WITH_MULTI_CHECK,
                          PATH_TO_XCCDF_WITHOUT_INFO,
                          PATH_TO_XCCDF_WITHOUT_SYSTEM_DATA, PATH_TO_XML_FILE)
-
-
-def get_parser(file_path):
-    xml_data = None
-    with open(file_path, "r", encoding="utf-8") as xml_report:
-        xml_data = xml_report.read().encode()
-    return SCAPResultsParser(xml_data)
-
-
-def get_root(file_path):
-    xml_data = None
-    with open(file_path, "r", encoding="utf-8") as xml_report:
-        xml_data = xml_report.read().encode()
-    return etree.XML(xml_data)
-
-
-def get_benchmark(root):
-    benchmark_el = root.find(".//xccdf:Benchmark", NAMESPACES)
-    if "Benchmark" in root.tag:
-        benchmark_el = root
-    return benchmark_el
-
-
-def get_test_results(root):
-    return root.find('.//xccdf:TestResult', NAMESPACES)
-
-
-def get_ref_values(root):
-    return {
-        ref_value.get("idref"): ref_value.text
-        for ref_value in root.findall('.//xccdf:set-value', NAMESPACES)
-    }
-
-
-def get_rules(file_path=PATH_TO_ARF):
-    root = get_root(file_path)
-    test_results = get_test_results(root)
-    ref_values = get_ref_values(root)
-    rule_parser = RuleParser(root, test_results, ref_values)
-    return rule_parser.get_rules()
-
-
-DEFAULT_RULES = get_rules()
-DEFAULT_REPORT = get_parser(PATH_TO_ARF).parse_report()
+from ..test_utils import (BASIC_REPORT, DEFAULT_RULES, get_benchmark,
+                          get_parser, get_root, get_rules, get_test_results)
 
 
 @pytest.mark.unit_test
@@ -418,7 +373,7 @@ def test_remediations(rule, remediation_id, scripts):
     )
 ])
 def test_oval_definition_in_rules(rule, oval_def_id, title, description, version):
-    oval_definition = DEFAULT_REPORT.rules[rule].oval_definition
+    oval_definition = BASIC_REPORT.rules[rule].oval_definition
     assert oval_definition.definition_id == oval_def_id
     assert oval_definition.title == title
     assert oval_definition.version == version
