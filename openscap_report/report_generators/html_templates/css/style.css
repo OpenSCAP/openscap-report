@@ -209,3 +209,7 @@ footer {
 .clickable-element:hover {
     text-decoration: underline;
 }
+
+.remediation-clipboard-padding {
+    padding-left: 0px !important;
+}
