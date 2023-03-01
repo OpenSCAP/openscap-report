@@ -201,3 +201,11 @@ footer {
     word-break: break-word;
     hyphens: auto;
 }
+
+.clickable-element {
+    text-decoration: underline dotted;
+}
+
+.clickable-element:hover {
+    text-decoration: underline;
+}
