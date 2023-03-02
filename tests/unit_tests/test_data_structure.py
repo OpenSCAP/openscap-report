@@ -7,18 +7,13 @@ import pytest
 
 from openscap_report.scap_results_parser import MissingProcessableRules
 from openscap_report.scap_results_parser.data_structures import Remediation
-from tests.unit_tests.test_scap_result_parser import get_parser
 
 from ..constants import (PATH_TO_ARF, PATH_TO_ARF_SCANNED_ON_CONTAINER,
                          PATH_TO_SIMPLE_RULE_FAIL_ARF,
                          PATH_TO_SIMPLE_RULE_FAIL_XCCDF,
                          PATH_TO_SIMPLE_RULE_PASS_ARF,
                          PATH_TO_SIMPLE_RULE_PASS_XCCDF, PATH_TO_XCCDF)
-
-
-def get_report():
-    parser = get_parser(PATH_TO_ARF)
-    return parser.parse_report()
+from ..test_utils import get_parser, get_report
 
 
 def remove_all_rules_by_result(report, result=()):

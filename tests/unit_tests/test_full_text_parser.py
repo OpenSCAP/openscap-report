@@ -1,11 +1,9 @@
 import pytest
 from lxml import etree
 
-from openscap_report.scap_results_parser import SCAPResultsParser
 from openscap_report.scap_results_parser.parsers import FullTextParser
 
-from ..constants import (PATH_TO_ARF,
-                         PATH_TO_ARF_REPRODUCING_DANGLING_REFERENCE_TO)
+from ..test_utils import BASIC_REPORT, REPORT_REPRODUCING_DANGLING_REFERENCE_TO
 
 REF_VALUES = {
     "id-1234": "text1",
@@ -27,18 +25,7 @@ def test_replace_sub_tag(tag, return_data):
     assert FULL_TEXT_PARSER.replace_sub_tag(tag) == return_data
 
 
-def get_report(src):
-    with open(src, "r", encoding="utf-8") as report_file:
-        return SCAPResultsParser(report_file.read().encode()).parse_report()
-
-
-BASIC_REPORT = get_report(PATH_TO_ARF)
-REPORT_REPRODUCING_DANGLING_REFERENCE_TO = get_report(
-    PATH_TO_ARF_REPRODUCING_DANGLING_REFERENCE_TO
-)
-
-
-@pytest.mark.integration_test
+@pytest.mark.unit_test
 @pytest.mark.parametrize("report, rule_id, expected_data", [
     (
         REPORT_REPRODUCING_DANGLING_REFERENCE_TO,
@@ -82,5 +69,4 @@ REPORT_REPRODUCING_DANGLING_REFERENCE_TO = get_report(
     ),
 ])
 def test_parsing_of_text(report, rule_id, expected_data):
-    print(repr(report.rules[rule_id].description))
     assert report.rules[rule_id].description == expected_data
