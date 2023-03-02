@@ -8,7 +8,7 @@ build:
         before:
             - pip3 install -r requirements.txt
             - npm i -g eslint
-            - pip3 install isort pylint flake8 coverage
+            - pip3 install isort pylint flake8 coverage jsonschema
     environment:
         python: 3.9.6
     nodes:

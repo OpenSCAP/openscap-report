@@ -3,6 +3,11 @@
 
 from dataclasses import asdict, dataclass
 
+REFERENCE_JSON_KEYS = [
+    "href",
+    "text",
+]
+
 
 @dataclass
 class Reference:

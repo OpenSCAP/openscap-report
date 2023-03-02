@@ -30,3 +30,5 @@ PATH_TO_RULE_AND_CPE_CHECK_XCCDF = Path(__file__).parent / "test_data/xccdf_rule
 PATH_TO_XCCDF_WITHOUT_INFO = Path(__file__).parent / "test_data/xccdf-with-removed-info.xml"
 PATH_TO_XCCDF_WITHOUT_SYSTEM_DATA = Path(__file__).parent / "test_data/xccdf_no_system_data.xml"
 PATH_TO_XCCDF_WITH_MULTI_CHECK = Path(__file__).parent / "test_data/xccdf_multi_check.xml"
+
+PATH_TO_JSON_SCHEMA = Path(__file__).parent / "json_schema_of_report.json"

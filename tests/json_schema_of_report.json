@@ -1,0 +1,311 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "profile_info": {
+            "title": "Profile Info",
+            "type": "object",
+            "properties": {
+                "title": {
+                    "title": "Title",
+                    "type": "string"
+                },
+                "description": {
+                    "title": "Description",
+                    "type": "string"
+                },
+                "profile_id": {
+                    "title": "Profile ID",
+                    "type": "string"
+                },
+                "extends": {
+                    "title": "Extends profile",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "profile_id"
+            ]
+        },
+        "scan_results":{
+            "title": "Results of performed scan",
+            "type": "object",
+            "properties": {
+                "title": {
+                    "title": "Title",
+                    "type": "string"
+                },
+                "identity": {
+                    "title": "Identity",
+                    "type": "string"
+                },
+                "profile_id": {
+                    "title": "Profile ID",
+                    "type": "string"
+                },
+                "target": {
+                    "title": "Target",
+                    "type": "string"
+                },
+                "cpe_platforms": {
+                    "title": "CPE Platforms",
+                    "type": "array",
+                    "items": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "pattern": "^\\#\\w+"
+                            },
+                            {
+                                "type": "string",
+                                "pattern": "[cC][pP][eE]:/[AHOaho]?(:[A-Za-z0-9\\._\\-~%]*){0,6}"
+                            }
+                        ]
+                    }
+                },
+                "scanner": {
+                    "title": "Scanner",
+                    "default": "",
+                    "type": "string"
+                },
+                "scanner_version": {
+                    "title": "Scanner Version",
+                    "default": "",
+                    "type": "string"
+                },
+                "benchmark_url": {
+                    "title": "Benchmark URL",
+                    "default": "",
+                    "type": "string"
+                },
+                "benchmark_id": {
+                    "title": "Benchmark ID",
+                    "pattern": "xccdf_[^_]+_benchmark_.+",
+                    "type": "string"
+                },
+                "benchmark_version": {
+                    "title": "Benchmark Version",
+                    "default": "",
+                    "type": "string"
+                },
+                "start_time": {
+                    "title": "Start Time",
+                    "default": "",
+                    "type": "string"
+                },
+                "end_time": {
+                    "title": "End Time",
+                    "default": "",
+                    "type": "string"
+                },
+                "test_system": {
+                    "title": "Test System",
+                    "default": "",
+                    "type": "string"
+                },
+                "score": {
+                    "title": "Score",
+                    "default": 0.0,
+                    "type": "number"
+                },
+                "score_max": {
+                    "title": "Score Max",
+                    "default": 0.0,
+                    "type": "number"
+                }            
+            },
+            "required": [
+                "title",
+                "identity",
+                "profile_id",
+                "target",
+                "scanner",
+                "scanner_version",
+                "benchmark_url",
+                "benchmark_id",
+                "benchmark_version",
+                "start_time",
+                "end_time",
+                "test_system",
+                "score",
+                "score_max"
+              ]
+        },
+        "rules": {
+            "title": "Rules",
+            "type": "object",
+            "patternProperties": {
+                "xccdf_[^_]+_rule_.+": {
+                    "$ref": "#/definitions/Rule"
+                }
+            }
+        },
+        "references": {
+            "title": "References",
+            "type": "object",
+            "patternProperties": {
+                ".": {
+                    "type": "string"
+                }
+            }
+        },
+        "identifiers": {
+            "title": "Identifiers",
+            "type": "object",
+            "patternProperties": {
+                ".": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Warning": {
+            "title": "Warning",
+            "type": "object",
+            "properties": {
+                "category": {
+                    "title": "Category",
+                    "type": "string"
+                },
+                "text": {
+                    "title": "Text",
+                    "type": "string"
+                }
+            }
+        },
+        "Remediation": {
+            "title": "Remediation",
+            "type": "object",
+            "properties": {
+                "remediation_id": {
+                    "title": "Remediation ID",
+                    "type": "string"
+                },
+                "system": {
+                    "title": "System",
+                    "type": "string"
+                },
+                "complexity": {
+                    "title": "Complexity",
+                    "type": "string"
+                },
+                "disruption": {
+                    "title": "Disruption",
+                    "type": "string"
+                },
+                "strategy": {
+                    "title": "Strategy",
+                    "type": "string"
+                },
+                "fix": {
+                    "title": "Fix",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "remediation_id",
+                "fix"
+            ]
+        },
+        "Rule": {
+            "title": "Rule",
+            "type": "object",
+            "properties": {
+                "rule_id": {
+                    "title": "Rule ID",
+                    "pattern": "xccdf_[^_]+_rule_.+",
+                    "type": "string"
+                },
+                "title": {
+                    "title": "Title",
+                    "type": "string"
+                },
+                "result": {
+                    "title": "Result",
+                    "type": "string"
+                },
+                "time": {
+                    "title": "Time",
+                    "type": "string"
+                },
+                "severity": {
+                    "title": "Severity",
+                    "type": "string"
+                },
+                "identifiers": {
+                    "title": "Identifiers",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "references": {
+                    "title": "References",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "description": {
+                    "title": "Description",
+                    "type": "string"
+                },
+                "rationale": {
+                    "title": "Rationale",
+                    "type": "string"
+                },
+                "warnings": {
+                    "title": "Warnings",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Warning"
+                    }
+                },
+                "platforms": {
+                    "title": "Platforms",
+                    "type": "array",
+                    "items": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "pattern": "^\\#\\w+"
+                            },
+                            {
+                                "type": "string",
+                                "pattern": "[cC][pP][eE]:/[AHOaho]?(:[A-Za-z0-9\\._\\-~%]*){0,6}"
+                            }
+                        ]
+                    }
+                },
+                "oval_definition_id": {
+                    "title": "Oval Definition ID",
+                    "pattern": "(oval:[A-Za-z0-9_\\-\\.]+:def:[1-9][0-9]*)|^$"
+                },
+                "messages": {
+                    "title": "Messages",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "remediations": {
+                    "title": "Remediations",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Remediation"
+                    }
+                }
+            },
+            "required": [
+                "rule_id",
+                "result",
+                "time",
+                "severity"
+            ]
+        }
+    },
+    "required": [
+        "scan_result",
+        "rules"
+    ]
+}

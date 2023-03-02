@@ -3,6 +3,15 @@
 
 from dataclasses import asdict, dataclass
 
+REMEDIATION_JSON_KEYS = [
+    "remediation_id",
+    "system",
+    "complexity",
+    "disruption",
+    "strategy",
+    "fix",
+]
+
 
 @dataclass
 class Remediation:
