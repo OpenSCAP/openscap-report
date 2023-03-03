@@ -2,7 +2,12 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 from dataclasses import replace
-from functools import cache
+
+try:
+    from functools import cache
+except ImportError:
+    from functools import lru_cache
+    cache = lru_cache(maxsize=None)
 
 from lxml import etree
 
