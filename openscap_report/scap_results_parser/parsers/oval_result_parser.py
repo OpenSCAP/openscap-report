@@ -3,6 +3,9 @@
 
 import logging
 import uuid
+from dataclasses import dataclass
+
+from lxml.etree import Element
 
 from ..data_structures import OvalNode
 from ..exceptions import MissingOVALResult
@@ -13,18 +16,19 @@ STR_TO_BOOL = {'true': True, 'false': False}
 STR_NEGATION_BOOL = {'true': 'false', 'false': 'true'}
 
 
+@dataclass
+class OVALReport:
+    oval_report_id: str
+    oval_report_element: Element
+    oval_results_element: Element
+    parser_info_of_oval_test: OVALTestInfoParser
+
+
 class OVALResultParser:
-    def __init__(self, root, platform_to_oval_cpe_id):
+    def __init__(self, root):
         self.root = root
-        self.platform_to_oval_cpe_id = platform_to_oval_cpe_id
         self.oval_reports = self._get_oval_reports()
         logging.info(self.oval_reports)
-        self.oval_results = self._get_oval_results("oval0")
-        self.parser_info_of_test = OVALTestInfoParser(self.oval_reports.get("oval0", None))
-        self.oval_cpe_results = self._get_oval_results("oval1")
-        self.parser_info_of_cpe_test = None
-        if "oval1" in self.oval_reports:
-            self.parser_info_of_cpe_test = OVALTestInfoParser(self.oval_reports["oval1"])
 
     def _get_oval_reports(self):
         oval_reports = {}
@@ -32,50 +36,39 @@ class OVALResultParser:
         if reports is None:
             raise MissingOVALResult("all_OVAL_results")
 
-        for report in reports:
-            report_id = report.get("id")
+        for report_element in reports:
+            report_id = report_element.get("id")
             if "oval" in report_id:
-                oval_reports[report_id] = report
+                oval_results = self._get_oval_results(report_element)
+                parser_info_of_test = OVALTestInfoParser(report_element)
+                oval_reports[report_id] = OVALReport(
+                    report_id,
+                    report_element,
+                    oval_results,
+                    parser_info_of_test
+                )
         return oval_reports
 
-    def _get_oval_results(self, oval_id):
-        oval_report = self.oval_reports.get(oval_id, None)
-        if oval_report is None:
-            return None
+    def _get_oval_results(self, oval_report):
         return oval_report.find(
             ('.//XMLSchema:oval_results/XMLSchema:results/'
              'XMLSchema:system/XMLSchema:definitions'), NAMESPACES)
 
-    def get_oval_trees(self):
-        dict_of_oval_definitions = {}
-        for definition in self.oval_results:
-            id_definition = definition.get('definition_id')
-            dict_of_oval_definitions[id_definition] = self._build_node(
-                definition[0],
-                "Definition",
-                id_definition
-            )
-        return self._fill_extend_definition(dict_of_oval_definitions)
-
-    def get_oval_cpe_trees(self):
-        dict_of_oval_definitions = {}
-        if self.oval_cpe_results is None:
-            return dict_of_oval_definitions
-
-        for definition in self.oval_cpe_results:
-            id_definition = definition.get('definition_id')
-            dict_of_oval_definitions[id_definition] = self._build_node(
-                definition[0],
-                "OVAL definition of CPE platform",
-                id_definition,
-                True
-            )
-        oval_cpe_trees = self._fill_extend_definition(dict_of_oval_definitions)
-        out = {}
-        for oval_id in self.platform_to_oval_cpe_id.values():
-            if oval_id in oval_cpe_trees:
-                out[oval_id] = oval_cpe_trees[oval_id]
-        return oval_cpe_trees
+    def get_oval_trees_by_oval_reports(self):
+        dict_of_oval_reports = {}
+        for report_id, report in self.oval_reports.items():
+            dict_of_oval_results = {}
+            for definition in report.oval_results_element:
+                id_definition = definition.get('definition_id')
+                criteria_result = definition[0]
+                dict_of_oval_results[id_definition] = self._build_node(
+                    criteria_result,
+                    "Definition",
+                    id_definition,
+                    report_id
+                )
+            dict_of_oval_reports[report_id] = self._fill_extend_definition(dict_of_oval_results)
+        return dict_of_oval_reports
 
     @staticmethod
     def _get_negation(node):
@@ -107,13 +100,11 @@ class OVALResultParser:
             tag="Extend definition",
         )
 
-    def _get_test_node(self, child, is_cpe=False):
+    def _get_test_node(self, child, oval_report_id):
         negation = self._get_negation(child)
         result_of_node = self._get_result(negation, child)
         test_id = child.get('test_ref')
-        parser_of_test_info = self.parser_info_of_test
-        if is_cpe:
-            parser_of_test_info = self.parser_info_of_cpe_test
+        parser_of_test_info = self.oval_reports[oval_report_id].parser_info_of_oval_test
         return OvalNode(
             node_id=test_id,
             node_type="value",
@@ -123,7 +114,7 @@ class OVALResultParser:
             test_info=parser_of_test_info.get_test_info(test_id),
         )
 
-    def _build_node(self, tree, tag, id_definition, is_cpe=False):
+    def _build_node(self, tree, tag, id_definition, oval_report_id):
         negation = self._get_negation(tree)
         node = OvalNode(
             node_id=id_definition,
@@ -140,14 +131,14 @@ class OVALResultParser:
                         child,
                         "Criteria",
                         f"no-id-criteria-{uuid.uuid4()}",
-                        is_cpe
+                        oval_report_id
                     )
                 )
             else:
                 if child.get('definition_ref') is not None:
                     node.children.append(self._get_extend_definition_node(child))
                 else:
-                    node.children.append(self._get_test_node(child, is_cpe))
+                    node.children.append(self._get_test_node(child, oval_report_id))
         return node
 
     def _fill_extend_definition(self, dict_of_oval_definitions):

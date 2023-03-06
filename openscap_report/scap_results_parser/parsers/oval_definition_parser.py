@@ -8,11 +8,10 @@ from .oval_result_parser import OVALResultParser
 
 
 class OVALDefinitionParser:
-    def __init__(self, root, platform_to_oval_cpe_id):
+    def __init__(self, root):
         self.root = root
-        self.oval_result_parser = OVALResultParser(self.root, platform_to_oval_cpe_id)
-        self.oval_trees = self.oval_result_parser.get_oval_trees()
-        self.oval_cpe_trees = self.oval_result_parser.get_oval_cpe_trees()
+        self.oval_result_parser = OVALResultParser(self.root)
+        self.oval_trees_by_oval_reports = self.oval_result_parser.get_oval_trees_by_oval_reports()
 
         self.oval_reports = self.oval_result_parser.oval_reports
         self.oval_definitions = self._get_xml_elements_of_oval_definitions()
@@ -20,7 +19,7 @@ class OVALDefinitionParser:
     def _get_xml_elements_of_oval_definitions(self):
         out = {}
         for oval, oval_report in self.oval_reports.items():
-            out[oval] = oval_report.find(
+            out[oval] = oval_report.oval_report_element.find(
                 './/oval-definitions:oval_definitions/oval-definitions:definitions', NAMESPACES)
         return out
 
@@ -90,11 +89,9 @@ class OVALDefinitionParser:
                 criteria_dict["child_criteria"].append(self._get_test_criteria(criterion))
         return criteria_dict
 
-    def _add_oval_tree_to_definition(self, definitions, oval):
+    def _add_oval_tree_to_definition(self, definitions, oval_report_id):
+        oval_tree_source = self.oval_trees_by_oval_reports.get(oval_report_id, {})
         for definition_id in definitions:
-            oval_tree_source = self.oval_trees
-            if oval == "oval1":
-                oval_tree_source = self.oval_cpe_trees
             self._set_oval_tree_to_definition(definitions, definition_id, oval_tree_source)
 
     def _set_oval_tree_to_definition(self, definitions, definition_id, oval_tree_source):
@@ -126,11 +123,9 @@ class OVALDefinitionParser:
                 self._fill_oval_tree_with_comments(
                     oval_node, criterion.get("extend_definition"), criteria_dict)
 
-    def _add_comments_to_oval_tree(self, dict_of_criteria, oval):
+    def _add_comments_to_oval_tree(self, dict_of_criteria, oval_report_id):
+        oval_tree_source = self.oval_trees_by_oval_reports.get(oval_report_id, {})
         for id_ in dict_of_criteria:
-            oval_tree_source = self.oval_trees
-            if oval == "oval1":
-                oval_tree_source = self.oval_cpe_trees
 
             if id_ not in oval_tree_source:
                 continue

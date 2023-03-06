@@ -25,9 +25,7 @@ class OVALAndCPETreeBuilder:  # pylint: disable=R0902
         try:
             self.cpe_al_parser = CPEApplicabilityLanguageParser(self.root)
             self.platform_to_oval_cpe_id = self.cpe_al_parser.platform_to_oval_cpe_id
-            self.oval_definition_parser = OVALDefinitionParser(
-                self.root, self.platform_to_oval_cpe_id
-            )
+            self.oval_definition_parser = OVALDefinitionParser(self.root)
             self.oval_definitions = self.oval_definition_parser.get_oval_definitions()
             self.oval_cpe_definitions = self.oval_definition_parser.get_oval_cpe_definitions()
             self._load_cpe_platforms()
