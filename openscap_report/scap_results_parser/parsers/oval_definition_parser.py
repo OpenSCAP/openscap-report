@@ -63,10 +63,10 @@ class OVALDefinitionParser:
         return definitions
 
     def get_oval_definitions(self):
-        return self._get_oval_definitions("oval0")
-
-    def get_oval_cpe_definitions(self):
-        return self._get_oval_definitions("oval1")
+        oval_definitions_by_reports = {}
+        for report_id in self.oval_trees_by_oval_reports:
+            oval_definitions_by_reports[report_id] = self._get_oval_definitions(report_id)
+        return oval_definitions_by_reports
 
     def _get_test_criteria(self, criterion):
         out = {"comment": criterion.get("comment")}
