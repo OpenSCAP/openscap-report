@@ -146,6 +146,18 @@ class RuleParser():
             msg = "The OVAL graph of the rule as it was displayed before the fix was performed."
             rules[rule_id].messages.append(msg)
 
+    @staticmethod
+    def set_oval_definition_id_if_is_none(rule, check_name):
+        if rule.oval_definition_id is None:
+            rule.oval_definition_id = check_name
+
+    @staticmethod
+    def get_oval_check_href_name(rule_result_el):
+        check_ref = rule_result_el.find('.//xccdf:check/xccdf:check-content-ref', NAMESPACES)
+        if check_ref is None:
+            return None, None
+        return check_ref.get("href").lstrip("#"), check_ref.get("name")
+
     def _insert_rules_results(self, rules):
         rules_results = self.test_results.findall('.//xccdf:rule-result', NAMESPACES)
         for rule_result in rules_results:
@@ -153,6 +165,11 @@ class RuleParser():
             rules[rule_id].time = rule_result.get('time')
             rules[rule_id].result = rule_result.find('.//xccdf:result', NAMESPACES).text
             rules[rule_id].weight = float(rule_result.get('weight'))
+
+            rules[rule_id].oval_reference, check_name = self.get_oval_check_href_name(
+                rule_result
+            )
+            self.set_oval_definition_id_if_is_none(rules[rule_id], check_name)
 
             messages = rule_result.findall('.//xccdf:message', NAMESPACES)
             if messages is not None:

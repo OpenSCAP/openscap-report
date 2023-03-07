@@ -47,6 +47,7 @@ class Rule:  # pylint: disable=R0902
     warnings: List[RuleWarning] = field(default_factory=list)
     platforms: List[str] = field(default_factory=list)
     oval_definition_id: str = None
+    oval_reference: str = None
     oval_definition: OvalDefinition = None
     messages: List[str] = field(default_factory=list)
     remediations: List[Remediation] = field(default_factory=list)
