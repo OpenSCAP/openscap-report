@@ -35,3 +35,12 @@ class ProfileInfo:
         return [
             cpe_id for cpe_id, is_satisfy in self.cpe_platforms_for_profile.items() if is_satisfy
         ]
+
+    def deselect_rules(self, rule_ids):
+        for rule_id in rule_ids:
+            if rule_id in self.selected_rules_ids:
+                self.selected_rules_ids.remove(rule_id)
+
+    def select_rules(self, rule_ids):
+        if len(self.selected_rules_ids) > 0:
+            self.selected_rules_ids.extend(rule_ids)

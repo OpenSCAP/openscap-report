@@ -100,4 +100,8 @@ class SCAPResultsParser():
         self._debug_show_rules(rules)
         report.rules = rules
         report.groups = groups
+
+        report.profile_info.select_rules(rule_parser.to_select_rule_ids)
+        report.profile_info.deselect_rules(rule_parser.to_deselect_rule_ids)
+
         return report
