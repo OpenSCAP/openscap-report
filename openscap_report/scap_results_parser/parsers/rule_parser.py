@@ -1,6 +1,8 @@
 # Copyright 2022, Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+from dataclasses import replace
+
 from ..data_structures import Identifier, Reference, Rule, RuleWarning
 from ..namespaces import NAMESPACES
 from .full_text_parser import FullTextParser
@@ -13,6 +15,8 @@ class RuleParser():
         self.test_results = test_results
         self.full_text_parser = FullTextParser(ref_values)
         self.remediation_parser = RemediationParser(ref_values)
+        self.to_select_rule_ids = set()
+        self.to_deselect_rule_ids = set()
 
     @staticmethod
     def _get_references(rule):
@@ -178,6 +182,20 @@ class RuleParser():
                     rules[rule_id].messages.append(message.text)
                 self._improve_result_of_remedied_rule(rule_id, rules)
             self._add_message_about_oval(rule_id, rules)
+
+            if rules[rule_id].multi_check:
+                self._create_new_multi_check_rule(rules, rule_id, check_name)
+
+    def _create_new_multi_check_rule(self, rules, rule_id, check_name):
+        self.to_deselect_rule_ids.add(rule_id)
+        new_rule_id = f"{rule_id}-{check_name}"
+        changes = {
+            "rule_id": new_rule_id,
+            "title": f"{rules[rule_id].title} ({check_name})",
+            "oval_definition_id": check_name,
+        }
+        rules[new_rule_id] = replace(rules[rule_id], **changes)
+        self.to_select_rule_ids.add(new_rule_id)
 
     def get_rules(self):
         rules = {}
