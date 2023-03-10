@@ -17,6 +17,7 @@ RULE_JSON_KEYS = [
     "result",
     "time",
     "severity",
+    "weight",
     "identifiers",
     "references",
     "description",
@@ -37,6 +38,7 @@ class Rule:  # pylint: disable=R0902
     multi_check: bool = False
     time: str = ""
     severity: str = ""
+    weight: float = 0.0
     identifiers: list[Identifier] = field(default_factory=list)
     references: list[Reference] = field(default_factory=list)
     description: str = ""
