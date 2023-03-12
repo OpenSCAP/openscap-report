@@ -152,6 +152,7 @@ class RuleParser():
             rule_id = rule_result.get('idref')
             rules[rule_id].time = rule_result.get('time')
             rules[rule_id].result = rule_result.find('.//xccdf:result', NAMESPACES).text
+            rules[rule_id].weight = float(rule_result.get('weight'))
 
             messages = rule_result.findall('.//xccdf:message', NAMESPACES)
             if messages is not None:
