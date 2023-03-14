@@ -16,6 +16,7 @@ OVAL_DEFINITION_JSON_KEYS = [
 @dataclass
 class OvalDefinition:
     definition_id: str
+    definition_class: str
     title: str
     description: str = ""
     version: str = ""
