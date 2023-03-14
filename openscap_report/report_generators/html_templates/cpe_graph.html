@@ -61,10 +61,10 @@
     {%- endif %}
 </div>
 {%- if rule.cpe_al -%}
-<div id="cpe_al_tree_of_rule_{{ key }}_{{ rule.rule_id | replace('.', '') }}" is_rendered="false" data='{{ platform.logical_test.as_dict() | tojson }}'></div>
+<div id="cpe_al_tree_of_rule_{{ key }}_{{ rule.rule_id | to_jquery_complaint_id }}" is_rendered="false" data='{{ platform.logical_test.as_dict() | tojson }}'></div>
 {%- endif %}
 {%- if rule.cpe_oval_dict -%}
-<div id="cpe_tree_of_rule_{{ rule.rule_id | replace('.', '') }}" is_rendered="false" data='{{ platform.as_dict() | tojson }}'></div>
+<div id="cpe_tree_of_rule_{{ rule.rule_id | to_jquery_complaint_id }}" is_rendered="false" data='{{ platform.as_dict() | tojson }}'></div>
 {%- endif %}
 </td>
 </tr>
