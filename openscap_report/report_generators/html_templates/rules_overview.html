@@ -41,8 +41,11 @@
             </td>
 
             <td role="cell" id="title_{{ rule.rule_id }}" class="rule-title" data-label="Rule">
-                <span class="pf-c-table__text">{{ rule_title }}</span>
+                <button class="pf-c-button pf-m-plain clickable-element" onclick="show_rule_detail_after_click_on_rule_title(this);">
+                    <span class="pf-c-table__text">{{ rule_title }}</span>
+                </button>
             </td>
+
             <td role="cell" class="rule-severity" data-label="Severity">
                 {% if rule.result not in ("pass", "fixed") and rule.severity == "low" %}
                 <span class="pf-c-label pf-m-blue">
