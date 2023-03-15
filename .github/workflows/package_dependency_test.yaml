@@ -22,7 +22,8 @@ jobs:
       - name: Test parameter -h
         run: oscap-report -h
       - name: Test of the basic function
-        run: ./test_of_the_basic_function.sh
+        working-directory: ./tests
+        run: ./smoke.sh
 
   test-centos-stream-8:
     name: Test on CentOS Stream 8 (Container)
@@ -41,7 +42,8 @@ jobs:
       - name: Test parameter -h
         run: oscap-report -h
       - name: Test of the basic function
-        run: ./test_of_the_basic_function.sh
+        working-directory: ./tests
+        run: ./smoke.sh
 
   test-fedora-latest:
     name: Test on Fedora latest (Container)
@@ -60,7 +62,8 @@ jobs:
       - name: Test parameter -h
         run: oscap-report -h
       - name: Test of the basic function
-        run: ./test_of_the_basic_function.sh
+        working-directory: ./tests
+        run: ./smoke.sh
 
   test-fedora-rawhide:
     name: Test on Fedora Rawhide (Container)
@@ -81,4 +84,5 @@ jobs:
       - name: Test parameter -h
         run: oscap-report -h
       - name: Test of the basic function
-        run: ./test_of_the_basic_function.sh
+        working-directory: ./tests
+        run: ./smoke.sh
