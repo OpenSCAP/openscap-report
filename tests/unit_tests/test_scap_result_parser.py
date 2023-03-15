@@ -316,7 +316,7 @@ def test_warnings(rule, result):
     )
 ])
 def test_remediations(rule, remediation_id, scripts):
-    if DEFAULT_RULES[rule].remediations == scripts is None:
+    if DEFAULT_RULES[rule].remediations is scripts is None:
         return
 
     for remediation in DEFAULT_RULES[rule].remediations:
