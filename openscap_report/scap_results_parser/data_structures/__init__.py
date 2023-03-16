@@ -7,7 +7,7 @@ from .group import Group
 from .identifier import Identifier
 from .oval_definition import OvalDefinition
 from .oval_node import OvalNode
-from .oval_object import OvalObject
+from .oval_object import OvalObject, OvalObjectMessage
 from .oval_reference import OvalReference
 from .oval_result_eval import (EMPTY_RESULT, FULL_RESULT_TO_SHORT_RESULT,
                                SHORT_RESULT_TO_FULL_RESULT, OvalResult)

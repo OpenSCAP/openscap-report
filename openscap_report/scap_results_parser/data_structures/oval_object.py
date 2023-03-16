@@ -5,9 +5,16 @@ from dataclasses import asdict, dataclass, field
 
 
 @dataclass
+class OvalObjectMessage:
+    level: str
+    text: str
+
+
+@dataclass
 class OvalObject:
     object_id: str
     flag: str = ""
+    message: OvalObjectMessage = None
     object_type: str = ""
     object_data: list[dict[str, str]] = field(default_factory=list)
 
