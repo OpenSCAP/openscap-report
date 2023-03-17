@@ -6,6 +6,8 @@ OpenSCAP Report Generator
     :glob:
     :caption: User's Manual
 
+    manual/installation*
+    manual/usage*
     manual/*
 
 .. toctree::
