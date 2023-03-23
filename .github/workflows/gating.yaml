@@ -1,4 +1,4 @@
-name: package_dependency_test
+name: "Gating (deps, build, smoke)"
 on:
   push:
     branches: ["main", "*"]

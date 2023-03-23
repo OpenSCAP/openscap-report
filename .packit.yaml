@@ -40,14 +40,14 @@ jobs:
 
 - job: tests
   trigger: pull_request
-  identifier: tests
+  identifier: tests-all
   targets:
     - fedora-all
     - epel-9
 
 - job: copr_build
   trigger: pull_request
-  identifier: build
+  identifier: build-all
   targets:
     - fedora-all
     - epel-9
