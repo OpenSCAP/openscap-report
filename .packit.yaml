@@ -6,6 +6,10 @@ specfile_path: openscap-report.spec
 # add or remove files that should be synced
 files_to_sync:
     - .packit.yaml
+    - src: plans/
+      dest: plans/
+    - src: .fmf/
+      dest: .fmf/
 
 # name in upstream package repository or registry (e.g. in PyPI)
 upstream_package_name: openscap-report
@@ -32,14 +36,39 @@ jobs:
   trigger: release
   dist_git_branches:
     - fedora-rawhide
-
-- job: copr_build
-  targets:
-    - fedora-all-x86_64
-    - epel-9-x86_64
-  trigger: pull_request
+    - epel-8
 
 - job: tests
-  targets:
-    - fedora-all-x86_64
   trigger: pull_request
+  identifier: tests-all
+  targets:
+    - fedora-all
+    - epel-9
+
+- job: copr_build
+  trigger: pull_request
+  identifier: build-all
+  targets:
+    - fedora-all
+    - epel-9
+
+# Until Packit has implicit builds
+# for tests we can't enable epel-8
+# as it messes with test jobs.
+# The skip_build: true doesn't really
+# solve the proplem.
+
+#- job: tests
+#  trigger: pull_request
+#  identifier: epel-tests
+#  skip_build: true
+#  targets:
+#    - epel-9
+#    - epel-8
+
+#- job: copr_build
+#  trigger: pull_request
+#  specfile_path: spec/rhel8/openscap-report.spec
+#  identifier: epel8
+#  targets:
+#    - epel-8

@@ -1,4 +1,4 @@
-name: package_dependency_test
+name: "Gating (deps, build, smoke)"
 on:
   push:
     branches: ["main", "*"]
@@ -22,7 +22,28 @@ jobs:
       - name: Test parameter -h
         run: oscap-report -h
       - name: Test of the basic function
-        run: ./test_of_the_basic_function.sh
+        working-directory: ./tests
+        run: ./smoke.sh
+
+  test-centos-stream-8:
+    name: Test on CentOS Stream 8 (Container)
+    runs-on: ubuntu-latest
+    container:
+      image: quay.io/centos/centos:stream8
+    steps:
+      - name: Install Deps
+        run: dnf install -y python38 python38-devel python38-setuptools rpm-build
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build
+        run: python3.8 setup.py bdist_rpm --requires=python38-lxml,python38-jinja2 --build-requires=python38-devel,python38-setuptools --python=python3.8
+      - name: RPM install
+        run: dnf install -y ./dist/openscap-report-*.noarch.rpm
+      - name: Test parameter -h
+        run: oscap-report -h
+      - name: Test of the basic function
+        working-directory: ./tests
+        run: ./smoke.sh
 
   test-fedora-latest:
     name: Test on Fedora latest (Container)
@@ -41,7 +62,8 @@ jobs:
       - name: Test parameter -h
         run: oscap-report -h
       - name: Test of the basic function
-        run: ./test_of_the_basic_function.sh
+        working-directory: ./tests
+        run: ./smoke.sh
 
   test-fedora-rawhide:
     name: Test on Fedora Rawhide (Container)
@@ -62,4 +84,5 @@ jobs:
       - name: Test parameter -h
         run: oscap-report -h
       - name: Test of the basic function
-        run: ./test_of_the_basic_function.sh
+        working-directory: ./tests
+        run: ./smoke.sh

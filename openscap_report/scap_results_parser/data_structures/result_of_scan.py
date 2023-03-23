@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 from dataclasses import asdict, dataclass, field
+from typing import List
 
 SCAN_JSON_KEYS = [
     "title",
@@ -28,7 +29,7 @@ class ResultOfScan:  # pylint: disable=R0902
     identity: str = ""
     profile_id: str = ""
     target: str = ""
-    cpe_platforms: list[str] = field(default_factory=list)
+    cpe_platforms: List[str] = field(default_factory=list)
     scanner: str = ""
     scanner_version: str = ""
     benchmark_url: str = ""

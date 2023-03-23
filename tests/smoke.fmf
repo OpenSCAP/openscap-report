@@ -1,0 +1,7 @@
+require:
+  - openscap-report
+summary: Basic smoke test
+test: ./smoke.sh
+tag:
+  - smoke
+tier: 0

@@ -5,6 +5,7 @@ import json
 import logging
 from collections import Counter
 from dataclasses import asdict, dataclass, field
+from typing import List
 
 from .oval_result_eval import (EMPTY_RESULT, FULL_RESULT_TO_SHORT_RESULT,
                                SHORT_RESULT_TO_FULL_RESULT, OvalResult)
@@ -19,7 +20,7 @@ class OvalNode:  # pylint: disable=R0902
     negation: bool = False
     comment: str = ""
     tag: str = ""
-    children: list['OvalNode'] = field(default_factory=list)
+    children: List['OvalNode'] = field(default_factory=list)
     test_info: OvalTest = None
 
     def as_dict(self):

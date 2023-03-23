@@ -11,16 +11,17 @@ URL:            https://github.com/OpenSCAP/%{name}
 Source0:        https://github.com/OpenSCAP/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.gz
 
 BuildArch:      noarch
-
-BuildRequires:  python3-devel
+BuildRequires:  python38-devel
+BuildRequires:  python38-rpm-macros
 BuildRequires:  python3-sphinx
 BuildRequires:  python3-sphinx_rtd_theme
 
 Provides:       bundled(patternfly) = 4
 
-Requires:       python3-lxml
-Requires:       redhat-display-fonts
-Requires:       redhat-text-fonts
+Requires:       python38-lxml
+Requires:       python38-jinja2
+
+%{?python_enable_dependency_generator}
 
 %global _description %{expand:
 This package provides a command-line tool for generating
@@ -28,33 +29,27 @@ human-readable reports from SCAP XCCDF and ARF results.}
 
 %description %_description
 
-
 %prep
 %autosetup -p1 -n %{name}-%{version}
 
 
-%generate_buildrequires
-%pyproject_buildrequires -t
-
-
 %build
-%pyproject_wheel
+%py3_build
 sphinx-build -b man docs _build_docs
 
 
 
 %install
-%pyproject_install
-%pyproject_save_files %{pymodule_name}
+%py3_install
 install -m 0644 -Dt %{buildroot}%{_mandir}/man1 _build_docs/oscap-report.1
 
 
-%check
-%tox
 
-%files -f %{pyproject_files}
+%files -n %{name}
 %{_mandir}/man1/oscap-report.*
 %{_bindir}/oscap-report
+%{python3_sitelib}/%{pymodule_name}/
+%{python3_sitelib}/%{pymodule_name}-%{version}*
 %exclude %{python3_sitelib}/tests/
 %license LICENSE
 
