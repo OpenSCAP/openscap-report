@@ -1,7 +1,8 @@
 # Copyright 2022, Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from ..data_structures import OvalObject
+from ..data_structures import OvalObject, OvalObjectMessage
+from ..namespaces import NAMESPACES
 from .shared_static_methods_of_parser import SharedStaticMethodsOfParser
 
 MAX_MESSAGE_LEN = 99
@@ -59,12 +60,22 @@ class OVALObjectParser:
                 item[key] = element.text
         return item
 
+    def _get_oval_message(self, xml_collected_object):
+        message = xml_collected_object.find(".//oval-characteristics:message", NAMESPACES)
+        if message is not None:
+            return OvalObjectMessage(message.get("level", ""), message.text)
+        return None
+
     def _get_collected_objects_info(self, xml_collected_object, xml_object):
         object_dict = {
             "object_id": xml_collected_object.get('id'),
             "flag": xml_collected_object.get('flag'),
             "object_type": SharedStaticMethodsOfParser.get_key_of_xml_element(xml_object),
         }
+        message = self._get_oval_message(xml_collected_object)
+        if message is not None:
+            object_dict["message"] = message
+
         if len(xml_collected_object) == 0:
             object_dict["object_data"] = [self._get_object_items(xml_object, xml_collected_object)]
         else:

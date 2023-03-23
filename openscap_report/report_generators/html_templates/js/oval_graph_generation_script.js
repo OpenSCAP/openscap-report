@@ -608,6 +608,37 @@ function generate_OVAL_state(test_info, div) {
     table.appendChild(get_table_body(objects));
 }
 
+
+function generate_OVAL_error_message(test_info, div) {
+    div.appendChild(BR.cloneNode());
+    div.appendChild(BR.cloneNode());
+
+    const alert_div = DIV.cloneNode();
+    alert_div.className = "pf-c-alert pf-m-danger pf-m-inline";
+    div.appendChild(alert_div);
+
+    const icon_div = DIV.cloneNode();
+    icon_div.className = "pf-c-alert__icon";
+    alert_div.appendChild(icon_div);
+
+    const icon = ICON.cloneNode();
+    icon.className = "fas fa-fw fa-exclamation-circle";
+    icon.setAttribute("aria-hidden", "true");
+    icon_div.appendChild(icon);
+
+    const title_div = DIV.cloneNode();
+    title_div.className = "pf-c-alert__title";
+    title_div.textContent = test_info.oval_object.message.level;
+    alert_div.appendChild(title_div);
+
+    const description_div = DIV.cloneNode();
+    description_div.className = "pf-c-alert__description";
+    description_div.textContent = test_info.oval_object.message.text;
+    alert_div.appendChild(description_div);
+
+    div.appendChild(BR.cloneNode());
+}
+
 function get_OVAL_test_info(test_info) {
     const div = DIV.cloneNode();
     div.className = "pf-c-accordion__expanded-content-body";
@@ -617,6 +648,10 @@ function get_OVAL_test_info(test_info) {
     }
     if (test_info.check_existence && test_info.check_existence in CHECK_EXISTENCE_ATTRIBUTE_TO_TEXT) {
         div.appendChild(get_label("pf-m-cyan", `Check existence atribute: ${test_info.check_existence}\u00A0`, undefined, "", "", CHECK_EXISTENCE_ATTRIBUTE_TO_TEXT[test_info.check_existence]));
+    }
+
+    if (test_info.oval_object.message !== null) {
+        generate_OVAL_error_message(test_info, div);
     }
 
     generate_OVAL_object(test_info, div);
