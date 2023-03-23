@@ -120,6 +120,10 @@ function show_rule_detail(self) { // eslint-disable-line no-unused-vars
     element_to_show.classList.toggle('pf-m-expanded');
 }
 
+function show_rule_detail_after_click_on_rule_title(self) { // eslint-disable-line no-unused-vars
+    show_rule_detail(self.parentElement.previousSibling.firstChild);
+}
+
 const selector = ".pf-c-clipboard-copy__text";
 document.querySelectorAll("#copy").forEach(el => el.addEventListener('click', () => {
     const el_with_text = el.parentElement.parentElement.parentElement.querySelector(selector);

@@ -5,7 +5,7 @@
 <tr role="row">
     <td colspan="2" role="cell">
         <details>
-            <summary>Remediation {{ remediation.get_type() }}</summary>
+            <summary><span class="clickable-element">Remediation {{ remediation.get_type() }}</span></summary>
             <table class="pf-c-table pf-m-grid-md" role="grid">
                 <thead>
                     <tr role="row">
@@ -34,7 +34,18 @@
                     {% endif %}
                 </tbody>
             </table>
-            <pre>{{ remediation.fix | e }}</pre>
+            <div class="pf-c-clipboard-copy pf-m-inline pf-m-block remediation-clipboard-padding">
+                <span class="pf-c-clipboard-copy__actions">
+                  <span class="pf-c-clipboard-copy__actions-item">
+                    <button id="copy" class="pf-c-button pf-m-plain" type="button" aria-label="Copy remediation to clipboard">
+                      <i class="fas fa-copy" aria-hidden="true"></i> Copy remediation
+                    </button>
+                  </span>
+                </span>
+                <span class="pf-c-clipboard-copy__text">
+                    <pre>{{ remediation.fix | e }}</pre>
+                </span>
+            </div>
         </details>
     </td>
 </tr>
