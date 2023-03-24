@@ -1,7 +1,6 @@
 # Copyright 2022, Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-import argparse
 import subprocess
 import tempfile
 from io import BytesIO
@@ -15,21 +14,12 @@ from openscap_report.scap_results_parser import (ARF_SCHEMAS_PATH,
                                                  SCAPResultsParser)
 
 from ..constants import PATH_TO_ARF, PATH_TO_EMPTY_FILE
+from ..test_utils import get_fake_args
 
 PATH_TO_RESULT_FILE = Path(tempfile.gettempdir()) / "oscap-report-tests_result.html"
 OSCAP_REPORT_COMMAND = "oscap-report"
 CAT_ARF_FILE = ["cat", str(PATH_TO_ARF)]
 
-
-def get_fake_args():
-    # pylint: disable=bad-option-value,R1732
-    input_file = open(PATH_TO_ARF, "r", encoding="utf-8")
-    output_file = open(PATH_TO_RESULT_FILE, "wb")
-    return argparse.Namespace(
-        FILE=input_file, output=output_file,
-        log_file=None, log_level="WARNING", format="HTML",
-        debug=[""],
-    )
 
 
 @pytest.mark.unit_test

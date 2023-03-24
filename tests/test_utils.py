@@ -1,7 +1,10 @@
 # Copyright 2022, Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+import argparse
+import tempfile
 from dataclasses import replace
+from pathlib import Path
 
 try:
     from functools import cache
@@ -21,6 +24,8 @@ from openscap_report.scap_results_parser.parsers import (
 from .constants import (PATH_TO_ARF,
                         PATH_TO_ARF_REPRODUCING_DANGLING_REFERENCE_TO)
 from .unit_tests.test_oval_tree_eval import OVAL_TREE_TRUE
+
+PATH_TO_RESULT_FILE = Path(tempfile.gettempdir()) / "oscap-report-tests_result.html"
 
 
 @cache
@@ -104,3 +109,14 @@ def get_dummy_cpe_oval_definition():
         "oval:ssg-installed_env_has_zipl_package:def:1": dummy_oval_definition,
         "oval:ssg-system_boot_mode_is_uefi:def:1": dummy_oval_definition,
     }
+
+
+def get_fake_args():
+    # pylint: disable=bad-option-value,R1732
+    input_file = open(PATH_TO_ARF, "r", encoding="utf-8")
+    output_file = open(PATH_TO_RESULT_FILE, "wb")
+    return argparse.Namespace(
+        FILE=input_file, output=output_file,
+        log_file=None, log_level="WARNING", format="HTML",
+        debug=[""],
+    )
