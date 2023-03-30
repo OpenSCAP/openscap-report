@@ -5,6 +5,8 @@ from ..exceptions import ExceptionNoCPEApplicabilityLanguage
 from ..namespaces import NAMESPACES
 from .full_text_parser import FullTextParser
 
+TEXT_TO_BOOL = {"true": True, "false": False, "": False}
+
 
 class CPEApplicabilityLanguageParser:
     def __init__(self, root):
@@ -51,8 +53,8 @@ class CPEApplicabilityLanguageParser:
 
     def get_logical_test(self, logical_test_el):
         operator = logical_test_el.get("operator")
-        negation = logical_test_el.get("negation")
-        logical_test = LogicalTest(operator, negation)
+        negation = logical_test_el.get("negate", "")
+        logical_test = LogicalTest(operator, negation=TEXT_TO_BOOL[negation])
         for child_logical_test_el in logical_test_el:
             if "fact-ref" in child_logical_test_el.tag:
                 platform_name = child_logical_test_el.get("name")
