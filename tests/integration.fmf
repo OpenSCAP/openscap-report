@@ -1,0 +1,31 @@
+require:
+  - openscap-report
+
+description: |
+  Test integration with latest and released version of content. This tests require files generated in prepare stage named "Generate ARF files".
+  Test "arf" uses ARF file tahat were generated from datastream provided by scap-security-guide package.
+  Test "arf-fetch-remote-resources" uses ARF file tahat were generated from datastream provided by scap-security-guide package and scan were performed with parameter "--fetch-remote-resources".
+  Test "latest-arf" uses ARF file tahat were generated from datastream provided by Github repository ComplianceAsCode/content.
+  Test "latest-arf-fetch-remote-resources" uses ARF file tahat were generated from datastream provided by Github repository ComplianceAsCode/content and scan were performed with parameter "--fetch-remote-resources".
+
+
+/arf:
+    summary: scap-security-guide
+    test: ./smoke.sh ${TMT_PLAN_DATA}/arf.xml
+
+/arf-fetch-remote-resources:
+    summary: scap-security-guide, --fetch-remote-resources
+    test: ./smoke.sh ${TMT_PLAN_DATA}/arf_fetch-remote-resources.xml
+
+/latest-arf:
+    summary: ComplianceAsCode/content
+    test: ./smoke.sh ${TMT_PLAN_DATA}/arf-latest.xml
+
+/latest-arf-fetch-remote-resources:
+    summary: ComplianceAsCode/content, --fetch-remote-resources
+    test: ./smoke.sh ${TMT_PLAN_DATA}/arf_fetch-remote-resources-latest.xml
+
+
+tag:
+  - integration
+tier: 1
