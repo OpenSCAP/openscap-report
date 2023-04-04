@@ -7,16 +7,20 @@ try:
     from functools import cache
 except ImportError:
     from functools import lru_cache
+
     cache = lru_cache(maxsize=None)
 
 from lxml import etree
 
 from openscap_report.scap_results_parser import SCAPResultsParser
+from openscap_report.scap_results_parser.data_structures import OvalDefinition
 from openscap_report.scap_results_parser.namespaces import NAMESPACES
-from openscap_report.scap_results_parser.parsers import RuleParser
+from openscap_report.scap_results_parser.parsers import (
+    CPEApplicabilityLanguageParser, RuleParser)
 
 from .constants import (PATH_TO_ARF,
                         PATH_TO_ARF_REPRODUCING_DANGLING_REFERENCE_TO)
+from .unit_tests.test_oval_tree_eval import OVAL_TREE_TRUE
 
 
 @cache
@@ -78,3 +82,25 @@ def get_rules(file_path=None):
     ref_values = get_ref_values(root)
     rule_parser = RuleParser(root, test_results, ref_values)
     return rule_parser.get_rules()
+
+
+def get_cpe_al_parser(file_path=PATH_TO_ARF):
+    root = get_root(file_path)
+    return CPEApplicabilityLanguageParser(root)
+
+
+def get_dummy_cpe_oval_definition():
+    dummy_oval_definition = OvalDefinition(
+        definition_id="dummy_oval_def",
+        title="dummy OVAL definition",
+        oval_tree=OVAL_TREE_TRUE,
+    )
+    return {
+        "oval:ssg-installed_env_is_a_machine:def:1": dummy_oval_definition,
+        "oval:ssg-installed_env_has_chrony_package:def:1": dummy_oval_definition,
+        "oval:ssg-installed_env_has_ntp_package:def:1": dummy_oval_definition,
+        "oval:ssg-installed_env_has_gdm_package:def:1": dummy_oval_definition,
+        "oval:ssg-installed_OS_is_fedora:def:1": dummy_oval_definition,
+        "oval:ssg-installed_env_has_zipl_package:def:1": dummy_oval_definition,
+        "oval:ssg-system_boot_mode_is_uefi:def:1": dummy_oval_definition,
+    }
