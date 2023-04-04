@@ -1,0 +1,25 @@
+summary: Test integration with latest versions of content
+discover+:
+  filter: tag:integration
+prepare:
+  - name: Install packages require for generation ARF files
+    how: install
+    package:
+      - cmake
+      - make
+      - openscap-utils
+      - openscap-scanner
+      - python3-pyyaml
+      - python3-jinja2
+      - python3-setuptools
+      - git
+      - scap-security-guide
+  - name: Generate ARF files
+    how: shell
+    script: 
+      - ./generate_arf.sh ssg no fedora ${TMT_PLAN_DATA}/arf.xml
+      - ./generate_arf.sh ssg yes fedora ${TMT_PLAN_DATA}/arf_fetch-remote-resources.xml
+      - ./generate_arf.sh latest no fedora ${TMT_PLAN_DATA}/arf-latest.xml
+      - ./generate_arf.sh latest yes fedora ${TMT_PLAN_DATA}/arf_fetch-remote-resources-latest.xml yes
+execute:
+    how: tmt
