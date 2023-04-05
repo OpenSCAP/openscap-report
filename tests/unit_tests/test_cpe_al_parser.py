@@ -4,7 +4,7 @@
 import pytest
 from lxml import etree
 
-from ..test_utils import get_cpe_al_parser, get_dummy_cpe_oval_definition
+from ..test_utils import get_cpe_al_parser
 
 
 @pytest.mark.unit_test
@@ -101,7 +101,6 @@ from ..test_utils import get_cpe_al_parser, get_dummy_cpe_oval_definition
 )
 def test_get_logical_test(str_xml_element, evaluation_result):
     parser = get_cpe_al_parser()
-    parser.oval_cpe_definitions = get_dummy_cpe_oval_definition()
     xml_element = etree.XML(
         f'<con xmlns:cpe-lang="http://cpe.mitre.org/language/2.0">{str_xml_element}</con>'
     )
