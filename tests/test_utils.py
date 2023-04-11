@@ -98,6 +98,7 @@ def get_dummy_cpe_oval_definition():
     dummy_oval_definition = OvalDefinition(
         definition_id="dummy_oval_def",
         title="dummy OVAL definition",
+        definition_class="compliance",
         oval_tree=OVAL_TREE_TRUE,
     )
     return {
