@@ -9,7 +9,7 @@ Tool for generating report from results of oscap scan.
 
 ## Installation
 
-[Learn how to install tool in the documentation.](https://openscap-report.readthedocs.io/en/latest/manual/instalation.html)
+[Learn how to install tool in the documentation.](https://openscap-report.readthedocs.io/en/latest/manual/installation.html)
 
 ## Example usage
 
