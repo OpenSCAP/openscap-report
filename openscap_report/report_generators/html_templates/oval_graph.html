@@ -27,5 +27,5 @@
     </div>
 {%- endif -%}
 {%- if rule.oval_definition.oval_tree -%}
-    <div id="oval_tree_of_rule_{{ rule.rule_id | replace('.', '') }}" is_rendered="false" data='{{ rule.oval_definition.oval_tree.as_dict() | tojson }}'></div>
+    <div id="oval_tree_of_rule_{{ rule.rule_id | to_jquery_complaint_id }}" is_rendered="false" data='{{ rule.oval_definition.oval_tree.as_dict() | tojson }}'></div>
 {%- endif %}

@@ -1,6 +1,8 @@
 # Copyright 2022, Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+from dataclasses import replace
+
 from ..data_structures import Identifier, Reference, Rule, RuleWarning
 from ..namespaces import NAMESPACES
 from .full_text_parser import FullTextParser
@@ -13,6 +15,8 @@ class RuleParser():
         self.test_results = test_results
         self.full_text_parser = FullTextParser(ref_values)
         self.remediation_parser = RemediationParser(ref_values)
+        self.to_select_rule_ids = set()
+        self.to_deselect_rule_ids = set()
 
     @staticmethod
     def _get_references(rule):
@@ -146,6 +150,18 @@ class RuleParser():
             msg = "The OVAL graph of the rule as it was displayed before the fix was performed."
             rules[rule_id].messages.append(msg)
 
+    @staticmethod
+    def set_oval_definition_id_if_is_none(rule, check_name):
+        if rule.oval_definition_id is None:
+            rule.oval_definition_id = check_name
+
+    @staticmethod
+    def get_oval_check_href_name(rule_result_el):
+        check_ref = rule_result_el.find('.//xccdf:check/xccdf:check-content-ref', NAMESPACES)
+        if check_ref is None:
+            return None, None
+        return check_ref.get("href").lstrip("#"), check_ref.get("name")
+
     def _insert_rules_results(self, rules):
         rules_results = self.test_results.findall('.//xccdf:rule-result', NAMESPACES)
         for rule_result in rules_results:
@@ -154,6 +170,11 @@ class RuleParser():
             rules[rule_id].result = rule_result.find('.//xccdf:result', NAMESPACES).text
             rules[rule_id].weight = float(rule_result.get('weight'))
 
+            rules[rule_id].oval_reference, check_name = self.get_oval_check_href_name(
+                rule_result
+            )
+            self.set_oval_definition_id_if_is_none(rules[rule_id], check_name)
+
             messages = rule_result.findall('.//xccdf:message', NAMESPACES)
             if messages is not None:
                 rules[rule_id].messages = []
@@ -161,6 +182,20 @@ class RuleParser():
                     rules[rule_id].messages.append(message.text)
                 self._improve_result_of_remedied_rule(rule_id, rules)
             self._add_message_about_oval(rule_id, rules)
+
+            if rules[rule_id].multi_check:
+                self._create_new_multi_check_rule(rules, rule_id, check_name)
+
+    def _create_new_multi_check_rule(self, rules, rule_id, check_name):
+        self.to_deselect_rule_ids.add(rule_id)
+        new_rule_id = f"{rule_id}-{check_name}"
+        changes = {
+            "rule_id": new_rule_id,
+            "title": f"{rules[rule_id].title} ({check_name})",
+            "oval_definition_id": check_name,
+        }
+        rules[new_rule_id] = replace(rules[rule_id], **changes)
+        self.to_select_rule_ids.add(new_rule_id)
 
     def get_rules(self):
         rules = {}

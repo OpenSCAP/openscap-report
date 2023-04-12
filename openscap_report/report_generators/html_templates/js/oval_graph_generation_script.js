@@ -5,7 +5,7 @@
 
 // eslint-disable-next-line no-extend-native
 String.prototype.asJqueryComplaintId = function() {
-    return this.replace(/\./ug, "");
+    return this.replace(/\.|:/ug, "");
 };
 
 // User events methods

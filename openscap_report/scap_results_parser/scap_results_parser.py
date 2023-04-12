@@ -62,18 +62,19 @@ class SCAPResultsParser():
             logging.debug(rule_id)
             logging.debug(rule)
 
-    @staticmethod
-    def _get_applicable_cpe_ids_for_machine(cpe_platforms_for_profile):
-        return [
-            cpe_id for cpe_id, applicable_for_machine in cpe_platforms_for_profile.items()
-            if applicable_for_machine
-        ]
-
     def _get_benchmark_element(self):
         benchmark_el = self.root.find(".//xccdf:Benchmark", NAMESPACES)
         if "Benchmark" in self.root.tag:
             benchmark_el = self.root
         return benchmark_el
+
+    @staticmethod
+    def _get_oval_definition_references(rules):
+        references = []
+        for rule in rules.values():
+            if rule.oval_reference is not None:
+                references.append(rule.oval_reference)
+        return set(tuple(references))
 
     def parse_report(self):
         test_results_el = self.root.find('.//xccdf:TestResult', NAMESPACES)
@@ -88,14 +89,19 @@ class SCAPResultsParser():
 
         rule_parser = RuleParser(self.root, test_results_el, self.ref_values)
         rules = rule_parser.get_rules()
-
+        oval_definitions_and_results_sources = self._get_oval_definition_references(rules)
         OVAL_and_CPE_tree_builder = OVALAndCPETreeBuilder(  # pylint: disable=C0103
             self.root, group_parser,
-            self._get_applicable_cpe_ids_for_machine(report.profile_info.cpe_platforms_for_profile)
+            report.profile_info.get_list_of_cpe_platforms_that_satisfy_evaluation_target(),
+            oval_definitions_and_results_sources
         )
         OVAL_and_CPE_tree_builder.insert_oval_and_cpe_trees_to_rules(rules)
 
         self._debug_show_rules(rules)
         report.rules = rules
         report.groups = groups
+
+        report.profile_info.select_rules(rule_parser.to_select_rule_ids)
+        report.profile_info.deselect_rules(rule_parser.to_deselect_rule_ids)
+
         return report

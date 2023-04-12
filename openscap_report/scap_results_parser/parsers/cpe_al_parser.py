@@ -9,11 +9,11 @@ TEXT_TO_BOOL = {"true": True, "false": False, "": False}
 
 
 class CPEApplicabilityLanguageParser:
-    def __init__(self, root):
+    def __init__(self, root, oval_cpe_definitions):
         self.root = root
         self.platform_to_oval_cpe_id = self.get_platform_to_oval_cpe_id_dict()
         self.full_text_parser = FullTextParser({})
-        self.oval_cpe_definitions = {}
+        self.oval_cpe_definitions = oval_cpe_definitions
 
     def get_platform_to_oval_cpe_id_dict(self):
         cpe_list = self.root.find(".//ds:component/cpe-dict:cpe-list", NAMESPACES)
@@ -69,9 +69,8 @@ class CPEApplicabilityLanguageParser:
                 logical_test.children.append(self.get_logical_test(child_logical_test_el))
         return logical_test
 
-    def get_cpe_platforms(self, oval_cpe_definitions):
+    def get_cpe_platforms(self):
         out = {}
-        self.oval_cpe_definitions = oval_cpe_definitions
         for platform, platform_el in self._get_cpe_platform_elements().items():
             title_el = platform_el.find(".//cpe-lang:title", NAMESPACES)
             title_str = ""

@@ -26,6 +26,7 @@ class HTMLReportGenerator(ReportGenerator):
         self.env = Environment(loader=self.file_loader)
         self.env.globals['include_file_in_base64'] = self.include_file_in_base64
         self.env.filters['set_css_for_list'] = self.set_css_for_list
+        self.env.filters['to_jquery_complaint_id'] = self.to_jquery_complaint_id
         self.env.trim_blocks = True
         self.env.lstrip_blocks = True
 
@@ -56,3 +57,7 @@ class HTMLReportGenerator(ReportGenerator):
         out = data.replace("<ul>", "<ul class=\"pf-c-list\">")
         out = out.replace("<ol>", "<ol class=\"pf-c-list\">")
         return out
+
+    @staticmethod
+    def to_jquery_complaint_id(data):
+        return re.sub(r"\.|:", "", data)

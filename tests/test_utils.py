@@ -91,7 +91,7 @@ def get_rules(file_path=None):
 
 def get_cpe_al_parser(file_path=PATH_TO_ARF):
     root = get_root(file_path)
-    return CPEApplicabilityLanguageParser(root)
+    return CPEApplicabilityLanguageParser(root, get_dummy_cpe_oval_definition())
 
 
 def get_dummy_cpe_oval_definition():
