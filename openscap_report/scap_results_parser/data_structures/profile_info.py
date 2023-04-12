@@ -29,6 +29,9 @@ class ProfileInfo:
         return ", ".join(self.cpe_platforms_for_profile.keys())
 
     def get_cpe_platforms_that_satisfy_evaluation_target(self):
-        return ", ".join(
-            [cpe_id for cpe_id, is_satisfy in self.cpe_platforms_for_profile.items() if is_satisfy]
-        )
+        return ", ".join(self.get_list_of_cpe_platforms_that_satisfy_evaluation_target())
+
+    def get_list_of_cpe_platforms_that_satisfy_evaluation_target(self):
+        return [
+            cpe_id for cpe_id, is_satisfy in self.cpe_platforms_for_profile.items() if is_satisfy
+        ]
