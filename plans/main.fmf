@@ -2,3 +2,4 @@ execute:
     how: tmt
 discover:
     how: fmf
+    url: https://github.com/OpenSCAP/openscap-report.git
