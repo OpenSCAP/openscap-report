@@ -48,6 +48,7 @@ jobs:
 - job: tests
   trigger: pull_request
   identifier: tests-all
+  tmt_plan: smoke
   targets:
     - fedora-all
     - epel-9
