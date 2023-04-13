@@ -17,4 +17,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Execute test
-        run: tmt run --all provision --how=local
+        run: tmt -c distro=fedora run --all provision --how=local

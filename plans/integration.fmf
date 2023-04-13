@@ -1,6 +1,27 @@
 summary: Test integration with latest versions of content
 discover+:
   filter: tag:integration
+adjust:
+  - when: distro == fedora
+    environment:
+      PRODUCT: fedora
+      TO_BUILD_PRODUCT: fedora
+  - when: distro == rhel-9
+    environment:
+      PRODUCT: rhel9
+      TO_BUILD_PRODUCT: rhel9
+  - when: distro == rhel-8
+    environment:
+      PRODUCT: rhel8
+      TO_BUILD_PRODUCT: rhel8
+  - when: distro == centos-8
+    environment:
+      PRODUCT: centos8
+      TO_BUILD_PRODUCT: rhel8
+  - when: distro == centos-9 or distro == centos-stream-9
+    environment:
+      PRODUCT: cs9
+      TO_BUILD_PRODUCT: rhel9
 prepare:
   - name: Install packages require for generation ARF files
     how: install
@@ -17,9 +38,10 @@ prepare:
   - name: Generate ARF files
     how: shell
     script: 
-      - ./generate_arf.sh ssg no fedora ${TMT_PLAN_DATA}/arf.xml
-      - ./generate_arf.sh ssg yes fedora ${TMT_PLAN_DATA}/arf_fetch-remote-resources.xml
-      - ./generate_arf.sh latest no fedora ${TMT_PLAN_DATA}/arf-latest.xml
-      - ./generate_arf.sh latest yes fedora ${TMT_PLAN_DATA}/arf_fetch-remote-resources-latest.xml yes
+      - ./generate_arf.sh ssg no ${PRODUCT} ${TMT_PLAN_DATA}/arf.xml
+      - ./generate_arf.sh ssg yes ${PRODUCT} ${TMT_PLAN_DATA}/arf_fetch-remote-resources.xml
+      - ./generate_arf.sh latest no ${TO_BUILD_PRODUCT} ${TMT_PLAN_DATA}/arf-latest.xml
+      - ./generate_arf.sh latest yes ${TO_BUILD_PRODUCT} ${TMT_PLAN_DATA}/arf_fetch-remote-resources-latest.xml yes
+
 execute:
     how: tmt
