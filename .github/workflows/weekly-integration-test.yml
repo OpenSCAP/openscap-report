@@ -1,8 +1,6 @@
 name: "Weekly Integration Test"
 
 on:
-  push:
-    branches: ["main"]
   schedule:
     - cron: '0 21 * * 6'
 jobs:
