@@ -11,7 +11,7 @@ jobs:
       image: fedora:latest
     steps:
       - name: Install Deps
-        run: dnf install -y tmt
+        run: dnf install -y tmt python3-setuptools
       - name: Checkout
         uses: actions/checkout@v3
       - name: Execute test
