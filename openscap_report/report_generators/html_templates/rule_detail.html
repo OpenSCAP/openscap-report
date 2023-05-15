@@ -126,7 +126,7 @@
                         {%- if identifier.href -%}
                             <a href="{{ identifier.href | replace('&', ';') }}">{{ identifier.text }}</a>
                         {%- else -%}
-                            <a href="identifier_href_not_found">{{ identifier.text }}</a>
+                            <span>{{ identifier.text }}</span>
                         {%- endif -%}
                         {{- ", " if not loop.last else "" -}}
                         {%- endfor %}
@@ -147,7 +147,7 @@
                         {%- if reference.href -%}
                             <a href="{{ reference.href | replace('&', ';') }}">{{ reference.text }}</a>
                         {%- else -%}
-                            <a href="reference_href_not_found">{{ reference.text }}</a>
+                            <span>{{ reference.text }}</span>
                         {%- endif -%}
                         {{- ", " if not loop.last else "" -}}
                         {%- endfor -%}
