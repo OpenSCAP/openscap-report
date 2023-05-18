@@ -186,6 +186,18 @@ footer {
     z-index: 10;
 }
 
+.tooltip-box-top-side {
+    visibility: hidden;
+    position: absolute;
+    top: -120%;
+    left: -185%;
+}
+
+#copy:active .tooltip-box-top-side {
+    visibility: visible;
+    z-index: 10;
+}
+
 .tooltip-wrapper {
     text-decoration: underline dotted;
 }
