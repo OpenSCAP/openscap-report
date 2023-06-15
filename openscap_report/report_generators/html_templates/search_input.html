@@ -4,6 +4,9 @@
     <div class="pf-c-input-group">
         <input class="pf-c-form-control pf-m-search" oninput="search_rule(this)" type="search"
             placeholder="Search rule" id="input-search-rule" />
+        <button class="pf-c-button pf-m-control" type="button" aria-label="Clear" onclick="clear_input(this)">
+            <i class="fas fa-times fa-fw" aria-hidden="true"></i>
+        </button>
         <button class="pf-c-button pf-m-control" type="button" aria-expanded="true" aria-label="Advanced options"
             onclick="show_advanced_options(this);">
             <i class="fas fa-caret-right" aria-hidden="true"></i>
