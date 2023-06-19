@@ -215,7 +215,8 @@ function base_operator_node(node_data, node_text) {
 function get_CPE_AL_operator_node(node_data) {
     const { operator_node, node_text } = get_operator_node();
     const { node, color, icon } = base_operator_node(node_data, node_text);
-    node.appendChild(get_bold_text(` ${node_data.node_type} `));
+
+    node.appendChild(get_operator_label_with_tooltip(node_data.node_type, CPE_AL_OPERATOR_EXPLANATION));
     node_text.appendChild(get_label(color, "CPE AL operator", undefined, "cpe-label"," cpe-label__content"));
     const span_space = SPAN.cloneNode();
     span_space.innerText = "\u00A0";
@@ -387,7 +388,7 @@ function get_tooltip(text) {
     tooltip_div.appendChild(tooltip_arrow_div);
 
     const tooltip_content_div = DIV.cloneNode();
-    tooltip_content_div.className = "pf-c-tooltip__content tooltip__content-width";
+    tooltip_content_div.className = "pf-c-tooltip__content tooltip__text-algin-justify";
     tooltip_content_div.textContent = text;
     tooltip_div.appendChild(tooltip_content_div);
 
@@ -469,11 +470,33 @@ function get_operator_node() {
     return { operator_node, node_text };
 }
 
+function get_operator_label_with_tooltip(node_type, explanations) {
+    const span = SPAN.cloneNode();
+    span.className = "tooltip-wrapper tooltip-wrapper-oval-operator";
+    span.appendChild(get_bold_text(` ${node_type} `));
+
+    const tooltip_div = DIV.cloneNode();
+    tooltip_div.className = "pf-c-tooltip pf-m-top-left tooltip-box-top-side tooltip-box-top-side-oval-operator";
+    tooltip_div.setAttribute("role", "tooltip");
+    span.appendChild(tooltip_div);
+
+    const tooltip_arrow_div = DIV.cloneNode();
+    tooltip_arrow_div.className = "pf-c-tooltip__arrow";
+    tooltip_div.appendChild(tooltip_arrow_div);
+
+    const tooltip_content_div = DIV.cloneNode();
+    tooltip_content_div.className = "pf-c-tooltip__content tooltip__text-algin-justify tooltip__content-width-oval-operator";
+    tooltip_content_div.textContent = explanations[node_type];
+    tooltip_div.appendChild(tooltip_content_div);
+
+    return span;
+}
+
 function get_OVAL_tree_operator_node(node_data) {
     const { operator_node, node_text } = get_operator_node();
     const { node, color, icon } = base_operator_node(node_data, node_text);
 
-    node.appendChild(get_bold_text(` ${node_data.node_type} `));
+    node.appendChild(get_operator_label_with_tooltip(node_data.node_type, OVAL_OPERATOR_EXPLANATION));
     node_text.appendChild(get_label(color, node_data.tag));
     node_text.appendChild(get_label(color, node_data.value, get_icon_as_html(icon)));
     node_text.appendChild(get_note(`\u00A0\u00A0${node_data.comment ? node_data.comment : ""}`));
