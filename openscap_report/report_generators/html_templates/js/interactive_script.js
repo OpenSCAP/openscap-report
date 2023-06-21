@@ -134,3 +134,22 @@ function clear_input(self) { // eslint-disable-line no-unused-vars
     self.previousSibling.value= "";
     search_rule(self.previousSibling);
 }
+
+document.querySelectorAll("#copy").forEach(el => el.appendChild(get_tooltip_copy_to_clipboard()));
+function get_tooltip_copy_to_clipboard() { // eslint-disable-line no-unused-vars
+    const div = document.createElement("div");
+
+    const tooltip_div = div.cloneNode();
+    tooltip_div.className = "pf-c-tooltip pf-m-top tooltip-box-top-side";
+    tooltip_div.setAttribute("role", "tooltip");
+
+    const tooltip_arrow_div = div.cloneNode();
+    tooltip_arrow_div.className = "pf-c-tooltip__arrow";
+    tooltip_div.appendChild(tooltip_arrow_div);
+
+    const tooltip_content_div = div.cloneNode();
+    tooltip_content_div.className = "pf-c-tooltip__content";
+    tooltip_content_div.textContent = `Copied to clipboard.`;
+    tooltip_div.appendChild(tooltip_content_div);
+    return tooltip_div;
+}

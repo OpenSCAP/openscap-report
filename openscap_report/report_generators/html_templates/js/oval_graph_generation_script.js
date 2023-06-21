@@ -378,7 +378,7 @@ function get_tooltip(text) {
     div.appendChild(icon);
 
     const tooltip_div = DIV.cloneNode();
-    tooltip_div.className = "pf-c-tooltip pf-m-right-top tooltip-box";
+    tooltip_div.className = "pf-c-tooltip pf-m-right-top tooltip-box-right-side";
     tooltip_div.setAttribute("role", "tooltip");
     div.appendChild(tooltip_div);
 
