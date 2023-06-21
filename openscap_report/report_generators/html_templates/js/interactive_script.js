@@ -129,3 +129,8 @@ document.querySelectorAll("#copy").forEach(el => el.addEventListener('click', ()
     const el_with_text = el.parentElement.parentElement.parentElement.querySelector(selector);
     navigator.clipboard.writeText(el_with_text.textContent);
 }));
+
+function clear_input(self) { // eslint-disable-line no-unused-vars
+    self.previousSibling.value= "";
+    search_rule(self.previousSibling);
+}
