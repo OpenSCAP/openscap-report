@@ -217,7 +217,7 @@ function base_operator_node(node_data, node_text) {
     const html_icon = get_icon_as_html(negate_icon);
     node.appendChild(html_icon);
     if (node_data.negation) {
-        node.appendChild(get_bold_text("NOT"));
+        node.appendChild(get_operator_label_with_tooltip("NOT", OVAL_OPERATOR_EXPLANATION));
         html_icon.classList.add("icon-space");
     }
     return { node, color, icon };
@@ -324,7 +324,7 @@ function render_OVAL_test(node_data) {
     const html_icon = get_icon_as_html(negate_icon);
     node.appendChild(html_icon);
     if (node_data.negation) {
-        node.appendChild(get_bold_text("NOT"));
+        node.appendChild(get_operator_label_with_tooltip("NOT", OVAL_OPERATOR_EXPLANATION));
         html_icon.classList.add("icon-space");
     }
 
