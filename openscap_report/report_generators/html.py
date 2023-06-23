@@ -45,7 +45,7 @@ class HTMLReportGenerator(ReportGenerator):
         if "RedHat" in relative_path:
             real_path = Path(relative_path)
         if not real_path.exists():
-            logging.warning("Please, install font: %s", real_path.name)
+            logging.info("Please, install font: %s", real_path.name)
             return Markup("NO-FONT-DATA")
         base64_data = None
         with open(real_path, "rb") as file_data:
