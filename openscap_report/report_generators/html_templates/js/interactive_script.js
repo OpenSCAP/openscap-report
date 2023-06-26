@@ -153,3 +153,16 @@ function get_tooltip_copy_to_clipboard() { // eslint-disable-line no-unused-vars
     tooltip_div.appendChild(tooltip_content_div);
     return tooltip_div;
 }
+
+function toogle_deselect_button(self) { // eslint-disable-line no-unused-vars
+    self.parentElement.parentElement.querySelectorAll('input[type="checkbox"]').forEach(e => {
+        if (self.textContent == 'Deselect all' && e.checked) {
+            e.onchange();
+            e.checked = !e.checked;
+        } else if (self.textContent == 'Select all' && !e.checked) {
+            e.onchange();
+            e.checked = !e.checked;
+        }
+    });
+    self.textContent = self.textContent == 'Deselect all' ? 'Select all' : 'Deselect all';
+}
