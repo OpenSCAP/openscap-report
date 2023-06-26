@@ -18,6 +18,9 @@
             <h3 class="pf-c-title pf-m-md">Advanced filtering options</h3>
             Filter by result:
             <div class="container">
+                <div>
+                    <button id="show-all-rules-details" class="pf-c-button pf-m-primary" type="button" onclick="toogle_deselect_button(this)">Deselect all</button>
+                </div>
                 <label class="pf-c-check" for="checkbox-result-pass">
                     <input class="pf-c-check__input" type="checkbox" id="checkbox-result-pass" onchange="toggle_rules('result', 'pass');" checked/>
                     <span class="pf-c-check__label">Pass</span>
@@ -61,6 +64,9 @@
             </div>
             Filter by severity:
             <div class="container">
+                <div>
+                    <button id="show-all-rules-details" class="pf-c-button pf-m-primary" type="button" onclick="toogle_deselect_button(this)">Deselect all</button>
+                </div>
                 <label class="pf-c-check" for="checkbox-severity-high">
                     <input class="pf-c-check__input" type="checkbox" id="checkbox-severity-high" onchange="toggle_rules('severity', 'high');" checked/>
                     <span class="pf-c-check__label">high</span>
