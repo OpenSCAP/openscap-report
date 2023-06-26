@@ -20,6 +20,8 @@ Provides:       bundled(patternfly) = 4
 
 Requires:       python38-lxml
 Requires:       python38-jinja2
+Recommends:     redhat-display-fonts
+Recommends:     redhat-text-fonts
 
 %{?python_enable_dependency_generator}
 

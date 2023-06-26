@@ -19,8 +19,8 @@ BuildRequires:  python3-sphinx_rtd_theme
 Provides:       bundled(patternfly) = 4
 
 Requires:       python3-lxml
-Requires:       redhat-display-fonts
-Requires:       redhat-text-fonts
+Recommends:     redhat-display-fonts
+Recommends:     redhat-text-fonts
 
 %global _description %{expand:
 This package provides a command-line tool for generating
