@@ -481,15 +481,11 @@ function get_operator_node() {
     return { operator_node, node_text };
 }
 
-function get_operator_label_with_tooltip(node_type, explanations) {
-    const span = SPAN.cloneNode();
-    span.className = "tooltip-wrapper tooltip-wrapper-oval-operator";
-    span.appendChild(get_bold_text(` ${node_type} `));
-
+function add_tooltip_on_mouse_enter_to_oval_operator(self, text) { // eslint-disable-line no-unused-vars
     const tooltip_div = DIV.cloneNode();
     tooltip_div.className = "pf-c-tooltip pf-m-top-left tooltip-box-top-side tooltip-box-top-side-oval-operator";
     tooltip_div.setAttribute("role", "tooltip");
-    span.appendChild(tooltip_div);
+    self.appendChild(tooltip_div);
 
     const tooltip_arrow_div = DIV.cloneNode();
     tooltip_arrow_div.className = "pf-c-tooltip__arrow";
@@ -497,9 +493,22 @@ function get_operator_label_with_tooltip(node_type, explanations) {
 
     const tooltip_content_div = DIV.cloneNode();
     tooltip_content_div.className = "pf-c-tooltip__content tooltip__text-algin-justify tooltip__content-width-oval-operator";
-    tooltip_content_div.textContent = explanations[node_type];
+    tooltip_content_div.textContent = text;
     tooltip_div.appendChild(tooltip_content_div);
+}
 
+
+function remove_tooltip_on_mouse_leave_from_oval_operator(self) { // eslint-disable-line no-unused-vars
+    self.removeChild(self.lastChild);
+}
+
+function get_operator_label_with_tooltip(node_type, explanations) {
+    const span = SPAN.cloneNode();
+    span.className = "tooltip-wrapper tooltip-wrapper-oval-operator";
+    span.appendChild(get_bold_text(` ${node_type} `));
+
+    span.setAttribute("onmouseenter", `add_tooltip_on_mouse_enter_to_oval_operator(this, "${explanations[node_type]}")`);
+    span.setAttribute("onmouseleave", "remove_tooltip_on_mouse_leave_from_oval_operator(this)");
     return span;
 }
 
