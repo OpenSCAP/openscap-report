@@ -29,6 +29,7 @@ document.querySelector('main').addEventListener('scroll', () => {
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
         show_next_rules();
     }
+    document.getElementById('back-to-top-button').style.visibility = 'visible';
 }, false);
 
 function show_next_rules() {
