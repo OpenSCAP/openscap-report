@@ -41,7 +41,7 @@
 {% block content %}
 
 {% if report.profile_info.title|length and report.profile_info.description|length -%}
-<h2 class="pf-c-title pf-m-3xl">About profile</h2>
+<h2 id="top" class="pf-c-title pf-m-3xl">About profile</h2>
 <br>
 {% include 'profile_info.html' %}
 <br>
