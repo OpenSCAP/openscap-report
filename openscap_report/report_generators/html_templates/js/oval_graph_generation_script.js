@@ -60,6 +60,17 @@ const COLOR_TRANSLATION = {
     'pf-m-red': '--pf-global--danger-color--200',
     '': ''
 };
+const OVAL_OPERATOR_EXPLANATION = {
+    'AND': 'The AND operator produces a true result if every argument is true. If one or more arguments are false, the result of the AND is false. If one or more of the arguments are unknown, and if none of the arguments are false, then the AND operator produces a result of unknown.',
+    'OR': 'The OR operator produces a true result if one or more arguments is true. If every argument is false, the result of the OR is false. If one or more of the arguments are unknown and if none of arguments are true, then the OR operator produces a result of unknown.',
+    'XOR': 'XOR is defined to be true if an odd number of its arguments are true, and false otherwise. If any of the arguments are unknown, then the XOR operator produces a result of unknown.',
+    'ONE': 'The ONE operator produces a true result if one and only one argument is true. If there are more than argument is true (or if there are no true arguments), the result of the ONE is false. If one or more of the arguments are unknown, then the ONE operator produces a result of unknown.',
+    'NOT': 'NOT is negation, then the true result is false and the false result is true, all other results remain the same.'
+};
+const CPE_AL_OPERATOR_EXPLANATION = {
+    'AND': 'The AND operator produces a true result if every argument is true. If one or more arguments are false, the result of the AND is false.',
+    'OR': 'The OR operator produces a true result if one or more arguments is true. If every argument is false, the result of the OR is false.'
+};
 
 const DIV = document.createElement("div");
 const SPAN = document.createElement("span");
@@ -206,7 +217,7 @@ function base_operator_node(node_data, node_text) {
     const html_icon = get_icon_as_html(negate_icon);
     node.appendChild(html_icon);
     if (node_data.negation) {
-        node.appendChild(get_bold_text("NOT"));
+        node.appendChild(get_operator_label_with_tooltip("NOT", OVAL_OPERATOR_EXPLANATION));
         html_icon.classList.add("icon-space");
     }
     return { node, color, icon };
@@ -215,7 +226,8 @@ function base_operator_node(node_data, node_text) {
 function get_CPE_AL_operator_node(node_data) {
     const { operator_node, node_text } = get_operator_node();
     const { node, color, icon } = base_operator_node(node_data, node_text);
-    node.appendChild(get_bold_text(` ${node_data.node_type} `));
+
+    node.appendChild(get_operator_label_with_tooltip(node_data.node_type, CPE_AL_OPERATOR_EXPLANATION));
     node_text.appendChild(get_label(color, "CPE AL operator", undefined, "cpe-label"," cpe-label__content"));
     const span_space = SPAN.cloneNode();
     span_space.innerText = "\u00A0";
@@ -312,7 +324,7 @@ function render_OVAL_test(node_data) {
     const html_icon = get_icon_as_html(negate_icon);
     node.appendChild(html_icon);
     if (node_data.negation) {
-        node.appendChild(get_bold_text("NOT"));
+        node.appendChild(get_operator_label_with_tooltip("NOT", OVAL_OPERATOR_EXPLANATION));
         html_icon.classList.add("icon-space");
     }
 
@@ -387,7 +399,7 @@ function get_tooltip(text) {
     tooltip_div.appendChild(tooltip_arrow_div);
 
     const tooltip_content_div = DIV.cloneNode();
-    tooltip_content_div.className = "pf-c-tooltip__content tooltip__content-width";
+    tooltip_content_div.className = "pf-c-tooltip__content tooltip__text-algin-justify";
     tooltip_content_div.textContent = text;
     tooltip_div.appendChild(tooltip_content_div);
 
@@ -469,11 +481,42 @@ function get_operator_node() {
     return { operator_node, node_text };
 }
 
+function add_tooltip_on_mouse_enter_to_oval_operator(self, text) { // eslint-disable-line no-unused-vars
+    const tooltip_div = DIV.cloneNode();
+    tooltip_div.className = "pf-c-tooltip pf-m-top-left tooltip-box-top-side tooltip-box-top-side-oval-operator";
+    tooltip_div.setAttribute("role", "tooltip");
+    self.appendChild(tooltip_div);
+
+    const tooltip_arrow_div = DIV.cloneNode();
+    tooltip_arrow_div.className = "pf-c-tooltip__arrow";
+    tooltip_div.appendChild(tooltip_arrow_div);
+
+    const tooltip_content_div = DIV.cloneNode();
+    tooltip_content_div.className = "pf-c-tooltip__content tooltip__text-algin-justify tooltip__content-width-oval-operator";
+    tooltip_content_div.textContent = text;
+    tooltip_div.appendChild(tooltip_content_div);
+}
+
+
+function remove_tooltip_on_mouse_leave_from_oval_operator(self) { // eslint-disable-line no-unused-vars
+    self.removeChild(self.lastChild);
+}
+
+function get_operator_label_with_tooltip(node_type, explanations) {
+    const span = SPAN.cloneNode();
+    span.className = "tooltip-wrapper tooltip-wrapper-oval-operator";
+    span.appendChild(get_bold_text(` ${node_type} `));
+
+    span.setAttribute("onmouseenter", `add_tooltip_on_mouse_enter_to_oval_operator(this, "${explanations[node_type]}")`);
+    span.setAttribute("onmouseleave", "remove_tooltip_on_mouse_leave_from_oval_operator(this)");
+    return span;
+}
+
 function get_OVAL_tree_operator_node(node_data) {
     const { operator_node, node_text } = get_operator_node();
     const { node, color, icon } = base_operator_node(node_data, node_text);
 
-    node.appendChild(get_bold_text(` ${node_data.node_type} `));
+    node.appendChild(get_operator_label_with_tooltip(node_data.node_type, OVAL_OPERATOR_EXPLANATION));
     node_text.appendChild(get_label(color, node_data.tag));
     node_text.appendChild(get_label(color, node_data.value, get_icon_as_html(icon)));
     node_text.appendChild(get_note(`\u00A0\u00A0${node_data.comment ? node_data.comment : ""}`));

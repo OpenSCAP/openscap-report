@@ -183,7 +183,7 @@ footer {
 
 .tooltip-wrapper:hover .tooltip-box-right-side {
     visibility: visible;
-    z-index: 10;
+    z-index: calc(var(--pf-c-tree-view--m-guides__list-item--ZIndex) + 1);
 }
 
 .tooltip-box-top-side {
@@ -195,23 +195,43 @@ footer {
 
 #copy:active .tooltip-box-top-side {
     visibility: visible;
-    z-index: 10;
+    z-index: calc(var(--pf-c-tree-view--m-guides__list-item--ZIndex) + 1);
+}
+
+.tooltip-wrapper:hover .tooltip-box-top-side {
+    visibility: visible;
+    z-index: calc(var(--pf-c-tree-view--m-guides__list-item--ZIndex) + 1);
 }
 
 .tooltip-wrapper {
     text-decoration: underline dotted;
 }
 
+.tooltip-box-top-side-oval-operator {
+    top: unset;
+    bottom: 24px;
+    left: 8px;
+    width: fit-content;
+}
+
+.tooltip-wrapper-oval-operator {
+    position: relative;
+}
+
 .tooltip-wrapper:hover {
     text-decoration: underline;
 }
 
-.tooltip__content-width {
-    width: 20vw;
+.tooltip__text-algin-justify {
     text-align: justify;
-    white-space: pre-line;
-    word-break: break-word;
-    hyphens: auto;
+}
+
+.tooltip__content-width-oval-operator {
+    width: 500px;
+}
+
+.pf-c-tooltip {
+    max-width: fit-content;
 }
 
 .clickable-element {
