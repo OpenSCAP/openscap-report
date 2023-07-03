@@ -35,6 +35,7 @@ class ScanResultParser:
             "start_time": self.test_results_el.get("start-time"),
             "end_time": self.test_results_el.get("end-time"),
             "test_system": self.test_results_el.get("test-system"),
+            "score_system": score_el.get("system"),
             "score": float(score_el.text),
             "score_max": float(score_el.get("maximum")),
             "benchmark_url": self.benchmark_el.get("href"),

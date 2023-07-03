@@ -18,6 +18,7 @@ SCAN_JSON_KEYS = [
     "start_time",
     "end_time",
     "test_system",
+    "score_system",
     "score",
     "score_max",
 ]
@@ -38,6 +39,7 @@ class ResultOfScan:  # pylint: disable=R0902
     start_time: str = ""
     end_time: str = ""
     test_system: str = ""
+    score_system: str = ""
     score: float = 0.0
     score_max: float = 0.0
 
