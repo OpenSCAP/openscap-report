@@ -12,7 +12,7 @@
 #  - scap-security-guide
 # Usage: ./generate_arf MODE FETCH PRODUCT ARF_FILE SKIP_BUILD
 #   MODE        [latest, ssg] use scap-security-guide or latest content from github
-#   FETCH       [yes, no] scanner fetch remote resources 
+#   FETCH       [yes, no] scanner fetch remote resources
 #   PRODUCT     build or use security content for one specific product
 #   ARF_FILE    Writes results to a given ARF_FILE.
 #   SKIP_BUILD  [yes] Skip build of latest content(Have affect with mode latest).
@@ -25,11 +25,11 @@ build_content() {
     product=$1
 
     echo "Build - Start"
-    
+
     git clone https://github.com/ComplianceAsCode/content.git
     cd content/
     git checkout master
-    
+
     ./build_product "${product}"
     cd ..
     echo "Build - Done"
