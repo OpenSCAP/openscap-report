@@ -22,6 +22,8 @@ adjust:
     environment:
       PRODUCT: cs9
       TO_BUILD_PRODUCT: rhel9
+provision:
+  memory: 4096
 prepare:
   - name: Install packages require for generation ARF files
     how: install
