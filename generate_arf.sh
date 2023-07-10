@@ -33,8 +33,11 @@ build_content() {
     cd content/
     git checkout master
 
-    ./build_product "${product}"
-    cd ..
+    cd build/
+    cmake ../
+    make -j4 "${product}"
+
+    cd ../../
     echo "Build - Done"
 }
 
