@@ -30,6 +30,7 @@ prepare:
       - make
       - openscap-utils
       - openscap-scanner
+      - python3
       - python3-pyyaml
       - python3-jinja2
       - python3-setuptools
