@@ -67,8 +67,14 @@
 {% endif %}
 </div>
 <br>
+<div class="tooltip-wrapper" style="position: relative;">
+    <h2 class="pf-c-title pf-m-2xl">Score&nbsp;<i class="pf-icon pf-icon-help" aria-hidden="true"></i></h2>
+    <div class="pf-c-tooltip pf-m-right-top tooltip-box-right-side tooltip-box-score-position" role="tooltip">
+        <div class="pf-c-tooltip__arrow"></div>
+        <div class="pf-c-tooltip__content tooltip__content-width">{{ report.scan_result.get_explanation_of_score_computation() }}</div>
+    </div>
+</div>
 
-<h2 class="pf-c-title pf-m-2xl">Score</h2>
 {% include 'score_bar.html' %}
 <br>
 

@@ -234,6 +234,11 @@ footer {
     max-width: fit-content;
 }
 
+.tooltip-box-score-position {
+    top: 8px !important;
+    left: 102px !important;
+}
+
 .clickable-element {
     text-decoration: underline dotted;
 }
