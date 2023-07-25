@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
-# This script generate ARF results.
+# This script generates ARF results.
+# Supported OS:
+#  - Fedora
+#  - RHEL8/9
+#  - Centos8/9
 # Requirements:
 #  - cmake
 #  - make
@@ -12,8 +16,7 @@
 #  - scap-security-guide
 # Usage: ./generate_arf MODE FETCH PRODUCT ARF_FILE SKIP_BUILD
 #   MODE        [latest, ssg] use scap-security-guide or latest content from github
-#   FETCH       [yes, no] scanner fetch remote resources 
-#   PRODUCT     build or use security content for one specific product
+#   FETCH       [yes, no] scanner fetch remote resources
 #   ARF_FILE    Writes results to a given ARF_FILE.
 #   SKIP_BUILD  [yes] Skip build of latest content(Have affect with mode latest).
 
@@ -25,13 +28,16 @@ build_content() {
     product=$1
 
     echo "Build - Start"
-    
+
     git clone https://github.com/ComplianceAsCode/content.git
     cd content/
     git checkout master
-    
-    ./build_product "${product}"
-    cd ..
+
+    cd build/
+    cmake ../
+    make -j4 "${product}"
+
+    cd ../../
     echo "Build - Done"
 }
 
@@ -48,6 +54,24 @@ run_oscap_scan() {
     fi
 }
 
+get_product() {
+    cpe_name=$(grep "CPE_NAME=" < /etc/os-release | sed 's/CPE_NAME=//g' | sed 's/["]//g')
+    if [[ "${cpe_name}" =~ fedora ]]; then
+        echo "fedora"
+    elif [[ "${cpe_name}" =~ redhat.*8 ]]; then
+        echo "rhel8"
+    elif [[ "${cpe_name}" =~ redhat.*9 ]]; then
+        echo "rhel9"
+    elif [[ "${cpe_name}" =~ centos.*8 ]]; then
+        echo "centos8"
+    elif [[ "${cpe_name}" =~ centos.*9 ]]; then
+        echo "cs9"
+    else
+        echo $cpe_name
+        echo "ERROR: Not supported OS!"
+        exit 1
+    fi
+}
 
 if [ "$1" = "" ]; then
     echo "ERROR: Missing MODE parameter!"
@@ -62,17 +86,12 @@ fi
 
 
 if [ "$3" = "" ]; then
-    echo "ERROR: Missing PRODUCT parameter!"
+    echo "ERROR: Missing ARF_FILE parameter!"
     exit 1
 fi
+file=$3
 
-if [ "$4" = "" ]; then
-    echo "ERROR: Missing PRODUCT parameter!"
-    exit 1
-fi
-
-file=$4
-product=$3
+product=$(get_product)
 
 fetch="--fetch-remote-resources"
 if [ "$2" = "no" ]; then
@@ -81,7 +100,7 @@ fi
 
 
 if [ "$1" = "latest" ]; then
-    if [ "$5" != "yes" ]; then
+    if [ "$4" != "yes" ]; then
         build_content "${product}"
     fi
     run_oscap_scan "./content/build/ssg-${product}-ds.xml" "${fetch}" "${file}"
