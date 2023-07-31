@@ -16,6 +16,7 @@ class OvalObject:
     object_id: str
     flag: str = ""
     message: OvalObjectMessage = None
+    comment: str = ""
     object_type: str = ""
     object_data: List[Dict[str, str]] = field(default_factory=list)
 
