@@ -56,7 +56,7 @@ class OVALObjectParser:
             "object_id": xml_object.get('id'),
             "comment": xml_object.get('comment'),
             "object_type": SharedStaticMethodsOfParser.get_key_of_xml_element(xml_object),
-            "object_data": [self._get_object_items(xml_object)],
+            "object_data": self._get_object_items(xml_object),
         }
         xml_collected_object = self._get_collected_object_xml(id_object)
 

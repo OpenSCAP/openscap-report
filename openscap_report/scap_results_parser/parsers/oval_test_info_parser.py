@@ -72,16 +72,15 @@ class OVALTestInfoParser:  # pylint: disable=R0902
         list_state_of_test = test.xpath('.//*[local-name()="state"]')
 
         oval_object_el = list_object_of_test.pop() if list_object_of_test else None
-        oval_state_el = list_state_of_test.pop() if list_state_of_test else None
 
         oval_object = None
-        oval_state = None
+        oval_states = []
 
         if oval_object_el is not None:
             oval_object = self.objects_parser.get_object(oval_object_el.get("object_ref", ""))
 
-        if oval_state_el is not None:
-            oval_state = self.states_parser.get_state(oval_state_el.get("state_ref", ""))
+        for oval_state_el in list_state_of_test:
+            oval_states.append(self.states_parser.get_state(oval_state_el.get("state_ref", "")))
 
         return OvalTest(
             test_id=test_id,
@@ -90,5 +89,5 @@ class OVALTestInfoParser:  # pylint: disable=R0902
             test_type=test.tag[test.tag.index('}') + 1:],
             comment=test.attrib.get("comment", ""),
             oval_object=oval_object,
-            oval_state=oval_state,
+            oval_states=oval_states,
         )
