@@ -89,7 +89,6 @@ const ROW = document.createElement("tr");
 const COL = document.createElement("td");
 const HEADER_COL = document.createElement("th");
 
-const P = document.createElement("p");
 const H1 = document.createElement("h1");
 
 const BR = document.createElement("br");
@@ -579,16 +578,18 @@ function get_table_body(objects) {
     return tbody;
 }
 
-function get_oval_object_info_heading(test_info) {
+function get_OVAL_object_info_heading(oval_object) {
     const div = DIV.cloneNode();
     const h1 = H1.cloneNode();
-    h1.textContent ='OVAL object definition: ';
+    h1.textContent ='OVAL Object definition: ';
     h1.className = "pf-c-title pf-m-lg";
+    div.appendChild(BR.cloneNode());
     div.appendChild(h1);
 
-    div.appendChild(get_label("pf-m-blue", `OVAL object ID: ${test_info.oval_object.object_id}\u00A0`, undefined, "", "", test_info.oval_object.comment));
-    div.appendChild(get_label("pf-m-blue", `OVAL object type: ${test_info.oval_object.object_type}\u00A0`));
-    div.appendChild(get_label("pf-m-blue", `Flag: ${test_info.oval_object.flag}\u00A0`));
+
+    div.appendChild(get_label("pf-m-blue", `OVAL Object ID: ${oval_object.object_id}\u00A0`, undefined, "", "", oval_object.comment));
+    div.appendChild(get_label("pf-m-blue", `OVAL Object type: ${oval_object.object_type}\u00A0`));
+    div.appendChild(get_label("pf-m-blue", `Flag: ${oval_object.flag}\u00A0`));
 
     return div;
 }
@@ -596,15 +597,15 @@ function get_oval_object_info_heading(test_info) {
 function generate_OVAL_object(test_info, div) {
     if (test_info.oval_object === undefined) {
         // eslint-disable-next-line no-console
-        console.error("Error: The test information has no oval objects.");
+        console.error("Error: The test information has no OVAL Objects.");
         return;
     }
-    div.appendChild(get_oval_object_info_heading(test_info));
+    div.appendChild(get_OVAL_object_info_heading(test_info.oval_object));
     const table_div = DIV.cloneNode();
     table_div.className = "pf-c-scroll-inner-wrapper oval-test-detail-table";
     div.appendChild(table_div);
 
-    for (const [key, value] of Object.entries(test_info.oval_object.object_data.pop())) { // eslint-disable-line array-element-newline
+    for (const [key, value] of Object.entries(test_info.oval_object.object_data)) { // eslint-disable-line array-element-newline
         const h1 = H1.cloneNode();
         h1.textContent = `Element ${key}:`;
         h1.className = "pf-c-title pf-m-md";
@@ -622,36 +623,49 @@ function generate_OVAL_object(test_info, div) {
     }
 }
 
-function get_OVAL_state_labels(oval_state) {
+function get_OVAL_state_heading() {
     const div = DIV.cloneNode();
-    const text = P.cloneNode();
-    text.textContent ='This is expected state of OVAL object: ';
-    text.appendChild(BR.cloneNode());
-
-    div.appendChild(text);
-    div.appendChild(get_label("", `${oval_state.state_id}\u00A0`, undefined, "", "", oval_state.comment));
+    div.appendChild(BR.cloneNode());
+    const h1 = H1.cloneNode();
+    h1.textContent ='OVAL State definitions: ';
+    h1.className = "pf-c-title pf-m-lg";
+    div.appendChild(h1);
     return div;
 }
 
-function generate_OVAL_state(test_info, div) {
-    if (test_info.oval_state === null) {
+function get_OVAL_state_info(oval_state) {
+    const div = DIV.cloneNode();
+
+    div.appendChild(get_label("pf-m-blue", `OVAL State ID: ${oval_state.state_id}\u00A0`, undefined, "", "", oval_state.comment));
+    return div;
+}
+
+function generate_OVAL_state(oval_state, div) {
+    if (oval_state === null) {
         return;
     }
-    div.appendChild(BR.cloneNode());
-    div.appendChild(get_OVAL_state_labels(test_info.oval_state));
+    div.appendChild(get_OVAL_state_info(oval_state));
     const table_div = DIV.cloneNode();
     table_div.className = "pf-c-scroll-inner-wrapper oval-test-detail-table";
     div.appendChild(table_div);
-    const table = TABLE.cloneNode();
-    table.className = "pf-c-table pf-m-compact pf-m-grid-md";
-    table.setAttribute("role", "grid");
-    table_div.appendChild(table);
 
-    const objects = [];
-    objects.push(filter_object(test_info.oval_state.state_data, test_info.oval_state));
+    for (const [key, value] of Object.entries(oval_state.state_data)) { // eslint-disable-line array-element-newline
+        const h1 = H1.cloneNode();
+        h1.textContent = `Element ${key}:`;
+        h1.className = "pf-c-title pf-m-md";
+        table_div.appendChild(h1);
 
-    table.appendChild(get_table_header(objects));
-    table.appendChild(get_table_body(objects));
+        const table = TABLE.cloneNode();
+        table.className = "pf-c-table pf-m-compact pf-m-grid-md";
+        table.setAttribute("role", "grid");
+        table_div.appendChild(table);
+
+        const objects = [];
+        objects.push(filter_object(value, oval_state));
+        table.appendChild(get_table_header(objects));
+        table.appendChild(get_table_body(objects));
+    }
+    div.appendChild(BR.cloneNode());
 }
 
 
@@ -701,7 +715,14 @@ function get_OVAL_test_info(test_info) {
     }
 
     generate_OVAL_object(test_info, div);
-    generate_OVAL_state(test_info, div);
+
+    if (test_info.oval_states.length > 0) {
+        div.appendChild(get_OVAL_state_heading());
+    }
+
+    for (const oval_state of test_info.oval_states) {
+        generate_OVAL_state(oval_state, div);
+    }
     return div;
 }
 
