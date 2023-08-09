@@ -22,6 +22,7 @@ class OVALObjectParser:
 
     def _get_attributes(self, id_in_items_of_object, element, element_dict):
         for key, value in element.attrib.items():
+            key = key[key.find('}') + 1:]
             if key == "var_ref":
                 element_dict[f"{key}@{id_in_items_of_object}"] = self._get_ref_var(value)
             else:
