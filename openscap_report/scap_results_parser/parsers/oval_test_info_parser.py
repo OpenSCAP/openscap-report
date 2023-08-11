@@ -10,7 +10,7 @@ MAX_MESSAGE_LEN = 99
 
 
 class OVALTestInfoParser:  # pylint: disable=R0902
-    def __init__(self, oval_report):
+    def __init__(self, oval_report, oval_var_id_to_value_id, ref_values):
         self.oval_report = oval_report
         self.oval_definitions = self._get_oval_definitions()
         self.tests = self._get_tests()
@@ -19,11 +19,13 @@ class OVALTestInfoParser:  # pylint: disable=R0902
         self.oval_system_characteristics = self._get_oval_system_characteristics()
         self.collected_objects = self._get_collected_objects_by_id()
         self.system_data = self._get_system_data_by_id()
-        self.states_parser = OVALStateParser(self.states)
+        self.states_parser = OVALStateParser(self.states, oval_var_id_to_value_id, ref_values)
         self.objects_parser = OVALObjectParser(
             self.objects,
             self.collected_objects,
-            self.system_data
+            self.system_data,
+            oval_var_id_to_value_id,
+            ref_values
         )
 
     def _get_oval_system_characteristics(self):

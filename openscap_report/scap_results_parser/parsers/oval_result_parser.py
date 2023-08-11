@@ -25,8 +25,10 @@ class OVALReport:
 
 
 class OVALResultParser:
-    def __init__(self, root):
+    def __init__(self, root, oval_var_id_to_value_id, ref_values):
         self.root = root
+        self.oval_var_id_to_value_id = oval_var_id_to_value_id
+        self.ref_values = ref_values
         self.oval_reports = self._get_oval_reports()
         logging.info(self.oval_reports)
 
@@ -40,7 +42,9 @@ class OVALResultParser:
             report_id = report_element.get("id")
             if "oval" in report_id:
                 oval_results = self._get_oval_results(report_element)
-                parser_info_of_test = OVALTestInfoParser(report_element)
+                parser_info_of_test = OVALTestInfoParser(
+                    report_element, self.oval_var_id_to_value_id, self.ref_values
+                )
                 oval_reports[report_id] = OVALReport(
                     report_id,
                     report_element,
