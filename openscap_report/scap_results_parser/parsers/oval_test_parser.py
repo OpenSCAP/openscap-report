@@ -9,7 +9,7 @@ from .oval_state_parser import OVALStateParser
 MAX_MESSAGE_LEN = 99
 
 
-class OVALTestInfoParser:  # pylint: disable=R0902
+class OVALTestParser:  # pylint: disable=R0902
     def __init__(self, oval_report, oval_var_id_to_value_id, ref_values):
         self.oval_report = oval_report
         self.oval_definitions = self._get_oval_definitions()
