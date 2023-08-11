@@ -52,7 +52,7 @@ class SCAPResultsParser():
 
     def _get_ref_values(self):
         return {
-            ref_value.get("idref"): ref_value.text
+            ref_value.get("idref"): ref_value.text if ref_value.text is not None else ""
             for ref_value in self.root.findall('.//xccdf:set-value', NAMESPACES)
         }
 
