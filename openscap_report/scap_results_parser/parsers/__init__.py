@@ -9,6 +9,7 @@ from .oval_object_parser import OVALObjectParser
 from .oval_result_parser import OVALResultParser
 from .oval_state_parser import OVALStateParser
 from .oval_test_parser import OVALTestParser
+from .oval_variable_parser import OVALVariableParser
 from .profile_info_parser import ProfileInfoParser
 from .remediation_parser import RemediationParser
 from .report_parser import ReportParser
