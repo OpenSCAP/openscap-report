@@ -7,8 +7,7 @@ from .shared_static_methods_of_parser import SharedStaticMethodsOfParser
 
 
 class OVALStateParser(OVALEndpointInformation):
-    def __init__(self, states, oval_var_id_to_value_id, ref_values):
-        super().__init__(oval_var_id_to_value_id, ref_values)
+    def __init__(self, states):
         self.states = states
 
     def get_state(self, state_id):
