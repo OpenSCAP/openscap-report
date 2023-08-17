@@ -578,22 +578,6 @@ function get_table_body(objects) {
     return tbody;
 }
 
-function get_OVAL_object_info_heading(oval_object) {
-    const div = DIV.cloneNode();
-    const h1 = H1.cloneNode();
-    h1.textContent ='OVAL Object definition: ';
-    h1.className = "pf-c-title pf-m-lg";
-    div.appendChild(BR.cloneNode());
-    div.appendChild(h1);
-
-
-    div.appendChild(get_label("pf-m-blue", `OVAL Object ID: ${oval_object.object_id}\u00A0`, undefined, "", "", oval_object.comment));
-    div.appendChild(get_label("pf-m-blue", `OVAL Object type: ${oval_object.object_type}\u00A0`));
-    div.appendChild(get_label("pf-m-blue", `Flag: ${oval_object.flag}\u00A0`));
-
-    return div;
-}
-
 function generate_property_elements(table_div, endpoint, data) {
     for (const [key, value] of Object.entries(data)) { // eslint-disable-line array-element-newline
         if(Object.values(value).every(v => typeof v === "object")) {
@@ -621,6 +605,21 @@ function generate_property_elements(table_div, endpoint, data) {
             table.appendChild(get_table_body(objects));
         }
     }
+}
+
+function get_OVAL_object_info_heading(oval_object) {
+    const div = DIV.cloneNode();
+    const h1 = H1.cloneNode();
+    h1.textContent ='OVAL Object definition: ';
+    h1.className = "pf-c-title pf-m-lg";
+    div.appendChild(BR.cloneNode());
+    div.appendChild(h1);
+
+    div.appendChild(get_label("pf-m-blue", `OVAL Object ID: ${oval_object.object_id}\u00A0`, undefined, "", "", oval_object.comment));
+    div.appendChild(get_label("pf-m-blue", `OVAL Object type: ${oval_object.object_type}\u00A0`));
+    div.appendChild(get_label("pf-m-blue", `Flag: ${oval_object.flag}\u00A0`));
+
+    return div;
 }
 
 function generate_OVAL_object(oval_object, div) {
