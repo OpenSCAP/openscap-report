@@ -665,6 +665,30 @@ function generate_OVAL_state(oval_state, div) {
     generate_property_elements(table_div, oval_state, oval_state.state_data);
 }
 
+function get_OVAL_variable_info_heading(oval_variable) {
+    const div = DIV.cloneNode();
+    const h1 = H1.cloneNode();
+    h1.textContent ='OVAL Variable definition: ';
+    h1.className = "pf-c-title pf-m-lg";
+    div.appendChild(BR.cloneNode());
+    div.appendChild(h1);
+
+    div.appendChild(get_label("pf-m-blue", `OVAL Variable ID: ${oval_variable.variable_id}\u00A0`, undefined, "", "", oval_variable.comment));
+    div.appendChild(get_label("pf-m-blue", `OVAL Variable type: ${oval_variable.variable_type}\u00A0`));
+    return div;
+}
+
+function generate_OVAL_variable(oval_variable, div) {
+    if (oval_variable === null) {
+        return;
+    }
+    div.appendChild(get_OVAL_variable_info_heading(oval_variable));
+    const table_div = DIV.cloneNode();
+    table_div.className = "pf-c-scroll-inner-wrapper oval-test-detail-table";
+    div.appendChild(table_div);
+
+    generate_property_elements(table_div, oval_variable, oval_variable.variable_data);
+}
 
 function generate_OVAL_error_message(test_info, div) {
     div.appendChild(BR.cloneNode());
@@ -696,6 +720,26 @@ function generate_OVAL_error_message(test_info, div) {
     div.appendChild(BR.cloneNode());
 }
 
+function generate_referenced_endpoints(test_info, div) {
+    if (Object.keys(test_info.referenced_oval_endpoints).length > 0) {
+        const h1 = H1.cloneNode();
+        h1.textContent ='Referenced endpoints: ';
+        h1.className = "pf-c-title pf-m-lg";
+        div.appendChild(BR.cloneNode());
+        div.appendChild(h1);
+        for (const [id, endpoint] of Object.entries(test_info.referenced_oval_endpoints)) { // eslint-disable-line array-element-newline
+            if(id.includes(":var:")) {
+                generate_OVAL_variable(endpoint, div);
+            } else if(id.includes(":obj:")) {
+                generate_OVAL_object(endpoint, div);
+            } else {
+                // eslint-disable-next-line no-console
+                console.error("Not implemented endpoint type!");
+            }
+        }
+    }
+}
+
 function get_OVAL_test_info(test_info) {
     const div = DIV.cloneNode();
     div.className = "pf-c-accordion__expanded-content-body";
@@ -720,6 +764,7 @@ function get_OVAL_test_info(test_info) {
     for (const oval_state of test_info.oval_states) {
         generate_OVAL_state(oval_state, div);
     }
+    generate_referenced_endpoints(test_info, div);
     return div;
 }
 
