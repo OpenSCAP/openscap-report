@@ -83,7 +83,9 @@ class OVALTestParser:  # pylint: disable=R0902
             if isinstance(value, dict):
                 OVALTestParser._iter_over_data_and_get_references(value, out)
             else:
-                if "object_reference" in key or "var_ref" in key or "object_ref" in key:
+                matches_key = ["object_reference", "var_ref", "object_ref", "filter"]
+                matches_val = [":var:", ":obj:", ":ste:"]
+                if any(s in key for s in matches_key) and any(s in value for s in matches_val):
                     out.append(value)
 
     def _resolve_reference(self, ref_id, new_ref, out):
@@ -95,6 +97,10 @@ class OVALTestParser:  # pylint: disable=R0902
             object_ = self.objects_parser.get_object(ref_id)
             self._iter_over_data_and_get_references(object_.object_data, new_ref)
             out[ref_id] = object_
+        elif ":ste:" in ref_id:
+            state = self.states_parser.get_state(ref_id)
+            self._iter_over_data_and_get_references(state.state_data, new_ref)
+            out[ref_id] = state
         else:
             logging.warning(ref_id)
 
