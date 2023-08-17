@@ -732,6 +732,13 @@ function generate_referenced_endpoints(test_info, div) {
                 generate_OVAL_variable(endpoint, div);
             } else if(id.includes(":obj:")) {
                 generate_OVAL_object(endpoint, div);
+            } else if(id.includes(":ste:")) {
+                div.appendChild(BR.cloneNode());
+                const heading = H1.cloneNode();
+                heading.textContent ='OVAL State definition: ';
+                heading.className = "pf-c-title pf-m-lg";
+                div.appendChild(heading);
+                generate_OVAL_state(endpoint, div);
             } else {
                 // eslint-disable-next-line no-console
                 console.error("Not implemented endpoint type!");
