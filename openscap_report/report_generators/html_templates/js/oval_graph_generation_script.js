@@ -582,14 +582,14 @@ function generate_property_elements(table_div, endpoint, data) {
     for (const [key, value] of Object.entries(data)) { // eslint-disable-line array-element-newline
         if(Object.values(value).every(v => typeof v === "object")) {
             const h1 = H1.cloneNode();
-            h1.textContent = `Element ${key} contains this elements:`;
+            h1.textContent = `Element ${remove_uuid(key)} contains this elements:`;
             h1.className = "pf-c-title pf-m-md";
             table_div.appendChild(h1);
 
             generate_property_elements(table_div, endpoint, value);
         } else {
             const h1 = H1.cloneNode();
-            h1.textContent = `Element ${key}:`;
+            h1.textContent = `Element ${remove_uuid(key)}:`;
             h1.className = "pf-c-title pf-m-md";
             table_div.appendChild(h1);
 
