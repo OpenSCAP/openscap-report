@@ -8,7 +8,7 @@ from .oval_definition_parser import OVALDefinitionParser
 from .oval_object_parser import OVALObjectParser
 from .oval_result_parser import OVALResultParser
 from .oval_state_parser import OVALStateParser
-from .oval_test_info_parser import OVALTestInfoParser
+from .oval_test_parser import OVALTestParser
 from .profile_info_parser import ProfileInfoParser
 from .remediation_parser import RemediationParser
 from .report_parser import ReportParser

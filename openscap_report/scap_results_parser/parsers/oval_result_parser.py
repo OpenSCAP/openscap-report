@@ -10,7 +10,7 @@ from lxml.etree import Element
 from ..data_structures import OvalNode
 from ..exceptions import MissingOVALResult
 from ..namespaces import NAMESPACES
-from .oval_test_info_parser import OVALTestInfoParser
+from .oval_test_parser import OVALTestParser
 
 STR_TO_BOOL = {'true': True, 'false': False}
 STR_NEGATION_BOOL = {'true': 'false', 'false': 'true'}
@@ -21,12 +21,14 @@ class OVALReport:
     oval_report_id: str
     oval_report_element: Element
     oval_results_element: Element
-    parser_info_of_oval_test: OVALTestInfoParser
+    oval_test_parser: OVALTestParser
 
 
 class OVALResultParser:
-    def __init__(self, root):
+    def __init__(self, root, oval_var_id_to_value_id, ref_values):
         self.root = root
+        self.oval_var_id_to_value_id = oval_var_id_to_value_id
+        self.ref_values = ref_values
         self.oval_reports = self._get_oval_reports()
         logging.info(self.oval_reports)
 
@@ -40,12 +42,14 @@ class OVALResultParser:
             report_id = report_element.get("id")
             if "oval" in report_id:
                 oval_results = self._get_oval_results(report_element)
-                parser_info_of_test = OVALTestInfoParser(report_element)
+                oval_test_parser = OVALTestParser(
+                    report_element, self.oval_var_id_to_value_id, self.ref_values
+                )
                 oval_reports[report_id] = OVALReport(
                     report_id,
                     report_element,
                     oval_results,
-                    parser_info_of_test
+                    oval_test_parser
                 )
         return oval_reports
 
@@ -104,14 +108,14 @@ class OVALResultParser:
         negation = self._get_negation(child)
         result_of_node = self._get_result(negation, child)
         test_id = child.get('test_ref')
-        parser_of_test_info = self.oval_reports[oval_report_id].parser_info_of_oval_test
+        oval_test_parser = self.oval_reports[oval_report_id].oval_test_parser
         return OvalNode(
             node_id=test_id,
             node_type="value",
             value=result_of_node,
             negation=negation,
             tag="Test",
-            test_info=parser_of_test_info.get_test_info(test_id),
+            test_info=oval_test_parser.get_test_info(test_id),
         )
 
     def _build_node(self, tree, tag, id_definition, oval_report_id):

@@ -8,12 +8,15 @@ from .exceptions import ExceptionNoCPEApplicabilityLanguage, MissingOVALResult
 from .parsers import CPEApplicabilityLanguageParser, OVALDefinitionParser
 
 
-class OVALAndCPETreeBuilder:  # pylint: disable=R0902
-    def __init__(self, root, group_parser, profile_platforms, oval_definitions_and_results_sources):
+class OVALAndCPETreeBuilder:  # pylint: disable=R0902, R0913
+    def __init__(self, root, group_parser, profile_platforms,
+                 oval_definitions_and_results_sources, oval_var_id_to_value_id, ref_values):
         self.profile_platforms = profile_platforms
         self.root = root
         self.group_parser = group_parser
         self.oval_definitions_and_results_sources = oval_definitions_and_results_sources
+        self.oval_var_id_to_value_id = oval_var_id_to_value_id
+        self.ref_values = ref_values
         self.cpe_source = ""
         self.missing_oval_results = False
         self.cpe_al = True
@@ -25,7 +28,9 @@ class OVALAndCPETreeBuilder:  # pylint: disable=R0902
 
     def load_oval_definitions(self):
         try:
-            self.oval_definition_parser = OVALDefinitionParser(self.root)
+            self.oval_definition_parser = OVALDefinitionParser(
+                self.root, self.oval_var_id_to_value_id, self.ref_values
+            )
             self.reports_with_oval_definitions = self.oval_definition_parser.get_oval_definitions()
             self._determine_cpe_source()
             self.dict_of_oval_cpe_definitions = self._get_dict_of_oval_cpe_definitions()

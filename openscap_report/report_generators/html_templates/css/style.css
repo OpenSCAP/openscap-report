@@ -256,3 +256,9 @@ footer {
         max-height: unset !important;
     }
 }
+
+.oval-object-background {
+    background-color: var(--pf-global--BorderColor--100);
+    padding: 5px;
+    border-radius: 5px;
+}

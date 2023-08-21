@@ -9,8 +9,8 @@ from .oval_state_parser import OVALStateParser
 MAX_MESSAGE_LEN = 99
 
 
-class OVALTestInfoParser:  # pylint: disable=R0902
-    def __init__(self, oval_report):
+class OVALTestParser:  # pylint: disable=R0902
+    def __init__(self, oval_report, oval_var_id_to_value_id, ref_values):
         self.oval_report = oval_report
         self.oval_definitions = self._get_oval_definitions()
         self.tests = self._get_tests()
@@ -19,11 +19,13 @@ class OVALTestInfoParser:  # pylint: disable=R0902
         self.oval_system_characteristics = self._get_oval_system_characteristics()
         self.collected_objects = self._get_collected_objects_by_id()
         self.system_data = self._get_system_data_by_id()
-        self.states_parser = OVALStateParser(self.states)
+        self.states_parser = OVALStateParser(self.states, oval_var_id_to_value_id, ref_values)
         self.objects_parser = OVALObjectParser(
             self.objects,
             self.collected_objects,
-            self.system_data
+            self.system_data,
+            oval_var_id_to_value_id,
+            ref_values
         )
 
     def _get_oval_system_characteristics(self):
@@ -72,16 +74,15 @@ class OVALTestInfoParser:  # pylint: disable=R0902
         list_state_of_test = test.xpath('.//*[local-name()="state"]')
 
         oval_object_el = list_object_of_test.pop() if list_object_of_test else None
-        oval_state_el = list_state_of_test.pop() if list_state_of_test else None
 
         oval_object = None
-        oval_state = None
+        oval_states = []
 
         if oval_object_el is not None:
             oval_object = self.objects_parser.get_object(oval_object_el.get("object_ref", ""))
 
-        if oval_state_el is not None:
-            oval_state = self.states_parser.get_state(oval_state_el.get("state_ref", ""))
+        for oval_state_el in list_state_of_test:
+            oval_states.append(self.states_parser.get_state(oval_state_el.get("state_ref", "")))
 
         return OvalTest(
             test_id=test_id,
@@ -90,5 +91,5 @@ class OVALTestInfoParser:  # pylint: disable=R0902
             test_type=test.tag[test.tag.index('}') + 1:],
             comment=test.attrib.get("comment", ""),
             oval_object=oval_object,
-            oval_state=oval_state,
+            oval_states=oval_states,
         )

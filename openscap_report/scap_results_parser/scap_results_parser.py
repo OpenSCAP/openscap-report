@@ -76,6 +76,15 @@ class SCAPResultsParser():
                 references.append(rule.oval_reference)
         return set(tuple(references))
 
+    @staticmethod
+    def _get_map_oval_var_to_value(test_results_el):
+        return {
+            check_export.attrib.get("export-name"): check_export.attrib.get("value-id", "")
+            for check_export in test_results_el.findall(
+                ".//xccdf:rule-result//xccdf:check//xccdf:check-export", NAMESPACES
+            )
+        }
+
     def parse_report(self):
         test_results_el = self.root.find('.//xccdf:TestResult', NAMESPACES)
         benchmark_el = self._get_benchmark_element()
@@ -93,7 +102,9 @@ class SCAPResultsParser():
         OVAL_and_CPE_tree_builder = OVALAndCPETreeBuilder(  # pylint: disable=C0103
             self.root, group_parser,
             report.profile_info.get_list_of_cpe_platforms_that_satisfy_evaluation_target(),
-            oval_definitions_and_results_sources
+            oval_definitions_and_results_sources,
+            self._get_map_oval_var_to_value(test_results_el),
+            self.ref_values,
         )
         OVAL_and_CPE_tree_builder.insert_oval_and_cpe_trees_to_rules(rules)
 
