@@ -10,15 +10,7 @@ from .shared_static_methods_of_parser import SharedStaticMethodsOfParser
 
 
 class OVALObjectParser(OVALEndpointInformation):
-    def __init__(
-        self,
-        objects,
-        collected_objects,
-        system_data,
-        oval_var_id_to_value_id,
-        ref_values,
-    ):  # pylint: disable=R0913
-        super().__init__(oval_var_id_to_value_id, ref_values)
+    def __init__(self, objects, collected_objects, system_data):
         self.objects = objects
         self.collected_objects = collected_objects
         self.system_data = system_data
