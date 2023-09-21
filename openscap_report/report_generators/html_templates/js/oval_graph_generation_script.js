@@ -124,7 +124,7 @@ function generate_cpe_al(self, div_id_with_data) { // eslint-disable-line no-unu
         }
         const { tree_data, fragment, ul } = get_base_of_tree(div_with_tree);
         if (tree_data !== undefined) {
-            ul.appendChild(get_CPL_AL_tree_node(tree_data));
+            ul.appendChild(get_CPE_AL_tree_node(tree_data));
             div_with_tree.appendChild(fragment);
             div_with_tree.setAttribute("is_rendered", 'true');
         }
@@ -148,7 +148,7 @@ function generate_oval_tree(self, div_id_with_oval_graph_data) { // eslint-disab
     });
 }
 
-function get_CPL_AL_tree_node(root) {
+function get_CPE_AL_tree_node(root) {
     if (root.node_type == 'frac-ref') {
         return undefined;
     }
@@ -163,7 +163,7 @@ function get_CPL_AL_tree_node(root) {
             if (child.node_type == "frac-ref") {
                 fragment.appendChild(render_CPE_frac_ref(child));
             } else {
-                fragment.appendChild(get_CPL_AL_tree_node(child));
+                fragment.appendChild(get_CPE_AL_tree_node(child));
             }
         }
         ul.appendChild(fragment);
