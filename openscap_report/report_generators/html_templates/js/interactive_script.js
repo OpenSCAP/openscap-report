@@ -113,6 +113,13 @@ function show_evaluation_characteristics(self) { // eslint-disable-line no-unuse
 }
 
 function show_rule_detail(self) { // eslint-disable-line no-unused-vars
+    var rule_id = self.parentNode.parentNode.parentNode.getAttribute("rule-id").asJqueryComplaintId();
+    generate_oval_tree(self, "oval_tree_of_rule_" + rule_id); // eslint-disable-line no-undef
+    generate_oval_tree(self, "cpe_tree_of_rule_" + rule_id); // eslint-disable-line no-undef
+    generate_cpe_al(self, "cpe_al_tree_of_rule_profile_platforms_" + rule_id); // eslint-disable-line no-undef
+    generate_cpe_al(self, "cpe_al_tree_of_rule_group_platforms_" + rule_id); // eslint-disable-line no-undef
+    generate_cpe_al(self, "cpe_al_tree_of_rule_rule_platforms_" + rule_id); // eslint-disable-line no-undef
+
     self.classList.toggle('pf-m-expanded');
     const element_to_show = get_child_of_element_with_selector(
         self.parentNode.parentNode.parentNode,

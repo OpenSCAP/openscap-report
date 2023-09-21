@@ -100,20 +100,6 @@ const I = document.createElement("i");
 
 // OVAL graph generation methods
 
-window.addEventListener('load', () => {
-    var selector = "table[id=rule-table] tbody[rule-id] button[id=show_hide_rule_detail_button]";
-    var rule_buttons = document.querySelectorAll(selector);
-
-    rule_buttons.forEach(async item => {
-        var rule_id = await item.parentNode.parentNode.parentNode.getAttribute("rule-id").asJqueryComplaintId();
-        generate_oval_tree(item, "oval_tree_of_rule_" + rule_id); // eslint-disable-line no-undef
-        generate_oval_tree(item, "cpe_tree_of_rule_" + rule_id); // eslint-disable-line no-undef
-        generate_cpe_al(item, "cpe_al_tree_of_rule_profile_platforms_" + rule_id); // eslint-disable-line no-undef
-        generate_cpe_al(item, "cpe_al_tree_of_rule_group_platforms_" + rule_id); // eslint-disable-line no-undef
-        generate_cpe_al(item, "cpe_al_tree_of_rule_rule_platforms_" + rule_id); // eslint-disable-line no-undef
-    });
-});
-
 function get_base_of_tree(div_with_tree) {
     const data = div_with_tree.getAttribute("data");
     const tree_data = JSON.parse(data);
