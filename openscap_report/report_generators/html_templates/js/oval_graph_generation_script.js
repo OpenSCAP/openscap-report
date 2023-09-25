@@ -124,7 +124,11 @@ function generate_cpe_al(self, div_id_with_data) { // eslint-disable-line no-unu
         }
         const { tree_data, fragment, ul } = get_base_of_tree(div_with_tree);
         if (tree_data !== undefined) {
-            ul.appendChild(get_CPE_AL_tree_node(tree_data));
+            const CPE_AL_tree_node = get_CPE_AL_tree_node(tree_data);
+            ul.appendChild(CPE_AL_tree_node);
+            if (tree_data.value == "true") {
+                CPE_AL_tree_node.firstChild.firstChild.click();
+            }
             div_with_tree.appendChild(fragment);
             div_with_tree.setAttribute("is_rendered", 'true');
         }
@@ -141,7 +145,11 @@ function generate_oval_tree(self, div_id_with_oval_graph_data) { // eslint-disab
         }
         const { tree_data, fragment, ul } = get_base_of_tree(div_with_tree);
         if (tree_data !== undefined) {
-            ul.appendChild(get_OVAL_tree_node(tree_data));
+            const OVAL_tree_node = get_OVAL_tree_node(tree_data);
+            ul.appendChild(OVAL_tree_node);
+            if (div_id_with_oval_graph_data.startsWith("cpe_tree") && tree_data.value == "true") {
+                OVAL_tree_node.firstChild.firstChild.click();
+            }
             div_with_tree.appendChild(fragment);
             div_with_tree.setAttribute("is_rendered", 'true');
         }
