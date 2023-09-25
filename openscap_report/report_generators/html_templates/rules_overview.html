@@ -15,6 +15,7 @@
             </th>
         </tr>
     </thead>
+    {%- set rule_hidden = "" -%}
     {% for rule_id, rule in report.get_selected_rules() %}
     {%- if rule.result != "notselected" -%}
         {%- set rule_title = rule.title  -%}
@@ -22,10 +23,9 @@
             {%- set rule_title = rule_id  -%}
         {%- endif -%}
         {% if loop.index > 50 %}
-            <tbody class="pf-m-expanded hidden" role="rowgroup" rule-title="{{ rule_title }}" rule-id="{{ rule.rule_id }}" result="{{ rule.result }}" severity="{{ rule.severity }}">
-        {% else %}
-            <tbody class="pf-m-expanded" role="rowgroup" rule-title="{{ rule_title }}" rule-id="{{ rule.rule_id }}" result="{{ rule.result }}" severity="{{ rule.severity }}">
+            {%- set rule_hidden = "hidden" -%}
         {% endif %}
+    <tbody class="pf-m-expanded {{ rule_hidden }}" role="rowgroup" rule-title="{{ rule_title }}" rule-id="{{ rule.rule_id }}" result="{{ rule.result }}" severity="{{ rule.severity }}">
         <tr role="row">
             <td class="pf-c-table__toggle" role="cell">
                 <button

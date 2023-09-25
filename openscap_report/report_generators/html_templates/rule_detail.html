@@ -62,18 +62,6 @@
                 </td>
             </tr>
             <tr role="row">
-                <th class="pf-m-fit-content" role="rowheader" scope="row"><p class="pf-c-table__text"><b>Multi-check rule:</b></p></th>
-                <td role="cell">
-                    <div class="pf-l-flex pf-m-column"><div class="pf-l-flex__item">
-                    {% if rule.multi_check %}
-                        <p class="pf-c-table__text">yes</p>
-                    {% else %}
-                        <p class="pf-c-table__text">no</p>
-                    {% endif %}
-                    </div></div>
-                </td>
-            </tr>
-            <tr role="row">
                 <th class="pf-m-fit-content" role="rowheader" scope="row"><b>Time:</b></th>
                 <td role="cell">
                     <div class="pf-l-flex pf-m-column"><div class="pf-l-flex__item">
@@ -82,15 +70,23 @@
                 </td>
             </tr>
             <tr role="row">
-                <th class="pf-m-fit-content" role="rowheader" scope="row"><b>Weight:</b></th>
+                <th class="pf-m-fit-content" role="rowheader" scope="row"><b>Description:</b></th>
                 <td role="cell">
                     <div class="pf-l-flex pf-m-column"><div class="pf-l-flex__item">
-                    <p class="pf-c-table__text">{{ rule.weight }}</p>
-                    </div></div>
+                    <div class="text_block pf-c-table__text">{{- rule.description | set_css_for_list -}}</div></div></div>
                 </td>
             </tr>
+            {% if rule.rationale %}
             <tr role="row">
-                <th class="pf-m-fit-content" role="rowheader" scope="row"><p class="pf-c-table__text"><b>Severity:</b></p></td>
+                <th class="pf-m-fit-content" role="rowheader" scope="row"><b>Rationale:</b></th>
+                <td role="cell">
+                    <div class="pf-l-flex pf-m-column"><div class="pf-l-flex__item">
+                    <p class="pf-c-table__text">{{- rule.rationale | set_css_for_list -}}</p></div></div>
+                </td>
+            </tr>
+            {% endif %}
+            <tr role="row">
+                <th class="pf-m-fit-content" role="rowheader" scope="row"><p class="pf-c-table__text"><b>Severity:</b></p></th>
                 <td role="cell">
                     <div class="pf-l-flex pf-m-column"><div class="pf-l-flex__item">
                     <p class="pf-c-table__text">
@@ -157,19 +153,23 @@
                 </td>
             </tr>
             {% endif %}
+            {% if rule.multi_check %}
             <tr role="row">
-                <th class="pf-m-fit-content" role="rowheader" scope="row"><b>Description:</b></th>
+                <th class="pf-m-fit-content" role="rowheader" scope="row"><p class="pf-c-table__text"><b>Multi-check rule:</b></p></th>
                 <td role="cell">
                     <div class="pf-l-flex pf-m-column"><div class="pf-l-flex__item">
-                    <div class="text_block pf-c-table__text">{{- rule.description | set_css_for_list -}}</div></div></div>
+                        <p class="pf-c-table__text">yes</p>
+                    </div></div>
                 </td>
             </tr>
-            {% if rule.rationale %}
+            {% endif %}
+            {% if rule.weight | string != "1.0" %}
             <tr role="row">
-                <th class="pf-m-fit-content" role="rowheader" scope="row"><b>Rationale:</b></th>
+                <th class="pf-m-fit-content" role="rowheader" scope="row"><b>Weight:</b></th>
                 <td role="cell">
                     <div class="pf-l-flex pf-m-column"><div class="pf-l-flex__item">
-                    <p class="pf-c-table__text">{{- rule.rationale | set_css_for_list -}}</p></div></div>
+                    <p class="pf-c-table__text">{{ rule.weight }}</p>
+                    </div></div>
                 </td>
             </tr>
             {% endif %}
