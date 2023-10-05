@@ -17,6 +17,9 @@
         </p>
     </div>
 {%- else -%}
+<tr role="row">
+    <th class="pf-m-fit-content" role="rowheader" scope="row"><h1 class="pf-c-title pf-m-xl">Applicability checks:</h1></th>
+</tr>
 {% for key, platforms in platforms_dict.items() %}
 {% if platforms %}
 {% if key == 'profile_platforms' -%}

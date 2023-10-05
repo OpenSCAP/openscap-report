@@ -100,20 +100,6 @@ const I = document.createElement("i");
 
 // OVAL graph generation methods
 
-window.addEventListener('load', () => {
-    var selector = "table[id=rule-table] tbody[rule-id] button[id=show_hide_rule_detail_button]";
-    var rule_buttons = document.querySelectorAll(selector);
-
-    rule_buttons.forEach(async item => {
-        var rule_id = await item.parentNode.parentNode.parentNode.getAttribute("rule-id").asJqueryComplaintId();
-        generate_oval_tree(item, "oval_tree_of_rule_" + rule_id); // eslint-disable-line no-undef
-        generate_oval_tree(item, "cpe_tree_of_rule_" + rule_id); // eslint-disable-line no-undef
-        generate_cpe_al(item, "cpe_al_tree_of_rule_profile_platforms_" + rule_id); // eslint-disable-line no-undef
-        generate_cpe_al(item, "cpe_al_tree_of_rule_group_platforms_" + rule_id); // eslint-disable-line no-undef
-        generate_cpe_al(item, "cpe_al_tree_of_rule_rule_platforms_" + rule_id); // eslint-disable-line no-undef
-    });
-});
-
 function get_base_of_tree(div_with_tree) {
     const data = div_with_tree.getAttribute("data");
     const tree_data = JSON.parse(data);
@@ -138,7 +124,11 @@ function generate_cpe_al(self, div_id_with_data) { // eslint-disable-line no-unu
         }
         const { tree_data, fragment, ul } = get_base_of_tree(div_with_tree);
         if (tree_data !== undefined) {
-            ul.appendChild(get_CPL_AL_tree_node(tree_data));
+            const CPE_AL_tree_node = get_CPE_AL_tree_node(tree_data);
+            ul.appendChild(CPE_AL_tree_node);
+            if (tree_data.value == "true") {
+                CPE_AL_tree_node.firstChild.firstChild.click();
+            }
             div_with_tree.appendChild(fragment);
             div_with_tree.setAttribute("is_rendered", 'true');
         }
@@ -155,14 +145,18 @@ function generate_oval_tree(self, div_id_with_oval_graph_data) { // eslint-disab
         }
         const { tree_data, fragment, ul } = get_base_of_tree(div_with_tree);
         if (tree_data !== undefined) {
-            ul.appendChild(get_OVAL_tree_node(tree_data));
+            const OVAL_tree_node = get_OVAL_tree_node(tree_data);
+            ul.appendChild(OVAL_tree_node);
+            if (div_id_with_oval_graph_data.startsWith("cpe_tree") && tree_data.value == "true") {
+                OVAL_tree_node.firstChild.firstChild.click();
+            }
             div_with_tree.appendChild(fragment);
             div_with_tree.setAttribute("is_rendered", 'true');
         }
     });
 }
 
-function get_CPL_AL_tree_node(root) {
+function get_CPE_AL_tree_node(root) {
     if (root.node_type == 'frac-ref') {
         return undefined;
     }
@@ -177,7 +171,7 @@ function get_CPL_AL_tree_node(root) {
             if (child.node_type == "frac-ref") {
                 fragment.appendChild(render_CPE_frac_ref(child));
             } else {
-                fragment.appendChild(get_CPL_AL_tree_node(child));
+                fragment.appendChild(get_CPE_AL_tree_node(child));
             }
         }
         ul.appendChild(fragment);
