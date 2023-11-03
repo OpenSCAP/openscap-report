@@ -1,12 +1,40 @@
 # Copyright 2022, Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+import collections
 from dataclasses import replace
 
 from ..data_structures import Identifier, Reference, Rule, RuleWarning
 from ..namespaces import NAMESPACES
 from .full_text_parser import FullTextParser
 from .remediation_parser import RemediationParser
+
+KNOWN_REFERENCES = {
+    "http://www.ssi.gouv.fr/administration/bonnes-pratiques/": "ANSSI",
+    "https://public.cyber.mil/stigs/cci/": "CCI",
+    "https://www.ccn-cert.cni.es/pdf/guias/series-ccn-stic/guias-de-acceso-publico-ccn-stic/6768-ccn-stic-610a22-perfilado-de-seguridad-red-hat-enterprise-linux-9-0/file.html": "CCN for RHEL 9",
+    "https://www.cisecurity.org/controls/": "CIS",
+    "https://www.cisecurity.org/benchmark/red_hat_linux/": "CIS for RHEL",
+    "https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf": "CJIS",
+    "http://www.cnss.gov/Assets/pdf/CNSSI-1253.pdf": "CNSS",
+    "https://www.isaca.org/resources/cobit": "COBIT",
+    "http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf": "CUI",
+    "https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf": "HIPAA",
+    "https://www.isa.org/products/ansi-isa-62443-3-3-99-03-03-2013-security-for-indu": "ISA-62443-2013",
+    "https://www.isa.org/products/isa-62443-2-1-2009-security-for-industrial-automat": "ISA-62443-2009",
+    "https://www.cyber.gov.au/acsc/view-all-content/ism": "ISM",
+    "https://www.iso.org/standard/54534.html": "ISO 27001-2013",
+    "https://www.nerc.com/pa/Stand/Standard%20Purpose%20Statement%20DL/US_Standard_One-Stop-Shop.xlsx": "NERC-CIP",
+    "http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf": "NIST 800-53",
+    "https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.04162018.pdf": "NIST CSF",
+    "https://www.niap-ccevs.org/Profile/PP.cfm": "OSPP",
+    "https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf": "PCI-DSS v3",
+    "https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0.pdf": "PCI-DSS v4",
+    "https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=application-servers": "SRG-APP",
+    "https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os": "SRG-OS",
+    "https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux": "STIG ID",
+    "https://public.cyber.mil/stigs/srg-stig-tools/": "STIG ref",
+}
 
 
 class RuleParser():
@@ -20,10 +48,16 @@ class RuleParser():
 
     @staticmethod
     def _get_references(rule):
+        url_to_ref_ids = collections.defaultdict(list)
+        for reference_el in rule.findall(".//xccdf:reference", NAMESPACES):
+            url = reference_el.get("href")
+            ref_id = reference_el.text
+            url_to_ref_ids[url].append(ref_id)
         references = []
-        for referenc in rule.findall(".//xccdf:reference", NAMESPACES):
-            references.append(Reference(referenc.get("href"), referenc.text))
-        return references
+        for url, ref_ids in url_to_ref_ids.items():
+            name = KNOWN_REFERENCES.get(url, url)
+            references.append(Reference(name, url, sorted(ref_ids)))
+        return sorted(references, key=lambda x: x.name)
 
     @staticmethod
     def _get_identifiers(rule):

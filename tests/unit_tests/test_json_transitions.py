@@ -26,8 +26,9 @@ from openscap_report.scap_results_parser.data_structures.json_transformation imp
                         ],
                         "references": [
                             {
-                                "text": "11",
+                                "name": "IDK",
                                 "href": "idk-link.com",
+                                "ref_ids": ["11"],
                             }
                         ],
                     }
@@ -44,11 +45,15 @@ from openscap_report.scap_results_parser.data_structures.json_transformation imp
                             }
                         ],
                         "references": [
-                            "11",
+                            {
+                                "name": "IDK",
+                                "href": "idk-link.com",
+                                "ref_ids": ["11"],
+                            }
                         ],
                     }
                 },
-                "references": {"11": "idk-link.com"},
+                "references": {"IDK": "idk-link.com"},
             },
         )
     ],
