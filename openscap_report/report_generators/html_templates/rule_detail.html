@@ -140,7 +140,11 @@
                         {%- for reference in rule.references -%}
                             <tr>
                                 <td>
-                                    <a href="{{ reference.href | replace('&', ';') }}">{{ reference.name }}</a>:
+                                    {% if reference.href == "UNKNOWN" %}
+                                        Unknown:
+                                    {% else %}
+                                        <a href="{{ reference.href | replace('&', ';') }}">{{ reference.name }}</a>:
+                                    {% endif %}
                                 </td>
                                 <td>
                                     {%- for ref_id in reference.ref_ids -%}
