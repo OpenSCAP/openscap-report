@@ -9,6 +9,7 @@ from ..namespaces import NAMESPACES
 from .full_text_parser import FullTextParser
 from .remediation_parser import RemediationParser
 
+# pylint: disable=line-too-long
 KNOWN_REFERENCES = {
     "http://www.ssi.gouv.fr/administration/bonnes-pratiques/": "ANSSI",
     "https://public.cyber.mil/stigs/cci/": "CCI",
@@ -35,6 +36,7 @@ KNOWN_REFERENCES = {
     "https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux": "STIG ID",  # noqa: E501
     "https://public.cyber.mil/stigs/srg-stig-tools/": "STIG ref",
 }
+# pylint: enable=line-too-long
 
 
 class RuleParser():
