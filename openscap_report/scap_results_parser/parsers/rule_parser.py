@@ -53,7 +53,7 @@ class RuleParser():
         url_to_ref_ids = collections.defaultdict(list)
         for reference_el in rule.findall(".//xccdf:reference", NAMESPACES):
             url = reference_el.get("href")
-            if url is None:
+            if url is None or url == "":
                 url = "UNKNOWN"
             ref_id = reference_el.text
             url_to_ref_ids[url].append(ref_id)
