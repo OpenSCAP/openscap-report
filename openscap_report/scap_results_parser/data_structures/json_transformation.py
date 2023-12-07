@@ -5,11 +5,8 @@
 def rearrange_references(dictionary_json):
     global_references = {}
     for rule in dictionary_json["rules"].values():
-        new_rule_references = []
         for ref in rule["references"]:
-            global_references[ref["text"]] = ref["href"]
-            new_rule_references.append(ref["text"])
-        rule["references"] = new_rule_references
+            global_references[ref["name"]] = ref["href"]
     dictionary_json["references"] = global_references
 
 

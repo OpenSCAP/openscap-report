@@ -244,7 +244,24 @@
                     "title": "References",
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "title": "Name",
+                                "type": "string"
+                            },
+                            "href": {
+                                "title": "Href",
+                                "type": "string"
+                            },
+                            "ref_ids": {
+                                "title": "IDs",
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        }
                     }
                 },
                 "description": {
