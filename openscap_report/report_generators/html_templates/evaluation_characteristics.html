@@ -155,6 +155,20 @@
                         </div>
                     </div>
                 </li>
+
+                {%- for type, addresses in report.scan_result.target_addresses.items() -%}
+                <li class="pf-c-data-list__item">
+                    <div class="pf-c-data-list__item-row">
+                        <div class="pf-c-data-list__item-content">
+                            <div class="pf-c-data-list__cell"><b>Target {{ type }} addresses:</b></div>
+                            <div class="pf-c-data-list__cell">
+                                {{- ", ".join(addresses) -}}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                {%- endfor -%}
+
             </ul>
         </div>
     </div>
