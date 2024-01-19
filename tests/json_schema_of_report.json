@@ -112,7 +112,14 @@
                     "title": "Score Max",
                     "default": 0.0,
                     "type": "number"
-                }            
+                },
+                "target_addresses": {
+                    "title": "Target addresses",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
             },
             "required": [
                 "title",
@@ -128,7 +135,8 @@
                 "end_time",
                 "test_system",
                 "score",
-                "score_max"
+                "score_max",
+                "target_addresses"
               ]
         },
         "rules": {

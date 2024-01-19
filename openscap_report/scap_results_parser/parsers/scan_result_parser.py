@@ -23,6 +23,13 @@ class ScanResultParser:
             return ""
         return element.text
 
+    def _get_list_of_addresses(self, type_):
+        out = []
+        path = f".//xccdf:target-facts/xccdf:fact[@name='urn:xccdf:fact:asset:identifier:{type_}']"
+        for address in self.test_results_el.findall(path, NAMESPACES):
+            out.append(address.text)
+        return out
+
     def get_test_result(self):
         score_el = self.test_results_el.find(".//xccdf:score", NAMESPACES)
 
@@ -50,4 +57,9 @@ class ScanResultParser:
         if profile_name is not None:
             scan_result_dict["profile_id"] = profile_name.get("idref")
 
+        target_addresses = {}
+        for type_ in ["mac", "ipv4", "ipv6"]:
+            target_addresses[type_] = self._get_list_of_addresses(type_)
+
+        scan_result_dict["target_addresses"] = target_addresses
         return ResultOfScan(**scan_result_dict)

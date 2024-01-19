@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 from dataclasses import asdict, dataclass, field
-from typing import List
+from typing import Dict, List
 
 SCAN_JSON_KEYS = [
     "title",
@@ -21,6 +21,7 @@ SCAN_JSON_KEYS = [
     "score_system",
     "score",
     "score_max",
+    "target_addresses",
 ]
 
 SCORE_COMPUTATION_EXPLANATIONS = {
@@ -68,6 +69,7 @@ class ResultOfScan:  # pylint: disable=R0902
     score_system: str = ""
     score: float = 0.0
     score_max: float = 0.0
+    target_addresses: Dict[str, list] = field(default_factory=dict)
 
     def as_dict(self):
         return asdict(self)
