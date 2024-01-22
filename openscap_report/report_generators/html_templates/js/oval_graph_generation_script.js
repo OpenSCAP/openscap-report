@@ -98,9 +98,11 @@ const COL = document.createElement("td");
 const HEADER_COL = document.createElement("th");
 
 const H1 = document.createElement("h1");
+const H3 = document.createElement("h3");
 
 const BR = document.createElement("br");
 const B = document.createElement("b");
+const HR = document.createElement("hr");
 
 const SMALL = document.createElement("small");
 const I = document.createElement("i");
@@ -747,6 +749,15 @@ function generate_referenced_endpoints(test_info, div) {
             }
         }
     }
+}
+
+function get_spacer() {
+    const hr = HR.cloneNode();
+    const spacer = DIV.cloneNode();
+    spacer.appendChild(BR.cloneNode());
+    spacer.appendChild(hr);
+    spacer.appendChild(BR.cloneNode());
+    return spacer;
 }
 
 function get_OVAL_test_info(test_info) {
