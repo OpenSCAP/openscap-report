@@ -626,7 +626,7 @@ function get_OVAL_object_info_heading(oval_object) {
     return div;
 }
 
-function generate_OVAL_object(oval_object, div) {
+function generate_OVAL_object(test_info, oval_object, div) {
     if (oval_object === undefined) {
         // eslint-disable-next-line no-console
         console.error("Error: The test information has no OVAL Objects.");
@@ -638,11 +638,14 @@ function generate_OVAL_object(oval_object, div) {
     div.appendChild(table_div);
 
     generate_property_elements(table_div, oval_object, oval_object.object_data);
+
+    if (oval_object.object_id in test_info.map_referenced_oval_endpoints) {
+        generate_referenced_endpoints(test_info, oval_object.object_id, table_div);
+    }
 }
 
 function get_OVAL_state_heading() {
     const div = DIV.cloneNode();
-    div.appendChild(BR.cloneNode());
     const h1 = H1.cloneNode();
     h1.textContent ='OVAL State definitions: ';
     h1.className = "pf-c-title pf-m-lg";
@@ -650,23 +653,32 @@ function get_OVAL_state_heading() {
     return div;
 }
 
-function get_OVAL_state_info(oval_state) {
+function get_OVAL_state_info(oval_state, off_heading=false) {
     const div = DIV.cloneNode();
-
+    if(off_heading) {
+        const h1 = H1.cloneNode();
+        h1.textContent ='OVAL State definition: ';
+        h1.className = "pf-c-title pf-m-lg";
+        div.appendChild(h1);
+    }
     div.appendChild(get_label("pf-m-blue", `OVAL State ID: ${oval_state.state_id}\u00A0`, undefined, "", "", oval_state.comment));
     return div;
 }
 
-function generate_OVAL_state(oval_state, div) {
+// eslint-disable-next-line max-params
+function generate_OVAL_state(test_info, oval_state, div, off_heading=false) {
     if (oval_state === null) {
         return;
     }
-    div.appendChild(get_OVAL_state_info(oval_state));
+    div.appendChild(get_OVAL_state_info(oval_state, off_heading));
     const table_div = DIV.cloneNode();
     table_div.className = "pf-c-scroll-inner-wrapper oval-test-detail-table";
     div.appendChild(table_div);
 
     generate_property_elements(table_div, oval_state, oval_state.state_data);
+    if (oval_state.state_id in test_info.map_referenced_oval_endpoints) {
+        generate_referenced_endpoints(test_info, oval_state.state_id, table_div);
+    }
 }
 
 function get_OVAL_variable_info_heading(oval_variable) {
@@ -682,7 +694,7 @@ function get_OVAL_variable_info_heading(oval_variable) {
     return div;
 }
 
-function generate_OVAL_variable(oval_variable, div) {
+function generate_OVAL_variable(test_info, oval_variable, div) {
     if (oval_variable === null) {
         return;
     }
@@ -692,6 +704,9 @@ function generate_OVAL_variable(oval_variable, div) {
     div.appendChild(table_div);
 
     generate_property_elements(table_div, oval_variable, oval_variable.variable_data);
+    if (oval_variable.variable_id in test_info.map_referenced_oval_endpoints) {
+        generate_referenced_endpoints(test_info, oval_variable.variable_id, table_div);
+    }
 }
 
 function generate_OVAL_error_message(test_info, div) {
@@ -724,25 +739,60 @@ function generate_OVAL_error_message(test_info, div) {
     div.appendChild(BR.cloneNode());
 }
 
-function generate_referenced_endpoints(test_info, div) {
-    if (Object.keys(test_info.referenced_oval_endpoints).length > 0) {
-        const h1 = H1.cloneNode();
-        h1.textContent ='Referenced endpoints: ';
-        h1.className = "pf-c-title pf-m-lg";
-        div.appendChild(BR.cloneNode());
-        div.appendChild(h1);
-        for (const [id, endpoint] of Object.entries(test_info.referenced_oval_endpoints)) { // eslint-disable-line array-element-newline
+function add_header_referenced_endpoints_and_get_body(div) {
+    const container = DIV.cloneNode();
+    container.className = "pf-c-accordion pf-m-bordered";
+
+    const h3 = H3.cloneNode();
+    const button = BUTTON.cloneNode();
+    button.className = "pf-c-accordion__toggle pf-m-expanded";
+    button.setAttribute("type", "button");
+    button.setAttribute("aria-expanded","false");
+    button.addEventListener("click", show_OVAL_referenced_endpoints, false);
+    button.param_this = button;
+
+    const title = SPAN.cloneNode();
+    title.className = "pf-c-accordion__toggle-text";
+    title.textContent = "Referenced endpoints";
+
+    button.appendChild(title);
+    const icon = SPAN.cloneNode();
+    icon.className = "pf-c-accordion__toggle-icon";
+    const i = ICON.cloneNode();
+    i.className = "fas fa-angle-right";
+    i.setAttribute("aria-hidden", "true");
+    icon.appendChild(i);
+    button.appendChild(icon);
+
+    h3.appendChild(button);
+
+    const content = DIV.cloneNode();
+    content.className = "pf-c-accordion__expanded-content";
+    content.style.display = "none";
+    const body = DIV.cloneNode();
+    body.className = "pf-c-accordion__expanded-content-body";
+    content.appendChild(body);
+    button.param_content = content;
+
+    container.appendChild(h3);
+    container.appendChild(content);
+
+    div.appendChild(container);
+    return body;
+}
+
+function generate_referenced_endpoints(test_info, children_id, div) {
+    if (test_info.map_referenced_oval_endpoints[children_id].length > 0) {
+        const body = add_header_referenced_endpoints_and_get_body(div);
+
+        for (const id of test_info.map_referenced_oval_endpoints[children_id]) {
+            const endpoint = test_info.referenced_oval_endpoints[id];
             if(id.includes(":var:")) {
-                generate_OVAL_variable(endpoint, div);
+                generate_OVAL_variable(test_info, endpoint, body);
             } else if(id.includes(":obj:")) {
-                generate_OVAL_object(endpoint, div);
+                generate_OVAL_object(test_info, endpoint, body);
             } else if(id.includes(":ste:")) {
-                div.appendChild(BR.cloneNode());
-                const heading = H1.cloneNode();
-                heading.textContent ='OVAL State definition: ';
-                heading.className = "pf-c-title pf-m-lg";
-                div.appendChild(heading);
-                generate_OVAL_state(endpoint, div);
+                generate_OVAL_state(test_info, endpoint, body, true);
             } else {
                 // eslint-disable-next-line no-console
                 console.error("Not implemented endpoint type!");
@@ -775,16 +825,18 @@ function get_OVAL_test_info(test_info) {
         generate_OVAL_error_message(test_info, div);
     }
 
-    generate_OVAL_object(test_info.oval_object, div);
+    generate_OVAL_object(test_info, test_info.oval_object, div);
+
+    div.appendChild(get_spacer());
 
     if (test_info.oval_states.length > 0) {
         div.appendChild(get_OVAL_state_heading());
     }
 
     for (const oval_state of test_info.oval_states) {
-        generate_OVAL_state(oval_state, div);
+        generate_OVAL_state(test_info, oval_state, div);
+        div.appendChild(get_spacer());
     }
-    generate_referenced_endpoints(test_info, div);
     return div;
 }
 
