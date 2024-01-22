@@ -1,9 +1,81 @@
 {# Copyright 2022, Red Hat, Inc. #}
 {# SPDX-License-Identifier: LGPL-2.1-or-later #}
-<div class="pf-c-accordion pf-m-display-lg">
+<div>
+    <ul class="pf-c-data-list" role="list">
+
+        <li class="pf-c-data-list__item">
+            <div class="pf-c-data-list__item-row">
+                <div class="pf-c-data-list__item-content">
+                    <div class="pf-c-data-list__cell"><b>Evaluation target:</b></div>
+                    <div class="pf-c-data-list__cell">
+                        {{- report.scan_result.target -}}
+                    </div>
+                </div>
+            </div>
+        </li>
+
+        <li class="pf-c-data-list__item">
+            <div class="pf-c-data-list__item-row">
+                <div class="pf-c-data-list__item-content">
+                    <div class="pf-c-data-list__cell"><b>Profile ID:</b></div>
+                    <div class="pf-c-data-list__cell">
+                        {{- report.profile_info.profile_id -}}
+                    </div>
+                </div>
+            </div>
+        </li>
+
+        {%- if report.profile_info.extends -%}
+        <li class="pf-c-data-list__item">
+            <div class="pf-c-data-list__item-row">
+                <div class="pf-c-data-list__item-content">
+                    <div class="pf-c-data-list__cell"><b>Extends Profile ID:</b></div>
+                    <div class="pf-c-data-list__cell">
+                        {{- report.profile_info.extends -}}
+                    </div>
+                </div>
+            </div>
+        </li>
+        {%- endif -%}
+
+        <li class="pf-c-data-list__item">
+            <div class="pf-c-data-list__item-row">
+                <div class="pf-c-data-list__item-content">
+                    <div class="pf-c-data-list__cell"><b>Scanner:</b></div>
+                    <div class="pf-c-data-list__cell">
+                        {{- report.scan_result.scanner -}}&nbsp;{{- report.scan_result.scanner_version -}}
+                    </div>
+                </div>
+            </div>
+        </li>
+
+        <li class="pf-c-data-list__item">
+            <div class="pf-c-data-list__item-row">
+                <div class="pf-c-data-list__item-content">
+                    <div class="pf-c-data-list__cell"><b>Started at:</b></div>
+                    <div class="pf-c-data-list__cell">
+                        {{- report.scan_result.start_time -}}
+                    </div>
+                </div>
+            </div>
+        </li>
+
+        <li class="pf-c-data-list__item">
+            <div class="pf-c-data-list__item-row">
+                <div class="pf-c-data-list__item-content">
+                    <div class="pf-c-data-list__cell"><b>Finished at:</b></div>
+                    <div class="pf-c-data-list__cell">
+                        {{- report.scan_result.end_time -}}
+                    </div>
+                </div>
+            </div>
+        </li>
+
+    </ul>
+<div class="pf-c-accordion">
     <h3>
         <button class="pf-c-accordion__toggle" type="button" onclick="show_evaluation_characteristics(this);">
-            <span class="pf-c-accordion__toggle-text">Evaluation Characteristics</span>
+            <span class="pf-c-accordion__toggle-text">More Evaluation Characteristics</span>
             <span class="pf-c-accordion__toggle-icon">
                 <i class="fas fa-angle-right"></i>
             </span>
@@ -13,28 +85,6 @@
         <div class="pf-c-accordion__expanded-content-body">
             <ul class="pf-c-data-list" role="list">
 
-                <li class="pf-c-data-list__item">
-                    <div class="pf-c-data-list__item-row">
-                        <div class="pf-c-data-list__item-content">
-                            <div class="pf-c-data-list__cell"><b>Profile ID:</b></div>
-                            <div class="pf-c-data-list__cell">
-                                {{- report.profile_info.profile_id -}}
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                {%- if report.profile_info.extends -%}
-                <li class="pf-c-data-list__item">
-                    <div class="pf-c-data-list__item-row">
-                        <div class="pf-c-data-list__item-content">
-                            <div class="pf-c-data-list__cell"><b>Extends Profile ID:</b></div>
-                            <div class="pf-c-data-list__cell">
-                                {{- report.profile_info.extends -}}
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                {%- endif -%}
                 <li class="pf-c-data-list__item">
                     <div class="pf-c-data-list__item-row">
                         <div class="pf-c-data-list__item-content">
@@ -60,17 +110,6 @@
                 <li class="pf-c-data-list__item">
                     <div class="pf-c-data-list__item-row">
                         <div class="pf-c-data-list__item-content">
-                            <div class="pf-c-data-list__cell"><b>Evaluation target:</b></div>
-                            <div class="pf-c-data-list__cell">
-                                {{- report.scan_result.target -}}
-                            </div>
-                        </div>
-                    </div>
-                </li>
-
-                <li class="pf-c-data-list__item">
-                    <div class="pf-c-data-list__item-row">
-                        <div class="pf-c-data-list__item-content">
                             <div class="pf-c-data-list__cell"><b>Performed by:</b></div>
                             <div class="pf-c-data-list__cell">
                                 {{- report.scan_result.identity -}}
@@ -79,16 +118,6 @@
                     </div>
                 </li>
 
-                <li class="pf-c-data-list__item">
-                    <div class="pf-c-data-list__item-row">
-                        <div class="pf-c-data-list__item-content">
-                            <div class="pf-c-data-list__cell"><b>Scanner:</b></div>
-                            <div class="pf-c-data-list__cell">
-                                {{- report.scan_result.scanner -}}&nbsp;{{- report.scan_result.scanner_version -}}
-                            </div>
-                        </div>
-                    </div>
-                </li>
 
                 <li class="pf-c-data-list__item">
                     <div class="pf-c-data-list__item-row">
@@ -126,28 +155,6 @@
                 <li class="pf-c-data-list__item">
                     <div class="pf-c-data-list__item-row">
                         <div class="pf-c-data-list__item-content">
-                            <div class="pf-c-data-list__cell"><b>Started at:</b></div>
-                            <div class="pf-c-data-list__cell">
-                                {{- report.scan_result.start_time -}}
-                            </div>
-                        </div>
-                    </div>
-                </li>
-
-                <li class="pf-c-data-list__item">
-                    <div class="pf-c-data-list__item-row">
-                        <div class="pf-c-data-list__item-content">
-                            <div class="pf-c-data-list__cell"><b>Finished at:</b></div>
-                            <div class="pf-c-data-list__cell">
-                                {{- report.scan_result.end_time -}}
-                            </div>
-                        </div>
-                    </div>
-                </li>
-
-                <li class="pf-c-data-list__item">
-                    <div class="pf-c-data-list__item-row">
-                        <div class="pf-c-data-list__item-content">
                             <div class="pf-c-data-list__cell"><b>Test system:</b></div>
                             <div class="pf-c-data-list__cell">
                                 {{- report.scan_result.test_system -}}
@@ -172,4 +179,5 @@
             </ul>
         </div>
     </div>
+</div>
 </div>
