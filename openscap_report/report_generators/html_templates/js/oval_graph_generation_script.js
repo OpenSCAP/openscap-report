@@ -28,6 +28,14 @@ function show_OVAL_details(event) { // eslint-disable-line no-unused-vars
     event.currentTarget.param_this.setAttribute('aria-label', event.currentTarget.param_this.textContent);
 }
 
+function show_OVAL_referenced_endpoints(event) { // eslint-disable-line no-unused-vars
+    event.currentTarget.param_this.classList.toggle('pf-m-expanded');
+    event.currentTarget.param_this.setAttribute('aria-expanded', event.currentTarget.param_this.aria_expanded === "false"? "true": "false");
+    event.currentTarget.param_content.classList.toggle('pf-m-expanded');
+    hide_or_show(event.currentTarget.param_content); // eslint-disable-line no-undef
+
+}
+
 // OVAL graph generation constants
 
 
