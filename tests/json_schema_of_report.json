@@ -112,7 +112,31 @@
                     "title": "Score Max",
                     "default": 0.0,
                     "type": "number"
-                }            
+                },
+                "target_addresses": {
+                    "title": "Target addresses",
+                    "type": "object",
+                    "properties": {
+                        "IPv4": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "IPv6": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "MAC": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
             },
             "required": [
                 "title",
@@ -128,7 +152,8 @@
                 "end_time",
                 "test_system",
                 "score",
-                "score_max"
+                "score_max",
+                "target_addresses"
               ]
         },
         "rules": {
