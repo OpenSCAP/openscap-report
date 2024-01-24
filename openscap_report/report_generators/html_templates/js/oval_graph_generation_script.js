@@ -781,23 +781,30 @@ function add_header_referenced_endpoints_and_get_body(div) {
     return body;
 }
 
-function generate_referenced_endpoints(test_info, children_id, div) {
-    if (test_info.map_referenced_oval_endpoints[children_id].length > 0) {
-        const body = add_header_referenced_endpoints_and_get_body(div);
+function generate_endpoint(id, test_info, body) {
+    const endpoint = test_info.referenced_oval_endpoints[id];
 
-        for (const id of test_info.map_referenced_oval_endpoints[children_id]) {
-            const endpoint = test_info.referenced_oval_endpoints[id];
-            if(id.includes(":var:")) {
-                generate_OVAL_variable(test_info, endpoint, body);
-            } else if(id.includes(":obj:")) {
-                generate_OVAL_object(test_info, endpoint, body);
-            } else if(id.includes(":ste:")) {
-                generate_OVAL_state(test_info, endpoint, body, true);
-            } else {
-                // eslint-disable-next-line no-console
-                console.error("Not implemented endpoint type!");
-            }
-        }
+    if(id.includes(":var:")) {
+        generate_OVAL_variable(test_info, endpoint, body);
+    } else if(id.includes(":obj:")) {
+        generate_OVAL_object(test_info, endpoint, body);
+    } else if(id.includes(":ste:")) {
+        generate_OVAL_state(test_info, endpoint, body, true);
+    } else {
+        // eslint-disable-next-line no-console
+        console.error("Not implemented endpoint type!");
+    }
+}
+
+function generate_referenced_endpoints(test_info, children_id, div) {
+    if (test_info.map_referenced_oval_endpoints[children_id].length == 0) {
+        return;
+    }
+
+    const body = add_header_referenced_endpoints_and_get_body(div);
+
+    for (const id of test_info.map_referenced_oval_endpoints[children_id]) {
+        generate_endpoint(id, test_info, body);
     }
 }
 
