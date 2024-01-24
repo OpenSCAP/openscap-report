@@ -1,0 +1,14 @@
+{# Copyright 2022, Red Hat, Inc. #}
+{# SPDX-License-Identifier: LGPL-2.1-or-later #}
+{% macro list_item(title, value) -%}
+<li class="pf-c-data-list__item">
+    <div class="pf-c-data-list__item-row">
+        <div class="pf-c-data-list__item-content">
+            <div class="pf-c-data-list__cell"><b>{{- title -}}</b></div>
+            <div class="pf-c-data-list__cell">
+                {{- value -}}
+            </div>
+        </div>
+    </div>
+</li>
+{%- endmacro %}
