@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 import logging
+from collections import defaultdict
 
 from ..data_structures import OvalTest
 from ..namespaces import NAMESPACES
@@ -89,8 +90,6 @@ class OVALTestParser:  # pylint: disable=R0902
                 matches_val = [":var:", ":obj:", ":ste:"]
                 if any(s in key for s in matches_key) and any(s in value for s in matches_val):
                     out.append(value)
-                    if data_id not in map_referenced_oval_endpoints:
-                        map_referenced_oval_endpoints[data_id] = []
                     if value not in map_referenced_oval_endpoints[data_id]:
                         map_referenced_oval_endpoints[data_id].append(value)
 
@@ -150,7 +149,7 @@ class OVALTestParser:  # pylint: disable=R0902
         for oval_state_el in list_state_of_test:
             oval_states.append(self.states_parser.get_state(oval_state_el.get("state_ref", "")))
 
-        map_referenced_oval_endpoints = {}
+        map_referenced_oval_endpoints = defaultdict(list)
 
         referenced_oval_endpoints = self._get_referenced_endpoints(
             oval_object, oval_states, map_referenced_oval_endpoints
@@ -165,5 +164,5 @@ class OVALTestParser:  # pylint: disable=R0902
             oval_object=oval_object,
             oval_states=oval_states,
             referenced_oval_endpoints=referenced_oval_endpoints,
-            map_referenced_oval_endpoints=map_referenced_oval_endpoints,
+            map_referenced_oval_endpoints=dict(map_referenced_oval_endpoints),
         )
