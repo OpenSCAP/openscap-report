@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 import logging
+from collections import defaultdict
 
 from ..data_structures import OvalTest
 from ..namespaces import NAMESPACES
@@ -78,43 +79,57 @@ class OVALTestParser:  # pylint: disable=R0902
         return self._get_data_by_id(data)
 
     @staticmethod
-    def _iter_over_data_and_get_references(dict_, out):
+    def _iter_over_data_and_get_references(dict_, out, data_id, map_referenced_oval_endpoints):
         for key, value in dict_.items():
             if isinstance(value, dict):
-                OVALTestParser._iter_over_data_and_get_references(value, out)
+                OVALTestParser._iter_over_data_and_get_references(
+                    value, out, data_id, map_referenced_oval_endpoints
+                )
             else:
                 matches_key = ["object_reference", "var_ref", "object_ref", "filter"]
                 matches_val = [":var:", ":obj:", ":ste:"]
                 if any(s in key for s in matches_key) and any(s in value for s in matches_val):
                     out.append(value)
+                    if value not in map_referenced_oval_endpoints[data_id]:
+                        map_referenced_oval_endpoints[data_id].append(value)
 
-    def _resolve_reference(self, ref_id, new_ref, out):
+    def _resolve_reference(self, ref_id, new_ref, out, map_referenced_oval_endpoints):
         if ":var:" in ref_id:
             variable = self.variable_parser.get_variable(ref_id)
-            self._iter_over_data_and_get_references(variable.variable_data, new_ref)
+            self._iter_over_data_and_get_references(
+                variable.variable_data, new_ref, ref_id, map_referenced_oval_endpoints
+            )
             out[ref_id] = variable
         elif ":obj:" in ref_id:
             object_ = self.objects_parser.get_object(ref_id)
-            self._iter_over_data_and_get_references(object_.object_data, new_ref)
+            self._iter_over_data_and_get_references(
+                object_.object_data, new_ref, ref_id, map_referenced_oval_endpoints
+            )
             out[ref_id] = object_
         elif ":ste:" in ref_id:
             state = self.states_parser.get_state(ref_id)
-            self._iter_over_data_and_get_references(state.state_data, new_ref)
+            self._iter_over_data_and_get_references(
+                state.state_data, new_ref, ref_id, map_referenced_oval_endpoints
+            )
             out[ref_id] = state
         else:
             logging.warning(ref_id)
 
-    def _get_referenced_endpoints(self, oval_object, oval_states):
+    def _get_referenced_endpoints(self, oval_object, oval_states, map_referenced_oval_endpoints):
         references = []
         object_data = oval_object.object_data if oval_object is not None else {}
-        self._iter_over_data_and_get_references(object_data, references)
+        self._iter_over_data_and_get_references(
+            object_data, references, oval_object.object_id, map_referenced_oval_endpoints,
+        )
         for state in oval_states:
-            self._iter_over_data_and_get_references(state.state_data, references)
+            self._iter_over_data_and_get_references(
+                state.state_data, references, state.state_id, map_referenced_oval_endpoints,
+            )
 
         out = {}
         while len(references) != 0:
             ref = references.pop()
-            self._resolve_reference(ref, references, out)
+            self._resolve_reference(ref, references, out, map_referenced_oval_endpoints)
         return out
 
     def get_test_info(self, test_id):
@@ -134,7 +149,11 @@ class OVALTestParser:  # pylint: disable=R0902
         for oval_state_el in list_state_of_test:
             oval_states.append(self.states_parser.get_state(oval_state_el.get("state_ref", "")))
 
-        referenced_oval_endpoints = self._get_referenced_endpoints(oval_object, oval_states)
+        map_referenced_oval_endpoints = defaultdict(list)
+
+        referenced_oval_endpoints = self._get_referenced_endpoints(
+            oval_object, oval_states, map_referenced_oval_endpoints
+        )
 
         return OvalTest(
             test_id=test_id,
@@ -145,4 +164,5 @@ class OVALTestParser:  # pylint: disable=R0902
             oval_object=oval_object,
             oval_states=oval_states,
             referenced_oval_endpoints=referenced_oval_endpoints,
+            map_referenced_oval_endpoints=dict(map_referenced_oval_endpoints),
         )

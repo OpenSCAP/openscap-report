@@ -21,6 +21,7 @@ class OvalTest:  # pylint: disable=R0902
     referenced_oval_endpoints: Dict[
         str, Union[OvalObject, OvalState, OvalVariable]
     ] = field(default_factory=dict)
+    map_referenced_oval_endpoints: Dict[str, list] = field(default_factory=dict)
 
     def as_dict(self):
         return asdict(self)
