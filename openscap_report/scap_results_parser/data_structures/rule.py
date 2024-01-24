@@ -56,3 +56,10 @@ class Rule:  # pylint: disable=R0902
 
     def as_dict(self):
         return asdict(self)
+
+    def get_reference_search_string(self):
+        out = []
+        for ref in self.references:
+            prefix = f"{ref.name.lower().replace(' ', '')}: "
+            out.extend([prefix + ref_ for ref_ in ref.ref_ids])
+        return " ".join(out)
