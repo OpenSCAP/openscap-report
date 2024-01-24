@@ -25,7 +25,10 @@ class ScanResultParser:
 
     def _get_list_of_addresses(self, type_):
         out = []
-        path = f".//xccdf:target-facts/xccdf:fact[@name='urn:xccdf:fact:asset:identifier:{type_}']"
+        path = (
+            ".//xccdf:target-facts/xccdf:fact"
+            f"[@name='urn:xccdf:fact:asset:identifier:{type_.lower()}']"
+        )
         for address in self.test_results_el.findall(path, NAMESPACES):
             out.append(address.text)
         return out
@@ -58,7 +61,7 @@ class ScanResultParser:
             scan_result_dict["profile_id"] = profile_name.get("idref")
 
         target_addresses = {}
-        for type_ in ["mac", "ipv4", "ipv6"]:
+        for type_ in ["MAC", "IPv4", "IPv6"]:
             target_addresses[type_] = self._get_list_of_addresses(type_)
 
         scan_result_dict["target_addresses"] = target_addresses
