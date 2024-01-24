@@ -1,75 +1,22 @@
 {# Copyright 2022, Red Hat, Inc. #}
 {# SPDX-License-Identifier: LGPL-2.1-or-later #}
+{%- from './macros/list_item.html' import list_item -%}
 <div>
     <ul class="pf-c-data-list" role="list">
 
-        <li class="pf-c-data-list__item">
-            <div class="pf-c-data-list__item-row">
-                <div class="pf-c-data-list__item-content">
-                    <div class="pf-c-data-list__cell"><b>Evaluation target:</b></div>
-                    <div class="pf-c-data-list__cell">
-                        {{- report.scan_result.target -}}
-                    </div>
-                </div>
-            </div>
-        </li>
+        {{- list_item("Evaluation target:", report.scan_result.target) -}}
 
-        <li class="pf-c-data-list__item">
-            <div class="pf-c-data-list__item-row">
-                <div class="pf-c-data-list__item-content">
-                    <div class="pf-c-data-list__cell"><b>Profile ID:</b></div>
-                    <div class="pf-c-data-list__cell">
-                        {{- report.profile_info.profile_id -}}
-                    </div>
-                </div>
-            </div>
-        </li>
+        {{- list_item("Profile ID:", report.profile_info.profile_id) -}}
 
         {%- if report.profile_info.extends -%}
-        <li class="pf-c-data-list__item">
-            <div class="pf-c-data-list__item-row">
-                <div class="pf-c-data-list__item-content">
-                    <div class="pf-c-data-list__cell"><b>Extends Profile ID:</b></div>
-                    <div class="pf-c-data-list__cell">
-                        {{- report.profile_info.extends -}}
-                    </div>
-                </div>
-            </div>
-        </li>
+            {{- list_item("Extends Profile ID:", report.profile_info.extends) -}}
         {%- endif -%}
 
-        <li class="pf-c-data-list__item">
-            <div class="pf-c-data-list__item-row">
-                <div class="pf-c-data-list__item-content">
-                    <div class="pf-c-data-list__cell"><b>Scanner:</b></div>
-                    <div class="pf-c-data-list__cell">
-                        {{- report.scan_result.scanner -}}&nbsp;{{- report.scan_result.scanner_version -}}
-                    </div>
-                </div>
-            </div>
-        </li>
+        {{- list_item("Scanner:", report.scan_result.scanner + "&nbsp;" + report.scan_result.scanner_version) -}}
 
-        <li class="pf-c-data-list__item">
-            <div class="pf-c-data-list__item-row">
-                <div class="pf-c-data-list__item-content">
-                    <div class="pf-c-data-list__cell"><b>Started at:</b></div>
-                    <div class="pf-c-data-list__cell">
-                        {{- report.scan_result.start_time -}}
-                    </div>
-                </div>
-            </div>
-        </li>
+        {{- list_item("Started at:", report.scan_result.start_time) -}}
 
-        <li class="pf-c-data-list__item">
-            <div class="pf-c-data-list__item-row">
-                <div class="pf-c-data-list__item-content">
-                    <div class="pf-c-data-list__cell"><b>Finished at:</b></div>
-                    <div class="pf-c-data-list__cell">
-                        {{- report.scan_result.end_time -}}
-                    </div>
-                </div>
-            </div>
-        </li>
+        {{- list_item("Finished at:", report.scan_result.end_time) -}}
 
     </ul>
 <div class="pf-c-accordion">
@@ -85,95 +32,22 @@
         <div class="pf-c-accordion__expanded-content-body">
             <ul class="pf-c-data-list" role="list">
 
-                <li class="pf-c-data-list__item">
-                    <div class="pf-c-data-list__item-row">
-                        <div class="pf-c-data-list__item-content">
-                            <div class="pf-c-data-list__cell"><b>This profile is applicable for this CPE platforms:</b></div>
-                            <div class="pf-c-data-list__cell">
-                                {{- report.profile_info.get_applicable_cpe_platforms_for_profile() -}}
-                            </div>
-                        </div>
-                    </div>
-                </li>
+                {{- list_item("This profile is applicable for this CPE platforms:", report.profile_info.get_applicable_cpe_platforms_for_profile()) -}}
 
-                <li class="pf-c-data-list__item">
-                    <div class="pf-c-data-list__item-row">
-                        <div class="pf-c-data-list__item-content">
-                            <div class="pf-c-data-list__cell"><b>CPE platforms that were found applicable on the evaluated machine:</b></div>
-                            <div class="pf-c-data-list__cell">
-                                {{- report.profile_info.get_cpe_platforms_that_satisfy_evaluation_target() -}}
-                            </div>
-                        </div>
-                    </div>
-                </li>
+                {{- list_item("CPE platforms that were found applicable on the evaluated machine:", report.profile_info.get_cpe_platforms_that_satisfy_evaluation_target()) -}}
 
-                <li class="pf-c-data-list__item">
-                    <div class="pf-c-data-list__item-row">
-                        <div class="pf-c-data-list__item-content">
-                            <div class="pf-c-data-list__cell"><b>Performed by:</b></div>
-                            <div class="pf-c-data-list__cell">
-                                {{- report.scan_result.identity -}}
-                            </div>
-                        </div>
-                    </div>
-                </li>
+                {{- list_item("Performed by:", report.scan_result.identity) -}}
 
+                {{- list_item("Benchmark ID:", report.scan_result.benchmark_id) -}}
 
-                <li class="pf-c-data-list__item">
-                    <div class="pf-c-data-list__item-row">
-                        <div class="pf-c-data-list__item-content">
-                            <div class="pf-c-data-list__cell"><b>Benchmark ID:</b></div>
-                            <div class="pf-c-data-list__cell">
-                                {{- report.scan_result.benchmark_id -}}
-                            </div>
-                        </div>
-                    </div>
-                </li>
+                {{- list_item("Benchmark url:", report.scan_result.benchmark_url) -}}
 
-                <li class="pf-c-data-list__item">
-                    <div class="pf-c-data-list__item-row">
-                        <div class="pf-c-data-list__item-content">
-                            <div class="pf-c-data-list__cell"><b>Benchmark url:</b></div>
-                            <div class="pf-c-data-list__cell">
-                                {{- report.scan_result.benchmark_url -}}
-                            </div>
-                        </div>
-                    </div>
-                </li>
+                {{- list_item("Benchmark version:", report.scan_result.benchmark_version) -}}
 
-                <li class="pf-c-data-list__item">
-                    <div class="pf-c-data-list__item-row">
-                        <div class="pf-c-data-list__item-content">
-                            <div class="pf-c-data-list__cell"><b>Benchmark version:</b></div>
-                            <div class="pf-c-data-list__cell">
-                                {{- report.scan_result.benchmark_version -}}
-                            </div>
-                        </div>
-                    </div>
-                </li>
-
-                <li class="pf-c-data-list__item">
-                    <div class="pf-c-data-list__item-row">
-                        <div class="pf-c-data-list__item-content">
-                            <div class="pf-c-data-list__cell"><b>Test system:</b></div>
-                            <div class="pf-c-data-list__cell">
-                                {{- report.scan_result.test_system -}}
-                            </div>
-                        </div>
-                    </div>
-                </li>
+                {{- list_item("Test system:", report.scan_result.test_system) -}}
 
                 {%- for type, addresses in report.scan_result.target_addresses.items() -%}
-                <li class="pf-c-data-list__item">
-                    <div class="pf-c-data-list__item-row">
-                        <div class="pf-c-data-list__item-content">
-                            <div class="pf-c-data-list__cell"><b>Target {{ type }} addresses:</b></div>
-                            <div class="pf-c-data-list__cell">
-                                {{- ", ".join(addresses) -}}
-                            </div>
-                        </div>
-                    </div>
-                </li>
+                    {{- list_item("Target " + type + " addresses:", ", ".join(addresses)) -}}
                 {%- endfor -%}
 
             </ul>
