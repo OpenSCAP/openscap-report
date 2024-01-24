@@ -115,9 +115,26 @@
                 },
                 "target_addresses": {
                     "title": "Target addresses",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
+                    "type": "object",
+                    "properties": {
+                        "IPv4": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "IPv6": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "MAC": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
                     }
                 }
             },
