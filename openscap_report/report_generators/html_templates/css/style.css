@@ -175,6 +175,18 @@ footer {
     border-radius: 0px !important;
 }
 
+.tooltip-box-bottom-side {
+    visibility: hidden;
+    position: absolute;
+    top: 120%;
+    left: 15%;
+}
+
+.tooltip-wrapper:hover .tooltip-box-bottom-side {
+    visibility: visible;
+    z-index: calc(var(--pf-c-tree-view--m-guides__list-item--ZIndex) + 1);
+}
+
 .tooltip-box-right-side {
     visibility: hidden;
     position: absolute;

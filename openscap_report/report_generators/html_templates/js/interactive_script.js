@@ -72,10 +72,11 @@ function search_rule(self) { // eslint-disable-line no-unused-vars
     rules.forEach(function (rule) {
         const is_matched_title = rule.getAttribute("rule-title").toLowerCase().includes(value);
         const is_matched_rule_id = rule.getAttribute("rule-id").toLowerCase().includes(value);
+        const is_matched_rule_reference = rule.getAttribute("rule-references").toLowerCase().includes(value);
         const result_of_rule = rule.getAttribute("result").asId('result-');
         const severity_of_rule = rule.getAttribute("severity").asId('severity-');
         const advance_option = (FILTER_TABLE[result_of_rule]) && (FILTER_TABLE[severity_of_rule]);
-        if ((is_matched_title || is_matched_rule_id) && advance_option) {
+        if ((is_matched_title || is_matched_rule_id || is_matched_rule_reference) && advance_option) {
             rule.style.display = "";
             rule.classList.remove("hidden")
         } else {

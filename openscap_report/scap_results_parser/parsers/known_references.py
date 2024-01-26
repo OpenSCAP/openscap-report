@@ -1,3 +1,5 @@
+import logging
+
 from ..namespaces import NAMESPACES
 
 # pylint: disable=line-too-long
@@ -32,6 +34,10 @@ KNOWN_REFERENCES = {
 
 def update_references(root):
     references_elements = root.findall(".//xccdf:Benchmark/xccdf:reference", NAMESPACES)
+    if len(references_elements) == 0:
+        logging.warning(
+            "Mapping of references was not found. So search by references is disabled."
+        )
     for ref_el in references_elements:
         href = ref_el.get("href")
         if href is not None:
