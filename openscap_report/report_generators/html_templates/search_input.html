@@ -1,7 +1,7 @@
 {# Copyright 2022, Red Hat, Inc. #}
 {# SPDX-License-Identifier: LGPL-2.1-or-later #}
 <div class="pf-c-accordion pf-m-display-lg">
-    <div class="pf-c-input-group">
+    <div class="pf-c-input-group tooltip-wrapper" style="position: relative;">
         <input class="pf-c-form-control pf-m-search" oninput="search_rule(this)" type="search"
             placeholder="Search rule" id="input-search-rule" />
         <button class="pf-c-button pf-m-control" type="button" aria-label="Clear" onclick="clear_input(this)">
@@ -11,6 +11,14 @@
             onclick="show_advanced_options(this);">
             <i class="fas fa-caret-right" aria-hidden="true"></i>
         </button>
+        <div class="pf-c-tooltip pf-m-bottom tooltip-box-bottom-side" role="tooltip">
+            <div class="pf-c-tooltip__arrow"></div>
+            <div class="pf-c-tooltip__content tooltip__content-width">
+                You can search for rules by ID, name, references, or policy name.
+                To specify policy and reference, you can enter a search bar in the format: <i>POLICY_NAME: REFERENCE</i><br>
+                To filter rules by result or severity, you can use advanced filtering by clicking the arrow on the right side of the search bar.
+            </div>
+        </div>
     </div>
     <div class="pf-c-accordion__expanded-content" style="display: none;">
         <div class="pf-c-accordion__expanded-content-body">
