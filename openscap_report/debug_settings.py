@@ -1,7 +1,10 @@
 # Copyright 2022, Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from dataclasses import dataclass
+try:
+    from dataclasses import dataclass
+except ImportError:
+    from openscap_report.dataclasses import dataclass
 
 
 @dataclass

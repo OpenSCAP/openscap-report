@@ -2,7 +2,10 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 from collections import Counter
-from dataclasses import asdict, dataclass, field
+try:
+    from dataclasses import asdict, dataclass, field
+except ImportError:
+    from openscap_report.dataclasses import asdict, dataclass, field
 from typing import List
 
 from .cpe_result_eval import EMPTY_RESULT, OVAL_RESULT_TO_CPE_RESULT, CpeResult

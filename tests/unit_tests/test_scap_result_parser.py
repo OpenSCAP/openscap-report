@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 import logging
-from contextlib import nullcontext as does_not_raise
 
 import pytest
 from lxml.etree import XMLSyntaxError
@@ -54,6 +53,17 @@ from ..test_utils import (BASIC_REPORT, DEFAULT_RULES, get_benchmark,
 def test_validation(file_path, result):
     parser = get_parser(file_path)
     assert parser.validate(ARF_SCHEMAS_PATH) == result
+
+
+class does_not_raise(object):
+    def __init__(self, enter_result=None):
+        self.enter_result = enter_result
+
+    def __enter__(self):
+        return self.enter_result
+
+    def __exit__(self, *excinfo):
+        pass
 
 
 @pytest.mark.unit_test

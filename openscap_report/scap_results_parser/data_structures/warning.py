@@ -1,6 +1,9 @@
 # Copyright 2022, Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
-from dataclasses import asdict, dataclass
+try:
+    from dataclasses import asdict, dataclass
+except ImportError:
+    from openscap_report.dataclasses import asdict, dataclass
 
 WARNING_JSON_KEYS = [
     "text",

@@ -3,7 +3,10 @@
 
 import argparse
 import tempfile
-from dataclasses import replace
+try:
+    from dataclasses import replace
+except ImportError:
+    from openscap_report.dataclasses import replace
 from pathlib import Path
 
 try:

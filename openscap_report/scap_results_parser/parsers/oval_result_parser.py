@@ -3,7 +3,10 @@
 
 import logging
 import uuid
-from dataclasses import dataclass
+try:
+    from dataclasses import dataclass
+except ImportError:
+    from openscap_report.dataclasses import dataclass
 
 from lxml.etree import Element
 
