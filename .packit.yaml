@@ -68,17 +68,16 @@ jobs:
 # The skip_build: true doesn't really
 # solve the proplem.
 
-#- job: tests
-#  trigger: pull_request
-#  identifier: epel-tests
-#  skip_build: true
-#  targets:
-#    - epel-9
-#    - epel-8
+- job: tests
+  trigger: pull_request
+  identifier: epel-tests
+  targets:
+    - epel-9
+    - epel-8
 
-#- job: copr_build
-#  trigger: pull_request
-#  specfile_path: spec/rhel8/openscap-report.spec
-#  identifier: epel8
-#  targets:
-#    - epel-8
+- job: copr_build
+  trigger: pull_request
+  specfile_path: spec/rhel8/openscap-report.spec
+  identifier: epel8
+  targets:
+    - epel-8
