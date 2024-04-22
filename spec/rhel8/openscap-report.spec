@@ -11,15 +11,15 @@ URL:            https://github.com/OpenSCAP/%{name}
 Source0:        https://github.com/OpenSCAP/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.gz
 
 BuildArch:      noarch
-BuildRequires:  python38-devel
-BuildRequires:  python38-rpm-macros
+BuildRequires:  python3-devel
+BuildRequires:  python3-rpm-macros
 BuildRequires:  python3-sphinx
 BuildRequires:  python3-sphinx_rtd_theme
 
 Provides:       bundled(patternfly) = 4
 
-Requires:       python38-lxml
-Requires:       python38-jinja2
+Requires:       python3-lxml
+Requires:       python3-jinja2
 Recommends:     redhat-display-fonts
 Recommends:     redhat-text-fonts
 
