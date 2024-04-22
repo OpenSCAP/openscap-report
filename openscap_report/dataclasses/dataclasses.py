@@ -526,8 +526,8 @@ def _repr_fn(fields):
         ("self",),
         [
             'return self.__class__.__qualname__ + f"('
-            + ", ".join([f"{f.name}={{self.{f.name}!r}}" for f in fields])
-            + ')"'
+            + ", ".join([f"{f.name}={{self.{f.name}!r}}" for f in fields])  # noqa: W503
+            + ')"'  # noqa: W503
         ],
     )
 
@@ -548,7 +548,7 @@ def _frozen_get_del_attr(cls, fields):
             (
                 f"if type(self) is cls or name in {fields_str}:",
                 ' raise FrozenInstanceError(f"cannot assign to field {name!r}")',
-                f"super(cls, self).__setattr__(name, value)",
+                "super(cls, self).__setattr__(name, value)",
             ),
             globals=globals,
         ),
@@ -558,7 +558,7 @@ def _frozen_get_del_attr(cls, fields):
             (
                 f"if type(self) is cls or name in {fields_str}:",
                 ' raise FrozenInstanceError(f"cannot delete field {name!r}")',
-                f"super(cls, self).__delattr__(name)",
+                "super(cls, self).__delattr__(name)",
             ),
             globals=globals,
         ),
@@ -701,7 +701,7 @@ def _get_field(cls, a_name, a_type):
     if typing:
         if _is_classvar(a_type, typing) or (
             isinstance(f.type, str)
-            and _is_type(f.type, cls, typing, typing.ClassVar, _is_classvar)
+            and _is_type(f.type, cls, typing, typing.ClassVar, _is_classvar)  # noqa: W503
         ):
             f._field_type = _FIELD_CLASSVAR
 
@@ -713,7 +713,7 @@ def _get_field(cls, a_name, a_type):
         dataclasses = sys.modules[__name__]
         if _is_initvar(a_type, dataclasses) or (
             isinstance(f.type, str)
-            and _is_type(f.type, cls, dataclasses, dataclasses.InitVar, _is_initvar)
+            and _is_type(f.type, cls, dataclasses, dataclasses.InitVar, _is_initvar)  # noqa: W503
         ):
             f._field_type = _FIELD_INITVAR
 
@@ -801,7 +801,7 @@ _hash_action = {
 # version of this table.
 
 
-def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
+def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):  # noqa: C901
     # Now that dicts retain insertion order, there's no reason to use
     # an ordered dict.  I am leveraging that ordering here, because
     # derived class fields overwrite base class fields, but the order
