@@ -1,3 +1,4 @@
+# pylint: disable=too-many-lines
 import copy
 import inspect
 import keyword
@@ -155,6 +156,7 @@ class FrozenInstanceError(AttributeError):
 # A sentinel object for default values to signal that a default
 # factory will be used.  This is given a nice repr() which will appear
 # in the function signature of dataclasses' constructors.
+# pylint: disable=invalid-name
 class _HAS_DEFAULT_FACTORY_CLASS:
     def __repr__(self):
         return "<factory>"
@@ -165,6 +167,7 @@ _HAS_DEFAULT_FACTORY = _HAS_DEFAULT_FACTORY_CLASS()
 
 # A sentinel object to detect if a parameter is supplied or not.  Use
 # a class to give it a better repr.
+# pylint: disable=invalid-name
 class _MISSING_TYPE:
     pass
 
@@ -177,6 +180,7 @@ _EMPTY_METADATA = types.MappingProxyType({})
 
 
 # Markers for the various kinds of fields and pseudo-fields.
+# pylint: disable=invalid-name
 class _FIELD_BASE:
     def __init__(self, name):
         self.name = name
@@ -226,6 +230,7 @@ class InitVar(metaclass=_InitVarMeta):
 #
 # When cls._FIELDS is filled in with a list of Field objects, the name
 # and type fields will have been populated.
+# pylint: disable=too-many-instance-attributes
 class Field:
     __slots__ = (
         "name",
@@ -240,6 +245,8 @@ class Field:
         "_field_type",  # Private: not to be used by user code.
     )
 
+    # pylint: disable=too-many-arguments
+    # pylint: disable=redefined-builtin
     def __init__(self, default, default_factory, init, repr, hash, compare, metadata):
         self.name = None
         self.type = None
@@ -298,6 +305,8 @@ class _DataclassParams:
         "frozen",
     )
 
+    # pylint: disable=too-many-arguments
+    # pylint: disable=redefined-builtin
     def __init__(self, init, repr, eq, order, unsafe_hash, frozen):
         self.init = init
         self.repr = repr
@@ -322,6 +331,8 @@ class _DataclassParams:
 # This function is used instead of exposing Field creation directly,
 # so that a type checker can be told (via overloads) that this is a
 # function whose type depends on its parameters.
+# pylint: disable=too-many-arguments
+# pylint: disable=redefined-builtin
 def field(
     *,
     default=MISSING,
@@ -351,6 +362,7 @@ def field(
     return Field(default, default_factory, init, repr, hash, compare, metadata)
 
 
+# pylint: disable=redefined-outer-name
 def _tuple_str(obj_name, fields):
     # Return a string representing each field of obj_name as a tuple
     # member.  So, if fields is ['x', 'y'] and obj_name is "self",
@@ -379,6 +391,7 @@ def _create_fn(name, args, body, *, globals=None, locals=None, return_type=MISSI
     # Compute the text of the entire function.
     txt = f"def {name}({args}){return_annotation}:\n{body}"
 
+    # pylint: disable=exec-used
     exec(txt, globals, locals)
     return locals[name]
 
@@ -444,6 +457,7 @@ def _field_init(f, frozen, globals, self_name):
     # Only test this now, so that we can create variables for the
     # default.  However, return None to signify that we're not going
     # to actually do the assignment statement for InitVars.
+    # pylint: disable=protected-access
     if f._field_type is _FIELD_INITVAR:
         return None
 
@@ -502,6 +516,7 @@ def _init_fn(fields, frozen, has_post_init, self_name):
 
     # Does this class have a post-init function?
     if has_post_init:
+        # pylint: disable=protected-access
         params_str = ",".join(f.name for f in fields if f._field_type is _FIELD_INITVAR)
         body_lines.append(f"{self_name}.{_POST_INIT_NAME}({params_str})")
 
@@ -533,6 +548,7 @@ def _repr_fn(fields):
 
 
 def _frozen_get_del_attr(cls, fields):
+    # pylint: disable=fixme
     # XXX: globals is modified on the first call to _create_fn, then
     # the modified version is used in the second call.  Is this okay?
     globals = {"cls": cls, "FrozenInstanceError": FrozenInstanceError}
@@ -590,6 +606,8 @@ def _hash_fn(fields):
 def _is_classvar(a_type, typing):
     # This test uses a typing internal class, but it's the best way to
     # test if this is a ClassVar.
+    # pylint: disable=protected-access
+    # pylint: disable=unidiomatic-typecheck
     return type(a_type) is typing._ClassVar
 
 
@@ -681,6 +699,7 @@ def _get_field(cls, a_name, a_type):
     # Assume it's a normal field until proven otherwise.  We're next
     # going to decide if it's a ClassVar or InitVar, everything else
     # is just a normal field.
+    # pylint: disable=protected-access
     f._field_type = _FIELD
 
     # In addition to checking for actual types here, also check for
@@ -703,10 +722,12 @@ def _get_field(cls, a_name, a_type):
             isinstance(f.type, str)
             and _is_type(f.type, cls, typing, typing.ClassVar, _is_classvar)  # noqa: W503
         ):
+            # pylint: disable=protected-access
             f._field_type = _FIELD_CLASSVAR
 
     # If the type is InitVar, or if it's a matching string annotation,
     # then it's an InitVar.
+    # pylint: disable=protected-access
     if f._field_type is _FIELD:
         # The module we're checking against is the module we're
         # currently in (dataclasses.py).
@@ -715,6 +736,7 @@ def _get_field(cls, a_name, a_type):
             isinstance(f.type, str)
             and _is_type(f.type, cls, dataclasses, dataclasses.InitVar, _is_initvar)  # noqa: W503
         ):
+            # pylint: disable=protected-access
             f._field_type = _FIELD_INITVAR
 
     # Validations for individual fields.  This is delayed until now,
@@ -722,6 +744,7 @@ def _get_field(cls, a_name, a_type):
     # know the field name, which allows for better error reporting.
 
     # Special restrictions for ClassVar and InitVar.
+    # pylint: disable=protected-access
     if f._field_type in (_FIELD_CLASSVAR, _FIELD_INITVAR):
         if f.default_factory is not MISSING:
             raise TypeError(f"field {f.name} cannot have a " "default factory")
@@ -732,6 +755,7 @@ def _get_field(cls, a_name, a_type):
         # ClassVar and InitVar to specify init=<anything>.
 
     # For real fields, disallow mutable defaults for known types.
+    # pylint: disable=protected-access
     if f._field_type is _FIELD and isinstance(f.default, (list, dict, set)):
         raise ValueError(
             f"mutable default {type(f.default)} for field "
@@ -755,11 +779,12 @@ def _set_new_attribute(cls, name, value):
 # take.  The common case is to do nothing, so instead of providing a
 # function that is a no-op, use None to signify that.
 
-
+# pylint: disable=unused-argument
 def _hash_set_none(cls, fields):
     return None
 
 
+# pylint: disable=unused-argument
 def _hash_add(cls, fields):
     flds = [f for f in fields if (f.compare if f.hash is None else f.hash)]
     return _hash_fn(flds)
@@ -801,6 +826,9 @@ _hash_action = {
 # version of this table.
 
 
+# pylint: disable=too-many-locals
+# pylint: disable=too-many-branches
+# pylint: disable=too-many-statements
 def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):  # noqa: C901
     # Now that dicts retain insertion order, there's no reason to use
     # an ordered dict.  I am leveraging that ordering here, because
@@ -873,11 +901,11 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):  # noqa: C9
     if has_dataclass_bases:
         # Raise an exception if any of our bases are frozen, but we're not.
         if any_frozen_base and not frozen:
-            raise TypeError("cannot inherit non-frozen dataclass from a " "frozen one")
+            raise TypeError("cannot inherit non-frozen dataclass from a frozen one")
 
         # Raise an exception if we're frozen, but none of our bases are.
         if not any_frozen_base and frozen:
-            raise TypeError("cannot inherit frozen dataclass from a " "non-frozen one")
+            raise TypeError("cannot inherit frozen dataclass from a non-frozen one")
 
     # Remember all of the fields on our class (including bases).  This
     # also marks this class as being a dataclass.
@@ -903,6 +931,7 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):  # noqa: C9
         has_post_init = hasattr(cls, _POST_INIT_NAME)
 
         # Include InitVars and regular fields (so, not ClassVars).
+        # pylint: disable=protected-access
         flds = [f for f in fields.values() if f._field_type in (_FIELD, _FIELD_INITVAR)]
         _set_new_attribute(
             cls,
@@ -920,6 +949,7 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):  # noqa: C9
 
     # Get the fields as a list, and include only real fields.  This is
     # used in all of the following methods.
+    # pylint: disable=protected-access
     field_list = [f for f in fields.values() if f._field_type is _FIELD]
 
     if repr:
@@ -1028,10 +1058,12 @@ def fields(class_or_instance):
     try:
         fields = getattr(class_or_instance, _FIELDS)
     except AttributeError:
+        # pylint: disable=raise-missing-from
         raise TypeError("must be called with a dataclass type or instance")
 
     # Exclude pseudo-fields.  Note that fields is sorted by insertion
     # order, so the order of the tuple is as the fields were defined.
+    # pylint: disable=protected-access
     return tuple(f for f in fields.values() if f._field_type is _FIELD)
 
 
@@ -1077,15 +1109,14 @@ def _asdict_inner(obj, dict_factory):
             value = _asdict_inner(getattr(obj, f.name), dict_factory)
             result.append((f.name, value))
         return dict_factory(result)
-    elif isinstance(obj, (list, tuple)):
+    if isinstance(obj, (list, tuple)):
         return type(obj)(_asdict_inner(v, dict_factory) for v in obj)
-    elif isinstance(obj, dict):
+    if isinstance(obj, dict):
         return type(obj)(
             (_asdict_inner(k, dict_factory), _asdict_inner(v, dict_factory))
             for k, v in obj.items()
         )
-    else:
-        return copy.deepcopy(obj)
+    return copy.deepcopy(obj)
 
 
 def astuple(obj, *, tuple_factory=tuple):
@@ -1119,15 +1150,14 @@ def _astuple_inner(obj, tuple_factory):
             value = _astuple_inner(getattr(obj, f.name), tuple_factory)
             result.append(value)
         return tuple_factory(result)
-    elif isinstance(obj, (list, tuple)):
+    if isinstance(obj, (list, tuple)):
         return type(obj)(_astuple_inner(v, tuple_factory) for v in obj)
-    elif isinstance(obj, dict):
+    if isinstance(obj, dict):
         return type(obj)(
             (_astuple_inner(k, tuple_factory), _astuple_inner(v, tuple_factory))
             for k, v in obj.items()
         )
-    else:
-        return copy.deepcopy(obj)
+    return copy.deepcopy(obj)
 
 
 def make_dataclass(
@@ -1239,9 +1269,9 @@ def replace(obj, **changes):
 
     # It's an error to have init=False fields in 'changes'.
     # If a field is not in 'changes', read its value from the provided obj.
-
     for f in getattr(obj, _FIELDS).values():
         # Only consider normal fields or InitVars.
+        # pylint: disable=protected-access
         if f._field_type is _FIELD_CLASSVAR:
             continue
 
@@ -1256,6 +1286,7 @@ def replace(obj, **changes):
             continue
 
         if f.name not in changes:
+            # pylint: disable=protected-access
             if f._field_type is _FIELD_INITVAR:
                 raise ValueError(
                     f"InitVar {f.name!r} " "must be specified with replace()"
