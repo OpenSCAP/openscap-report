@@ -4,8 +4,9 @@
 import json
 import logging
 from collections import Counter
-from openscap_report.dataclasses import asdict, dataclass, field
 from typing import List
+
+from openscap_report.dataclasses import asdict, dataclass, field
 
 from .oval_result_eval import (EMPTY_RESULT, FULL_RESULT_TO_SHORT_RESULT,
                                SHORT_RESULT_TO_FULL_RESULT, OvalResult)

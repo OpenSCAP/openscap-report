@@ -1,8 +1,9 @@
 # Copyright 2022, Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from openscap_report.dataclasses import asdict, dataclass
 from typing import List
+
+from openscap_report.dataclasses import asdict, dataclass
 
 REFERENCE_JSON_KEYS = [
     "name",

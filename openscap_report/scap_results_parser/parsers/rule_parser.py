@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 import collections
+
 from openscap_report.dataclasses import replace
 
 from ..data_structures import Identifier, Reference, Rule, RuleWarning

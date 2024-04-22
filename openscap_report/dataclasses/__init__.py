@@ -1,4 +1,4 @@
 try:
-    from dataclasses import dataclass, asdict, field, replace
+    from dataclasses import asdict, dataclass, field, replace
 except ImportError:
-    from .dataclasses import dataclass, asdict, field, replace
+    from .dataclasses import asdict, dataclass, field, replace

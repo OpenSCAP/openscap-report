@@ -3,8 +3,9 @@
 
 import argparse
 import tempfile
-from openscap_report.dataclasses import replace
 from pathlib import Path
+
+from openscap_report.dataclasses import replace
 
 try:
     from functools import cache
