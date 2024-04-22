@@ -2,10 +2,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 import logging
-try:
-    from dataclasses import asdict, dataclass, field
-except ImportError:
-    from openscap_report.dataclasses import asdict, dataclass, field
+from openscap_report.dataclasses import asdict, dataclass, field
 from typing import Dict
 
 from ..exceptions import MissingProcessableRules
