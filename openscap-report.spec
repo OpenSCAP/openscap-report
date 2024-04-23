@@ -31,7 +31,7 @@ human-readable reports from SCAP XCCDF and ARF results.}
 
 
 %prep
-%autosetup -p1 -n %{name}-%{version}
+%autosetup -p1 -n %{pymodule_name}-%{version}
 
 
 %generate_buildrequires
