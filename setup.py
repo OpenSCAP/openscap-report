@@ -1,6 +1,7 @@
 # Copyright 2022, Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+# pylint: disable=import-error
 from setuptools import find_packages, setup
 
 
@@ -30,5 +31,5 @@ setup(name='openscap-report',
               'oscap-report=openscap_report.cli:main',
           ],
       },
-      python_requires='>=3.8',
+      python_requires='>=3.6',
       )

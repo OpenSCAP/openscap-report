@@ -3,9 +3,10 @@
 
 import logging
 import uuid
-from dataclasses import dataclass
 
 from lxml.etree import Element
+
+from openscap_report.dataclasses import dataclass
 
 from ..data_structures import OvalNode
 from ..exceptions import MissingOVALResult

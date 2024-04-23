@@ -32,11 +32,11 @@ jobs:
       image: quay.io/centos/centos:stream8
     steps:
       - name: Install Deps
-        run: dnf install -y python38 python38-devel python38-setuptools rpm-build
+        run: dnf install -y python3 python3-devel python3-setuptools rpm-build
       - name: Checkout
         uses: actions/checkout@v3
       - name: Build
-        run: python3.8 setup.py bdist_rpm --requires=python38-lxml,python38-jinja2 --build-requires=python38-devel,python38-setuptools --python=python3.8
+        run: python3 setup.py bdist_rpm --requires=python3-lxml,python3-jinja2 --build-requires=python3-devel,python3-setuptools
       - name: RPM install
         run: dnf install -y ./dist/openscap-report-*.noarch.rpm
       - name: Test parameter -h

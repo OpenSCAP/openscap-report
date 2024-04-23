@@ -3,7 +3,6 @@
 
 import argparse
 import tempfile
-from dataclasses import replace
 from pathlib import Path
 
 try:
@@ -15,6 +14,7 @@ except ImportError:
 
 from lxml import etree
 
+from openscap_report.dataclasses import replace
 from openscap_report.scap_results_parser import SCAPResultsParser
 from openscap_report.scap_results_parser.data_structures import OvalDefinition
 from openscap_report.scap_results_parser.namespaces import NAMESPACES

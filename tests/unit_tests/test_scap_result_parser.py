@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 import logging
-from contextlib import nullcontext as does_not_raise
 
 import pytest
 from lxml.etree import XMLSyntaxError
@@ -56,10 +55,21 @@ def test_validation(file_path, result):
     assert parser.validate(ARF_SCHEMAS_PATH) == result
 
 
+class DoesNotRaise:
+    def __init__(self, enter_result=None):
+        self.enter_result = enter_result
+
+    def __enter__(self):
+        return self.enter_result
+
+    def __exit__(self, *excinfo):
+        pass
+
+
 @pytest.mark.unit_test
 @pytest.mark.parametrize("file_path, expectation, e_msg", [
-    (PATH_TO_ARF, does_not_raise(), ""),
-    (PATH_TO_XCCDF, does_not_raise(), "input is the XCCDF"),
+    (PATH_TO_ARF, DoesNotRaise(), ""),
+    (PATH_TO_XCCDF, DoesNotRaise(), "input is the XCCDF"),
     (PATH_TO_EMPTY_XML_FILE, pytest.raises(NotSupportedReportingFormat), "isn't a valid"),
     (PATH_TO_EMPTY_FILE, pytest.raises(XMLSyntaxError), "empty"),
     (PATH_TO_XML_FILE, pytest.raises(NotSupportedReportingFormat), "isn't a valid"),

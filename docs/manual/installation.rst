@@ -56,7 +56,7 @@ Installation from source
 
 Requirements:
 
-* Python 3.8+
+* Python 3.6+
 * `lxml`_
 * `jinja2`_
 
