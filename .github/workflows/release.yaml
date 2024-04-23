@@ -26,4 +26,4 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           generate_release_notes: true
-          files: dist/openscap-report-*.tar.gz
+          files: dist/openscap_report-*.tar.gz
