@@ -7,6 +7,7 @@ from lxml.builder import E
 
 from ..data_structures import ProfileInfo
 from ..namespaces import NAMESPACES
+from .shared_static_methods_of_parser import SharedStaticMethodsOfParser
 
 
 class ProfileInfoParser:
@@ -45,8 +46,8 @@ class ProfileInfoParser:
         description = profile_el.find('.//xccdf:description', NAMESPACES)
         profile_info_dict = {
             "profile_id": profile_id,
-            "title": title.text if title is not None else "",
-            "description": description.text if description is not None else "",
+            "title": SharedStaticMethodsOfParser.get_text_of_xml_element(title),
+            "description": SharedStaticMethodsOfParser.get_text_of_xml_element(description),
             "extends": profile_el.get("extends", ""),
             "cpe_platforms_for_profile": self._get_cpe_platforms_for_profile()
         }

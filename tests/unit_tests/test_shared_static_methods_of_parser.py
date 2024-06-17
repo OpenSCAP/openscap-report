@@ -30,3 +30,21 @@ def test_get_unique_id_in_dict(object_, dict_):
 def test_get_key_of_xml_element(element, expect_key):
     key_element = SharedStaticMethodsOfParser.get_key_of_xml_element(element)
     assert key_element == expect_key
+
+
+@pytest.fixture
+def element(request):
+    e = etree.Element("xml_element")
+    e.text = request.param
+    return e
+
+
+@pytest.mark.unit_test
+@pytest.mark.parametrize("element, expected_text", [
+    (None, ""),
+    ("", ""),
+    ("abcd", "abcd"),
+], indirect=["element"])
+def test_get_text_of_xml_element(element, expected_text):
+    text = SharedStaticMethodsOfParser.get_text_of_xml_element(element)
+    assert text == expected_text
