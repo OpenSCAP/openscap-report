@@ -15,6 +15,12 @@ class SharedStaticMethodsOfParser:
         return element.tag[element.tag.index('}') + 1:] if '}' in element.tag else element.tag
 
     @staticmethod
+    def get_text_of_xml_element(element):
+        if element is not None and element.text is not None:
+            return "".join(element.itertext())
+        return ""
+
+    @staticmethod
     def get_unique_id_in_dict(object_, dict_):
         if SharedStaticMethodsOfParser.get_key_of_xml_element(object_) in dict_:
             return SharedStaticMethodsOfParser.get_unique_key(
