@@ -12,4 +12,5 @@ NAMESPACES = {
     'cpe-dict': 'http://cpe.mitre.org/dictionary/2.0',
     'ds': 'http://scap.nist.gov/schema/scap/source/1.2',
     'cpe-lang': 'http://cpe.mitre.org/language/2.0',
+    'ind-sys': 'http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#independent'
 }

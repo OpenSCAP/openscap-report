@@ -7,6 +7,7 @@ from ..data_structures import OvalObject, OvalObjectMessage
 from ..namespaces import NAMESPACES
 from .oval_endpoint_information_parser import OVALEndpointInformation
 from .shared_static_methods_of_parser import SharedStaticMethodsOfParser
+from .oval_items_parser import OVALItemsParser
 
 
 class OVALObjectParser(OVALEndpointInformation):
@@ -14,6 +15,7 @@ class OVALObjectParser(OVALEndpointInformation):
         self.objects = objects
         self.collected_objects = collected_objects
         self.system_data = system_data
+        self.item_parser = OVALItemsParser(collected_objects, system_data)
 
     def _get_oval_message(self, xml_collected_object):
         message = xml_collected_object.find(
@@ -33,6 +35,7 @@ class OVALObjectParser(OVALEndpointInformation):
             "comment": xml_object.get("comment", ""),
             "object_type": SharedStaticMethodsOfParser.get_key_of_xml_element(xml_object),
             "object_data": self._get_items(xml_object),
+            "collected_items": self.item_parser.get_oval_items(id_object)
         }
         xml_collected_object = self._get_collected_object_xml(id_object)
 

@@ -626,6 +626,76 @@ function get_OVAL_object_info_heading(oval_object) {
     return div;
 }
 
+function generate_collected_items(collected_items, div) {
+    const h1 = H1.cloneNode();
+    h1.textContent = "Collected Items:";
+    h1.className = "pf-c-title pf-m-lg";
+    div.appendChild(h1);
+
+    if (collected_items == null) {
+        const explanation = DIV.cloneNode();
+        explanation.textContent = "No items have been collected from the target.";
+        div.appendChild(explanation);
+        return;
+    }
+
+    const table_div = DIV.cloneNode();
+    table_div.className = "pf-c-scroll-inner-wrapper oval-test-detail-table";
+    div.appendChild(table_div);
+
+    const table = TABLE.cloneNode();
+    table.className = "pf-c-table pf-m-compact pf-m-grid-md";
+    table.setAttribute("role", "grid");
+    table_div.appendChild(table);
+
+    const table_thead = THEAD.cloneNode();
+    const row = ROW.cloneNode();
+    row.setAttribute("role", "row");
+    table_thead.appendChild(row);
+
+    const fragment = document.createDocumentFragment();
+    const header_col = HEADER_COL.cloneNode();
+    header_col.setAttribute("role", "columnheader");
+    header_col.setAttribute("scope", "col");
+    header_col.className = "pf-m-truncate pf-m-fit-content";
+
+    for (const item of collected_items.header) {
+        const clone_header_col = header_col.cloneNode();
+        clone_header_col.textContent = format_header_item(item);
+        fragment.appendChild(clone_header_col);
+    }
+    row.appendChild(fragment);
+    table.appendChild(table_thead);
+
+    const tbody = TBODY.cloneNode();
+    tbody.setAttribute("role", "rowgroup");
+    const rows_fragment = document.createDocumentFragment();
+
+    const col = COL.cloneNode();
+    col.setAttribute("role", "cell");
+    col.className = "pf-m-truncate pf-m-fit-content";
+
+    for (const entry of collected_items.entries) {
+        const clone_of_row = row.cloneNode();
+        rows_fragment.appendChild(clone_of_row);
+        const cols_fragment = document.createDocumentFragment();
+        for (const value of entry) {
+            const clone_col = col.cloneNode();
+            clone_col.textContent = value;
+            cols_fragment.appendChild(clone_col);
+        }
+        clone_of_row.appendChild(cols_fragment);
+    }
+    tbody.appendChild(rows_fragment);
+    table.appendChild(tbody);
+
+    if (collected_items.message != null) {
+        const msg = DIV.cloneNode();
+        msg.textContent = collected_items.message;
+        div.appendChild(msg);
+    }
+}
+
 function generate_OVAL_object(test_info, oval_object, div) {
     if (oval_object === undefined) {
         // eslint-disable-next-line no-console
@@ -836,13 +906,15 @@ function get_OVAL_test_info(test_info) {
 
     div.appendChild(get_spacer());
 
+    generate_collected_items(test_info.oval_object.collected_items, div);
+
     if (test_info.oval_states.length > 0) {
+        div.appendChild(get_spacer());
         div.appendChild(get_OVAL_state_heading());
     }
 
     for (const oval_state of test_info.oval_states) {
         generate_OVAL_state(test_info, oval_state, div);
-        div.appendChild(get_spacer());
     }
     return div;
 }
