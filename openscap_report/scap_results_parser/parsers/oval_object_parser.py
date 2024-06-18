@@ -6,8 +6,8 @@ from lxml.builder import E
 from ..data_structures import OvalObject, OvalObjectMessage
 from ..namespaces import NAMESPACES
 from .oval_endpoint_information_parser import OVALEndpointInformation
-from .shared_static_methods_of_parser import SharedStaticMethodsOfParser
 from .oval_items_parser import OVALItemsParser
+from .shared_static_methods_of_parser import SharedStaticMethodsOfParser
 
 
 class OVALObjectParser(OVALEndpointInformation):

@@ -5,7 +5,8 @@ import pytest
 from lxml import etree
 
 from openscap_report.scap_results_parser.namespaces import NAMESPACES
-from openscap_report.scap_results_parser.parsers.oval_items_parser import OVALItemsParser
+from openscap_report.scap_results_parser.parsers.oval_items_parser import \
+    OVALItemsParser
 
 
 @pytest.fixture

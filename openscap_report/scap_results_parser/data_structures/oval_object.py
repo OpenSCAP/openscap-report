@@ -4,7 +4,8 @@
 from typing import Dict
 
 from openscap_report.dataclasses import asdict, dataclass, field
-from openscap_report.scap_results_parser.data_structures.oval_items import OVALItems
+from openscap_report.scap_results_parser.data_structures.oval_items import \
+    OVALItems
 
 
 @dataclass

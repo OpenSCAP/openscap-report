@@ -1,9 +1,9 @@
 # Copyright 2024, Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from .shared_static_methods_of_parser import SharedStaticMethodsOfParser
 from ..data_structures import OVALItems
 from ..namespaces import NAMESPACES
+from .shared_static_methods_of_parser import SharedStaticMethodsOfParser
 
 PROCURED_ITEMS_LIMIT = 100
 

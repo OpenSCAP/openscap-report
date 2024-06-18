@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 from typing import List, Tuple
+
 from openscap_report.dataclasses import asdict, dataclass, field
 
 
