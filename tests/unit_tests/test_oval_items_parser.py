@@ -29,7 +29,7 @@ def parser():
     o1.append(o1_r1)
 
     o2 = etree.Element(
-        "{%s}object" % sc_ns, nsmap=NAMESPACES,  id=o2_id, version="1",
+        "{%s}object" % sc_ns, nsmap=NAMESPACES, id=o2_id, version="1",
         flag="complete")
     o2_r1 = etree.Element(
         "{%s}reference" % sc_ns, nsmap=NAMESPACES, item_ref=i2_id)
@@ -39,7 +39,7 @@ def parser():
     o2.append(o2_r2)
 
     o3 = etree.Element(
-        "{%s}object" % sc_ns, nsmap=NAMESPACES,  id=o3_id, version="1",
+        "{%s}object" % sc_ns, nsmap=NAMESPACES, id=o3_id, version="1",
         flag="does not exist")
 
     collected_objects = {
