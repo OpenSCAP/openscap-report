@@ -446,7 +446,7 @@ def _field_init(f, frozen, globals, self_name):
             if f.default is MISSING:
                 # There's no default, just do an assignment.
                 value = f.name
-            elif f.default is not MISSING:
+            else:
                 globals[default_name] = f.default
                 value = f.name
         else:
