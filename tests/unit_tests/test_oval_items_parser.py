@@ -9,8 +9,9 @@ from openscap_report.scap_results_parser.parsers.oval_items_parser import \
     OVALItemsParser
 
 
-@pytest.fixture
-def parser():
+# pylint: disable = too-many-locals
+@pytest.fixture(name="parser")
+def fixture_parser():
     sc_ns = NAMESPACES["oval-characteristics"]
     is_ns = NAMESPACES["ind-sys"]
 
