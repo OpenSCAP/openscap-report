@@ -6,6 +6,7 @@ from .cpe_platform import Platform
 from .group import Group
 from .identifier import Identifier
 from .oval_definition import OvalDefinition
+from .oval_items import OVALItems
 from .oval_node import OvalNode
 from .oval_object import OvalObject, OvalObjectMessage
 from .oval_reference import OvalReference

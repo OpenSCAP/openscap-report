@@ -6,6 +6,7 @@ from .full_text_parser import FullTextParser
 from .group_parser import GroupParser
 from .known_references import KNOWN_REFERENCES, update_references
 from .oval_definition_parser import OVALDefinitionParser
+from .oval_items_parser import OVALItemsParser
 from .oval_object_parser import OVALObjectParser
 from .oval_result_parser import OVALResultParser
 from .oval_state_parser import OVALStateParser
