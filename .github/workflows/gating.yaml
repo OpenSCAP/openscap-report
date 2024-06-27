@@ -25,11 +25,11 @@ jobs:
         working-directory: ./tests
         run: ./smoke.sh
 
-  test-centos-stream-8:
-    name: Test on CentOS Stream 8 (Container)
+  test-rhel-8:
+    name: Test on RHEL 8 (Container)
     runs-on: ubuntu-latest
     container:
-      image: quay.io/centos/centos:stream8
+      image: registry.access.redhat.com/ubi8/ubi:latest
     steps:
       - name: Install Deps
         run: dnf install -y python3 python3-devel python3-setuptools rpm-build
