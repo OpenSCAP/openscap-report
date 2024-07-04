@@ -362,6 +362,26 @@ function render_OVAL_test(node_data) {
     return test_node;
 }
 
+function add_kv_entry(tbody, key, value) {
+    const row = ROW.cloneNode();
+    row.setAttribute("role", "row");
+    tbody.appendChild(row);
+    const first_col = COL.cloneNode();
+    first_col.setAttribute("role", "cell");
+    first_col.className = "pf-m-truncate pf-m-fit-content";
+    first_col.appendChild(get_bold_text(key + ":"));
+    row.appendChild(first_col);
+    const second_col = COL.cloneNode();
+    second_col.setAttribute("role", "cell");
+    second_col.className = "pf-m-truncate pf-m-fit-content";
+    if (typeof value === "string") {
+        second_col.textContent = value;
+    } else {
+        second_col.appendChild(value);
+    }
+    row.appendChild(second_col);
+}
+
 function get_icon_as_html(icon) {
     const html_icon = SPAN.cloneNode();
     html_icon.className = "pf-c-label__icon";
