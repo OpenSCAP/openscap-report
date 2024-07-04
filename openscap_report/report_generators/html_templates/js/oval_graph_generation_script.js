@@ -628,7 +628,7 @@ function generate_endpoint_element(tbody, element_id, element_dict) {
             col.textContent = value;
             row.appendChild(col);
         } else {
-            label_key = remove_uuid(key);
+            const label_key = remove_uuid(key);
             first_col.appendChild(get_label("pf-m-blue", `${label_key}: ${value}`));
         }
     }
