@@ -405,6 +405,13 @@ function get_bold_text(text) {
     return b;
 }
 
+function get_header(title) {
+    const h1 = H1.cloneNode();
+    h1.textContent = title;
+    h1.className = "pf-c-title pf-m-2xl";
+    return h1;
+}
+
 function get_tooltip(text) {
     const div = DIV.cloneNode();
     div.className = "tooltip-wrapper";
