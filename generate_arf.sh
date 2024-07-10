@@ -49,7 +49,7 @@ run_oscap_scan() {
     oscap xccdf eval ${fetch} --profile "(all)" --results-arf ${file} ${ds} || EXIT_CODE=$?
     echo $EXIT_CODE
     if [ ! -f "$file" ]; then
-        echo "$file does not exist."
+        echo "$file does not exist." >&2
         exit 2
     fi
 }
@@ -58,35 +58,35 @@ get_product() {
     cpe_name=$(grep "CPE_NAME=" < /etc/os-release | sed 's/CPE_NAME=//g' | sed 's/["]//g')
     if [[ "${cpe_name}" =~ fedora ]]; then
         echo "fedora"
-    elif [[ "${cpe_name}" =~ redhat.*8 ]]; then
-        echo "rhel8"
-    elif [[ "${cpe_name}" =~ redhat.*9 ]]; then
-        echo "rhel9"
+    elif [[ "${cpe_name}" =~ redhat ]]; then
+        version=$(grep VERSION_ID /etc/os-release | grep -o "[0-9]\+" | head -n1)
+        echo "rhel${version}"
     elif [[ "${cpe_name}" =~ centos.*8 ]]; then
         echo "centos8"
-    elif [[ "${cpe_name}" =~ centos.*9 ]]; then
-        echo "cs9"
+    elif [[ "${cpe_name}" =~ centos ]]; then
+        version=$(grep VERSION_ID /etc/os-release | grep -o "[0-9]\+")
+        echo "cs${version}"
     else
         echo $cpe_name
-        echo "ERROR: Not supported OS!"
+        echo "ERROR: Not supported OS!" >&2
         exit 1
     fi
 }
 
 if [ "$1" = "" ]; then
-    echo "ERROR: Missing MODE parameter!"
+    echo "ERROR: Missing MODE parameter!" >&2
     exit 1
 fi
 
 
 if [ "$2" = "" ]; then
-    echo "ERROR: Missing FETCH parameter!"
+    echo "ERROR: Missing FETCH parameter!" >&2
     exit 1
 fi
 
 
 if [ "$3" = "" ]; then
-    echo "ERROR: Missing ARF_FILE parameter!"
+    echo "ERROR: Missing ARF_FILE parameter!" >&2
     exit 1
 fi
 file=$3
