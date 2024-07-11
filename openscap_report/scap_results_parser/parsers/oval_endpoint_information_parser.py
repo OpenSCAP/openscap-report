@@ -32,7 +32,8 @@ class OVALEndpointInformation:
                     element_dict
                 )
             if len(element):
-                element_dict = self._get_items(element)
+                # parse children like set, regex_capture, concat
+                element_dict.update(self._get_items(element))
 
             items_of_test_property[id_in_items_of_test_property] = element_dict
         return items_of_test_property

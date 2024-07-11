@@ -619,14 +619,16 @@ function generate_endpoint_element(tbody, element_id, element_dict) {
     first_col.className = "pf-m-truncate pf-m-fit-content";
     row.appendChild(first_col);
     first_col.appendChild(get_bold_text(remove_uuid(element_id) + ":"));
-
+    const second_col = COL.cloneNode();
+    second_col.setAttribute("role", "cell");
+    second_col.className = "pf-m-truncate pf-m-fit-content";
+    row.appendChild(second_col);
     for (const [key, value] of Object.entries(element_dict)) {
-        if (key.endsWith("@text")) {
-            const col = COL.cloneNode();
-            col.setAttribute("role", "cell");
-            col.className = "pf-m-truncate pf-m-fit-content";
-            col.textContent = value;
-            row.appendChild(col);
+        if (key.endsWith("@text") || key.startsWith("var_ref@") || key.startsWith("object_ref@")) {
+            second_col.textContent = value;
+        } else if (typeof value == "object") {
+            // recursion
+            generate_endpoint_element(second_col, key, value);
         } else {
             const label_key = remove_uuid(key);
             first_col.appendChild(get_label("pf-m-blue", `${label_key}: ${value}`));
@@ -636,20 +638,7 @@ function generate_endpoint_element(tbody, element_id, element_dict) {
 
 function generate_endpoint_elements(tbody, data) {
     for (const [element_id, element_dict] of Object.entries(data)) {
-        if (Object.values(element_dict).every(v => typeof v === "object")) {
-            const row = ROW.cloneNode();
-            row.setAttribute("role", "row");
-            tbody.appendChild(row);
-            const col = COL.cloneNode();
-            col.appendChild(get_bold_text(element_id + ":"));
-            row.appendChild(col);
-            const col2 = COL.cloneNode();
-            row.appendChild(col2);
-            // recursion
-            generate_endpoint_elements(col2, element_dict);
-        } else {
-            generate_endpoint_element(tbody, element_id, element_dict);
-        }
+        generate_endpoint_element(tbody, element_id, element_dict);
     }
 }
 
