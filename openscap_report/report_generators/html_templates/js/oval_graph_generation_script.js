@@ -618,7 +618,7 @@ function generate_endpoint_element(tbody, element_id, element_dict) {
     first_col.setAttribute("role", "cell");
     first_col.className = "pf-m-truncate pf-m-fit-content";
     row.appendChild(first_col);
-    first_col.appendChild(get_bold_text(element_id + ":"));
+    first_col.appendChild(get_bold_text(remove_uuid(element_id) + ":"));
 
     for (const [key, value] of Object.entries(element_dict)) {
         if (key.endsWith("@text")) {
