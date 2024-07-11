@@ -637,7 +637,16 @@ function generate_endpoint_element(tbody, element_id, element_dict) {
 function generate_endpoint_elements(tbody, data) {
     for (const [element_id, element_dict] of Object.entries(data)) {
         if (Object.values(element_dict).every(v => typeof v === "object")) {
-            generate_endpoint_elements(tbody, element_dict);
+            const row = ROW.cloneNode();
+            row.setAttribute("role", "row");
+            tbody.appendChild(row);
+            const col = COL.cloneNode();
+            col.appendChild(get_bold_text(element_id + ":"));
+            row.appendChild(col);
+            const col2 = COL.cloneNode();
+            row.appendChild(col2);
+            // recursion
+            generate_endpoint_elements(col2, element_dict);
         } else {
             generate_endpoint_element(tbody, element_id, element_dict);
         }
