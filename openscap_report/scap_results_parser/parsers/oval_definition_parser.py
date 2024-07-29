@@ -29,10 +29,9 @@ class OVALDefinitionParser:
             references.append(OvalReference(ref.get("source"), ref.get("ref_id")))
         return references
 
-    def parse_oval_definition(self, definition_id, definition_class, definition):
+    def parse_oval_definition(self, definition_id, definition):
         oval_definition_dict = {
             "definition_id": definition_id,
-            "definition_class": definition_class,
             "title": definition.find('.//oval-definitions:title', NAMESPACES).text,
             "description": definition.find('.//oval-definitions:description', NAMESPACES).text,
             "version": definition.get("version"),
@@ -48,10 +47,8 @@ class OVALDefinitionParser:
         dict_of_criteria = {}
         for definition in self.oval_definitions[oval]:
             definition_id = definition.get("id")
-            definition_class = definition.get("class")
             oval_definition = self.parse_oval_definition(
                 definition_id,
-                definition_class,
                 definition
             )
             criteria = definition.find('.//oval-definitions:criteria', NAMESPACES)
