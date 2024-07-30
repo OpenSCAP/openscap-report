@@ -4,9 +4,9 @@
 import collections
 
 from openscap_report.dataclasses import replace
-from ..data_structures.remediation import HIDDEN_REMEDIATION_TYPES
 
 from ..data_structures import Identifier, Reference, Rule, RuleWarning
+from ..data_structures.remediation import HIDDEN_REMEDIATION_TYPES
 from ..namespaces import NAMESPACES
 from .full_text_parser import FullTextParser
 from .known_references import KNOWN_REFERENCES, update_references
