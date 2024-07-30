@@ -4,6 +4,7 @@
 import collections
 
 from openscap_report.dataclasses import replace
+from ..data_structures.remediation import HIDDEN_REMEDIATION_TYPES
 
 from ..data_structures import Identifier, Reference, Rule, RuleWarning
 from ..namespaces import NAMESPACES
@@ -58,6 +59,8 @@ class RuleParser():
         output = []
         for fix in rule.findall(".//xccdf:fix", NAMESPACES):
             remediation = self.remediation_parser.get_remediation(fix)
+            if remediation.system in HIDDEN_REMEDIATION_TYPES:
+                continue
             output.append(remediation)
         return output
 

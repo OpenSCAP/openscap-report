@@ -12,6 +12,10 @@ REMEDIATION_JSON_KEYS = [
     "fix",
 ]
 
+HIDDEN_REMEDIATION_TYPES = [
+    "urn:redhat:anaconda:pre",
+    "urn:xccdf:fix:script:kickstart",
+]
 
 @dataclass
 class Remediation:
@@ -33,5 +37,6 @@ class Remediation:
             "urn:redhat:anaconda:pre": "Anaconda snippet",
             "urn:xccdf:fix:script:kubernetes": "Kubernetes snippet",
             "urn:redhat:osbuild:blueprint": "OSBuild Blueprint snippet",
+            "urn:xccdf:fix:script:kickstart": "Kickstart snippet",
         }
         return script_types.get(self.system, "script")
