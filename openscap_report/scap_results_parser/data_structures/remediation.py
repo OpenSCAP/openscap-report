@@ -17,6 +17,7 @@ HIDDEN_REMEDIATION_TYPES = [
     "urn:xccdf:fix:script:kickstart",
 ]
 
+
 @dataclass
 class Remediation:
     remediation_id: str
