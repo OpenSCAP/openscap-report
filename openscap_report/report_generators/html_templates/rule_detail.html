@@ -234,12 +234,14 @@
             </tr>
             {% endif %}
             {% include "remedations.html" %}
-            {% include "oval_definition_detail.html" %}
-            <tr role="row">
-                <td colspan="2" role="cell">
-                    {%- include "oval_graph.html" %}
-                </td>
-            </tr>
+            {% if rule.result != "notapplicable" %}
+                {% include "oval_definition_detail.html" %}
+                <tr role="row">
+                    <td colspan="2" role="cell">
+                        {%- include "oval_graph.html" %}
+                    </td>
+                </tr>
+            {% endif %}
             {% if rule.cpe_tree -%}
                 <tr role="row">
                     <th class="pf-m-fit-content" role="rowheader" scope="row"><b>CPE check:</b></th>
