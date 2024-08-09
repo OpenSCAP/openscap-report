@@ -714,7 +714,7 @@ function generate_OVAL_endpoint(div, title, kv_entries, data, referenced_id, tes
     div.appendChild(get_header(title));
     div.appendChild(BR.cloneNode());
     const table_div = DIV.cloneNode();
-    table_div.className = "pf-c-scroll-inner-wrapper oval-test-detail-table";
+    table_div.className = "oval-test-detail-table";
     div.appendChild(table_div);
 
     const table = TABLE.cloneNode();
@@ -889,7 +889,7 @@ function get_OVAL_test_info(test_info) {
     div.appendChild(BR.cloneNode());
 
     const table_div = DIV.cloneNode();
-    table_div.className = "pf-c-scroll-inner-wrapper oval-test-detail-table";
+    table_div.className = "oval-test-detail-table";
     div.appendChild(table_div);
 
     const table = TABLE.cloneNode();
