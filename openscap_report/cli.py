@@ -12,8 +12,7 @@ from . import __version__
 from .debug_settings import DebugSetting
 from .report_generators import (HTMLReportGenerator,
                                 JSONEverythingReportGenerator,
-                                JSONReportGenerator,
-                                OldStyleHTMLReportGenerator)
+                                JSONReportGenerator)
 from .scap_results_parser import NotSupportedReportingFormat, SCAPResultsParser
 
 DESCRIPTION = ("Generates an HTML report from an ARF (or XCCDF Result) file with results of "
@@ -116,7 +115,7 @@ def prepare_parser():
         "--format",
         action="store",
         default="HTML",
-        choices=["HTML", "OLD-STYLE-HTML", "JSON", "JSON-EVERYTHING"],
+        choices=["HTML", "JSON", "JSON-EVERYTHING"],
         help="FORMAT: %(choices)s"
     )
     parser.add_argument(
@@ -162,7 +161,6 @@ class CommandLineAPI():  # pylint: disable=R0902
     def get_report_generator(self, report_parser):
         dict_of_report_generators = {
             "HTML": HTMLReportGenerator,
-            "OLD-STYLE-HTML": OldStyleHTMLReportGenerator,
             "JSON": JSONReportGenerator,
             "JSON-EVERYTHING": JSONEverythingReportGenerator,
         }

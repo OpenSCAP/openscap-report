@@ -52,10 +52,6 @@ def test_command_with_input_from_stdin_and_output_to_stdout():
         '<!DOCTYPE html><html lang="en" class="pf-m-redhat-font">'
     ),
     (
-        ["-f", "OLD-STYLE-HTML"],
-        '<!DOCTYPE html>\n<html lang="en">'
-    ),
-    (
         ["-f", "JSON"],
         "{"
     )

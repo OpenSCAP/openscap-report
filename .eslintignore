@@ -4,7 +4,6 @@
 *.json
 *.css
 *.sh
-*.xsl
 *.xsd
 *.py
 *.pyc

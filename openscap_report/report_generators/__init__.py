@@ -4,5 +4,4 @@
 from .exceptions import FilterNotSupportDataStructureException
 from .html import HTMLReportGenerator
 from .json import JSONEverythingReportGenerator, JSONReportGenerator
-from .old_style_html import OldStyleHTMLReportGenerator
 from .report_generator import ReportGenerator
