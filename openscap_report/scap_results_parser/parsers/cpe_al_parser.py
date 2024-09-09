@@ -61,8 +61,7 @@ class CPEApplicabilityLanguageParser:
                 check_id_ref = child_logical_test_el.get("id-ref")
                 logical_test.children.append(
                     LogicalTest(
-                        node_type="frac-ref",
-                        value=platform_name if platform_name is not None else check_id_ref,
+                        node_type="fact-ref",
                         oval_tree=self._get_oval_cpe_tree(platform_name, check_id_ref))
                 )
             if child_logical_test_el.get('operator') is not None:

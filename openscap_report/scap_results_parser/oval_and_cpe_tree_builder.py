@@ -90,7 +90,7 @@ class OVALAndCPETreeBuilder:  # pylint: disable=R0902, R0913
                     logical_test=LogicalTest(
                         node_type="AND",
                         children=[LogicalTest(
-                            node_type="frac-ref",
+                            node_type="fact-ref",
                             value=oval_definition.definition_id,
                             oval_tree=oval_definition.oval_tree
                         )],

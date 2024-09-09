@@ -167,7 +167,7 @@ function generate_oval_tree(self, div_id_with_oval_graph_data) { // eslint-disab
 }
 
 function get_CPE_AL_tree_node(root) {
-    if (root.node_type == 'frac-ref') {
+    if (root.node_type == 'fact-ref') {
         return undefined;
     }
 
@@ -178,8 +178,8 @@ function get_CPE_AL_tree_node(root) {
         ul.setAttribute('role', "group");
         const fragment = document.createDocumentFragment();
         for (const child of root.children) {
-            if (child.node_type == "frac-ref") {
-                fragment.appendChild(render_CPE_frac_ref(child));
+            if (child.node_type == "fact-ref") {
+                fragment.appendChild(render_CPE_fact_ref(child));
             } else {
                 fragment.appendChild(get_CPE_AL_tree_node(child));
             }
@@ -201,24 +201,15 @@ function get_colors_and_icons(node_data) {
         color = 'pf-m-red';
         icon = 'fa-times';
     }
-
-    let negate_color = '';
-    let negate_icon = icon;
-    if (node_data.negation) {
-        negate_color = COLOR_TRANSLATION[NEGATION_COLOR[color]];
-        negate_icon = NEGATION_ICON[icon];
-    } else {
-        negate_color = COLOR_TRANSLATION[color];
-    }
-    return { color, icon, negate_color, negate_icon };
+    return { color, icon };
 }
 
 
 function base_operator_node(node_data, node_text) {
-    const { color, icon, negate_color, negate_icon } = get_colors_and_icons(node_data);
-    const node = get_node(negate_color);
+    const { color, icon } = get_colors_and_icons(node_data);
+    const node = get_node(COLOR_TRANSLATION[color]);
     node_text.appendChild(node);
-    const html_icon = get_icon_as_html(negate_icon);
+    const html_icon = get_icon_as_html(icon);
     node.appendChild(html_icon);
     if (node_data.negation) {
         node.appendChild(get_operator_label_with_tooltip("NOT", OVAL_OPERATOR_EXPLANATION));
@@ -241,12 +232,12 @@ function get_CPE_AL_operator_node(node_data) {
 }
 
 
-function render_CPE_frac_ref(node_data) {
+function render_CPE_fact_ref(node_data) {
     const { operator_node, node_text } = get_operator_node();
     const { node, color, icon } = base_operator_node(node_data.oval_tree, node_text);
 
     node.appendChild(get_bold_text(` Reference to OVAL definition `));
-    node_text.appendChild(get_label(color, "frac-ref", undefined, "cpe-label"," cpe-label__content"));
+    node_text.appendChild(get_label(color, "fact-ref", undefined, "cpe-label"," cpe-label__content"));
     const span_space = SPAN.cloneNode();
     span_space.innerText = "\u00A0";
     node_text.appendChild(span_space);
@@ -321,11 +312,11 @@ function get_test_node() {
 
 function render_OVAL_test(node_data) {
     const { test_node, node_content, node_text } = get_test_node();
-    const { color, icon, negate_color, negate_icon } = get_colors_and_icons(node_data);
+    const { color, icon } = get_colors_and_icons(node_data);
 
-    const node = get_node(negate_color);
+    const node = get_node(COLOR_TRANSLATION[color]);
     node_text.appendChild(node);
-    const html_icon = get_icon_as_html(negate_icon);
+    const html_icon = get_icon_as_html(icon);
     node.appendChild(html_icon);
     if (node_data.negation) {
         node.appendChild(get_operator_label_with_tooltip("NOT", OVAL_OPERATOR_EXPLANATION));

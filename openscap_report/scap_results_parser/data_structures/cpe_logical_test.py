@@ -31,14 +31,12 @@ class LogicalTest:
         result = Counter(EMPTY_RESULT)
         for child in self.children:
             value = None
-            if child.node_type == "frac-ref":
+            if child.node_type == "fact-ref":
                 value = str(child.oval_tree.evaluate_tree())
             else:
                 value = str(child.evaluate_tree())
 
             node_result = OVAL_RESULT_TO_CPE_RESULT.get(value, "error")
-            if child.negation:
-                node_result = NEGATE_VALUE[value]
             result[f"number_of_{node_result}"] += 1
         return result
 
@@ -48,8 +46,6 @@ class LogicalTest:
             out_result = cpe_result.eval_operator_or()
         elif self.node_type.lower() == "and":
             out_result = cpe_result.eval_operator_and()
-        if out_result is not None:
-            self.value = out_result
         return out_result
 
     def evaluate_tree(self):
@@ -58,4 +54,5 @@ class LogicalTest:
         out_result = self._eval_operator(cpe_result)
         if self.negation:
             out_result = NEGATE_VALUE[out_result]
+        self.value = out_result
         return out_result
