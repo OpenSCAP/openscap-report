@@ -23,6 +23,8 @@ Requires:       python3-lxml
 Recommends:     redhat-display-fonts
 Recommends:     redhat-text-fonts
 
+Obsoletes:      oval-graph
+
 %global _description %{expand:
 This package provides a command-line tool for generating
 human-readable reports from SCAP XCCDF and ARF results.}
