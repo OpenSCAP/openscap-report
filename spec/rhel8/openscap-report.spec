@@ -23,6 +23,8 @@ Requires:       python3-jinja2
 Recommends:     redhat-display-fonts
 Recommends:     redhat-text-fonts
 
+Obsoletes:      oval-graph
+
 %{?python_enable_dependency_generator}
 
 %global _description %{expand:
